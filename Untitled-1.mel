@@ -67,6 +67,7 @@ global proc RS_Sen_Aovs_pro(){
     RS_TransGIRaw_aov_pro()
     RS_TransLightingRaw_AOV_pro()    
 }
+
 ///////////// AOVs prs ///////////////////////////////////////////////////////////////////
 //Creat_AOV_AO
 global proc RScustom_AO_Aov_pro(){
