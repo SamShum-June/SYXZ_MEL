@@ -1,0 +1,22 @@
+在deadline渲染时abc没加载 看看
+
+labe 1 
+One layer（ pose  tpose  sen）
+creat  Aovs
+Ctrl aovs on or off
+If render pose then set aovs_pose_tpose
+If render sen then set aovs_sen
+
+creat Iso 2017 and 2019
+
+Two layer (render set and set resolution W H,output png)
+1K
+2K
+3K
+4K
+1280*720
+1920*1080
+4096*2305
+custom
+
+

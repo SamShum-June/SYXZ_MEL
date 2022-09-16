@@ -1,0 +1,1445 @@
+  if  (`window -exists syxzwindow`)
+{
+     deleteUI -window syxzwindow;
+}
+
+window -t "SYXZ"  syxzwindow;
+rowColumnLayout -adjustableColumn true -ca ;
+
+    frameLayout  -l "Import STH"   -w 1 -h 60 -cll 0 -mh 5;
+        rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 10 ;
+            textField  -w 600  data_line; button -l"Import_now" -w 60 -c "import_STH" ;
+            setParent ..;
+            setParent ..;
+
+    frameLayout  -l "Prs"   -w 700 -h 60 -cll 0 -mh 5;
+        rowColumnLayout  -nr 1  -cs 1 10;
+            button  -l "AOVs_2017"  -c "importAOVs_2017" -h 30 -w 70 -bgc 0.767 0.587 0.025;
+            button  -l "AOVs_2019"  -c "importAOVs_2019" -h 30 -w 70 -bgc 0.767 0.587 0.025;
+            button  -l "ON" -annotation "All AOVs ON" -c "all_aov_on" -h 30 -w 30 -bgc 0.767 0.587 0.025;
+            button  -l "OFF" -annotation "All AOVs OFF" -c "all_aov_off" -h 30 -w 30 -bgc 0.767 0.587 0.025;          
+            button  -l "1K"    -c "XRSZ_1K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "2K"    -c "XRSZ_2K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "3K"    -c "XRSZ_3K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "4K"    -c "XRSZ_4K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "HD720"    -c "XRSZ_HD720" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "HD1080"    -c "XRSZ_HD1080" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+			button  -l "4096_2305"    -c "XRSZ_4096_2305" -h 30 -w 70 -bgc 0.174 0.767 0.977;
+            setParent ..;
+            setParent ..;
+
+    frameLayout  -l "Smooth+LIG"   -w 1 -h 60 -cll 0 -mh 5;
+        rowColumnLayout  -numberOfRows 1 -ca  -cs 1 7 -rs 2 6;
+            button -l "smooth" -c "smooth" -w 95 -h 28 -bgc 0 1 0.559;                
+            button -l "CHA_Lig" -c "importlig" -w 95 -h 28 -bgc 0.442 1 0;     
+            button -l "SHA_Lig" -c "importshalig" -w 95 -h 28 -bgc 0.196 0.151 0.134;     
+            setParent ..;
+            setParent ..;
+
+
+    frameLayout  -l "TPOSECAM"  -w 1 -cll 0 -cl 0 -h 60 -mh 5 ;
+        rowColumnLayout  -numberOfRows 1 -ca  -cs 1 10;
+           text -w 50 -bgc 1 0.5 0.6 -l "3plan:";
+               button -l "F.S.B"  -w 50 -h 30 -c "import3panfont_side_back"; 
+           text -w 50 -bgc 1 0.5 0.6 -l "5plan:";
+               button -l "F.L.B.R.T"  -w 60 -h 30  -c "import5panfont_left_back_right_top"; 
+           text -w 50 -bgc 1 0.5 0.6 -l "5plan:";
+               button -l "F.L45.R.B.T"  -w 60 -h 30  -c "import5panfont_left45_right_back_top"; 
+           text -w 50 -bgc 1 0.5 0.6 -l "5plan:";
+               button -l "F.S.R.T.B"  -w 60 -h 30  -c "import5panfont_side_right_top_bott";
+           text -w 50 -bgc 1 0.5 0.6 -l "8plan:";
+               button -l "F.L45.L.B.R45.R.T.B"  -w 100 -h 30  -c "import8panfont_left45_left_back_right45_right_top_bott";  
+        setParent ..;
+        setParent ..;               
+
+    frameLayout  -l "POSERGB_PNG"   -w 1 -h 60 -cll 0 -mh 5;
+        rowColumnLayout  -numberOfRows 1 -ca  -cs 1 7 -rs 2 6;
+            button -l "Create_POSERGB"  -w 130 -h 28 -c "createPOSERGB";
+            button -l "SL obj to Red ID" -bgc 0.32 0 0 -w 130 -h 28 -c "alp_POSE_R" ;
+            button -l "SL obj to Green ID" -bgc 0 0.32 0 -w 130 -h 28 -c "alp_POSE_G" ;
+            button -l "SL Obj to Blue ID" -bgc 0 0 0.32 -w 130 -h 28 -c "alp_POSE_B" ;
+            setParent ..;
+            setParent ..;
+
+    frameLayout  -l "Do_CAM_EXR"   -w 1 -cll 0 -cl 0 -h 125 -mh 5 -bgc 0.025 0.244 0.767;
+        rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
+            text -w 80 -l "Creat Group:";
+                button -l "Character_Group" -bgc 1 0.65 0.13 -w 100 -h 28 -c "cha_group_final_pro";
+                button -l "Character_ID" -bgc 1 0.65 0.13 -w 100 -h 28 -c "Creat_Cha_ID";                
+                button -l "Sen_Group" -bgc 0 1 1 -w 100 -h 28 -c "Sen_Group_pro";
+                setParent ..; 
+        rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
+            text -w 80 -l "HP:";
+                button -l "Aovs_2017_exr+HD1080_exr" -annotation "创建" -bgc 0.442 0.011 0.319 -w 180 -h 28 -c "Aovs_2017_exr_HD1080_exr";
+                button -l "Aovs_2017_exr+HD720_exr" -bgc 0.442 0.011 0.319 -w 180 -h 28 -c "Aovs_2017_exr_HD720_exr";
+                setParent ..; 
+
+        rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;        
+            text -w 80 -l "SP:";
+                button -l "Aovs_2017_exr+1080*1920_exr" -bgc 0.442 0.2 0.319 -w 180 -h 28 -c "Aovs_2017_exr_1080_1920_exr";
+                button -l "Aovs_2017_exr+720*1280_exr" -bgc 0.442 0.2 0.319 -w 180 -h 28 -c "Aovs_2017_exr_720_1280_exr";
+                setParent ..;     
+                setParent ..;  
+
+
+
+    frameLayout  -l "Character_ID_SET"   -w 1 -h 60 -cll 0 -mh 5;
+        rowColumnLayout  -numberOfRows 1 -ca  -cs 1 10;
+            button  -l"Creat Char ID" -bgc 0.572 0.394 0.658 -c "createID" -w 130;            
+            button  -l"Creat Char IDAOVs_EXR" -bgc 0 0.551 1 -c "creatIDaovs_EXR" -w 130;
+            button  -l"Creat Char IDAOVs_PNG" -bgc 0 0.32 0.161 -c "creatIDaovs_PNG" -w 130;            
+            button  -l"Creat zhu 3SID" -h 30 -c "createCharFaceID" -w 130;
+            setParent ..;
+            setParent ..;
+
+    frameLayout  -l "SenID_EXR"   -w 1 -h 60 -cll 0 -mh 5;
+        rowColumnLayout  -numberOfRows 1 -ca  -cs 1 7 -rs 2 6;
+            button -l "Creat RGBSen"  -w 95 -h 28 -c "createRGBSen";
+            button -l "SL obj to Red ID" -bgc 0.32 0 0 -w 95 -h 28 -c "alpSenR" ;
+            button -l "SL obj to Green ID" -bgc 0 0.32 0  -w 100 -h 28 -c "alpSenG" ;
+            button -l "SL Obj to Blue ID" -bgc 0 0 0.32 -w 95 -h 28 -c "alpSenB" ;
+            setParent ..;
+            setParent ..;
+
+
+window -e -h 200    -w 560 syxzwindow;
+showWindow syxzwindow;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////imporLIG
+global proc importlig(){
+    file -r -type "mayaBinary"  -ignoreVersion -gl -loadReferenceDepth "all" -shd "renderLayersByName" -mergeNamespacesOnClash false -namespace "cha_lig" -options "v=0;" "//192.168.23.65/ab$/Light_Library/_SYXZ/cha_lig.mb";
+}
+
+/////imporSHALIG
+//global proc importshalig(){
+//    file -r -type "mayaBinary"  -ignoreVersion -gl -loadReferenceDepth "all" -shd "renderLayersByName" -mergeNamespacesOnClash false -namespace "sha_lig" -options "v=0;" "//192.168.23.65/ab$/Light_Library/_SYXZ/sha_lig.mb";
+//}
+
+
+
+
+////smooth
+global proc smooth(){
+redshiftCreateMeshParametersNode();
+
+// Result: rsMeshParameters1 // 
+
+select -r -ne rsMeshParameters1 ;
+
+setAttr "rsMeshParameters1.minTessellationLength" 6;
+setAttr "rsMeshParameters1.maxTessellationSubdivs" 8;
+}
+
+/////imporTPOSECAM
+global proc import3panfont_side_back(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/3pan_font_side_back.mb";
+}
+
+global proc import5panfont_left_back_right_top(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/5pan_font_left_back_right_top.mb";
+}
+
+global proc import5panfont_left45_right_back_top(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/5pan_font_left45_right_back_top.mb";
+}
+
+global proc import5panfont_side_right_top_bott(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/5pan_font_side_right_top_bott.mb";
+}
+
+global proc import8panfont_left45_left_back_right45_right_top_bott(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/8pan_font_left45_left_back_right45_right_top_bott.mb";
+}
+
+//importAOVs
+
+global proc importAOVs_2017(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/AOVs_2017.mb";
+}
+
+global proc importAOVs_2019(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/AOVs_2019.mb";
+}
+
+//All AOV ON
+global proc all_aov_on(){
+    setAttr "rsAov_Custom_RS_AO.enabled" 1;
+	setAttr "rsAov_Custom_RS_OC.enabled" 1;
+	setAttr "rsAov_DiffuseFilter.enabled" 1;
+	setAttr "rsAov_Emission.enabled" 1;
+	setAttr "rsAov_ReflectionsRaw.enabled" 1;
+	setAttr "rsAov_SpecularLighting.enabled" 1;
+	setAttr "rsAov_SubSurfaceScatter_SSS.enabled" 1;
+}
+
+//All AOV off
+global proc all_aov_off(){
+    setAttr "rsAov_Custom_RS_AO.enabled" 0;
+	setAttr "rsAov_Custom_RS_OC.enabled" 0;
+	setAttr "rsAov_DiffuseFilter.enabled" 0;
+	setAttr "rsAov_Emission.enabled" 0;
+	setAttr "rsAov_ReflectionsRaw.enabled" 0;
+	setAttr "rsAov_SpecularLighting.enabled" 0;
+	setAttr "rsAov_SubSurfaceScatter_SSS.enabled" 0;
+}
+
+
+/////Renderset
+
+global proc XRSZ_1K(){
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 2;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 1024;
+	setAttr defaultResolution.height 1024;
+	setAttr "defaultResolution.deviceAspectRatio" 1;
+	setAttr "defaultResolution.pixelAspect" 1;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+    setAttr "redshiftOptions.primaryGIEngine" 4;
+	setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+global proc XRSZ_2K(){
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 2;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 2048;
+	setAttr defaultResolution.height 2048;
+	setAttr "defaultResolution.deviceAspectRatio" 1;
+	setAttr "defaultResolution.pixelAspect" 1;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+    setAttr "redshiftOptions.primaryGIEngine" 4;
+	setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+global proc XRSZ_3K(){
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 2;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 3072;
+	setAttr defaultResolution.height 3072;
+	setAttr "defaultResolution.deviceAspectRatio" 1;
+	setAttr "defaultResolution.pixelAspect" 1;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+    setAttr "redshiftOptions.primaryGIEngine" 4;
+	setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+
+global proc XRSZ_4K(){
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 2;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 4096;
+	setAttr defaultResolution.height 4096;
+	setAttr "defaultResolution.deviceAspectRatio" 1;
+	setAttr "defaultResolution.pixelAspect" 1;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+    setAttr "redshiftOptions.primaryGIEngine" 4;
+	setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+
+global proc XRSZ_HD720(){
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 2;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 1280;
+	setAttr defaultResolution.height 720;
+	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.pixelAspect" 1.000;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+    setAttr "redshiftOptions.primaryGIEngine" 4;
+	setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+global proc XRSZ_HD1080(){
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 2;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 1920;
+	setAttr defaultResolution.height 1080;
+	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.pixelAspect" 1.000;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+    setAttr "redshiftOptions.primaryGIEngine" 4;
+	setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+
+global proc XRSZ_4096_2305(){
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 2;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 4096;
+	setAttr defaultResolution.height 2305;
+	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.pixelAspect" 1.000;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+    setAttr "redshiftOptions.primaryGIEngine" 4;
+	setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+
+
+
+
+global proc Aovs_2017_exr_HD1080_exr(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 1;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 1920;
+	setAttr defaultResolution.height 1080;
+	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.pixelAspect" 1.000;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+}
+
+global proc Aovs_2017_exr_1080_1920_exr(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 1;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 1920;
+	setAttr defaultResolution.height 1080;
+	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.pixelAspect" 1.000;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+}
+
+
+global proc Aovs_2017_exr_HD720_exr(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 1;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 1280;
+	setAttr defaultResolution.height 720;
+	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.pixelAspect" 1.000;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+}
+
+
+global proc Aovs_2017_exr_720_1280_exr(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+	setAttr "redshiftOptions.imageFormat" 1;
+	setAttr "defaultRenderGlobals.animation" 1;
+	setAttr "redshiftOptions.exrForceMultilayer" 1;
+	setAttr "redshiftOptions.exrMultipart" 1;
+	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+	string $Cam[] =`ls -ca`;
+	setAttr ($Cam[0]+".renderable") 1;
+	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+	setAttr "perspShape.farClipPlane" 10000000;
+	setAttr "perspShape.renderable" 0;
+	setAttr defaultResolution.width 720;
+	setAttr defaultResolution.height 1280;
+	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.pixelAspect" 1.000;
+	setAttr "redshiftOptions.unifiedMinSamples" 512;
+	setAttr "redshiftOptions.unifiedMaxSamples" 512;
+	setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+	setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+	if( `objExists $RS_Volume[0]` ){
+	setAttr ($RS_Volume[0]+".enable") 0;}
+	string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+	if( `objExists $RS_Photographic[0]` ){
+	setAttr ($RS_Photographic[0]+".enable") 0;}
+	string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+	if( `objExists $RS_PhysicalSky[0]` ){
+	setAttr ($RS_PhysicalSky[0]+".on") 0;}
+	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+}
+
+
+
+
+
+////CHARGB
+
+global proc createID(){
+    string $CharAndProp1[] = `ls -sl`;
+
+if(`objExists "chaorprop20"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop21";
+        sets -edit -forceElement chaorprop21 $CharAndProp1 ;
+        setAttr "chaorprop21.objectId" 21;
+    }
+    else if(`objExists "chaorprop19"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop20";
+        sets -edit -forceElement chaorprop20 $CharAndProp1 ;
+        setAttr "chaorprop20.objectId" 20;
+    }
+    else if(`objExists "chaorprop18"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop19";
+        sets -edit -forceElement chaorprop19 $CharAndProp1 ;
+        setAttr "chaorprop19.objectId" 19;
+    }
+    else if(`objExists "chaorprop17"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop18";
+        sets -edit -forceElement chaorprop18 $CharAndProp1 ;
+        setAttr "chaorprop18.objectId" 18;
+    }
+    else if(`objExists "chaorprop16"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop17";
+        sets -edit -forceElement chaorprop17 $CharAndProp1 ;
+        setAttr "chaorprop17.objectId" 17;
+    }
+    else if(`objExists "chaorprop15"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop16";
+        sets -edit -forceElement chaorprop16 $CharAndProp1 ;
+        setAttr "chaorprop16.objectId" 16;
+    }
+    else if(`objExists "chaorprop14"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop15";
+        sets -edit -forceElement chaorprop15 $CharAndProp1 ;
+        setAttr "chaorprop15.objectId"15;
+    }
+    else if(`objExists "chaorprop13"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop14";
+        sets -edit -forceElement chaorprop14 $CharAndProp1 ;
+        setAttr "chaorprop14.objectId" 14;
+    }
+    else if(`objExists "chaorprop12"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop13";
+        sets -edit -forceElement chaorprop13 $CharAndProp1 ;
+        setAttr "chaorprop13.objectId" 13;
+    }
+    else if(`objExists "chaorprop11"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop12";
+        sets -edit -forceElement chaorprop12 $CharAndProp1 ;
+        setAttr "chaorprop12.objectId" 12;
+    }
+    else if(`objExists "chaorprop10"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop11";
+        sets -edit -forceElement chaorprop11 $CharAndProp1 ;
+        setAttr "chaorprop11.objectId" 11;
+    }
+    else if(`objExists "chaorprop9"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop10";
+        sets -edit -forceElement chaorprop10 $CharAndProp1 ;
+        setAttr "chaorprop10.objectId" 10;
+    }
+    else if(`objExists "chaorprop8"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop9";
+        sets -edit -forceElement chaorprop9 $CharAndProp1 ;
+        setAttr "chaorprop9.objectId" 9;
+    }
+    else if(`objExists "chaorprop7"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop8";
+        sets -edit -forceElement chaorprop8 $CharAndProp1 ;
+        setAttr "chaorprop8.objectId" 8;
+    }
+    else if(`objExists "chaorprop6"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop7";
+        sets -edit -forceElement chaorprop7 $CharAndProp1 ;
+        setAttr "chaorprop7.objectId" 7;
+    }
+    else if(`objExists "chaorprop5"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop6";
+        sets -edit -forceElement chaorprop6 $CharAndProp1 ;
+        setAttr "chaorprop6.objectId" 6;
+    }
+    else if(`objExists "chaorprop4"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop5";
+        sets -edit -forceElement chaorprop5 $CharAndProp1 ;
+        setAttr "chaorprop5.objectId" 5;
+    }
+    else if(`objExists "chaorprop3"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop4";
+        sets -edit -forceElement chaorprop4 $CharAndProp1 ;
+        setAttr "chaorprop4.objectId" 4;
+    }
+    else if(`objExists "chaorprop2"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop3";
+        sets -edit -forceElement chaorprop3 $CharAndProp1 ;
+        setAttr "chaorprop3.objectId" 3;
+    }
+    else if(`objExists "chaorprop1"`){
+        rename `redshiftCreateObjectIdNode` "chaorprop2";
+        sets -edit -forceElement chaorprop2 $CharAndProp1 ;
+        setAttr "chaorprop2.objectId" 2;
+    }
+    else if(!`objExists "chaorprop1"`){
+    rename `redshiftCreateObjectIdNode` "chaorprop1";
+    sets -edit -forceElement chaorprop1 $CharAndProp1 ;
+    setAttr "chaorprop1.objectId" 1;}
+    
+
+}
+
+global proc creatIDaovs_PNG(){
+	if (`objExists "chaorprop1"`){
+	createRGB1_PNG();}
+	if (`objExists "chaorprop4"`){
+	createRGB2_PNG();}
+	if (`objExists "chaorprop7"`){
+	createRGB3_PNG();}
+	if (`objExists "chaorprop10"`){
+	createRGB4_PNG();}
+	if (`objExists "chaorprop13"`){
+	createRGB5_PNG();}
+	if (`objExists "chaorprop16"`){
+	createRGB6_PNG();}
+	if (`objExists "chaorprop19"`){
+	createRGB7_PNG();}
+	select -r -ne "chaorprop*";
+	pickWalk -d down;
+	rename `redshiftCreateMeshParametersNode`"smooth";
+
+}
+
+
+global proc createRGB1_PNG(){
+    if(!`objExists RGB1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB1;
+    setAttr -type "string" RGB1.name "RGB1";
+    setAttr "RGB1.dataType" 2;
+    setAttr "RGB1.fileFormat" 2;
+    setAttr "RGB1.mode" 1;
+    setAttr "RGB1.redId" 1;
+    setAttr "RGB1.greenId" 2;
+    setAttr "RGB1.blueId" 3;
+    setAttr "RGB1.enabled" 0;
+    setAttr "RGB1.exrBits" 32;   
+} 
+}
+    
+global proc createRGB2_PNG(){
+    if(!`objExists RGB2`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB2;
+    setAttr -type "string" RGB2.name "RGB2";
+    setAttr "RGB2.dataType" 2;
+    setAttr "RGB2.fileFormat" 2;
+    setAttr "RGB2.mode" 1;
+    setAttr "RGB2.redId" 4;
+    setAttr "RGB2.greenId" 5;
+    setAttr "RGB2.blueId" 6;
+    setAttr "RGB2.enabled" 0;
+    setAttr "RGB2.exrBits" 32;    
+}
+}
+    
+global proc createRGB3_PNG(){
+    if(!`objExists RGB3`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB3;
+    setAttr -type "string" RGB3.name "RGB3";
+    setAttr "RGB3.dataType" 2;
+    setAttr "RGB3.fileFormat" 2;
+    setAttr "RGB3.mode" 1;
+    setAttr "RGB3.redId" 7;
+    setAttr "RGB3.greenId" 8;
+    setAttr "RGB3.blueId" 9;
+    setAttr "RGB3.enabled" 0;
+    setAttr "RGB3.exrBits" 32;    
+}
+}
+
+global proc createRGB4_PNG(){
+    if(!`objExists RGB4`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB4;
+    setAttr -type "string" RGB4.name "RGB4";
+    setAttr "RGB4.dataType" 2;
+    setAttr "RGB4.fileFormat" 2;
+    setAttr "RGB4.mode" 1;
+    setAttr "RGB4.redId" 10;
+    setAttr "RGB4.greenId" 11;
+    setAttr "RGB4.blueId" 12;
+    setAttr "RGB4.enabled" 0;
+    setAttr "RGB4.exrBits" 32;    
+}
+}
+
+global proc createRGB5_PNG(){
+    if(!`objExists RGB5`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB5;
+    setAttr -type "string" RGB5.name "RGB5";
+    setAttr "RGB5.dataType" 2;
+    setAttr "RGB5.fileFormat" 2;
+    setAttr "RGB5.mode" 1;
+    setAttr "RGB5.redId" 13;
+    setAttr "RGB5.greenId" 14;
+    setAttr "RGB5.blueId" 15;
+    setAttr "RGB5.enabled" 0;
+    setAttr "RGB5.exrBits" 32;    
+}
+}
+    
+global proc createRGB6_PNG(){
+    if(!`objExists RGB6`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB6;
+    setAttr -type "string" RGB6.name "RGB6";
+    setAttr "RGB6.dataType" 2;
+    setAttr "RGB6.fileFormat" 2;
+    setAttr "RGB6.mode" 1;
+    setAttr "RGB6.redId" 16;
+    setAttr "RGB6.greenId" 17;
+    setAttr "RGB6.blueId" 18;
+    setAttr "RGB6.enabled" 0;
+    setAttr "RGB6.exrBits" 32;    
+}
+}
+
+global proc createRGB7_PNG(){
+    if(!`objExists RGB7`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB7;
+    setAttr -type "string" RGB7.name "RGB7";
+    setAttr "RGB7.dataType" 2;
+    setAttr "RGB7.fileFormat" 2;
+    setAttr "RGB7.mode" 1;
+    setAttr "RGB7.redId" 19;
+    setAttr "RGB7.greenId" 20;
+    setAttr "RGB7.blueId" 21;
+    setAttr "RGB7.enabled" 0;
+    setAttr "RGB7.exrBits" 32;    
+}
+}
+
+
+global proc creatIDaovs_EXR(){
+   
+if (`objExists "chaorprop1"`){
+createRGB1_EXR();}
+if (`objExists "chaorprop4"`){
+createRGB2_EXR();}
+if (`objExists "chaorprop7"`){
+createRGB3_EXR();}
+if (`objExists "chaorprop10"`){
+createRGB4_EXR();}
+if (`objExists "chaorprop13"`){
+createRGB5_EXR();}
+if (`objExists "chaorprop16"`){
+createRGB6_EXR();}
+if (`objExists "chaorprop19"`){
+createRGB7_EXR();}
+select -r -ne "chaorprop*";
+pickWalk -d down;
+rename `redshiftCreateMeshParametersNode`"smooth";
+
+}
+
+
+
+global proc createRGB1_EXR(){
+    if(!`objExists RGB1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB1;
+    setAttr -type "string" RGB1.name "RGB1";
+    setAttr  "RGB1.fileFormat" 1;
+    setAttr "RGB1.mode" 1;
+    setAttr "RGB1.redId" 1;
+    setAttr "RGB1.greenId" 2;
+    setAttr "RGB1.blueId" 3;
+    setAttr "RGB1.enabled" 0;
+    setAttr "RGB1.exrBits" 32;   
+    } 
+    }
+    
+global proc createRGB2_EXR(){
+    if(!`objExists RGB2`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB2;
+    setAttr -type "string" RGB2.name "RGB2";
+    setAttr  "RGB2.fileFormat" 1;
+    setAttr "RGB2.mode" 1;
+    setAttr "RGB2.redId" 4;
+    setAttr "RGB2.greenId" 5;
+    setAttr "RGB2.blueId" 6;
+    setAttr "RGB2.enabled" 0;
+    setAttr "RGB2.exrBits" 32;    
+}
+}
+    
+global proc createRGB3_EXR(){
+    if(!`objExists RGB3`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB3;
+    setAttr -type "string" RGB3.name "RGB3";
+    setAttr  "RGB3.fileFormat" 1;
+    setAttr "RGB3.mode" 1;
+    setAttr "RGB3.redId" 7;
+    setAttr "RGB3.greenId" 8;
+    setAttr "RGB3.blueId" 9;
+    setAttr "RGB3.enabled" 0;
+    setAttr "RGB3.exrBits" 32;    
+}
+    }
+global proc createRGB4_EXR(){
+    if(!`objExists RGB4`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB4;
+    setAttr -type "string" RGB4.name "RGB4";
+    setAttr  "RGB4.fileFormat" 1;
+    setAttr "RGB4.mode" 1;
+    setAttr "RGB4.redId" 10;
+    setAttr "RGB4.greenId" 11;
+    setAttr "RGB4.blueId" 12;
+    setAttr "RGB4.enabled" 0;
+    setAttr "RGB4.exrBits" 32;    
+}
+    }
+global proc createRGB5_EXR(){
+    if(!`objExists RGB5`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB5;
+    setAttr -type "string" RGB5.name "RGB5";
+    setAttr  "RGB5.fileFormat" 1;
+    setAttr "RGB5.mode" 1;
+    setAttr "RGB5.redId" 13;
+    setAttr "RGB5.greenId" 14;
+    setAttr "RGB5.blueId" 15;
+    setAttr "RGB5.enabled" 0;
+    setAttr "RGB5.exrBits" 32;    
+}
+}
+    
+global proc createRGB6_EXR(){
+    if(!`objExists RGB6`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB6;
+    setAttr -type "string" RGB6.name "RGB6";
+    setAttr  "RGB6.fileFormat" 1;
+    setAttr "RGB6.mode" 1;
+    setAttr "RGB6.redId" 16;
+    setAttr "RGB6.greenId" 17;
+    setAttr "RGB6.blueId" 18;
+    setAttr "RGB6.enabled" 0;
+    setAttr "RGB6.exrBits" 32;    
+}
+    }
+global proc createRGB7_EXR(){
+    if(!`objExists RGB7`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGB7;
+    setAttr -type "string" RGB7.name "RGB7";
+    setAttr  "RGB7.fileFormat" 1;
+    setAttr "RGB7.mode" 1;
+    setAttr "RGB7.redId" 19;
+    setAttr "RGB7.greenId" 20;
+    setAttr "RGB7.blueId" 21;
+    setAttr "RGB7.enabled" 0;
+    setAttr "RGB7.exrBits" 32;    
+}
+}
+
+
+
+
+
+global proc createCharFaceID(){
+int $faceIDnum = 1;
+
+
+if (objExists ("*:*:_G17_EP102_01GG_ZFB_head")){
+	select "*:*:_G17_EP102_01GG_ZFB_head";
+	string $GG_Head[] = `ls -sl`;
+	string $GG_hz = "main:_G17_EP102_01GG_ZFB_head";
+	$faceID[$faceIDnum] = `substitute $GG_hz $GG_Head[0] "rsSubSurfaceScatter2SG.rsMaterialId"`;
+	setAttr ($faceID[$faceIDnum]) ($faceIDnum);
+	$faceIDnum++;
+};
+
+
+
+
+if (objExists ("*:*:_G17_EP102_03CRQ_ZFB_head")){
+	select "*:*:_G17_EP102_03CRQ_ZFB_head";
+	string $CRQ_Head[] = `ls -sl`;
+	string $CRQ_hz = "main:_G17_EP102_03CRQ_ZFB_head";
+	$faceID[$faceIDnum] = `substitute $CRQ_hz $CRQ_Head[0] "SkinSG1.rsMaterialId"`;
+	setAttr $faceID[$faceIDnum] $faceIDnum;
+	$faceIDnum++;
+};
+
+
+if (objExists ("*:*:_G17_EP102_02FF_ZFB_head_geo")){
+    select "*:*:_G17_EP102_02FF_ZFB_head_geo";
+    string $FF_Head[] = `ls -sl`;
+    string $FF_hz = "main1:_G17_EP102_02FF_ZFB_head_geo";
+    $faceID[$faceIDnum] = `substitute $FF_hz $FF_Head[0] "rsSubSurfaceScatter2SG3.rsMaterialId"`;
+    setAttr $faceID[$faceIDnum] $faceIDnum;
+    string $FFqianzhui = `substitute $FF_hz $FF_Head[0] ""`;
+        if(objExists ($FFqianzhui+"rsSubSurfaceScatter2SG4")){
+            $faceID[$faceIDnum] = `substitute $FF_hz $FF_Head[0] "rsSubSurfaceScatter2SG4.rsMaterialId"`;
+            setAttr $faceID[$faceIDnum] $faceIDnum;}
+    $faceIDnum++;
+};
+
+
+
+if (objExists ("*:*:_G17_EP102_05NN_ZFB_head")){
+	select "*:*:_G17_EP102_05NN_ZFB_head";
+	string $NN_Head[] = `ls -sl`;
+	string $NN_hz = "main:_G17_EP102_05NN_ZFB_head";
+	$faceID[$faceIDnum] = `substitute $NN_hz $NN_Head[0] "NN_Skin.rsMaterialId"`;
+	setAttr $faceID[$faceIDnum] $faceIDnum;
+	$faceIDnum++;
+}
+;
+if (objExists ("*:*:_G17_EP102_04BB_ZFB_head")){
+	select "*:*:_G17_EP102_04BB_ZFB_head";
+	string $BB_Head[] = `ls -sl`;
+	string $BB_hz = "main:_G17_EP102_04BB_ZFB_head";
+	$faceID[$faceIDnum] = `substitute $BB_hz $BB_Head[0] "rsSubSurfaceScatter2SG2.rsMaterialId"`;
+	setAttr $faceID[$faceIDnum] $faceIDnum;
+	$faceIDnum++;
+};
+
+if (objExists ("*:*:_G17_EP102_08XDD_Head")){
+	select "*:*:_G17_EP102_08XDD_Head";
+	string $XDD_Head[] = `ls -sl`;
+	string $XDD_hz = "main:_G17_EP102_08XDD_Head";
+	$faceID[$faceIDnum] = `substitute $XDD_hz $XDD_Head[0] "M_head_SG1.rsMaterialId"`;
+	setAttr $faceID[$faceIDnum] $faceIDnum;
+	$faceIDnum++;
+};
+
+if (objExists ("*:*:_G17_EP102_06MH_Head")){
+	select "*:*:_G17_EP102_06MH_Head";
+	string $MH_Head[] = `ls -sl`;
+	string $MH_hz = "main:_G17_EP102_06MH_Head";
+	$faceID[$faceIDnum] = `substitute $MH_hz $MH_Head[0] "M_body_SG1.rsMaterialId"`;
+	setAttr $faceID[$faceIDnum] $faceIDnum;
+	$faceIDnum++;
+}
+
+if($faceIDnum == 1){
+    print "场景没有主角";
+   
+}else if($faceIDnum == 2){
+    if(!`objExists RGBface1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface1;
+    setAttr -type "string" RGBface1.name "RGBface1";
+    setAttr "RGBface1.exrBits" 32;
+    setAttr "RGBface1.redId" 1;
+    setAttr "RGBface1.greenId" 2;
+    setAttr "RGBface1.blueId" 3;    
+    setAttr "RGBface1.enabled" 0;}
+}else if($faceIDnum == 3){
+    if(!`objExists RGBface1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface1;
+    setAttr -type "string" RGBface1.name "RGBface1";
+    setAttr "RGBface1.exrBits" 32;
+    setAttr "RGBface1.redId" 1;
+    setAttr "RGBface1.greenId" 2;
+    setAttr "RGBface1.blueId" 3;    
+    setAttr "RGBface1.enabled" 0;}
+}else if($faceIDnum == 4){
+    if(!`objExists RGBface1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface1;
+    setAttr -type "string" RGBface1.name "RGBface1";
+    setAttr "RGBface1.exrBits" 32;
+    setAttr "RGBface1.redId" 1;
+    setAttr "RGBface1.greenId" 2;
+    setAttr "RGBface1.blueId" 3;    
+    setAttr "RGBface1.enabled" 0;}
+}else if($faceIDnum == 5){
+    if(!`objExists RGBface1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface1;
+    setAttr -type "string" RGBface1.name "RGBface1";
+    setAttr "RGBface1.exrBits" 32;
+    setAttr "RGBface1.redId" 1;
+    setAttr "RGBface1.greenId" 2;
+    setAttr "RGBface1.blueId" 3;    
+    setAttr "RGBface1.enabled" 0;
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface2;
+    setAttr -type "string" RGBface2.name "RGBface2";
+    setAttr "RGBface2.exrBits" 32;
+    setAttr "RGBface2.redId" 4;
+    setAttr "RGBface2.greenId" 5;
+    setAttr "RGBface2.blueId" 6;    
+    setAttr "RGBface2.enabled" 0;}
+}else if($faceIDnum == 6){
+    if(!`objExists RGBface1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface1;
+    setAttr -type "string" RGBface1.name "RGBface1";
+    setAttr "RGBface1.exrBits" 32;
+    setAttr "RGBface1.redId" 1;
+    setAttr "RGBface1.greenId" 2;
+    setAttr "RGBface1.blueId" 3;    
+    setAttr "RGBface1.enabled" 0;
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface2;
+    setAttr -type "string" RGBface2.name "RGBface2";
+    setAttr "RGBface2.exrBits" 32;
+    setAttr "RGBface2.redId" 4;
+    setAttr "RGBface2.greenId" 5;
+    setAttr "RGBface2.blueId" 6;    
+    setAttr "RGBface2.enabled" 0;}
+}
+else if($faceIDnum == 7){
+    if(!`objExists RGBface1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface1;
+    setAttr -type "string" RGBface1.name "RGBface1";
+    setAttr "RGBface1.exrBits" 32;
+    setAttr "RGBface1.redId" 1;
+    setAttr "RGBface1.greenId" 2;
+    setAttr "RGBface1.blueId" 3;    
+    setAttr "RGBface1.enabled" 0;
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface2;
+    setAttr -type "string" RGBface2.name "RGBface2";
+    setAttr "RGBface2.exrBits" 32;
+    setAttr "RGBface2.redId" 4;
+    setAttr "RGBface2.greenId" 5;
+    setAttr "RGBface2.blueId" 6;    
+    setAttr "RGBface2.enabled" 0;
+}}
+else if($faceIDnum == 8){
+    if(!`objExists RGBface1`){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface1;
+    setAttr -type "string" RGBface1.name "RGBface1";
+    setAttr "RGBface1.exrBits" 32;
+    setAttr "RGBface1.redId" 1;
+    setAttr "RGBface1.greenId" 2;
+    setAttr "RGBface1.blueId" 3;    
+    setAttr "RGBface1.enabled" 0;
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface2;
+    setAttr -type "string" RGBface2.name "RGBface2";
+    setAttr "RGBface2.exrBits" 32;
+    setAttr "RGBface2.redId" 4;
+    setAttr "RGBface2.greenId" 5;
+    setAttr "RGBface2.blueId" 6;    
+    setAttr "RGBface2.enabled" 0;
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBface3;
+    setAttr -type "string" RGBface3.name "RGBface3";
+    setAttr "RGBface3.exrBits" 32;
+    setAttr "RGBface3.redId" 7;
+    setAttr "RGBface3.greenId" 0;
+    setAttr "RGBface3.blueId" 0;    
+    setAttr "RGBface3.enabled" 0;
+}}
+;
+
+}
+
+
+
+////senRGB
+
+
+global proc createRGBSen(){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) RGBSen;
+    setAttr -type "string" RGBSen.name "RGBSen";
+    setAttr "RGBSen.fileFormat" 1;
+    setAttr "RGBSen.mode" 1;
+    setAttr "RGBSen.redId" 9999;
+    setAttr "RGBSen.greenId" 9998;
+    setAttr "RGBSen.blueId" 9997;
+    setAttr "RGBSen.enabled" 0;
+    setAttr "RGBSen.exrBits" 32;
+}
+
+global proc alpSenR(){
+    ls -sl;
+    rename(redshiftCreateObjectIdNode()) SenID_R;
+    setAttr "SenID_R.objectId" 9999;
+}
+
+global proc alpSenG(){
+    ls -sl;
+    rename(redshiftCreateObjectIdNode()) SenID_G;
+    setAttr "SenID_G.objectId" 9998;
+}
+
+global proc alpSenB(){
+    ls -sl;
+    rename(redshiftCreateObjectIdNode()) SenID_B;
+    setAttr "SenID_B.objectId" 9997;
+}
+
+
+
+///POSERGB
+
+global proc createPOSERGB(){
+    source redshiftCreateAovTab;
+    rename (`redshiftCreateAov "Puzzle Matte"`) POSERGB;
+    setAttr -type "string" POSERGB.name "POSERGB";
+    setAttr "POSERGB.dataType" 2;    
+    setAttr "POSERGB.fileFormat" 2;
+    setAttr "POSERGB.mode" 1;
+    setAttr "POSERGB.redId" 111;
+    setAttr "POSERGB.greenId" 222;
+    setAttr "POSERGB.blueId" 333;
+    setAttr "POSERGB.enabled" 0;
+    setAttr "POSERGB.exrBits" 32;
+    selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 0 -camera 0 -texture 0 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 0;
+}
+
+global proc alp_POSE_R(){
+    ls -sl ;
+    rename(redshiftCreateObjectIdNode()) POSEID_R;
+    setAttr "POSEID_R.objectId" 111;
+}
+
+global proc alp_POSE_G(){
+    ls -sl;
+    rename(redshiftCreateObjectIdNode()) POSEID_G;
+    setAttr "POSEID_G.objectId" 222;
+}
+
+global proc alp_POSE_B(){
+    ls -sl;
+    rename(redshiftCreateObjectIdNode()) POSEID_B;
+    setAttr "POSEID_B.objectId" 333;
+}
+
+
+
+
+
+//Cha打组(source)_backup
+global proc cha_group_final_pro11111()
+{
+//source "JSDZ.mel";
+
+}
+//Cha打组_backup
+global proc cha_group_final_pro()
+{
+
+$LsSelectionrenderlayer = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelectionrenderlayer!="defaultRenderLayer")
+{
+editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+}
+
+string $char_1[] =`ls -sl`;
+
+if(!`objExists "Character_Group"`){
+    select -cl; 
+    CreateLocator;
+    rename (`ls -sl`) "Character_Group";
+    select -cl;
+    CreateLocator;
+    rename (`ls -sl`) "Transparent_Group"; 
+    select -cl;
+    CreateLocator;
+    rename (`ls -sl`) "Cha_nor_Group";
+    select -r Transparent_Group Cha_nor_Group;
+    select -add Character_Group ;
+    parent;    
+}
+
+select -cl;
+CreateLocator ;
+rename (`ls -sl`) "Char_G_yiyi";
+select -r Char_G_yiyi ;
+select -add Cha_nor_Group ;
+parent;
+select -r $char_1;
+select -add Char_G_yiyi ;
+parent;
+
+select -r Char_G_yiyi ;
+addAttr -ln "CharId"  -at double  -min 0 -max 100 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharId;
+addAttr -ln "CharIdCheck"  -at double  -min 0 -max 1 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharIdCheck;
+rename "Char_G_yiyi" "Char_G1";
+}
+
+//场景打组
+global proc Sen_Group_pro()
+{
+string $Sen_all_1[] =`ls -sl`;
+if(!`objExists "Sen_Group"`){
+    select -cl; 
+    CreateLocator;
+    rename (`ls -sl`) "Sen_Group";   
+}
+select -r $Sen_all_1;
+select -add Sen_Group ;
+parent;
+}
+
+
+
+
+
+
+
+
+
+
+
+//    frameLayout  -l "TPOSECAM"  -w 650 -cll 0 -cl 0 -h 200 -mh 5 ;
+//    rowColumnLayout -numberOfColumns 2 -w 500 
+//    -columnWidth 1 50 
+//    -columnWidth 2 80 ;
+//   text -l "3plan:";
+//            button -l "F.S.B"  -w 80 -h 30 -c "import3panfont_side_back"; 
+//            setParent ..;  
+//   rowColumnLayout -numberOfColumns 2 -w 500 
+//    -columnWidth 1 50 
+//    -columnWidth 2 80 ;
+//    text -l "5plan:";            
+//           button -l "F.L.B.R.T"  -w 80 -h 30 -c "import5panfont_left_back_right_top"; 
+//            setParent ..;  
+//    rowColumnLayout -numberOfColumns 2 -w 500 
+//    -columnWidth 1 50 
+//    -columnWidth 2 80 ;
+//    text -l "5plan:";                 
+//            button -l "F.L45.R.B.T"  -w 80 -h 30 -c "import5panfont_left45_right_back_top"; 
+//            setParent ..;  
+//    rowColumnLayout -numberOfColumns 2 -w 500 
+//    -columnWidth 1 50 
+//    -columnWidth 2 80 ;
+//   text -l "5plan:";  
+//            button -l "F.S.R.T.B"  -w 80 -h 30 -c "import5panfont_side_right_top_bott"; 
+//            setParent ..;  
+//   rowColumnLayout -numberOfColumns 2 -w 500 
+//    -columnWidth 1 50 
+//    -columnWidth 2 80 ;
+//    text -l "8plan:";              
+//            button -l "F.L45.L.B.R45.R.T.B"  -w 80 -h 30 -c "import8panfont_left45_left_back_right45_right_top_bott"; 
+//            setParent ..;
+//            setParent ..;
+
+
+
+
+
+
+//////////////
+
+//    frameLayout  -l "做镜头_EXR"  -w 560 -cll 0 -cl 0 -h 200 -mh 5 ;
+//   rowColumnLayout -numberOfColumns 2 -w 500 
+//    -columnWidth 1 100 
+//    -columnWidth 2 100;
+//   text -l "HP:";
+//            button -l "Aovs_2017_exr+HD1080_exr" -bgc 1 0.3 0.8 -w 180 -h 28 -c "Aovs_2017_exr_HD1080_exr";
+//            button -l "Aovs_2017_exr+HD720_exr" -bgc 1 0.3 0.8 -w 180 -h 28 -c "Aovs_2017_exr_HD720_exr";
+//            setParent ..;
+//            setParent ..;
+//    text -l "PH:";
+//            button -l "Aovs_2017_exr+HD1080_exr" -bgc 1 0.3 0.8 -w 180 -h 28 -c "Aovs_2017_exr_HD1080_exr";
+//           button -l "Aovs_2017_exr+HD720_exr" -bgc 1 0.3 0.8 -w 180 -h 28 -c "Aovs_2017_exr_HD720_exr";
+//            setParent ..;
+//            setParent ..;
