@@ -3,7 +3,6 @@
      deleteUI -window syxzwindow;
 }
 
-
 window -t "SYXZ"  syxzwindow;
 rowColumnLayout -adjustableColumn true -ca ;
 

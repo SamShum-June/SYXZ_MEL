@@ -1,12 +1,16 @@
+/*
+
 import_STH()
 RS_Full_Aovs_pro()
 RS_Pose_Aovs_pro()
 RS_Sen_Aovs_pro()
 
+*/
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //Import sth
-global proc import_STH(){
+global proc import_STH(){ 
     string $import_now=`textField -q -text data_line`;
     file -import  $import_now ;
 }
@@ -66,7 +70,7 @@ global proc RS_Sen_Aovs_pro(){
     RS_N_AOV_pro()
     RS_VolumeFogEmission_aov_pro()
     RS_TransGIRaw_aov_pro()
-    RS_TransLightingRaw_AOV_pro()    
+    RS_TransLightingRaw_AOV_pro()
 }
 
 ///////////// AOVs prs ///////////////////////////////////////////////////////////////////
