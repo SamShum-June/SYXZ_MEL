@@ -1,0 +1,109 @@
+  if  (`window -exists syxzwindow`)
+{
+     deleteUI -window syxzwindow;
+}
+
+window -t "SYXZ"  syxzwindow;
+rowColumnLayout -adjustableColumn true -ca ;
+/////////////////////////////////////Import STH////////////////////////////////////////////////////////////////////////////////////
+    frameLayout  -l "Import STH"   -w 1 -h 60 -cll 0 -mh 5;
+        rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 5 ;
+            textField  -w 600  data_line; button -l"Import now" -w 70 -c "import_STH" ;
+            setParent ..;
+            setParent ..;
+////////////////////Doing for Pose Topse sen render//////////////////////////////////////////////////////////////////////////////
+    frameLayout  -l "Doing for Pose Topse sen render"   -w 700 -h 300 -cll 0 -mh 5 ;
+        text -w 80 -h 10 -bgc 0 0 0.134 -l "Pose Tpose ID SET" ;
+            rowColumnLayout  -nr 1 -cs 1 5 ;
+                text -w 100 -h 28 -l "All Auto Creat ID" -annotation "Creat Character & SEN_Group";
+                    button -l "1_Character_Group" -bgc 1 0.65 0.13 -w 120 -h 28 -c "cha_group_final" -annotation "Character_Group";
+                    button -l "2_Auto Char ID EXR" -bgc 0 0.551 1  -w 120 -h 28 -c "Auto_Char_ID_EXR" -annotation "Auto Char ID EXR";
+                    button -l "2_Auto Char ID PNG" -bgc 1 0.5 0.6 -w 120 -h 28 -c "Auto_Char_ID_PNG" -annotation "Auto Char ID PNG";
+                setParent ..;
+            rowColumnLayout  -nr 1  -cs 1 5;
+                text -w 100  -h 28 -l "Auto Char ID" -annotation "Custom Set Char ID";                         
+                    button -l "1_Cs AUTO Char ID" -bgc 0.572 0.394 0.658  -w 100 -h 28 -c "Cs_AUTO_Char_ID";              
+                    button -l "2_Cs Char IDAOVs EXR" -bgc 0 0.551 1 -w 150 -h 28 -c "Custom_Creat_IDaovs_EXR";
+                    button -l "2_Cs Char IDAOVs PNG" -bgc 1 0.5 0.6 -w 150 -h 28 -c "Custom_Creat_IDaovs_PNG"; 
+                setParent ..;
+            rowColumnLayout  -nr 1  -cs 1 5;
+                text -w 100  -h 28 -l "Custom Char ID" -annotation "Custom Char ID";
+                button -l "1_Custom Char IDAOVs"  -bgc 0.572 0.394 0.658 -w 130 -h 28 -c "Create_POSERGB";
+                button -l "2_Char Red ID" -bgc 0.32 0 0 -w 120 -h 28 -c "Char_Red_ID" ;
+                button -l "2_Char Green ID" -bgc 0 0.32 0 -w 120 -h 28 -c "Char_Green_ID" ;
+                button -l "2_Char Blue ID" -bgc 0 0 0.32 -w 120 -h 28 -c "Char_Blue_ID" ;
+                setParent ..;
+
+        text -w 80 -h 10 -bgc 0 0 0.134 -l "Custom Set SEN Group & ID" ;
+            rowColumnLayout  -nr 1  -cs 1 5;
+                text -w 100  -h 28 -l "Custom Group ID" -annotation "SET SEN ID Aovs EXR or PNG"; 
+                    button -l "1_Creat_Sen_Group" -bgc 1 0.65 0.13 -w 110 -h 28 -c "Creat_sen_Group";
+                    button -l "2_SEN ID EXR" -bgc 0 0.551 1 -w 80 -h 20 -c "Sen_ID_EXR";
+                    button -l "2_SEN ID PNG" -bgc 1 0.5 0.6 -w 80 -h 28 -c "Sen_ID_PNG";
+                    button -l "3_SEN Red ID" -bgc 0.32 0 0 -w 95 -h 28 -c "SEN_Red_ID" ;
+                    button -l "3_SEN Green ID" -bgc 0 0.32 0  -w 100 -h 28 -c "SEN_Green_ID" ;
+                    button -l "3_SEN Blue ID" -bgc 0 0 0.32 -w 95 -h 28 -c "SEN_Blue_ID" ;
+
+
+
+
+
+
+
+
+
+                setParent ..;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    frameLayout  -l "AOVs SET"   -w 700 -h 300 -cll 0 -mh 5 ;
+        rowColumnLayout  -nr 1  -cs 1 10;
+            text -w 150 -h 20 -l "Creat AOVs";
+                button -l "Full_AOVs" -c "RS_Full_Aovs_sam" -h 20 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Full_Aovs" ;
+                button -l "Pose_AOVs" -c "RS_Pose_Aovs_sam" -h 20 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Pose_Aovs" ;
+                button -l "Sen_AOVs"  -c "RS_Sen_Aovs_sam" -h 20 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Sen_Aovs" ;
+            setParent ..;
+
+        rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
+            text -w 150 -h 20 -l "Creat rsAov ISO";
+                button -l "rsAov_ISO_2017" -c "rsAov_ISO_2017" -h 20 -w 100 -bgc 0.244 0.607 0.047 -annotation "rsAov_ISO_2017" ;
+                button -l "rsAov_ISO_2019" -c "rsAov_ISO_2019" -h 20 -w 100 -bgc 0.244 0.607 0.047 -annotation "rsAov_ISO_2019" ;
+            setParent ..;
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+window -e -h 200    -w 560 syxzwindow;
+showWindow syxzwindow;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

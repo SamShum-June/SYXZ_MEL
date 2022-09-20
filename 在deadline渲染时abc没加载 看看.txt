@@ -20,3 +20,25 @@ Two layer (render set and set resolution W H,output png)
 custom
 
 
+/*
+
+import_STH()
+RS_Full_Aovs_sam()
+RS_Pose_Aovs_sam()
+RS_Sen_Aovs_sam()
+
+
+
+*/
+
+
+shaderlig_creat
+
+redshiftCreateLight "RedshiftPhysicalLight";
+rename "rsPhysicalLight1" "sha_light";
+setAttr "sha_lightShape.lightType" 3;
+setAttr "sha_lightShape.affectsSpecular" 0;
+setAttr "sha_light.rotateX" -90;
+setAttr "sha_lightShape.on" 0;
+setAttr "sha_lightShape.SAMPLINGOVERRIDES_shadowSamplesScale" 8;
+setAttr "sha_lightShape.SAMPLINGOVERRIDES_numShadowSamples" 128;
