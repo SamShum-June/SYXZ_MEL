@@ -11,8 +11,8 @@ rowColumnLayout -adjustableColumn true -ca ;
             textField  -w 600  data_line; button -l"Import now" -w 70 -c "import_STH" ;
             setParent ..;
             setParent ..;
-////////////////////Doing for Pose Topse sen render//////////////////////////////////////////////////////////////////////////////
-    frameLayout  -l "Doing for Pose Topse sen render"   -w 700 -h 300 -cll 0 -mh 5 -bgc 0 0 0.134;
+////////////////////Optimize for Pose Topse sen render//////////////////////////////////////////////////////////////////////////////
+    frameLayout  -l "Optimize for Pose Topse sen render"   -w 700 -h 300 -cll 0 -mh 5 -bgc 0 0 0.134;
         text -w 80 -h 10 -bgc 0 0 0.134 -l "Pose Tpose ID SET" ;
             rowColumnLayout  -nr 1 -cs 1 5 ;
                 text -w 100 -h 28 -l "All Auto Creat ID" -annotation "Creat Character & SEN_Group";
