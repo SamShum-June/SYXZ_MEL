@@ -12,7 +12,7 @@ rowColumnLayout -adjustableColumn true -ca ;
             setParent ..;
             setParent ..;
 ////////////////////Doing for Pose Topse sen render//////////////////////////////////////////////////////////////////////////////
-    frameLayout  -l "Doing for Pose Topse sen render"   -w 700 -h 300 -cll 0 -mh 5 ;
+    frameLayout  -l "Doing for Pose Topse sen render"   -w 700 -h 300 -cll 0 -mh 5 -bgc 0 0 0.134;
         text -w 80 -h 10 -bgc 0 0 0.134 -l "Pose Tpose ID SET" ;
             rowColumnLayout  -nr 1 -cs 1 5 ;
                 text -w 100 -h 28 -l "All Auto Creat ID" -annotation "Creat Character & SEN_Group";
@@ -43,31 +43,15 @@ rowColumnLayout -adjustableColumn true -ca ;
                     button -l "3_SEN Red ID" -bgc 0.32 0 0 -w 95 -h 28 -c "SEN_Red_ID" ;
                     button -l "3_SEN Green ID" -bgc 0 0.32 0  -w 100 -h 28 -c "SEN_Green_ID" ;
                     button -l "3_SEN Blue ID" -bgc 0 0 0.32 -w 95 -h 28 -c "SEN_Blue_ID" ;
-
-
-
-
-
-
-
-
-
                 setParent ..;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     frameLayout  -l "AOVs SET"   -w 700 -h 300 -cll 0 -mh 5 ;
         rowColumnLayout  -nr 1  -cs 1 10;
-            text -w 150 -h 20 -l "Creat AOVs";
-                button -l "Full_AOVs" -c "RS_Full_Aovs_sam" -h 20 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Full_Aovs" ;
-                button -l "Pose_AOVs" -c "RS_Pose_Aovs_sam" -h 20 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Pose_Aovs" ;
-                button -l "Sen_AOVs"  -c "RS_Sen_Aovs_sam" -h 20 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Sen_Aovs" ;
+            text -w 95 -h 28 -l "Creat AOVs";
+                button -l "Full_AOVs" -c "RS_Full_Aovs_sam" -h 28 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Full_Aovs" ;
+                button -l "Pose_AOVs" -c "RS_Pose_Aovs_sam" -h 28 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Pose_Aovs" ;
+                button -l "Sen_AOVs"  -c "RS_Sen_Aovs_sam" -h 28 -w 70 -bgc 0.767 0.587 0.025 -annotation "RS_Sen_Aovs" ;
             setParent ..;
-
-        rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
-            text -w 150 -h 20 -l "Creat rsAov ISO";
-                button -l "rsAov_ISO_2017" -c "rsAov_ISO_2017" -h 20 -w 100 -bgc 0.244 0.607 0.047 -annotation "rsAov_ISO_2017" ;
-                button -l "rsAov_ISO_2019" -c "rsAov_ISO_2019" -h 20 -w 100 -bgc 0.244 0.607 0.047 -annotation "rsAov_ISO_2019" ;
-            setParent ..;
-        
 
 
 
