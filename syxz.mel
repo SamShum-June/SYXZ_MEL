@@ -1,9 +1,9 @@
-  if  (`window -exists syxzwindow`)
+  if  (`window -exists syxz_oldwindow`)
 {
-     deleteUI -window syxzwindow;
+     deleteUI -window syxz_oldwindow;
 }
 
-window -t "SYXZ"  syxzwindow;
+window -t "SYXZ"  syxz_oldwindow;
 rowColumnLayout -adjustableColumn true -ca ;
 
     frameLayout  -l "Import STH"   -w 1 -h 60 -cll 0 -mh 5;
@@ -102,8 +102,8 @@ rowColumnLayout -adjustableColumn true -ca ;
             setParent ..;
 
 
-window -e -h 200    -w 560 syxzwindow;
-showWindow syxzwindow;
+window -e -h 200    -w 560 syxz_oldwindow;
+showWindow syxz_oldwindow;
 
 
 
