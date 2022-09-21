@@ -454,21 +454,21 @@ global proc RS_TransGIRaw_Aov_Sam(){
 
 /////////// Creat ISO //////////////////////////////////////
 //Creat 2017 RedshiftPhotographicExposure
-global proc rsAov_ISO_2017(){
+global proc ISO_maya2017(){
     shadingNode -asUtility RedshiftPhotographicExposure;
-    rename rsPhotographicExposure1 "rsAov_ISO_2017" ;
-    setAttr "rsAov_ISO_2017.enable" 0;
-    redshiftChangeGlobalShader rsAov_ISO_2017 "exposure";
+    rename rsPhotographicExposure1 "ISO_maya2017" ;
+    setAttr "ISO_maya2017.enable" 0;
+    redshiftChangeGlobalShader ISO_maya2017 "exposure";
     redshiftUpdateGlobalShader "exposure" "rsControl_expText" "rsControl_expSelButton";
     autoUpdateAttrEd;
-    print ("rsAov_ISO_2017"+"\n");
+    print ("Creat_ISO_maya2017"+"\n");
 }
 //Creat 2019 postEffects
-global proc rsAov_ISO_2019(){
+global proc ISO_maya2019(){
     shadingNode -asUtility RedshiftPostEffects;
-    rename rsPostEffects1 "rsAov_ISO_2019" ;
-    redshiftChangeGlobalShader rsAov_ISO_2019 "postEffects";
-    print ("rsAov_ISO_2019"+"\n");
+    rename rsPostEffects1 "ISO_maya2019" ;
+    redshiftChangeGlobalShader ISO_maya2019 "postEffects";
+    print ("Creat_ISO_maya2019"+"\n");
 }
 
 
