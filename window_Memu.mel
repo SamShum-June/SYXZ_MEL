@@ -48,7 +48,7 @@ rowColumnLayout -adjustableColumn true -ca ;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     frameLayout  -l "AOVs SET"   -w 1 -h 1 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
         rowColumnLayout  -nr 1  -cs 1 10;
-            text -w 100 -h 28 -l "Creat AOVs" -annotation "选择你需要创建的Aovs 和 使用的maya版本";
+            text -w 100 -h 28 -l "Creat AOVs & ISO " -annotation "选择你需要创建的Aovs 和 ISO使用的maya版本";
                 button -l "RS FULL AOVs" -c "RS_Full_Aovs_sam" -h 28 -w 110 -bgc 0.767 0.587 0.025 -annotation "RS_Full_Aovs" ;
                 button -l "RS POSE AOVs" -c "RS_Pose_Aovs_sam" -h 28 -w 110 -bgc 0.767 0.587 0.025 -annotation "RS_Pose_Aovs" ;
                 button -l "RS SEN AOVs"  -c "RS_Sen_Aovs_sam" -h 28 -w 110 -bgc 0.767 0.587 0.025 -annotation "RS_Sen_Aovs" ;
