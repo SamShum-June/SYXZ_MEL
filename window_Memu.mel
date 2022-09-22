@@ -45,7 +45,7 @@ rowColumnLayout -adjustableColumn true -ca ;
                     button -l "3_SEN Green ID" -bgc 0 0.32 0  -w 100 -h 28 -annotation "选择物体创建为绿色ID"  -c "SEN_Green_ID" ;
                     button -l "3_SEN Blue ID" -bgc 0 0 0.32 -w 95 -h 28 -annotation "选择物体创建为蓝色ID"  -c "SEN_Blue_ID" ;
                 setParent ..;
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// AOVs SET /////////////////////////////////////////////////////////////////////////////////////////////////////
     frameLayout  -l "AOVs SET"   -w 1 -h 1 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
         rowColumnLayout  -nr 1  -cs 1 10;
             text -w 100 -h 28 -l "Creat AOVs & ISO " -annotation "选择你需要创建的Aovs 和 ISO使用的maya版本";
@@ -56,12 +56,43 @@ rowColumnLayout -adjustableColumn true -ca ;
                 button -l "ISO maya2019"  -c "ISO_maya2019" -h 28 -w 110 -bgc 0 1 1 -annotation "ISO_maya2019" ;
             setParent ..;
 
-            
+    frameLayout  -l "Light"   -w 1 -h 1 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
+        rowColumnLayout  -nr 1  -cs 1 10;
+            text -w 100 -h 28 -l "Smooth & CHA SHA lig " -annotation "增加角色灯和阴影灯";
+                button -l "smooth" -c "smooth" -w 95 -h 28 -bgc 0 1 0.559;                
+                button -l "CHA_Lig" -c "importlig" -w 95 -h 28 -bgc 0.442 1 0;     
+                button -l "SHA_Lig" -c "importshalig" -w 95 -h 28 -bgc 0.196 0.151 0.134;     
+            setParent ..;
 
+    frameLayout  -l "Prs SET"   -w 1 -h 1 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
+        rowColumnLayout  -nr 1  -cs 1 10;
+            button  -l "1K"    -c "XRSZ_1K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "2K"    -c "XRSZ_2K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "3K"    -c "XRSZ_3K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "4K"    -c "XRSZ_4K" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "HD720"    -c "XRSZ_HD720" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+            button  -l "HD1080"    -c "XRSZ_HD1080" -h 30 -w 50 -bgc 0.174 0.767 0.977;
+			button  -l "4096_2305"    -c "XRSZ_4096_2305" -h 30 -w 70 -bgc 0.174 0.767 0.977;
+            button  -l "Custom size"  -c "     " -h 30 -w 70 -bgc 0.174 0.767 0.977;
+            setParent ..;
+            setParent ..;
 
+    frameLayout  -l "Do_CAM_EXR"   -w 1 -cll 0 -cl 0 -h 125 -mh 5 -bgc 0.025 0.244 0.767;
+        rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
+                text -w 100 -h 28 -l "All Auto Creat ID" -annotation "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs";
+                    button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 150 -h 28 -annotation "角色打组" -c "Creat_Char_Group";
+                    button -l "2_Auto Aovs ID EXR" -bgc 0 0.551 1  -w 150 -h 28 -annotation "自动创建AOVs & ID 输出EXR" -c "Auto_Aovs_ID_EXR";
+                    button -l "2_Auto Aovs ID PNG" -bgc 1 0.5 0.6 -w 150 -h 28 -annotation "自动创建AOVs & ID 输出PNG" -c "Auto_Aovs_ID_PNG";
+                setParent ..;
 
-
-
+                text -w 100  -h 28 -l "Cs Group Aovs ID" -annotation "手动创建场景组 设置 Aovs"; 
+                    button -l "1_Creat_SEN_Group" -bgc 1 0.65 0.13 -w 120 -h 28 -c "Creat_sen_Group";
+                    button -l "2_SEN ID EXR" -bgc 0 0.551 1 -w 80 -h 20 -annotation "设置Aovs输出EXR" -c "Sen_Aovs_EXR";
+                    button -l "2_SEN ID PNG" -bgc 1 0.5 0.6 -w 80 -h 28 -annotation "设置Aovs输出PNG" -c "Sen_Aovs_PNG";
+                    button -l "3_SEN Red ID" -bgc 0.32 0 0 -w 95 -h 28 -annotation "选择物体创建为红色ID" -c "SEN_Red_ID" ;
+                    button -l "3_SEN Green ID" -bgc 0 0.32 0  -w 100 -h 28 -annotation "选择物体创建为绿色ID"  -c "SEN_Green_ID" ;
+                    button -l "3_SEN Blue ID" -bgc 0 0 0.32 -w 95 -h 28 -annotation "选择物体创建为蓝色ID"  -c "SEN_Blue_ID" ;
+                setParent ..;
 
 
 
