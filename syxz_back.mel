@@ -3,7 +3,6 @@
      deleteUI -window syxzwindow;
 }
 
-
 window -t "SYXZ"  syxzwindow;
 rowColumnLayout -adjustableColumn true -ca ;
 
@@ -65,9 +64,9 @@ rowColumnLayout -adjustableColumn true -ca ;
     frameLayout  -l "Do_CAM_EXR"   -w 1 -cll 0 -cl 0 -h 125 -mh 5 -bgc 0.025 0.244 0.767;
         rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
             text -w 80 -l "Creat Group:";
-                button -l "Character_Group" -bgc 1 0.65 0.13 -w 100 -h 28 -c "cha_group_final_pro";
-                button -l "Character_ID" -bgc 1 0.65 0.13 -w 100 -h 28 -c "Creat_Cha_ID";                
+                button -l "Character_Group" -bgc 1 0.65 0.13 -w 100 -h 28 -c "cha_group_final_pro";             
                 button -l "Sen_Group" -bgc 0 1 1 -w 100 -h 28 -c "Sen_Group_pro";
+                button -l "Set_Sen_CHA_ID" -bgc 1 0 1 -w 100 -h 28 -c "Set_Sen_CHA_ID";                
                 setParent ..; 
         rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
             text -w 80 -l "HP:";
@@ -166,9 +165,14 @@ global proc importAOVs_2017(){
     file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/AOVs_2017.mb";
 }
 
+global proc importAOVs_2017_exr(){
+    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+}
+
 global proc importAOVs_2019(){
     file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/AOVs_2019.mb";
 }
+
 
 //All AOV ON
 global proc all_aov_on(){
@@ -220,6 +224,7 @@ global proc XRSZ_1K(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -260,6 +265,7 @@ global proc XRSZ_2K(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -300,6 +306,7 @@ global proc XRSZ_3K(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -341,6 +348,7 @@ global proc XRSZ_4K(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -382,6 +390,7 @@ global proc XRSZ_HD720(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -422,6 +431,7 @@ global proc XRSZ_HD1080(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -463,6 +473,7 @@ global proc XRSZ_4096_2305(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -483,7 +494,8 @@ global proc XRSZ_4096_2305(){
 
 
 global proc Aovs_2017_exr_HD1080_exr(){
-    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+    importAOVs_2017_exr();
+    importlig();
 	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
 	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
 	setAttr "redshiftOptions.imageFormat" 1;
@@ -508,6 +520,7 @@ global proc Aovs_2017_exr_HD1080_exr(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -522,23 +535,24 @@ global proc Aovs_2017_exr_HD1080_exr(){
 }
 
 global proc Aovs_2017_exr_1080_1920_exr(){
-    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+    importAOVs_2017_exr();
+    importlig();
 	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
 	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
 	setAttr "redshiftOptions.imageFormat" 1;
 	setAttr "defaultRenderGlobals.animation" 1;
 	setAttr "redshiftOptions.exrForceMultilayer" 1;
 	setAttr "redshiftOptions.exrMultipart" 1;
-	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultResolution.aspectLock" 0;
 	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
 	string $Cam[] =`ls -ca`;
 	setAttr ($Cam[0]+".renderable") 1;
 	setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
 	setAttr "perspShape.farClipPlane" 10000000;
 	setAttr "perspShape.renderable" 0;
-	setAttr defaultResolution.width 1920;
-	setAttr defaultResolution.height 1080;
-	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr defaultResolution.width 1080;
+	setAttr defaultResolution.height 1920;
+	setAttr "defaultResolution.deviceAspectRatio" 0.562;
 	setAttr "defaultResolution.pixelAspect" 1.000;
 	setAttr "redshiftOptions.unifiedMinSamples" 512;
 	setAttr "redshiftOptions.unifiedMaxSamples" 512;
@@ -547,6 +561,7 @@ global proc Aovs_2017_exr_1080_1920_exr(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -562,7 +577,8 @@ global proc Aovs_2017_exr_1080_1920_exr(){
 
 
 global proc Aovs_2017_exr_HD720_exr(){
-    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+    importAOVs_2017_exr();
+    importlig();
 	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
 	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
 	setAttr "redshiftOptions.imageFormat" 1;
@@ -587,6 +603,7 @@ global proc Aovs_2017_exr_HD720_exr(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -602,14 +619,15 @@ global proc Aovs_2017_exr_HD720_exr(){
 
 
 global proc Aovs_2017_exr_720_1280_exr(){
-    file -import -type "mayaBinary" "//192.168.23.65/ab$/Light_Library/_SYXZ/Aovs_2017_exr.mb";
+    importAOVs_2017_exr();
+    importlig();
 	setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
 	setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
 	setAttr "redshiftOptions.imageFormat" 1;
 	setAttr "defaultRenderGlobals.animation" 1;
 	setAttr "redshiftOptions.exrForceMultilayer" 1;
 	setAttr "redshiftOptions.exrMultipart" 1;
-	setAttr "defaultResolution.aspectLock" 1;
+	setAttr "defaultResolution.aspectLock" 0;
 	setAttr "defaultRenderGlobals.enableDefaultLight" 0;
 	string $Cam[] =`ls -ca`;
 	setAttr ($Cam[0]+".renderable") 1;
@@ -618,7 +636,7 @@ global proc Aovs_2017_exr_720_1280_exr(){
 	setAttr "perspShape.renderable" 0;
 	setAttr defaultResolution.width 720;
 	setAttr defaultResolution.height 1280;
-	setAttr "defaultResolution.deviceAspectRatio" 1.777;
+	setAttr "defaultResolution.deviceAspectRatio" 0.562;
 	setAttr "defaultResolution.pixelAspect" 1.000;
 	setAttr "redshiftOptions.unifiedMinSamples" 512;
 	setAttr "redshiftOptions.unifiedMaxSamples" 512;
@@ -627,6 +645,7 @@ global proc Aovs_2017_exr_720_1280_exr(){
 	setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
 	setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
 	setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+    setAttr "redshiftOptions.enableDebugCapture" 0;
 	string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
 	if( `objExists $RS_Volume[0]` ){
 	setAttr ($RS_Volume[0]+".enable") 0;}
@@ -639,6 +658,13 @@ global proc Aovs_2017_exr_720_1280_exr(){
 	setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
 	setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
 }
+
+
+global proc Set_Sen_CHA_ID(){
+	creatIDaovs_EXR();
+	createRGBSen();
+}
+
 
 
 
@@ -922,6 +948,7 @@ global proc createRGB1_EXR(){
     rename (`redshiftCreateAov "Puzzle Matte"`) RGB1;
     setAttr -type "string" RGB1.name "RGB1";
     setAttr  "RGB1.fileFormat" 1;
+    setAttr "RGB1.dataType" 2;
     setAttr "RGB1.mode" 1;
     setAttr "RGB1.redId" 1;
     setAttr "RGB1.greenId" 2;
@@ -942,7 +969,8 @@ global proc createRGB2_EXR(){
     setAttr "RGB2.greenId" 5;
     setAttr "RGB2.blueId" 6;
     setAttr "RGB2.enabled" 0;
-    setAttr "RGB2.exrBits" 32;    
+    setAttr "RGB2.exrBits" 32;
+    setAttr "RGB2.dataType" 2;    
 }
 }
     
@@ -957,7 +985,8 @@ global proc createRGB3_EXR(){
     setAttr "RGB3.greenId" 8;
     setAttr "RGB3.blueId" 9;
     setAttr "RGB3.enabled" 0;
-    setAttr "RGB3.exrBits" 32;    
+    setAttr "RGB3.exrBits" 32;
+    setAttr "RGB3.dataType" 2;    
 }
     }
 global proc createRGB4_EXR(){
@@ -971,7 +1000,8 @@ global proc createRGB4_EXR(){
     setAttr "RGB4.greenId" 11;
     setAttr "RGB4.blueId" 12;
     setAttr "RGB4.enabled" 0;
-    setAttr "RGB4.exrBits" 32;    
+    setAttr "RGB4.exrBits" 32;
+    setAttr "RGB4.dataType" 2;    
 }
     }
 global proc createRGB5_EXR(){
@@ -985,7 +1015,8 @@ global proc createRGB5_EXR(){
     setAttr "RGB5.greenId" 14;
     setAttr "RGB5.blueId" 15;
     setAttr "RGB5.enabled" 0;
-    setAttr "RGB5.exrBits" 32;    
+    setAttr "RGB5.exrBits" 32;
+    setAttr "RGB5.dataType" 2;    
 }
 }
     
@@ -1000,7 +1031,8 @@ global proc createRGB6_EXR(){
     setAttr "RGB6.greenId" 17;
     setAttr "RGB6.blueId" 18;
     setAttr "RGB6.enabled" 0;
-    setAttr "RGB6.exrBits" 32;    
+    setAttr "RGB6.exrBits" 32;
+    setAttr "RGB6.dataType" 2;	    
 }
     }
 global proc createRGB7_EXR(){
@@ -1014,7 +1046,8 @@ global proc createRGB7_EXR(){
     setAttr "RGB7.greenId" 20;
     setAttr "RGB7.blueId" 21;
     setAttr "RGB7.enabled" 0;
-    setAttr "RGB7.exrBits" 32;    
+    setAttr "RGB7.exrBits" 32;
+    setAttr "RGB7.dataType" 2;    
 }
 }
 
@@ -1234,6 +1267,7 @@ global proc createRGBSen(){
     source redshiftCreateAovTab;
     rename (`redshiftCreateAov "Puzzle Matte"`) RGBSen;
     setAttr -type "string" RGBSen.name "RGBSen";
+    setAttr "RGBSen.dataType" 2;    
     setAttr "RGBSen.fileFormat" 1;
     setAttr "RGBSen.mode" 1;
     setAttr "RGBSen.redId" 9999;
@@ -1332,7 +1366,8 @@ if(!`objExists "Character_Group"`){
     rename (`ls -sl`) "Cha_nor_Group";
     select -r Transparent_Group Cha_nor_Group;
     select -add Character_Group ;
-    parent;    
+    parent;
+
 }
 
 select -cl;
@@ -1351,6 +1386,7 @@ setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharId;
 addAttr -ln "CharIdCheck"  -at double  -min 0 -max 1 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
 setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharIdCheck;
 rename "Char_G_yiyi" "Char_G1";
+createID();
 }
 
 //场景打组
