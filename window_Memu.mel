@@ -95,35 +95,8 @@ rowColumnLayout -adjustableColumn true -ca ;
                 setParent ..;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 window -e -h 200    -w 560 syxzwindow;
 showWindow syxzwindow;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
