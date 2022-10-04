@@ -49,9 +49,20 @@
 
 
 
-/////////// Creat Character & SEN_Group
-    //Creat Creat Character
+/////////// Creat Character & SEN Group
+    //Creat Character Group
         plobal proc cha_group_final(){
+            
+
+
+
+        }
+
+    //Creat SEN Group
+        plobal proc cha_group_final(){
+            
+
+
             
         }
 
