@@ -1,8 +1,8 @@
 
 
 
-/////////////////////To import & Creat STH Windows////////////////////////////////////////////////////
-    ///////Import STH Windows ////////////////////////
+/////////////////////杂项////////////////////////////////////////////////////
+    ///////打开导入窗口 ////////////////////////
         global proc importSTHWindows(){
 
             if (`window -exists import_STH_window`)
@@ -14,27 +14,26 @@
             rowColumnLayout -adjustableColumn true -w 710 -ca;
                 frameLayout  -l "粘贴需要导入文件的路径"   -w 710 -h 60 -cll 0 -mh 5;
                     rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 5 ;
-                        textField  -w 600  data_line; button -l"起飞了 需要等待" -w 100 -c "import_STH" ;
+                        textField  -w 600  data_line; button -l"起飞了 需要等待" -w 100 -c "import_now" ;
                         setParent ..;
                         setParent ..;
 
 
         showWindow import_STH_window;
         }
-        improtSTHWindows;
 
-        //Import sth
+        //导入mb文件
         global proc import_STH(){ 
             string $import_now=`textField -q -text data_line`;
             file -import  $import_now ;
         }
 
-    /////////Import CHA lig/////////////////////////
+    /////////导入人物灯光////////////////////////
         global proc importCHAlig(){
             file -r -type "mayaBinary"  -ignoreVersion -gl -loadReferenceDepth "all" -shd "renderLayersByName" -mergeNamespacesOnClash false -namespace "cha_lig" -options "v=0;" "//192.168.23.65/ab$/Light_Library/_SYXZ/cha_lig.mb";
         }
 
-    ////////Import SHA Lig/////////////////////////
+    ////////导入阴影灯光/////////////////////////
         global proc importSHAlig(){
             redshiftCreateLight "RedshiftPhysicalLight";
             rename "rsPhysicalLight1" "sha_light";
@@ -46,25 +45,151 @@
             setAttr "sha_lightShape.SAMPLINGOVERRIDES_numShadowSamples" 128;
         }
 
+/////////// Optimize and Creat ID Aovs SET 整理和创建ID Aovs /////////////////
+    /////////打开 Optimize and Creat ID Aovs SET 整理和创建ID Aovs 窗口/////////////
+        global proc  Optimize_and_Creat_ID_Aovs_SET_window(){
 
+                    if  (`window -exists Optimize_and_Creat_ID_Aovs_SET_window`)
+            {
+                    deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;
+            }
 
+            window -t "Optimize and Creat ID Aovs SET 整理和创建ID Aovs" Optimize_and_Creat_ID_Aovs_SET_window;
+                rowColumnLayout -adjustableColumn true -w 500 -ca;
+                frameLayout  -l "Optimize and Creat ID Aovs SET 整理和创建ID Aovs"   -w 150 -h 200 -cll 0 -mh 5 -bgc 0 0 0.134;
+                    text -w 10 -h 10 -l "All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" -annotation "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" ;
+                    rowColumnLayout  -nr 1 -cs 1 5 -rowHeight 1 30;
+                        button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 28 -annotation "角色打组" -c "Creat_Char_Group";
+                        button -l "2_Auto Aovs ID EXR" -bgc 0 0.551 1  -w 160 -h 28 -annotation "自动创建AOVs & ID 输出EXR" -c "Auto_Aovs_ID_EXR";
+                        button -l "2_Auto Aovs ID PNG" -bgc 1 0.5 0.6 -w 160 -h 28 -annotation "自动创建AOVs & ID 输出PNG" -c "Auto_Aovs_ID_PNG";
+                        setParent ..;       
+                    text -w 10  -h 10 -l "Auto Char ID 创建角色组后 手动选择角色创建ID" -annotation "创建角色组后 手动选择角色创建ID"; 
+                    rowColumnLayout  -nr 1  -cs 1 5 -rowHeight 1 30;                        
+                        button -l "1_SL Char Creat ID" -bgc 0.572 0.394 0.658  -w 160 -h 28 -annotation "选择角色自动创建ID" -c "SL_Char_Creat_ID";              
+                        button -l "2_Auto Creat AOVs EXR" -bgc 0 0.551 1 -w 160 -h 28 -annotation "自动创建AOVs 输出EXR" -c "Auto_Creat_AOVs_EXR";
+                        button -l "2_Auto Creat AOVs PNG" -bgc 1 0.5 0.6 -w 160 -h 28 -annotation "自动创建AOVs 输出EXR" -c "Auto_Creat_AOVs_PNG"; 
+                        setParent ..;
 
-/////////// Creat Character & SEN Group
-    //Creat Character Group
-        plobal proc cha_group_final(){
-            
+                frameLayout -w 150 -h 100 -bgc 0 0 0.134  -cll 0 -mh 5 -l "选择面单个模型上色可以用下面这个" ;
+                        text -w 10  -h 10 -l "Custom SET ID 自定义设置ID" -annotation "自定义设置ID";
+                        rowColumnLayout  -nr 1  -cs 1 5 -rowHeight 1 30;
+                            button -l "1_Custom ID AOVs"  -bgc 0.572 0.394 0.658 -w 120 -h 28 -annotation "创建ID的Aovs" -c "Custom_Char_IDAovs";
+                            button -l "2_Custom Red ID" -bgc 0.32 0 0 -w 120 -h 28 -annotation "选择物体创建为红色ID" -c "Custom_Red_ID" ;
+                            button -l "2_Custom Green ID" -bgc 0 0.32 0 -w 120 -h 28 -annotation "选择物体创建为绿色ID" -c "Custom_Green_ID" ;
+                            button -l "2_Custom Blue ID" -bgc 0 0 0.32 -w 120 -h 28 -annotation "选择物体创建为蓝色ID"  -c "Custom_Blue_ID" ;
+                            setParent ..;
 
+                frameLayout -w 150 -h 13 -bgc 0 0 0.134  -cll 0 -mh 5 -l "手动创建场景 Aovs ID" ;
+                        text -w 10  -h 10 -l "Cs Group Aovs ID 手动创建场景组 设置 Aovs" -annotation "手动创建场景组 设置 Aovs"; 
+                        rowColumnLayout  -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5 ;
+                                button -l "1_Creat_SEN_Group" -bgc 1 0.65 0.13 -w 130 -h 28 -c "Creat_sen_Group";
+                                button -l "2_SEN ID EXR" -bgc 0 0.551 1 -w 130 -h 28 -annotation "设置Aovs输出EXR" -c "Sen_Aovs_EXR";
+                                button -l "2_SEN ID PNG" -bgc 1 0.5 0.6 -w 130 -h 28 -annotation "设置Aovs输出PNG" -c "Sen_Aovs_PNG";
+                                button -l "3_SEN Red ID" -bgc 0.32 0 0 -w 130 -h 28 -annotation "选择物体创建为红色ID" -c "SEN_Red_ID";
+                                button -l "3_SEN Green ID" -bgc 0 0.32 0  -w 130 -h 28 -annotation "选择物体创建为绿色ID"  -c "SEN_Green_ID";
+                                button -l "3_SEN Blue ID" -bgc 0 0 0.32 -w 130 -h 28 -annotation "选择物体创建为蓝色ID"  -c "SEN_Blue_ID";
+                        setParent ..;
+                        setParent ..;
 
-
+                showWindow Optimize_and_Creat_ID_Aovs_SET_window;
         }
 
-    //Creat SEN Group
-        plobal proc cha_group_final(){
-            
+//////////// All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs /////////////////////////////////
+    /////////////  1_Creat_Char_Group ////
+        global proc Creat_Char_Group(){
+            $LsSelectionrenderlayer = `editRenderLayerGlobals -q  -currentRenderLayer`;
+            if ($LsSelectionrenderlayer!="defaultRenderLayer")
+            {
+            editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+            }
 
+            string $char_1[] =`ls -sl`;
 
-            
+            if(!`objExists "Character_Group"`){
+                select -cl; 
+                CreateLocator;
+                rename (`ls -sl`) "Character_Group";
+                select -cl;
+                CreateLocator;
+                rename (`ls -sl`) "Transparent_Group"; 
+                select -cl;
+                CreateLocator;
+                rename (`ls -sl`) "Cha_nor_Group";
+                select -r Transparent_Group Cha_nor_Group;
+                select -add Character_Group ;
+                parent;    
+            }
+
+            select -cl;
+            CreateLocator ;
+            rename (`ls -sl`) "Char_G_yiyi";
+            select -r Char_G_yiyi ;
+            select -add Cha_nor_Group ;
+            parent;
+            select -r $char_1;
+            select -add Char_G_yiyi ;
+            parent;
+
+            select -r Char_G_yiyi ;
+            addAttr -ln "CharId"  -at double  -min 0 -max 100 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+            setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharId;
+            addAttr -ln "CharIdCheck"  -at double  -min 0 -max 1 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+            setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharIdCheck;
+            rename "Char_G_yiyi" "Char_G1";
         }
+
+    ////////////   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
