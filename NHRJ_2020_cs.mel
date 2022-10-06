@@ -1,0 +1,3531 @@
+
+//渲染分层插件
+global proc RSaovlayer ()
+{
+  if  (`window -exists RSaovlayerWindow`)
+{
+     deleteUI -window RSaovlayerWindow;
+}
+  if  (`window -exists RSlayer_oldWindow`)
+{
+     deleteUI -window RSlayer_oldWindow;
+}
+    window -title "南海日记分层插件exr_2020.11.3" -w 380      RSaovlayerWindow;
+    columnLayout -adjustableColumn true;
+    frameLayout  -l "之前的分层插件"   -w 380 -cll 1 -cl 0 -h 60 -mh 5 -nbg 0 -mw 0 ;  
+    
+    rowColumnLayout -numberOfColumns 1 -w 380 
+      -columnWidth 1 80;
+      button -label "OPEN" -annotation "旧的分层插件" -c RSlayer_old;
+      setParent ..;
+      setParent ..;
+      
+    frameLayout  -l "SenFileSet"   -w 380 -cll 1 -cl 0 -h 90 -mh 5 -nbg 0 -mw 0 ;  
+    
+    rowColumnLayout -numberOfColumns 2 -w 380 
+      -columnWidth 1 80 
+      -columnWidth 2 200 ;
+    text -l "场景打组:";
+    button -label "Sen_Group" -annotation "场景打组" -c Sen_Group_pro;
+    setParent ..;
+    
+    //rowColumnLayout -numberOfColumns 2 -w 380 
+      //-columnWidth 1 80 
+      //-columnWidth 2 200 ;
+    //text -l "天空打组:";
+    //button -label "Sky_all_Group" -annotation "天空打组" -c sky_Group;
+    //setParent ..;
+     
+    rowColumnLayout -numberOfColumns 3 -w 380 
+      -columnWidth 1 80 
+      -columnWidth 2 200 
+      -columnWidth 3 110 -cs 3 8; 
+    text -l "创建Sen层:";
+    button -label "create Senlayer" -annotation "设置为Sen层" -c RS_Sen_layer;
+    checkBox -v 0 -label "已有Sen_layer "  haveSenlayer ;
+    setParent ..;
+    setParent ..;
+
+    frameLayout  -l "CamFileSet"  -w 380 -cll 1 -cl 0 -h 120 -mh 5 ;  
+//    rowColumnLayout -numberOfColumns 3 -w 380 
+//    -columnWidth 1 80
+//    -columnWidth 2 200
+//    -columnWidth 3 88 -cs 3 8; 
+//    text -l "mayaFilePath :";
+//    textField BaseFile_LOC;
+//    button -l "import"  -c import_maya_pro;
+//    setParent ..;
+    
+    rowColumnLayout -numberOfColumns 2 -w 380 
+    -columnWidth 1 80
+    -columnWidth 2 200 ;
+    text -l "	NHRJ渲染设置:";
+    button -label "NHRJ_RenderSet" -annotation "NHRJ渲染设置" -c NHRJ_RenderSet_pro;
+    setParent ..;
+    
+//    rowColumnLayout -numberOfColumns 2 -w 380 
+//    -columnWidth 1 80
+//    -columnWidth 2 200 ;
+//    text -l "删垃圾:";
+//   button -label "Clean File" -annotation "删垃圾"  -c clean_Out_file;
+//    setParent ..;
+     
+    rowColumnLayout -numberOfColumns 3 -w 380 
+    -columnWidth 1 80
+    -columnWidth 2 200
+    -columnWidth 3 88 -cs 3 8; 
+    text -l "角色道具打组:";
+    button -label "Character_Group    " -annotation "角色打组" -bgc 1 0.65 0.13 -c cha_group_final_pro;
+    button -label "建Cha aovRGB" -annotation "建Cha aovRGB + cha smooth"  -c createChaaovRGBandSmooth;
+
+    setParent ..;
+    
+    //rowColumnLayout -numberOfColumns 2 -w 380 
+    //-columnWidth 1 80
+    //-columnWidth 2 200 ;
+    //text -l "地面打组:";
+    //button -label "DM_all_Group" -annotation "地面打组" -bgc 0.6 0.45 0.03 -c DM_mod_Group;  
+    //setParent ..;
+    
+//   rowColumnLayout -numberOfColumns 3 -w 380 
+//   -columnWidth 1 80
+//    -columnWidth 2 200 
+//    -columnWidth 3 88 -cs 3 8; 
+//    text -l "单独分层打组:";
+//    button -label "Transparent_Group" -annotation "单独分层的物体打组" -c singlecreatelayer_pro;    
+//    button -label "UB_shader" -annotation "上UB材质" -c RS_UB_M_final_pro;
+//    setParent ..;
+
+    rowColumnLayout -numberOfColumns 3 -w 380 
+    -columnWidth 1 80
+    -columnWidth 2 200
+    -columnWidth 3 88 -cs 3 8; 
+    text -l "Z  :";
+    textField -tx "3500" Depth_Scale;
+    button -l "change"  -c change_aov_Depth_max;
+    setParent ..;
+    setParent ..;
+    
+    frameLayout  -l "层设 ON/OFF"  -w 380 -cll 1 -cl 0 -h 120 -mh 5 ;
+    rowColumnLayout -numberOfColumns 6 -w 380 
+    -columnWidth 1 80 
+    -columnWidth 2 50 -cs 3 8
+    -columnWidth 3 50 -cs 4 15
+    -columnWidth 4 60 
+    -columnWidth 5 50 -cs 6 8 
+    -columnWidth 6 50;  
+    text -l "参与反射：";
+    button -l "on"  -c Reflections_on;
+    button -l "off"  -c Reflections_off;
+    text -l "产生投影：";
+    button -l "on"  -c CastsSha_on;
+    button -l "off"  -c CastsSha_off;
+    setParent ..;
+    
+    rowColumnLayout -numberOfColumns 6 -w 380 
+    -columnWidth 1 80 
+    -columnWidth 2 50 -cs 3 8
+    -columnWidth 3 50 -cs 4 15
+    -columnWidth 4 60 
+    -columnWidth 5 50 -cs 6 8 
+    -columnWidth 6 50;  
+    text -l "参与折射：";
+    button -l "on"  -c Refractions_on;
+    button -l "off"  -c Refractions_off;
+    text -l "接收投影：";
+    button -l "on"  -c ReceiveSha_on;
+    button -l "off"  -c ReceiveSha_off;
+    setParent ..;  
+    
+    rowColumnLayout -numberOfColumns 6 -w 380 
+    -columnWidth 1 80 
+    -columnWidth 2 50 -cs 3 8
+    -columnWidth 3 50 -cs 4 15
+    -columnWidth 4 60 
+    -columnWidth 5 50 -cs 6 8 
+    -columnWidth 6 50;  
+    text -l "visibility:";
+    button -l "on"  -c Visbility_on;
+    button -l "off"  -c Visbility_off; 
+    text -l "渲染可视：";
+    button -l "on"  -c PrimaryVisbility_on;
+    button -l "off"  -c PrimaryVisbility_off;
+    setParent ..;
+    setParent ..;
+    
+    frameLayout  -l "Tool"  -w 380 -cll 1 -cl 0 -h 120 -mh 5 ;
+    rowColumnLayout -numberOfColumns 4 -w 380 
+    -columnWidth 1 110 -cs 1 3
+    -columnWidth 2 82 -cs 2 5
+    -columnWidth 3 83 -cs 3 5
+    -columnWidth 4 83 -cs 4 5;
+    button -label "删除没使用的材质球" -annotation "删除没使用的材质球" -c deleteUnusedShader1_pro;  
+    button -label "关闭所有层" -annotation "关闭所有层" -c closeAllRenderLayer_pro; 
+    button -label "break light" -annotation "断开灯光连接" -c rsbreak_light_pro; 
+    button -label "make light" -annotation "连上灯光连接" -c rsmake_light_pro; 
+    setParent ..;
+    
+    rowColumnLayout -numberOfColumns 4 -w 380 
+    -columnWidth 1 110 -cs 1 3
+    -columnWidth 2 82 -cs 2 5
+    -columnWidth 3 83 -cs 3 5
+    -columnWidth 4 83 -cs 4 5;
+    button -label "显示骨头" -c showjoint_pro; 
+    button -label "隐藏骨头" -c hidejoint_pro; 
+   // button -label "break light" -annotation "断开灯光连接" -c closeAllRenderLayer_pro; //还没
+   // button -label "make light" -annotation "连上灯光连接" -c closeAllRenderLayer_pro; //还没
+    setParent ..;
+   
+    
+    //canvas;    
+    rowColumnLayout -numberOfColumns 1 -w 380 
+    -columnWidth 1 380 ; 
+    button -label "南海日记分层" -annotation "建层+设置" -bgc 1 0.65 0.13 -c NHRJRenderlayer;
+
+    showWindow RSaovlayerWindow;
+
+}
+
+RSaovlayer;    
+    
+
+//渲染分层插件
+global proc RSlayer_old ()
+{
+  if  (`window -exists RSlayer_oldWindow`)
+{
+     deleteUI -window RSlayer_oldWindow;
+}
+  window -title "南海日记exr_2020.9.4" -w 330      RSlayer_oldWindow;
+  columnLayout -adjustableColumn 0;
+  $imagepath = `internalVar -ubd`;
+   image -w 320 -h 3 -image ( $imagepath + "Layer.jpg" );
+  
+  
+  
+   columnLayout -adjustableColumn true;
+   frameLayout  -l "层属性设置"  -w 320 -cll 1 -cl 0 -h 240 ;  
+   
+    rowColumnLayout -numberOfColumns 5 -w 340 
+    -columnWidth 1 80
+    -columnWidth 2 110
+    -columnWidth 3 40
+    -columnWidth 4 40
+    -columnWidth 5 40;
+     text -l "层命名:";
+     textField inputtext;
+      $text = `textField -q -text inputtext`  ;
+     button -l "创建" -bgc .4 .6 .7  -c  mycreate_pro;
+     button -l "追加" -bgc .4 .6 .7 -c  MyAddobj_pro;
+     button -l "移除" -bgc .4 .6 .7 -c  Myremove_pro;
+ 
+   
+   
+   
+   rowColumnLayout -numberOfColumns 4 -w 340 
+   -columnWidth 1 80
+   -columnWidth 2 77
+   -columnWidth 3 77
+   -columnWidth 4 77;
+    text "ID层:";
+    button -l "R"  -bgc 1 0 0 -c RS_R_MyMaterial_pro ;
+    button -l "G"  -bgc 0 1 0 -c RS_G_MyMaterial_pro ;
+    button -l "B"  -bgc 0 0 1 -c RS_B_MyMaterial_pro;
+
+    
+     rowColumnLayout -numberOfColumns 3 -w 340 
+   -columnWidth 1 78
+   -columnWidth 2 115
+   -columnWidth 3 115;
+
+    text "Alp层:";
+    button -l "B"  -bgc 0 0 0 -c RS_Blabutton_pro ;
+    button -l "W"  -bgc 1 1 1 -c RS_Whitebutton_pro ;
+
+
+   
+    rowColumnLayout -numberOfColumns 2 -w 340 
+    -columnWidth 1 76
+    -columnWidth 2 230;
+    text "角色层:";
+    button -label "cha" -annotation "设置为角色层" -c RS_cha_prog ;
+    text "阴影层:";
+    button -label "Sha" -annotation "设置为阴影层" -c "RS_ShadowLayer";      
+    text "AO层";  
+    button -label "AO" -annotation "设置为AO层" -c  "RS_AoLayer";
+    text "OC层";  
+    button -l "OC" -annotation "设置为OC层" -c RS_OC_MyMaterial_pro;
+
+
+    rowColumnLayout -numberOfColumns 3 -w 340 
+    -columnWidth 1 75
+    -columnWidth 2 65
+    -columnWidth 3 165;
+
+    text "aov分RGB层";  
+    button -label "创ID"  -bgc 0.2 0.6 0.2 -c "redshiftCreateObjectIdNode()";
+    button -label "选中alpAO层设置aovRGB层" -bgc 0.4 0.6 0.7 -c "createAOV_RGBlayer";
+   
+   rowColumnLayout -numberOfColumns 5 -w 340 
+   -columnWidth 1 73
+   -columnWidth 2 57
+   -columnWidth 3 57
+   -columnWidth 4 58
+   -columnWidth 5 58;
+   text "代理显示质量:";
+    button -l "1"  -bgc 0.2 0.2 0.5 -c Daili1_pro ;
+    button -l "10"  -bgc 0.2 0.2 0.5 -c Daili10_pro ;
+    button -l "50"  -bgc 0.2 0.2 0.5 -c Daili50_pro ;
+    button -l "100"  -bgc 0.2 0.2 0.5 -c Daili100_pro ;
+   
+          
+          
+
+
+         showWindow RSlayer_oldWindow;
+
+
+}
+
+//RSlayer_old;
+
+
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+
+
+
+
+
+//创建objID
+global proc RS_createOBJID(){
+
+ redshiftCreateObjectIdNode();
+
+}
+
+
+
+
+
+
+//删掉RGB display分组 
+global proc deleteRGBDisplayLayer(){ 
+string $RGBdisplaylayer[]=`ls -type displayLayer`;
+for($i=0;$i<`size($RGBdisplaylayer)`;$i+=1)
+{
+    string $colorornot = `getAttr ($RGBdisplaylayer[$i]+".overrideRGBColors")`;
+    if($colorornot != 0){
+        if(`match "RGB" $RGBdisplaylayer[$i]` == "RGB"){
+             layerEditorDeleteLayer $RGBdisplaylayer[$i];
+   } 
+  }  
+}
+}
+
+//创建RGBdisplaylayer
+global proc createRGBDisplayLayer(){ 
+
+string $RGB_RSobjid[]=`ls -type RedshiftObjectId`;
+string $RGB_RSobjidin;
+for ($RGB_RSobjidin in $RGB_RSobjid){
+    if($RGB_RSobjidin =="RGB1_R1"){
+        select -r -ne RGB1_R1 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB1_R1_g" -number 1 -nr;
+        setAttr RGB1_R1_g.displayType 0; setAttr RGB1_R1_g.color 0; setAttr RGB1_R1_g.overrideColorRGB 1 0 0; setAttr RGB1_R1_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB1_G2"){
+        select -r -ne RGB1_G2 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB1_G2_g" -number 1 -nr;
+        setAttr RGB1_G2_g.displayType 0; setAttr RGB1_G2_g.color 0; setAttr RGB1_G2_g.overrideColorRGB 0 1 0; setAttr RGB1_G2_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB1_B3"){
+        select -r -ne RGB1_B3 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB1_B3_g" -number 1 -nr;
+        setAttr RGB1_B3_g.displayType 0; setAttr RGB1_B3_g.color 0; setAttr RGB1_B3_g.overrideColorRGB 0 0 1; setAttr RGB1_B3_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB2_R4"){
+        select -r -ne RGB2_R4 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB2_R4_g" -number 1 -nr;
+        setAttr RGB2_R4_g.displayType 0; setAttr RGB2_R4_g.color 0; setAttr RGB2_R4_g.overrideColorRGB 0.5 0 0; setAttr RGB2_R4_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB2_G5"){
+        select -r -ne RGB2_G5 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB2_G5_g" -number 1 -nr;
+        setAttr RGB2_G5_g.displayType 0; setAttr RGB2_G5_g.color 0; setAttr RGB2_G5_g.overrideColorRGB 0 0.5 0; setAttr RGB2_G5_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB2_B6"){
+        select -r -ne RGB2_B6 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB2_B6_g" -number 1 -nr;
+        setAttr RGB2_B6_g.displayType 0; setAttr RGB2_B6_g.color 0; setAttr RGB2_B6_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB2_B6_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB3_R7"){
+        select -r -ne RGB3_R7 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB3_R7_g" -number 1 -nr;
+        setAttr RGB3_R7_g.displayType 0; setAttr RGB3_R7_g.color 0; setAttr RGB3_R7_g.overrideColorRGB 1 0.5 0.5; setAttr RGB3_R7_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB3_G8"){
+        select -r -ne RGB3_G8 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB3_G8_g" -number 1 -nr;
+        setAttr RGB3_G8_g.displayType 0; setAttr RGB3_G8_g.color 0; setAttr RGB3_G8_g.overrideColorRGB 0.5 1 0.5; setAttr RGB3_G8_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB3_B9"){
+        select -r -ne RGB3_B9 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB3_B9_g" -number 1 -nr;
+        setAttr RGB3_B9_g.displayType 0; setAttr RGB3_B9_g.color 0; setAttr RGB3_B9_g.overrideColorRGB 0.2049999833 0.74644804 1; setAttr RGB3_B9_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB4_R10"){
+        select -r -ne RGB4_R10 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB4_R10_g" -number 1 -nr;
+        setAttr RGB4_R10_g.displayType 0; setAttr RGB4_R10_g.color 0; setAttr RGB4_R10_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB4_R10_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB4_G11"){
+        select -r -ne RGB4_G11 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB4_G11_g" -number 1 -nr;
+        setAttr RGB4_G11_g.displayType 0; setAttr RGB4_G11_g.color 0; setAttr RGB4_G11_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB4_G11_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB4_B12"){
+        select -r -ne RGB4_B12 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB4_B12_g" -number 1 -nr;
+        setAttr RGB4_B12_g.displayType 0; setAttr RGB4_B12_g.color 0; setAttr RGB4_B12_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB4_B12_g.overrideRGBColors 1; 
+}
+}
+}
+
+/*
+//创建AOV_RGB层
+global proc createAOV_RGBlayer(){
+deleteRGBDisplayLayer();
+//RS_AOVRGBLayer();
+//改id名字和数值
+RS_changeObjidName();
+string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
+string $OBJnumin2 ;
+for($OBJnumin2 in $OBJnum)
+{
+    int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`; 
+    if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1(); }
+    if ( $objIDnumID <= 6){if ( $objIDnumID > 3){ RS_ConditionCreateAOV_RGB2(); }}
+    if ( $objIDnumID<= 9){if ( $objIDnumID > 6){ RS_ConditionCreateAOV_RGB3(); }}
+    if ( $objIDnumID <= 12){if ( $objIDnumID > 9){ RS_ConditionCreateAOV_RGB4(); }}
+    }
+if (`objExists rs_RGB1`){
+    if (!`objExists RGB1_R1`){
+        if (!`objExists RGB1_G2`){
+            if (!`objExists RGB1_B3`){
+                delete rs_RGB1;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB2`){
+    if (!`objExists RGB2_R4`){
+        if (!`objExists RGB2_G5`){
+            if (!`objExists RGB2_B6`){
+                delete rs_RGB2;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB3`){
+    if (!`objExists RGB3_R7`){
+        if (!`objExists RGB3_G8`){
+            if (!`objExists RGB3_B9`){
+                delete rs_RGB3;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB4`){
+    if (!`objExists RGB4_R10`){
+        if (!`objExists RGB4_G11`){
+            if (!`objExists RGB4_B12`){
+                delete rs_RGB4;
+            }
+        }
+    }
+}
+
+createRGBDisplayLayer();
+}
+*/
+
+//OC material button
+
+global proc RS_OC_MyMaterial_pro()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{     
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 1;         
+}
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelection=="defaultRenderLayer")
+{
+warning  "当前层为总层";
+}
+
+else if (`objExists RS_OC_MyMaterial `){
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+renderLayerEditorSelectObjects RenderLayerTab $LsSelection;
+hyperShade -assign RS_OC_MyMaterial ;
+
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+print "OC";
+
+
+}
+else
+{
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+$slectR = `ls -sl`;
+shadingNode -n "RS_OC_MyMaterial" -asShader surfaceShader;
+shadingNode -n "RS_OC_Myramp" -asTexture ramp;
+shadingNode -n "RS_OC_Mysampler" -asUtility samplerInfo;
+connectAttr -f RS_OC_Myramp.outColor RS_OC_MyMaterial.outColor;
+connectAttr -f RS_OC_Mysampler.facingRatio RS_OC_Myramp.vCoord;
+setAttr "RS_OC_Myramp.colorEntryList[2].color" -type double3 0 0 0 ;
+setAttr "RS_OC_Myramp.colorEntryList[2].position" 1;
+setAttr "RS_OC_Myramp.colorEntryList[1].color" -type double3 0 0 0 ;
+setAttr "RS_OC_Myramp.colorEntryList[1].position" .5;
+
+setAttr "RS_OC_Myramp.colorEntryList[0].color" -type double3 1 1 1 ;
+setAttr "RS_OC_Myramp.colorEntryList[0].position" 0;
+setAttr "RS_OC_Myramp.interpolation" 3;
+
+
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+renderLayerEditorSelectObjects RenderLayerTab $LsSelection;
+hyperShade -assign RS_OC_MyMaterial ;
+print "OC";
+}
+}
+
+
+//Ao层设置
+global proc RS_AoLayer()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "redshiftOptions.displayGammaValue";
+setAttr "redshiftOptions.displayGammaValue" 1;
+editRenderLayerAdjustment "redshiftOptions.unifiedMinSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedMaxSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedAdaptiveErrorThreshold";
+setAttr "redshiftOptions.unifiedMinSamples" 16;
+setAttr "redshiftOptions.unifiedMaxSamples" 256;
+setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.01;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{   
+  
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 1;         
+}
+
+if (`objExists RS_AO_MyMaterial `)
+{
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+renderLayerEditorSelectObjects RenderLayerTab $LsSelection;
+hyperShade -assign RS_AO_MyMaterial ;
+setAttr "RS_Ao_MyTexture.numSamples" 64;
+setAttr "RS_Ao_MyTexture.spread" 0.6;
+setAttr "RS_Ao_MyTexture.maxDistance" 3;
+
+print "已设置为AO层";
+}
+else
+{
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+shadingNode -n "RS_AO_MyMaterial" -asShader surfaceShader;
+shadingNode -n "RS_Ao_MyTexture"  -asTexture  RedshiftAmbientOcclusion;
+connectAttr -force RS_Ao_MyTexture.outColor RS_AO_MyMaterial.outColor;
+setAttr "RS_Ao_MyTexture.numSamples" 64;
+setAttr "RS_Ao_MyTexture.spread" 0.6;
+setAttr "RS_Ao_MyTexture.maxDistance" 3;
+
+renderLayerEditorSelectObjects RenderLayerTab $LsSelection; 
+hyperShade -assign RS_AO_MyMaterial ;
+
+
+}
+print "\\\\已设置为AO层";
+
+}
+
+
+//R button
+
+global proc RS_R_MyMaterial_pro()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{     
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 0;  
+editRenderLayerAdjustment ($OBJ[$i]+".visibilityMode");
+setAttr ($OBJ[$i]+".visibilityMode") 1;     
+}
+
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelection=="defaultRenderLayer")
+{
+warning  "当前层为总层";
+}
+else if (`objExists RS_R_MyMaterial `){
+hyperShade -assign RS_R_MyMaterial ;
+print "R";
+}
+else
+{
+$slectR = `ls -sl`;
+shadingNode -n "RS_R_MyMaterial" -asShader surfaceShader;
+setAttr "RS_R_MyMaterial.outColor" -type double3 1 0 0 ;
+select -r $slectR;
+hyperShade -assign RS_R_MyMaterial ;
+print "R";
+}
+}
+
+//G button
+
+global proc RS_G_MyMaterial_pro()
+{ 
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;  
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{     
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 0;  
+editRenderLayerAdjustment ($OBJ[$i]+".visibilityMode");
+setAttr ($OBJ[$i]+".visibilityMode") 1;          
+}
+
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelection == "defaultRenderLayer")
+{
+warning  "当前层为总层";
+}
+
+
+
+
+
+else if (`objExists RS_G_MyMaterial `){
+hyperShade -assign RS_G_MyMaterial ;
+print "G";
+}
+else
+{
+$slectG = `ls -sl`;
+shadingNode -n "RS_G_MyMaterial" -asShader surfaceShader;
+setAttr "RS_G_MyMaterial.outColor" -type double3 0 1 0 ;
+select -r $slectG;
+hyperShade -assign RS_G_MyMaterial ;
+print "G";
+}
+}
+
+
+
+//B button
+
+global proc RS_B_MyMaterial_pro()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{     
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 0;  
+editRenderLayerAdjustment ($OBJ[$i]+".visibilityMode");
+setAttr ($OBJ[$i]+".visibilityMode") 1;          
+}
+
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelection=="defaultRenderLayer")
+{
+warning  "当前层为总层";
+}
+
+
+
+else if (`objExists RS_B_MyMaterial `){
+hyperShade -assign RS_B_MyMaterial ;
+print "B";
+}
+else
+{
+$slectB = `ls -sl`;
+shadingNode -n "RS_B_MyMaterial" -asShader surfaceShader;
+setAttr "RS_B_MyMaterial.outColor" -type double3 0 0 1 ;
+select -r $slectB;
+hyperShade -assign RS_B_MyMaterial ;
+print "B";
+}
+}
+
+//黑buttton
+global proc RS_Blabutton_pro()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{     
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 0;  
+editRenderLayerAdjustment ($OBJ[$i]+".visibilityMode");
+setAttr ($OBJ[$i]+".visibilityMode") 1;            
+}
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelection=="defaultRenderLayer")
+{
+warning  "当前层为总层";
+}
+
+else if (`objExists RS_Bla_MyMaterial `){
+hyperShade -assign RS_Bla_MyMaterial ;
+print "Black";
+}
+else
+{
+$slectB = `ls -sl`;
+shadingNode -n "RS_Bla_MyMaterial" -asShader surfaceShader;
+setAttr "RS_Bla_MyMaterial.outColor" -type double3 0 0 0 ;
+select -r $slectB;
+hyperShade -assign RS_Bla_MyMaterial ;
+print "Black";
+}
+}
+
+
+
+
+//白buttton
+global proc RS_Whitebutton_pro()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+editRenderLayerAdjustment "defaultRenderGlobals.enableDefaultLight";
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{     
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 0;  
+editRenderLayerAdjustment ($OBJ[$i]+".visibilityMode");
+setAttr ($OBJ[$i]+".visibilityMode") 1;           
+}
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelection=="defaultRenderLayer")
+{
+warning  "当前层为总层";
+}
+
+else if (`objExists RS_White_MyMaterial `){
+hyperShade -assign RS_White_MyMaterial ;
+print "White";
+}
+else
+{
+$slectB = `ls -sl`;
+shadingNode -n "RS_White_MyMaterial" -asShader surfaceShader;
+setAttr "RS_White_MyMaterial.outColor" -type double3 1 1 1 ;
+select -r $slectB;
+hyperShade -assign RS_White_MyMaterial ;
+print "White";
+}
+}
+
+
+//阴影层设置
+global proc RS_ShadowLayer()
+{ 
+setAttr "defaultRenderGlobals.enableDefaultLight" 0; 
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+setAttr "redshiftOptions.primaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 16;
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{
+editRenderLayerAdjustment ($OBJ[$i]+".materialMode");
+setAttr ($OBJ[$i]+".materialMode") 0;    
+editRenderLayerAdjustment ($OBJ[$i]+".visibilityMode");
+setAttr ($OBJ[$i]+".visibilityMode") 1;         
+}
+string $Meshall[] = `ls -typ "mesh"`;
+int $numa=`size($Meshall)`;
+for($i=0;$i<$numa;$i+=1)
+{
+  int $enablenum =`getAttr ($Meshall[$i]+".rsEnableVisibilityOverrides")`;
+  if($enablenum == 1){
+      editRenderLayerAdjustment ($Meshall[$i]+".rsEnableVisibilityOverrides");
+      setAttr ($Meshall[$i]+".rsEnableVisibilityOverrides") 0;
+
+  }  
+  }
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+//通道改成0
+renderLayerEditorSelectObjects RenderLayerTab $LsSelection;
+SelectHierarchy;
+string $WUTI[] =`ls -sl`;
+string $WUTIin;
+for($WUTIin in $WUTI){
+    if (`objExists ($WUTIin+".rsMatteEnable") `)
+{
+    string $rsmatte1 = `getAttr ($WUTIin+".rsMatteEnable")`;
+    if ($rsmatte1 ==1){
+        editRenderLayerAdjustment ($WUTIin+".rsMatteAlpha");
+        setAttr ($WUTIin+".rsMatteAlpha") 0;
+        }
+    }
+}
+if ($LsSelection=="defaultRenderLayer")
+{
+ warning  "当前层为总层";
+}
+
+if ($LsSelection !="defaultRenderLayer")
+{
+if (`objExists RS_Sha_MyMaterial `){
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+renderLayerEditorSelectObjects RenderLayerTab $LsSelection;
+hyperShade -assign RS_Sha_MyMaterial ;
+print "设置为阴影层";
+}
+if (!`objExists RS_Sha_MyMaterial `)
+{
+shadingNode -n "RS_Sha_MyMaterial" -asShader RedshiftMatteShadowCatcher;
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;  
+renderLayerEditorSelectObjects RenderLayerTab $LsSelection;
+hyperShade -assign RS_Sha_MyMaterial ;
+print "设置为阴影层";
+}
+}
+}
+
+
+//角色层
+global proc RS_cha_prog()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+editRenderLayerAdjustment "redshiftOptions.progressiveRenderingNumPasses";
+editRenderLayerAdjustment "redshiftOptions.unifiedMinSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedMaxSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedAdaptiveErrorThreshold";
+setAttr "redshiftOptions.unifiedMinSamples" 16;
+setAttr "redshiftOptions.unifiedMaxSamples" 512;
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine"; 
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 1024;
+setAttr "redshiftOptions.primaryGIEngine" 4;
+print "设置为角色层";
+
+}
+
+
+
+
+
+//代理显示质量
+global proc Daili1_pro()
+{
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{
+ setAttr ($OBJ[$i]+".displayPercent") 1;            
+}
+}
+
+global proc Daili10_pro()
+{
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{
+ setAttr ($OBJ[$i]+".displayPercent") 10;            
+}
+}
+
+global proc Daili50_pro()
+{
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{
+ setAttr ($OBJ[$i]+".displayPercent") 50;            
+}
+}
+
+global proc Daili100_pro()
+{
+string $OBJ[] = `ls -typ "RedshiftProxyMesh"`;
+int $shuliang=size($OBJ) ;
+int $A1 = 0;
+for($i=0;$i<$shuliang;$i+=1)
+{
+ setAttr ($OBJ[$i]+".displayPercent") 100;            
+}
+}
+
+
+
+//移除button
+global proc Myremove_pro()
+{
+$selectmax=`ls -sl`;
+string $selsect[] = `ls -sl`;
+$maxa = size($selectmax);
+int $n=0;
+while ($n<$maxa) {
+print $selsect[1];
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+editRenderLayerMembers -remove $LsSelection  $selsect[$n];
+$n = $n + 1;
+}
+print "\\\\已将所选物体移除当前层";
+}
+
+
+//追加button
+global proc MyAddobj_pro()
+{
+$selectmax=`ls -sl`;
+string $selsect[] = `ls -sl`;
+$maxa = size($selectmax);
+int $n=0;
+while ($n<$maxa) {
+print $selsect[1];
+$LsSelection = `editRenderLayerGlobals -q  -currentRenderLayer`;
+editRenderLayerMembers -noRecurse $LsSelection  $selsect[$n];
+$n = $n + 1;
+print "\\\\已将物体追加到当前层";
+}
+}
+
+//创建层
+global proc mycreate_pro()
+{
+$text = `textField -q -text inputtext`;
+createRenderLayer  -name  $text;
+
+
+print ("\\\\已创建" + $text + "层");
+
+}
+
+ 
+//AOV分层global proc    
+//场景打组
+global proc Sen_Group_pro()
+{
+string $Sen_all_1[] =`ls -sl`;
+if(!`objExists "Sen_Group"`){
+    select -cl; 
+    CreateLocator;
+    rename (`ls -sl`) "Sen_Group";   
+}
+select -r $Sen_all_1;
+select -add Sen_Group ;
+parent;
+}
+
+
+//天空打组
+global proc sky_Group()
+{
+string $Sky_mod_all_1[] =`ls -sl`;
+if(!`objExists "Sky_all_Group"`)
+{
+    select -cl; 
+    CreateLocator;
+    rename (`ls -sl`) "Sky_all_Group";   
+}
+
+select -r $Sky_mod_all_1;
+select -tgl Sky_all_Group ;
+parent; 
+select -r Sky_all_Group;
+select -add Sen_Group;
+parent; 
+}
+
+//Sen层做backup（内置）
+global proc SenLayerBackUp_pro()
+{  
+renderLayerEditorCopyLayer RenderLayerTab Sen;
+string $renderlayer_all_SenFile[] = `ls -typ "renderLayer"`;
+string $renderSenLayer1;
+for ($renderSenLayer1 in $renderlayer_all_SenFile){
+	    if ($renderSenLayer1 == "defaultRenderLayer1"){
+	        renderLayerEditorDeleteLayer RenderLayerTab defaultRenderLayer1;
+	    }
+    if($renderSenLayer1 == "Sen_backup"){
+        renderLayerEditorDeleteLayer RenderLayerTab Sen_backup;  
+    }
+}    
+for ($renderSenLayer1 in $renderlayer_all_SenFile){    
+    int $renderable01 =`getAttr ($renderSenLayer1+".renderable")`;
+    if ($renderSenLayer1 != "Sen"){   
+        if ($renderable01 == 1){
+            renderLayerEditorItemOnRename $renderSenLayer1 "Sen_backup";
+            setAttr "Sen_backup.renderable" 0; 
+            setAttr "Sen_backup.displayOrder" 0;           
+        }
+    }
+}
+}
+
+
+//删除所有aov
+global proc deleteALLaov(){
+string $rsAOV_all1[] = `ls -typ "RedshiftAOV"`;
+string $rsAOV_in1;
+for ($rsAOV_in1 in $rsAOV_all1){
+    delete $rsAOV_in1;
+}
+}
+
+//Sen层
+global proc RS_Sen_layer()
+{
+editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+OptimizeSceneBuFen_pro();
+string $rsrenderlayer_all[] = `ls -typ "renderLayer"`;
+string $rsrenderlayerone;
+for ($rsrenderlayerone in $rsrenderlayer_all){
+    if ($rsrenderlayerone != "defaultRenderLayer"){
+        if ($rsrenderlayerone != "Sen"){
+            select -cl ;
+            delete $rsrenderlayerone;
+        }
+    }
+}
+string $layeroff;
+int $checkboxone1 = `checkBox -q -v haveSenlayer`;
+    if($checkboxone1 != 1){ 
+        for ($layeroff in $rsrenderlayer_all){
+	    if ($layeroff == "defaultRenderLayer1"){
+	        renderLayerEditorDeleteLayer RenderLayerTab defaultRenderLayer1;
+	    }
+            renderLayerEditorRenderable RenderLayerTab $layeroff "0";
+            if ($layeroff == "Sen"){
+                renderLayerEditorItemOnRename "Sen" "Sen1";
+                 }
+            } 
+        createRenderLayer -name "Sen" -number 1 -empty; 
+    }
+    if($checkboxone1 == 1){
+        for ($layeroff in $rsrenderlayer_all){
+            renderLayerEditorRenderable RenderLayerTab $layeroff "0";
+           if ($layeroff == "Sen"){
+              renderLayerEditorRenderable RenderLayerTab $layeroff "1";            
+           } 
+        }
+    }  
+editRenderLayerMembers -noRecurse Sen Sen_Group;
+
+
+//unifiedRenderGlobalsWindow;
+//setAttr"defaultRenderGlobals.currentRenderer" -type "string""redshift";
+
+//加入sen层，层设渲染设置
+RS_Senset_pro(); 
+
+deleteALLaov();
+setAttr "redshiftOptions.aovEnableDeepOutput" 0;
+if (`window -exists OptionBoxWindow`) deleteUI -window OptionBoxWindow;
+//Sen层做backup
+//SenLayerBackUp_pro();
+//删掉多余的镜头         
+string $OBJaa[] = `ls -typ "camera"`;
+select -r $OBJaa;
+select -d frontShape perspShape sideShape topShape ;
+string $camall1[] =`ls -sl`;
+string $Camerain1;
+for ($Camerain1 in $camall1){
+    select -r $Camerain1 ;
+    pickWalk -d up;
+    delete;
+} 
+ 
+}
+
+
+
+//加入sen层，层设渲染设置
+ global proc RS_Senset_pro()
+{
+
+editRenderLayerGlobals -currentRenderLayer Sen;
+
+editRenderLayerAdjustment "redshiftOptions.unifiedMinSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedMaxSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedAdaptiveErrorThreshold";
+
+editRenderLayerAdjustment "redshiftOptions.unifiedFilterType";
+editRenderLayerAdjustment "redshiftOptions.unifiedFilterSize";
+editRenderLayerAdjustment "redshiftOptions.unifiedMaxOverbright";
+
+string $rsPhysicalSky_all[] = `ls -typ "RedshiftPhysicalSky"`;
+string $rsPhysicalSkyin;
+for ($rsPhysicalSkyin in $rsPhysicalSky_all){
+    editRenderLayerAdjustment ($rsPhysicalSkyin+".on");
+    editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+    setAttr ($rsPhysicalSkyin+".on") 0;  
+    editRenderLayerGlobals -currentRenderLayer Sen;  
+}
+
+string $rsVolumeS_all[] = `ls -typ "RedshiftVolumeScattering"`;
+string $rsVolumeSin;
+for ($rsVolumeSin in $rsVolumeS_all){
+    editRenderLayerAdjustment ($rsVolumeSin+".enable");
+    editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+    setAttr ($rsVolumeSin+".enable") 0;
+    editRenderLayerGlobals -currentRenderLayer Sen;  
+}
+
+string $rsPE_all[] = `ls -typ "RedshiftPhotographicExposure"`;
+string $rsPEin;
+for ($rsPEin in $rsPE_all){
+    editRenderLayerAdjustment ($rsPEin+".enable");
+    editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+    setAttr ($rsPEin+".enable") 0;
+    editRenderLayerGlobals -currentRenderLayer Sen;
+    editRenderLayerAdjustment ($rsPEin+".filmSpeed");
+    editRenderLayerAdjustment ($rsPEin+".shutterRatio");
+    editRenderLayerAdjustment ($rsPEin+".fStop");
+    editRenderLayerAdjustment ($rsPEin+".whitepoint");
+    editRenderLayerAdjustment ($rsPEin+".vignetting");
+    editRenderLayerAdjustment ($rsPEin+".reinhardFactor");
+    editRenderLayerAdjustment ($rsPEin+".blackCrushThresh");
+    editRenderLayerAdjustment ($rsPEin+".blackCrushAmount");
+    editRenderLayerAdjustment ($rsPEin+".saturation");
+}
+
+editRenderLayerAdjustment "redshiftOptions.reflectionMaxTraceDepth";
+editRenderLayerAdjustment "redshiftOptions.refractionMaxTraceDepth";
+editRenderLayerAdjustment "redshiftOptions.combinedMaxTraceDepth";
+
+
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine"; 
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+editRenderLayerAdjustment "redshiftOptions.numGIBounces";
+setAttr "redshiftOptions.irradianceCachePreset" 100;
+editRenderLayerAdjustment "redshiftOptions.irradianceCachePreset";
+setAttr "redshiftOptions.irradianceCacheNumRays" 500;
+editRenderLayerAdjustment "redshiftOptions.irradianceCacheNumRays";
+
+editRenderLayerAdjustment "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy";
+editRenderLayerAdjustment "redshiftOptions.maxNumGPUMBForForICPHierarchy";
+setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 1024;
+setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 1024;
+
+
+setAttr "redshiftOptions.bucketSize" 256;
+setAttr "redshiftOptions.automaticMemoryManagement" 1;
+
+} 
+
+
+
+
+
+
+//设置时间和镜头
+global proc RS_Time_Camera_set()
+{
+editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+setAttr"defaultRenderGlobals.startFrame"(`playbackOptions -q - min`);
+setAttr"defaultRenderGlobals.endFrame"(`playbackOptions -q - max`);
+setAttr "perspShape.renderable"0;
+string $OBJaa[] = `ls -typ "camera"`;
+
+int $shuliangcam =size($OBJaa) ;
+
+for($y=0;$y<$shuliangcam;$y+=1)
+{
+setAttr ($OBJaa[$y]+".renderable") 0;   
+}
+
+select -r $OBJaa;
+if (`objExists "|front|frontShape"`){
+    select -d |front|frontShape;
+}
+if (`objExists "|persp|perspShape"`){
+    select -d |persp|perspShape;
+}
+if (`objExists "|side|sideShape"`){
+    select -d |side|sideShape;
+}
+if (`objExists "|top|topShape"`){
+    select -d |top|topShape;
+}
+
+string $camaa[]=`ls -sl`;
+string $Camerain;
+for ($Camerain in $camaa){
+    setAttr ($Camerain+".renderable") 0;
+    select -r $Camerain ;
+    pickWalk -d up;
+    string $camnameup[] =`ls -sl`;
+    if ($camnameup[0] == "CAM"){
+    setAttr ($Camerain+".renderable") 1;   
+    }
+}  
+
+if ( size($camaa) == 1 ){
+    setAttr ($camaa[0]+".renderable") 1;
+    setAttr ($camaa[0]+".backgroundColor") -type double3 0 0 0 ;
+    setAttr ($camaa[0]+".overscan") 1.4;
+    setAttr ($camaa[0]+".displayResolution") 1;
+    print "南海日记总层渲染设置OK!";
+    }
+
+if ( size($camaa) >= 2 ){
+    setAttr "perspShape.renderable" 0;
+    //setAttr "CAMShape.renderable" 1;
+    print "文件内有多个镜头,请手动设置camera";
+    }
+if ( size($camaa) == 0 ){
+    setAttr "perspShape.renderable" 0;
+    print "文件内没有镜头";
+       };    
+string $camerasy[] = `ls -typ "camera"`;
+string $camone;
+for ($camone in $camerasy){
+    setAttr ($camone+".farClipPlane") 100000000;
+
+}
+
+
+}
+
+//删垃圾
+global proc clean_Out_file()
+{
+editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+
+
+OptimizeSceneBuFen_pro();
+
+}
+
+//清理场景，已剔除不用清理的3项
+global proc OptimizeSceneBuFen_pro()
+{
+OptimizeSceneOptions;
+//if (`window -exists OptionBoxWindow`) deleteUI -window OptionBoxWindow;
+scOpt_performOneCleanup( { "nurbsSrfOption" } );
+scOpt_performOneCleanup( { "partitionOption" } );
+scOpt_performOneCleanup( { "transformOption" } );
+scOpt_performOneCleanup( { "displayLayerOption" } );
+scOpt_performOneCleanup( { "renderLayerOption" } );
+scOpt_performOneCleanup( { "animationCurveOption" } );
+scOpt_performOneCleanup( { "clipOption" } );
+scOpt_performOneCleanup( { "poseOption" } );
+scOpt_performOneCleanup( { "nurbsCrvOption" } );
+scOpt_performOneCleanup( { "unusedNurbsSrfOption" } );
+scOpt_performOneCleanup( { "cachedOption" } );
+scOpt_performOneCleanup( { "unusedSkinInfsOption" } );
+scOpt_performOneCleanup( { "expressionOption" } );
+scOpt_performOneCleanup( { "groupIDnOption" } );
+scOpt_performOneCleanup( { "shaderOption" } );
+scOpt_performOneCleanup( { "ptConOption" } );
+scOpt_performOneCleanup( { "pbOption" } );
+scOpt_performOneCleanup( { "snapshotOption" } );
+scOpt_performOneCleanup( { "unitConversionOption" } );
+scOpt_performOneCleanup( { "referencedOption" } );
+scOpt_performOneCleanup( { "brushOption" } );
+scOpt_performOneCleanup( { "unknownNodesOption" } );
+scOpt_performOneCleanup( { "shadingNetworksOption" } );
+
+}
+
+
+//删除多余材质球
+global proc deleteUnusedShader1_pro()
+{
+editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+hyperShadePanelMenuCommand("hyperShadePanel1", "deleteUnusedNodes");
+}
+
+
+//NHRJ渲染设置
+global proc NHRJ_RenderSet_pro()
+{
+NHRJ_RenderSet_1_pro();
+RS_Time_Camera_set(); 
+
+}
+
+//NHRJ渲染设置部分（内置）
+global proc NHRJ_RenderSet_1_pro()
+{
+editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+renderLayerEditorRenderable RenderLayerTab "defaultRenderLayer" "0";
+currentUnit -t film ;
+setAttr"defaultRenderGlobals.currentRenderer" -type "string""redshift";
+setAttr -type "string" defaultRenderGlobals.ifp "<Scene>/<Scene>_<RenderLayer>/<Scene>_<RenderLayer>";
+setAttr "redshiftOptions.imageFormat" 1;
+setAttr "redshiftOptions.exrForceMultilayer" 1;
+setAttr "redshiftOptions.exrMultipart" 1;
+setAttr "defaultRenderGlobals.animation" 1;
+setAttr "defaultResolution.width" 1920; 
+setAttr "defaultResolution.height" 1080;
+setAttr "defaultResolution.deviceAspectRatio" 1.777;
+setAttr "defaultResolution.pixelAspect" 1;
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+setAttr "redshiftOptions.unifiedMinSamples" 64;
+setAttr "redshiftOptions.unifiedMaxSamples" 128;
+setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.01;
+setAttr "redshiftOptions.unifiedFilterType" 2;
+setAttr "redshiftOptions.unifiedFilterSize" 2;
+setAttr "redshiftOptions.unifiedMaxOverbright" 4;
+setAttr "redshiftOptions.samplingGammaMode" 1;
+setAttr "redshiftOptions.samplingGammaValue" 2.2;
+//setAttr "defaultRedshiftPostEffects.clrMgmtDisplayMode" -type "string""RS_COLORMANAGEMENTDISPLAYMODE_CUSTOMGAMMA";
+//setAttr "defaultRedshiftPostEffects.clrMgmtCustomGamma" 2.2;
+//setAttr "defaultRedshiftPostEffects.tonemapEnable" 1;
+//setAttr "defaultRedshiftPostEffects.tonemapReinhardFactor" 0.2;
+//setAttr "defaultRedshiftPostEffects.tonemapReinhardAllowDesaturation" 0;
+//setAttr "defaultRedshiftPostEffects.tonemapEnable" 0;
+setAttr "redshiftOptions.bucketSize" 256;
+setAttr "redshiftOptions.automaticMemoryManagement" 1;
+setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+setAttr "redshiftOptions.reflectionMaxTraceDepth" 4;
+setAttr "redshiftOptions.refractionMaxTraceDepth" 6;
+setAttr "redshiftOptions.combinedMaxTraceDepth" 6;
+setAttr "redshiftOptions.primaryGIEngine" 0;
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+}
+
+//导入maya文件
+global proc import_maya_pro()
+{
+string $BaseFileLoca1a = `textField -q -text BaseFile_LOC ` ;
+string $BaseFileLoca2a = substituteAllString ($BaseFileLoca1a,"\\","/");
+file -import -type "mayaBinary"  -ignoreVersion -mergeNamespacesOnClash false -options "v=0;" -loadReferenceDepth "all" $BaseFileLoca2a;
+}
+
+//Cha打组(source)_backup
+global proc cha_group_final_pro11111()
+{
+//source "JSDZ.mel";
+
+}
+//Cha打组_backup
+global proc cha_group_final_pro()
+{
+
+$LsSelectionrenderlayer = `editRenderLayerGlobals -q  -currentRenderLayer`;
+if ($LsSelectionrenderlayer!="defaultRenderLayer")
+{
+editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+}
+
+string $char_1[] =`ls -sl`;
+
+if(!`objExists "Character_Group"`){
+    select -cl; 
+    CreateLocator;
+    rename (`ls -sl`) "Character_Group";
+    select -cl;
+    CreateLocator;
+    rename (`ls -sl`) "Transparent_Group"; 
+    select -cl;
+    CreateLocator;
+    rename (`ls -sl`) "Cha_nor_Group";
+    select -r Transparent_Group Cha_nor_Group;
+    select -add Character_Group ;
+    parent;    
+}
+
+select -cl;
+CreateLocator ;
+rename (`ls -sl`) "Char_G_yiyi";
+select -r Char_G_yiyi ;
+select -add Cha_nor_Group ;
+parent;
+select -r $char_1;
+select -add Char_G_yiyi ;
+parent;
+
+select -r Char_G_yiyi ;
+addAttr -ln "CharId"  -at double  -min 0 -max 100 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharId;
+addAttr -ln "CharIdCheck"  -at double  -min 0 -max 1 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharIdCheck;
+rename "Char_G_yiyi" "Char_G1";
+}
+
+
+//地面打组
+global proc DM_mod_Group()
+{
+string $DiMian_mod_all_1[] =`ls -sl`;
+if(!`objExists "DM_all_Group"`)
+{
+    select -cl; 
+    CreateLocator;
+    rename (`ls -sl`) "DM_all_Group";   
+}
+
+select -r $DiMian_mod_all_1;
+select -tgl DM_all_Group ;
+parent; 
+select -r DM_all_Group;
+select -add Sen_Group;
+parent; 
+}
+
+//单独分层的物体打组
+global proc singlecreatelayer_pro()
+{
+doGroup 0 1 1;
+select -add Transparent_Group ;
+parent;
+
+}
+//建圆滑节点
+global proc smoothNode_auto_pro()
+{
+    if (`objExists "Character_Group"`){
+        if (!`objExists "Cha_smooth"`){
+            select -cl  ;
+            select -r Character_Group ;
+            string $MeshNode_G = `redshiftCreateMeshParametersNode`;
+            rename $MeshNode_G "Cha_smooth";            
+        }     
+        else {
+            sets -edit -forceElement  Cha_smooth Character_Group ;
+       }   
+    }
+
+}
+
+
+//角色道具场景加入sen层,建aov
+global proc ChaAddintoSenLayer_auto_pro()
+{
+    string $renderlayer_all_name[] = `ls -typ "renderLayer"`;
+    string $RL_in;
+    for ($RL_in in $renderlayer_all_name){
+        if ($RL_in == "Sen"){
+            renderLayerEditorRenderable RenderLayerTab $RL_in "1"; 
+            
+            if (`objExists "Sen_Group"`){
+                editRenderLayerMembers -noRecurse Sen Sen_Group;
+            }
+            //Sen层建aov
+            editRenderLayerGlobals -currentRenderLayer Sen;   
+            Senlayer_aov_pro();
+            RS_Senset_pro(); 
+            //恐龙项目Sen层角色设置不渲染出来
+            Character_Group_PriVisibility_off_pro();
+        }
+    }     
+}
+
+
+//建Cha层，加入角色道具,建aov
+global proc ChaAddintoChaLayer_auto_pro()
+{
+    if (`objExists "Character_Group"`){
+        if (`objExists "Cha_nor_Group"`){
+            string $renderlayer_all_name[] = `ls -typ "renderLayer"`;
+            int $shuliang = size($renderlayer_all_name);
+            int $A = 0;
+            int $B = 0;
+            for($i=0;$i<$shuliang;$i+=1){
+                if ($renderlayer_all_name[$i] == "Cha"){
+                   renderLayerEditorRenderable RenderLayerTab ($renderlayer_all_name[$i]) "1";
+                    editRenderLayerMembers -noRecurse Cha Cha_nor_Group;
+                    //透明玻璃matte
+                    editRenderLayerGlobals -currentRenderLayer Cha;
+                    //RSAOoutMatte_AOV_final_pro();
+                }
+                if ($renderlayer_all_name[$i] != "Cha"){
+                    $A = $A+1;
+                } 
+                if ($renderlayer_all_name[$i] != "Sen"){
+                    $B = $B+1;
+                } 
+            }
+            if($A == $shuliang){
+                //createRenderLayer -name "Cha" -number 1 -noRecurse Cha_nor_Group;
+            }              
+           editRenderLayerGlobals -currentRenderLayer Cha; 
+           if($B == $shuliang){
+                createAOV_RGBlayer_new();
+                //meshAddAO_pro();
+            } 
+           //改渲染设置
+           ChaRenderLayer_set_pro();
+           //Cha层建aov
+           Chalayer_aov_pro();
+}                                   
+}
+}
+//角色道具场景加入Tool层,建aov
+global proc ChaAddintoToolLayer_auto_pro()
+{
+    string $renderlayer_all_name[] = `ls -typ "renderLayer"`;
+    string $RL_in;
+    for ($RL_in in $renderlayer_all_name){
+        if ($RL_in == "Tool"){
+            renderLayerEditorRenderable RenderLayerTab $RL_in "1"; 
+            
+            if (`objExists "Character_Group"`){
+                editRenderLayerMembers -noRecurse Tool Character_Group ;
+            }
+            if (`objExists "Sen_Group"`){
+                editRenderLayerMembers -noRecurse Tool Sen_Group ;
+
+            }
+            //Tool层建aov
+            editRenderLayerGlobals -currentRenderLayer Tool;  
+            Toollayer_aov_pro();
+            RS_Toolset_pro(); 
+
+//玻璃给lambert
+if (`objExists "*:NH_Cha_BoShi_qianShui"`){
+    select -r "*:TouZao_AS" ;
+    hyperShade -assign lambert1 ;
+}
+if (`objExists "*:AW_QianShuiFU"`){
+    select -r "*:AW_Toukui" ;
+    hyperShade -assign lambert1 ;
+}
+if (`objExists "*:NH_Cha_GG_qianShui"`){
+    select -r "*:toukui" ;
+    hyperShade -assign lambert1 ;
+}
+
+
+        }
+    }     
+}
+
+//Sha层设置
+global proc ChaAddintoShaLayer_auto_pro()
+{
+    string $renderlayer_all_name[] = `ls -typ "renderLayer"`;
+    string $RL_in;
+    for ($RL_in in $renderlayer_all_name){
+        if ($RL_in == "Sha"){
+            renderLayerEditorRenderable RenderLayerTab $RL_in "1"; 
+            
+            if (`objExists "Character_Group"`){
+                editRenderLayerMembers -noRecurse Sha Character_Group ;
+            //角色加入Sha层设置不渲染出来
+            editRenderLayerGlobals -currentRenderLayer Sha;   
+            Character_Group_PriVisibility_off_pro();
+            }
+            
+        }
+    }     
+}
+
+
+//Tool层渲染设置
+global proc RS_Toolset_pro()
+{
+
+editRenderLayerAdjustment "redshiftOptions.exrBits";
+setAttr "redshiftOptions.exrBits" 32;
+
+editRenderLayerAdjustment "redshiftOptions.unifiedMinSamples";
+
+editRenderLayerAdjustment "redshiftOptions.unifiedMaxSamples";
+
+editRenderLayerAdjustment "redshiftOptions.unifiedAdaptiveErrorThreshold";
+
+editRenderLayerAdjustment "redshiftOptions.unifiedFilterType";
+
+editRenderLayerAdjustment "redshiftOptions.unifiedFilterSize";
+
+editRenderLayerAdjustment "redshiftOptions.reflectionMaxTraceDepth";
+
+editRenderLayerAdjustment "redshiftOptions.refractionMaxTraceDepth";
+
+editRenderLayerAdjustment "redshiftOptions.combinedMaxTraceDepth";
+
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine";
+
+editRenderLayerAdjustment "redshiftOptions.secondaryGIEngine";
+
+editRenderLayerAdjustment "redshiftOptions.numGIBounces";
+
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+
+setAttr "redshiftOptions.unifiedMinSamples" 4;
+setAttr "redshiftOptions.unifiedMaxSamples" 16;
+setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.01;
+setAttr "redshiftOptions.unifiedFilterSize" 2;
+setAttr "redshiftOptions.combinedMaxTraceDepth" 2;
+setAttr "redshiftOptions.primaryGIEngine" 0;
+setAttr "redshiftOptions.secondaryGIEngine" 0;
+
+string $lighttypename[] = `ls -typ "RedshiftPhysicalLight"`;
+string $PXD;
+for ($PXD in $lighttypename){
+ editRenderLayerAdjustment ($PXD+".on");
+setAttr ($PXD+".on") 0;   
+}
+
+
+string $lighttypename1[] = `ls -typ "RedshiftDomeLight"`;
+string $PXD1;
+for ($PXD1 in $lighttypename1){
+ editRenderLayerAdjustment ($PXD1+".on");
+setAttr ($PXD1+".on") 0;   
+}
+
+string $lighttypename2[] = `ls -typ "RedshiftIESLight"`;
+string $PXD2;
+for ($PXD2 in $lighttypename2){
+ editRenderLayerAdjustment ($PXD2+".on");
+setAttr ($PXD2+".on") 0;   
+}
+
+
+string $lighttypename3[] = `ls -typ "RedshiftPortalLight"`;
+string $PXD3;
+for ($PXD3 in $lighttypename3){
+ editRenderLayerAdjustment ($PXD3+".on");
+setAttr ($PXD3+".on") 0;   
+}
+
+}
+//Tool层添加aov
+global proc Toollayer_aov_pro()
+{
+editRenderLayerGlobals -currentRenderLayer Tool;
+source redshiftCreateAovTab;
+createAOV_RGBlayer_new();
+RSAOV_Motion_pro();
+//Cha3S_AOV_pro();
+RSDepth_AOV_pro();
+RScustomAO_AOV_pro();
+//RScustomOC_AOV_pro();
+RSEmission_AOV_pro();
+//rs_DiffuseFilter_aov_pro();
+//rs_GI_aov_pro();
+//rs_Reflections_aov_pro();
+//rs_Refractions_aov_pro();
+//rs_SpecularLighting_aov_pro();
+rs_P_aov_pro();
+//rs_VolumeLighting_aov_pro();
+//rs_VolumeFogEmission_aov_pro();
+rs_N_aov_pro();
+//rs_DiffuseLighting_aov_pro();
+
+}
+
+//Cha层设渲染设置 (内置)
+global proc ChaRenderLayer_set_pro()
+{
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+editRenderLayerAdjustment "redshiftOptions.progressiveRenderingNumPasses";
+editRenderLayerAdjustment "redshiftOptions.unifiedMinSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedMaxSamples";
+editRenderLayerAdjustment "redshiftOptions.unifiedAdaptiveErrorThreshold";
+setAttr "redshiftOptions.unifiedMinSamples" 16;
+setAttr "redshiftOptions.unifiedMaxSamples" 512;
+editRenderLayerAdjustment "redshiftOptions.primaryGIEngine"; 
+editRenderLayerAdjustment "redshiftOptions.bruteForceGINumRays";
+setAttr "redshiftOptions.bruteForceGINumRays" 1024;
+setAttr "redshiftOptions.primaryGIEngine" 4;
+editRenderLayerAdjustment "redshiftOptions.reflectionMaxTraceDepth";
+editRenderLayerAdjustment "redshiftOptions.refractionMaxTraceDepth";
+editRenderLayerAdjustment "redshiftOptions.combinedMaxTraceDepth";
+setAttr "redshiftOptions.reflectionMaxTraceDepth" 4;
+setAttr "redshiftOptions.refractionMaxTraceDepth" 6;
+setAttr "redshiftOptions.combinedMaxTraceDepth" 6;
+
+}
+
+//加入rs_AOoutMatte(内置)
+global proc RSAOoutMatte_AOV_pro()
+{
+if(!`objExists "rs_AOoutMatte"`){
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_AOoutMatte";
+setAttr -type "string" rs_AOoutMatte.name "rs_AOoutMatte";
+}
+setAttr "rs_AOoutMatte.mode" 0;
+setAttr "rs_AOoutMatte.redId" 80;
+setAttr "rs_AOoutMatte.greenId" 0;
+setAttr "rs_AOoutMatte.blueId" 0;
+setAttr "rs_AOoutMatte.enabled" 0;
+editRenderLayerAdjustment "rs_AOoutMatte.enabled";
+setAttr "rs_AOoutMatte.enabled" 1;
+setAttr "rs_AOoutMatte.dataType" 1;
+}
+
+
+
+//改透明物体材质id 80
+global proc RSAOoutMatte_AOV_final_pro()
+{
+editRenderLayerGlobals -currentRenderLayer Cha;
+renderLayerEditorSelectObjects RenderLayerTab Cha;
+SelectHierarchy;
+string $obj_All3a[] =`ls -sl`;
+string $obj_mesh1a;
+select -cl; 
+for ($obj_mesh1a in $obj_All3a){
+    $nodeType51b = `nodeType $obj_mesh1a`;
+    if ($nodeType51b == "mesh")
+    select -add $obj_mesh1a ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+string $RS_m_Transpin;
+for ($RS_m_Transpin in $obj_mod1){
+    select -r $RS_m_Transpin ;
+    hyperShade -smn "";
+    string $matrialname1_all1[] =`ls -sl`;
+select -cl;
+string $MNA1;
+for ($MNA1 in $matrialname1_all1){
+     $matrial11Type = `nodeType $MNA1`;
+    if ($matrial11Type == "RedshiftMaterial"){
+        float $refrWei = `getAttr ($MNA1+".refr_weight") `;
+        if ($refrWei >= 0.1){
+            string $shader1SG_name1a[] = `listConnections -d 1 -c 0 -p 0 $MNA1`;
+            string $shader1SG_name1a_in;
+            for ($shader1SG_name1a_in in $shader1SG_name1a){
+                $nodeType5 = `nodeType $shader1SG_name1a_in`;
+                if($nodeType5 == "shadingEngine"){
+                    setAttr ($shader1SG_name1a_in+".rsMaterialId") 80;                  
+                } 
+            }
+            RSAOoutMatte_AOV_pro();
+        }
+        if ($refrWei < 0.1){
+            string $shader1SG_name1a[] = `listConnections -d 1 -c 0 -p 0 $MNA1`;
+            string $shader1SG_name1a_in;
+            for ($shader1SG_name1a_in in $shader1SG_name1a){
+                $nodeType5 = `nodeType $shader1SG_name1a_in`;
+                if($nodeType5 == "shadingEngine"){
+                    setAttr ($shader1SG_name1a_in+".rsMaterialId") 0;  
+                } 
+            }
+        }      
+    }
+}       
+}        
+}
+
+//加入TKmatte （内置）
+global proc RSTKmatte_AOV_pro()
+{
+if(`objExists "Sky_all_Group"`){
+    select -r Sky_all_Group ;   
+    SelectHierarchy;
+    if(!`objExists "TKmatte_ID"`){
+        string $SKYid_G = redshiftCreateObjectIdNode();
+        rename $SKYid_G "TKmatte_ID";
+    }
+    sets -edit -forceElement  TKmatte_ID Sky_all_Group ;
+    setAttr "TKmatte_ID.objectId" 100;
+    //aov加入TKmatte 
+    source redshiftCreateAovTab;
+    if(!`objExists "TKmatte"`){
+        rename (`redshiftCreateAov ("Puzzle Matte")`) "TKmatte";
+        setAttr -type "string" TKmatte.name "TKmatte";
+    }
+    editRenderLayerAdjustment -remove "TKmatte.enabled";
+    setAttr "TKmatte.enabled" 0;
+    setAttr -type "string" TKmatte.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_TKmatte/<Scene>_<RenderLayer>_TKmatte";
+    setAttr "TKmatte.mode" 1;
+    setAttr "TKmatte.redId" 100;
+    setAttr "TKmatte.greenId" 0;
+    setAttr "TKmatte.blueId" 0;
+    setAttr "TKmatte.enabled" 0;
+    editRenderLayerAdjustment "TKmatte.enabled";
+    setAttr "TKmatte.enabled" 1;
+    redshiftUpdateActiveAovList();
+}
+}
+
+//加入DiMianMatte （内置）
+global proc RSDiMianMatte_AOV_pro()
+{
+if(`objExists "DM_all_Group"`){
+    select -r DM_all_Group ;   
+    SelectHierarchy;
+    if(!`objExists "DiMianMatte_ID"`){
+        string $DiMianid_G = redshiftCreateObjectIdNode();
+        rename $DiMianid_G "DiMianMatte_ID";
+    }
+    
+    setAttr "DiMianMatte_ID.objectId" 50;
+    //aov加入DiMianMatte 
+    source redshiftCreateAovTab;
+    if(!`objExists "DiMianMatte"`){
+        rename (`redshiftCreateAov ("Puzzle Matte")`) "DiMianMatte";
+        setAttr -type "string" DiMianMatte.name "DiMianMatte";
+    }
+    
+    editRenderLayerAdjustment -remove "DiMianMatte.enabled";
+    setAttr "DiMianMatte.enabled" 0;
+    setAttr -type "string" DiMianMatte.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_DiMianMatte/<Scene>_<RenderLayer>_DiMianMatte";
+    setAttr "DiMianMatte.mode" 1;
+    setAttr "DiMianMatte.redId" 50;
+    setAttr "DiMianMatte.greenId" 0;
+    setAttr "DiMianMatte.blueId" 0;
+    setAttr "DiMianMatte.enabled" 0;
+    editRenderLayerAdjustment "DiMianMatte.enabled";
+    setAttr "DiMianMatte.enabled" 1;
+    redshiftUpdateActiveAovList();
+}
+}
+
+
+
+
+
+
+//创建AOV_RGB层
+
+global proc createAOV_RGBlayer_new(){
+
+
+//自动根据新增属性给角色建id (只修改属性为0的)
+createChaId_id();
+
+//创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
+checkchaID_and_create_id();
+
+deleteRGBDisplayLayer();
+
+//改id名字和数值
+RS_changeObjidName();
+
+//放在rgb建ID后，给角色打组一个属性编号，重复多次，防止有些更改了id数值，角色组的名字编号跟不回
+give_ChaId_id_num();
+give_ChaId_id_num();
+give_ChaId_id_num();
+give_ChaId_id_num();
+give_ChaId_id_num();
+give_ChaId_id_num();
+
+//AOV中创建RGB层，并删除没用的RGB
+RS_AOV_RGB_createAndDelete();
+
+createRGBDisplayLayer();
+
+//CharIdCheck全部归0
+checkchaID000();
+
+}
+
+//放在rgb建ID后，给角色打组一个属性编号
+global proc give_ChaId_id_num(){
+string $id_all[] = `ls -typ "RedshiftObjectId"`;
+string $id_allin;
+for ($id_allin in $id_all){
+    int $id_numin1 = `getAttr ($id_allin+".objectId")`;
+    if ($id_numin1 > 0){
+        if ($id_numin1 <= 21){
+            select -r -ne $id_allin ;
+            pickWalk -d up;
+            string $cha_G_locator[] =`ls -sl`;
+            string $cha_G_locatorin;
+            for ($cha_G_locatorin in $cha_G_locator){
+               if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
+                    setAttr ($cha_G_locatorin+".CharId") $id_numin1;
+                    rename ($cha_G_locatorin) ("Char_G"+$id_numin1);
+                }
+            }
+        }
+    }
+}
+}
+
+
+
+//创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
+global proc checkchaID_and_create_id(){
+string $id_all[] = `ls -typ "RedshiftObjectId"`;
+string $id_allin;
+for ($id_allin in $id_all){
+    int $id_numin1 = `getAttr ($id_allin+".objectId")`;
+    if ($id_numin1 > 0){
+        if ($id_numin1 <= 21){
+            select -r -ne $id_allin ;
+            pickWalk -d up;
+            string $cha_G_locator[] =`ls -sl`;
+            string $cha_G_locatorin;
+            for ($cha_G_locatorin in $cha_G_locator){
+               if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
+                    setAttr ($cha_G_locatorin+".CharIdCheck") 1;                    
+                }
+            }
+        }
+    }
+}
+
+string $transf_alla[] = `ls -typ "transform"`;
+string $transf_allain ;
+for ($transf_allain in $transf_alla){
+    if (`objExists ($transf_allain +".CharIdCheck")`){
+        int $cha_G_CharIdCheck_num =`getAttr ($transf_allain +".CharIdCheck")`;
+           if ($cha_G_CharIdCheck_num == 0){
+                select -r $transf_allain;
+                redshiftCreateObjectIdNode();
+              }
+        }
+}
+}
+
+
+
+
+//CharIdCheck全部归0
+global proc checkchaID000(){
+string $transf_allb[] = `ls -typ "transform"`;
+string $transf_allbin ;
+for ($transf_allbin in $transf_allb){
+    if (`objExists ($transf_allbin +".CharIdCheck")`){
+        setAttr ($transf_allbin +".CharIdCheck") 0 ;         
+        }
+    }
+}
+
+
+//自动根据新增属性给角色建id (只修改属性为0的)
+global proc createChaId_id(){
+string $transf_all[] = `ls -typ "transform"`;
+string $transf_allin ;
+for ($transf_allin in $transf_all){
+    if (`objExists ($transf_allin +".CharId")`){
+        int $cha_G_id_num =`getAttr ($transf_allin +".CharId")`;
+           if ($cha_G_id_num == 0){
+                select -r $transf_allin;
+                redshiftCreateObjectIdNode();
+              }
+        }
+}
+}
+
+
+
+//删掉RGB display分组 
+global proc deleteRGBDisplayLayer(){ 
+string $RGBdisplaylayer[]=`ls -type displayLayer`;
+for($i=0;$i<`size($RGBdisplaylayer)`;$i+=1)
+{
+    string $colorornot = `getAttr ($RGBdisplaylayer[$i]+".overrideRGBColors")`;
+    if($colorornot != 0){
+        if(`match "RGB" $RGBdisplaylayer[$i]` == "RGB"){
+             layerEditorDeleteLayer $RGBdisplaylayer[$i];
+   } 
+  }  
+}
+}
+
+
+
+//改id名字和数值
+global proc RS_changeObjidName(){
+string $OBJIDallG[] = `ls -typ "RedshiftObjectId"`;
+select -r -ne $OBJIDallG ;
+string $OBJIDall_G[] =`ls -sl`;
+string $OBJIDall_Gin;
+for ($OBJIDall_Gin in $OBJIDall_G){
+    int $OBJIDall_Gin_ID =`getAttr ($OBJIDall_Gin+".objectId")`;
+    if ($OBJIDall_Gin_ID >= 22){
+        select -d -ne $OBJIDall_Gin ;
+    }
+    }
+string $OBJnum[] =`ls -sl`;
+select -r -ne $OBJnum ;
+string $rsobjIDall1[] =`ls -sl`;
+string $OBJnumin;
+for ($OBJnumin in $rsobjIDall1){
+    int $idnum11 =`getAttr ($OBJnumin+".objectId")`;
+    if ($idnum11 != 0){
+        select -d -ne $OBJnumin ;
+    }
+    if ($idnum11 == 1){ rename $OBJnumin "chatool_id1";}
+    if ($idnum11 == 2){ rename $OBJnumin "chatool_id2"; }
+    if ($idnum11 == 3){ rename $OBJnumin "chatool_id3";}
+    if ($idnum11 == 4){ rename $OBJnumin "chatool_id4"; }
+    if ($idnum11 == 5){ rename $OBJnumin "chatool_id5";}
+    if ($idnum11 == 6){ rename $OBJnumin "chatool_id6";}
+    if ($idnum11 == 7){ rename $OBJnumin "chatool_id7";}
+    if ($idnum11 == 8){ rename $OBJnumin "chatool_id8";}
+    if ($idnum11 == 9){ rename $OBJnumin "chatool_id9";}
+    if ($idnum11 == 10){ rename $OBJnumin "chatool_id10";}
+    if ($idnum11 == 11){ rename $OBJnumin "chatool_id11";}
+    if ($idnum11 == 12){ rename $OBJnumin "chatool_id12";}
+    if ($idnum11 == 13){ rename $OBJnumin "chatool_id13";}
+    if ($idnum11 == 14){ rename $OBJnumin "chatool_id14";}
+    if ($idnum11 == 15){ rename $OBJnumin "chatool_id15";}
+    if ($idnum11 == 16){ rename $OBJnumin "chatool_id16";}
+    if ($idnum11 == 17){ rename $OBJnumin "chatool_id17";}
+    if ($idnum11 == 18){ rename $OBJnumin "chatool_id18";}
+    if ($idnum11 == 19){ rename $OBJnumin "chatool_id19";} 
+    if ($idnum11 == 20){ rename $OBJnumin "chatool_id20";} 
+    if ($idnum11 == 21){ rename $OBJnumin "chatool_id21";} 
+}
+
+string $rsobjIDnoID[]=`ls -sl`;
+int $rsobjIDnoIDGS = `size $rsobjIDnoID`;
+for($i=0;$i<`size($rsobjIDnoID)`;$i+=1)
+{ 
+    if(!`objExists ("chatool_id"+($i+1))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+1);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+1));    
+    }
+        else if(!`objExists ("chatool_id"+($i+2))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+2);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+2));
+    }
+    else if(!`objExists ("chatool_id"+($i+3))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+3);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+3));
+    }
+    else if(!`objExists ("chatool_id"+($i+4))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+4);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+4));
+    }
+    else if(!`objExists ("chatool_id"+($i+5))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+5);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+5));
+    }
+    else if(!`objExists ("chatool_id"+($i+6))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+6);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+6));
+    }
+    else if(!`objExists ("chatool_id"+($i+7))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+7);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+7));
+    }
+    else if(!`objExists ("chatool_id"+($i+8))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+8);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+8));
+    }
+    else if(!`objExists ("chatool_id"+($i+9))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+9);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+9));
+    }
+    else if(!`objExists ("chatool_id"+($i+10))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+10);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+10));
+    }
+    else if(!`objExists ("chatool_id"+($i+11))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+11);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+11));
+    }
+    else if(!`objExists ("chatool_id"+($i+12))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+12);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+12));
+    }
+    else if(!`objExists ("chatool_id"+($i+13))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+13);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+13));
+    }
+    else if(!`objExists ("chatool_id"+($i+14))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+14);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+14));
+    }
+    else if(!`objExists ("chatool_id"+($i+15))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+15);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+15));
+    }
+    else if(!`objExists ("chatool_id"+($i+16))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+16);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+16));
+    }
+    else if(!`objExists ("chatool_id"+($i+17))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+17);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+17));
+    }
+    else if(!`objExists ("chatool_id"+($i+18))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+18);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+18));
+    }
+    else if(!`objExists ("chatool_id"+($i+19))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+19);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+19));
+    }
+    else if(!`objExists ("chatool_id"+($i+20))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+20);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+20));
+    }
+    else if(!`objExists ("chatool_id"+($i+21))`){
+    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+21);
+    select -d -ne $rsobjIDnoID[$i] ;
+    rename $rsobjIDnoID[$i] ("chatool_id"+($i+21));
+    }
+    }
+    
+    
+        
+    string $OBJnum1[] = `ls -typ "RedshiftObjectId"`;
+    string $rsobjIDnoID11;
+    for ($rsobjIDnoID11 in $OBJnum1) { 
+    int $objidnum =`getAttr ($rsobjIDnoID11+".objectId")`;
+    if ($objidnum == 1){ rename $rsobjIDnoID11 "RGB1_R1"; }
+    if ($objidnum == 2){ rename $rsobjIDnoID11 "RGB1_G2"; }
+    if ($objidnum == 3){ rename $rsobjIDnoID11 "RGB1_B3"; }
+    if ($objidnum == 4){ rename $rsobjIDnoID11 "RGB2_R4"; }
+    if ($objidnum == 5){ rename $rsobjIDnoID11 "RGB2_G5"; }
+    if ($objidnum == 6){ rename $rsobjIDnoID11 "RGB2_B6"; }
+    if ($objidnum == 7){ rename $rsobjIDnoID11 "RGB3_R7"; }
+    if ($objidnum == 8){ rename $rsobjIDnoID11 "RGB3_G8"; }
+    if ($objidnum == 9){ rename $rsobjIDnoID11 "RGB3_B9"; }
+    if ($objidnum == 10){ rename $rsobjIDnoID11 "RGB4_R10"; }
+    if ($objidnum == 11){ rename $rsobjIDnoID11 "RGB4_G11"; }
+    if ($objidnum == 12){ rename $rsobjIDnoID11 "RGB4_B12"; }
+    if ($objidnum == 13){ rename $rsobjIDnoID11 "RGB5_R13"; }
+    if ($objidnum == 14){ rename $rsobjIDnoID11 "RGB5_G14"; }
+    if ($objidnum == 15){ rename $rsobjIDnoID11 "RGB5_B15"; }
+    if ($objidnum == 16){ rename $rsobjIDnoID11 "RGB6_R16"; }
+    if ($objidnum == 17){ rename $rsobjIDnoID11 "RGB6_G17"; }
+    if ($objidnum == 18){ rename $rsobjIDnoID11 "RGB6_B18"; }
+    if ($objidnum == 19){ rename $rsobjIDnoID11 "RGB7_R19"; }
+    if ($objidnum == 20){ rename $rsobjIDnoID11 "RGB7_G20"; }
+    if ($objidnum == 21){ rename $rsobjIDnoID11 "RGB7_B21"; }
+    
+}
+
+
+
+}
+//不存在的情况下创建RGB1
+global proc RS_ConditionCreateAOV_RGB1(){
+string $AOVall1[] = `ls -typ "RedshiftAOV"`;
+int $B1 = 0;
+for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
+{ 
+  if ($AOVall1[$q1] == "rs_RGB1"){
+       setAttr ($AOVall1[$q1]+".enabled") 0;
+       editRenderLayerAdjustment ($AOVall1[$q1]+".enabled");
+       setAttr ($AOVall1[$q1]+".enabled") 1;
+      $B1 = $B1+1;
+  }
+}
+ if($B1 == 0)
+{
+    RS_createAOV_RGB1();
+}
+}
+
+//不存在的情况下创建RGB2
+global proc RS_ConditionCreateAOV_RGB2(){
+string $AOVall2[] = `ls -typ "RedshiftAOV"`;
+int $B2 = 0;
+for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
+{ 
+  if ($AOVall2[$q2] == "rs_RGB2"){
+       setAttr ($AOVall2[$q2]+".enabled") 0;
+       editRenderLayerAdjustment ($AOVall2[$q2]+".enabled");
+       setAttr ($AOVall2[$q2]+".enabled") 1;
+      $B2 = $B2+1;
+  }
+}
+ if($B2 == 0)
+{
+    RS_createAOV_RGB2();
+}
+}
+
+//不存在的情况下创建RGB3
+global proc RS_ConditionCreateAOV_RGB3(){
+string $AOVall3[] = `ls -typ "RedshiftAOV"`;
+int $B3 = 0;
+for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
+{ 
+  if ($AOVall3[$q3] == "rs_RGB3"){
+       setAttr ($AOVall3[$q3]+".enabled") 0;
+       editRenderLayerAdjustment ($AOVall3[$q3]+".enabled");
+       setAttr ($AOVall3[$q3]+".enabled") 1;
+      $B3 = $B3+1;
+  }
+}
+ if($B3 == 0)
+{
+    RS_createAOV_RGB3();
+}
+}
+
+//不存在的情况下创建RGB4
+global proc RS_ConditionCreateAOV_RGB4(){
+string $AOVall4[] = `ls -typ "RedshiftAOV"`;
+int $B4 = 0;
+for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
+{ 
+  if ($AOVall4[$q4] == "rs_RGB4"){
+       setAttr ($AOVall4[$q4]+".enabled") 0;
+       editRenderLayerAdjustment ($AOVall4[$q4]+".enabled");
+       setAttr ($AOVall4[$q4]+".enabled") 1;
+      $B4 = $B4+1;
+  }
+}
+ if($B4 == 0)
+{
+    RS_createAOV_RGB4();
+}
+}
+
+
+
+//不存在的情况下创建RGB5
+global proc RS_ConditionCreateAOV_RGB5(){
+string $AOVall5[] = `ls -typ "RedshiftAOV"`;
+int $B5 = 0;
+for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
+{ 
+  if ($AOVall5[$q5] == "rs_RGB5"){
+       setAttr ($AOVall5[$q5]+".enabled") 0;
+       editRenderLayerAdjustment ($AOVall5[$q5]+".enabled");
+       setAttr ($AOVall5[$q5]+".enabled") 1;
+      $B5 = $B5+1;
+  }
+}
+ if($B5 == 0)
+{
+    RS_createAOV_RGB5();
+}
+}
+
+//不存在的情况下创建RGB6
+global proc RS_ConditionCreateAOV_RGB6(){
+string $AOVall6[] = `ls -typ "RedshiftAOV"`;
+int $B6 = 0;
+for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
+{ 
+  if ($AOVall6[$q6] == "rs_RGB6"){
+       setAttr ($AOVall6[$q6]+".enabled") 0;
+       editRenderLayerAdjustment ($AOVall6[$q6]+".enabled");
+       setAttr ($AOVall6[$q6]+".enabled") 1;
+      $B6 = $B6+1;
+  }
+}
+ if($B6 == 0)
+{
+    RS_createAOV_RGB6();
+}
+}
+
+//不存在的情况下创建RGB7
+global proc RS_ConditionCreateAOV_RGB7(){
+string $AOVall7[] = `ls -typ "RedshiftAOV"`;
+int $B7 = 0;
+for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
+{ 
+  if ($AOVall7[$q7] == "rs_RGB7"){
+       setAttr ($AOVall7[$q7]+".enabled") 0;
+       editRenderLayerAdjustment ($AOVall7[$q7]+".enabled");
+       setAttr ($AOVall7[$q7]+".enabled") 1;
+      $B7 = $B7+1;
+  }
+}
+ if($B7 == 0)
+{
+    RS_createAOV_RGB7();
+}
+}
+
+
+
+//创建AOV_RGB1
+global proc RS_createAOV_RGB1(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB1";
+setAttr -type "string" rs_RGB1.name "rs_RGB1";
+setAttr "rs_RGB1.fileFormat" 1;
+setAttr "rs_RGB1.mode" 1;
+setAttr "rs_RGB1.redId" 1;
+setAttr "rs_RGB1.greenId" 2;
+setAttr "rs_RGB1.blueId" 3;
+setAttr "rs_RGB1.enabled" 0;
+editRenderLayerAdjustment "rs_RGB1.enabled";
+setAttr "rs_RGB1.enabled" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建AOV_RGB2
+global proc RS_createAOV_RGB2(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB2";
+setAttr -type "string" rs_RGB2.name "rs_RGB2";
+setAttr "rs_RGB2.fileFormat" 1;
+setAttr "rs_RGB2.mode" 1;
+setAttr "rs_RGB2.redId" 4;
+setAttr "rs_RGB2.greenId" 5;
+setAttr "rs_RGB2.blueId" 6;
+setAttr "rs_RGB2.enabled" 0;
+editRenderLayerAdjustment "rs_RGB2.enabled";
+setAttr "rs_RGB2.enabled" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建AOV_RGB3
+global proc RS_createAOV_RGB3(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB3";
+setAttr -type "string" rs_RGB3.name "rs_RGB3";
+setAttr "rs_RGB3.fileFormat" 1;
+setAttr "rs_RGB3.mode" 1;
+setAttr "rs_RGB3.redId" 7;
+setAttr "rs_RGB3.greenId" 8;
+setAttr "rs_RGB3.blueId" 9;
+setAttr "rs_RGB3.enabled" 0;
+editRenderLayerAdjustment "rs_RGB3.enabled";
+setAttr "rs_RGB3.enabled" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建AOV_RGB4
+global proc RS_createAOV_RGB4(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB4";
+setAttr -type "string" rs_RGB4.name "rs_RGB4";
+setAttr "rs_RGB4.fileFormat" 1;
+setAttr "rs_RGB4.mode" 1;
+setAttr "rs_RGB4.redId" 10;
+setAttr "rs_RGB4.greenId" 11;
+setAttr "rs_RGB4.blueId" 12;
+setAttr "rs_RGB4.enabled" 0;
+editRenderLayerAdjustment "rs_RGB4.enabled";
+setAttr "rs_RGB4.enabled" 1;
+redshiftUpdateActiveAovList();
+}
+
+
+//创建AOV_RGB5
+global proc RS_createAOV_RGB5(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB5";
+setAttr -type "string" rs_RGB5.name "rs_RGB5";
+setAttr -type "string" rs_RGB5.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_RGB5/<Scene>_<RenderLayer>_RGB5";
+setAttr "rs_RGB5.dataType" 2;
+setAttr "rs_RGB5.fileFormat" 2;
+setAttr "rs_RGB5.mode" 1;
+setAttr "rs_RGB5.redId" 13;
+setAttr "rs_RGB5.greenId" 14;
+setAttr "rs_RGB5.blueId" 15;
+setAttr "rs_RGB5.enabled" 0;
+editRenderLayerAdjustment "rs_RGB5.enabled";
+setAttr "rs_RGB5.enabled" 1;
+redshiftUpdateActiveAovList();
+}
+
+
+//创建AOV_RGB6
+global proc RS_createAOV_RGB6(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB6";
+setAttr -type "string" rs_RGB6.name "rs_RGB6";
+setAttr -type "string" rs_RGB6.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_RGB6/<Scene>_<RenderLayer>_RGB6";
+setAttr "rs_RGB6.dataType" 2;
+setAttr "rs_RGB6.fileFormat" 2;
+setAttr "rs_RGB6.mode" 1;
+setAttr "rs_RGB6.redId" 16;
+setAttr "rs_RGB6.greenId" 17;
+setAttr "rs_RGB6.blueId" 18;
+setAttr "rs_RGB6.enabled" 0;
+editRenderLayerAdjustment "rs_RGB6.enabled";
+setAttr "rs_RGB6.enabled" 1;
+redshiftUpdateActiveAovList();
+}
+
+
+//创建AOV_RGB7
+global proc RS_createAOV_RGB7(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB7";
+setAttr -type "string" rs_RGB7.name "rs_RGB7";
+setAttr -type "string" rs_RGB7.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_RGB7/<Scene>_<RenderLayer>_RGB7";
+setAttr "rs_RGB7.dataType" 2;
+setAttr "rs_RGB7.fileFormat" 2;
+setAttr "rs_RGB7.mode" 1;
+setAttr "rs_RGB7.redId" 19;
+setAttr "rs_RGB7.greenId" 20;
+setAttr "rs_RGB7.blueId" 21;
+setAttr "rs_RGB7.enabled" 0;
+editRenderLayerAdjustment "rs_RGB7.enabled";
+setAttr "rs_RGB7.enabled" 1;
+redshiftUpdateActiveAovList();
+}
+
+
+//AOV中创建RGB层，并删除没用的RGB
+global proc RS_AOV_RGB_createAndDelete(){
+string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
+string $OBJnumin2 ;
+for($OBJnumin2 in $OBJnum)
+{
+    int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`; 
+    if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1(); }
+    if ( $objIDnumID <= 6){if ( $objIDnumID > 3){ RS_ConditionCreateAOV_RGB2(); }}
+    if ( $objIDnumID<= 9){if ( $objIDnumID > 6){ RS_ConditionCreateAOV_RGB3(); }}
+    if ( $objIDnumID <= 12){if ( $objIDnumID > 9){ RS_ConditionCreateAOV_RGB4(); }}
+    if ( $objIDnumID <= 15){if ( $objIDnumID > 12){ RS_ConditionCreateAOV_RGB5(); }}
+    if ( $objIDnumID <= 18){if ( $objIDnumID > 15){ RS_ConditionCreateAOV_RGB6(); }}
+    if ( $objIDnumID <= 21){if ( $objIDnumID > 18){ RS_ConditionCreateAOV_RGB7(); }}
+    }
+if (`objExists rs_RGB1`){
+    if (!`objExists RGB1_R1`){
+        if (!`objExists RGB1_G2`){
+            if (!`objExists RGB1_B3`){
+                delete rs_RGB1;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB2`){
+    if (!`objExists RGB2_R4`){
+        if (!`objExists RGB2_G5`){
+            if (!`objExists RGB2_B6`){
+                delete rs_RGB2;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB3`){
+    if (!`objExists RGB3_R7`){
+        if (!`objExists RGB3_G8`){
+            if (!`objExists RGB3_B9`){
+                delete rs_RGB3;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB4`){
+    if (!`objExists RGB4_R10`){
+        if (!`objExists RGB4_G11`){
+            if (!`objExists RGB4_B12`){
+                delete rs_RGB4;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB5`){
+    if (!`objExists RGB5_R13`){
+        if (!`objExists RGB5_G14`){
+            if (!`objExists RGB5_B15`){
+                delete rs_RGB5;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB6`){
+    if (!`objExists RGB6_R16`){
+        if (!`objExists RGB6_G17`){
+            if (!`objExists RGB6_B18`){
+                delete rs_RGB6;
+            }
+        }
+    }
+}
+if (`objExists rs_RGB7`){
+    if (!`objExists RGB7_R19`){
+        if (!`objExists RGB7_G20`){
+            if (!`objExists RGB7_B21`){
+                delete rs_RGB7;
+            }
+        }
+    }
+}
+}
+
+
+
+//创建RGBdisplaylayer
+global proc createRGBDisplayLayer(){ 
+
+string $RGB_RSobjid[]=`ls -type RedshiftObjectId`;
+string $RGB_RSobjidin;
+for ($RGB_RSobjidin in $RGB_RSobjid){
+    if($RGB_RSobjidin =="RGB1_R1"){
+        select -r -ne RGB1_R1 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB1_R1_g" -number 1 -nr;
+        setAttr RGB1_R1_g.displayType 0; setAttr RGB1_R1_g.color 0; setAttr RGB1_R1_g.overrideColorRGB 1 0 0; setAttr RGB1_R1_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB1_G2"){
+        select -r -ne RGB1_G2 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB1_G2_g" -number 1 -nr;
+        setAttr RGB1_G2_g.displayType 0; setAttr RGB1_G2_g.color 0; setAttr RGB1_G2_g.overrideColorRGB 0 1 0; setAttr RGB1_G2_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB1_B3"){
+        select -r -ne RGB1_B3 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB1_B3_g" -number 1 -nr;
+        setAttr RGB1_B3_g.displayType 0; setAttr RGB1_B3_g.color 0; setAttr RGB1_B3_g.overrideColorRGB 0 0 1; setAttr RGB1_B3_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB2_R4"){
+        select -r -ne RGB2_R4 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB2_R4_g" -number 1 -nr;
+        setAttr RGB2_R4_g.displayType 0; setAttr RGB2_R4_g.color 0; setAttr RGB2_R4_g.overrideColorRGB 0.5 0 0; setAttr RGB2_R4_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB2_G5"){
+        select -r -ne RGB2_G5 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB2_G5_g" -number 1 -nr;
+        setAttr RGB2_G5_g.displayType 0; setAttr RGB2_G5_g.color 0; setAttr RGB2_G5_g.overrideColorRGB 0 0.5 0; setAttr RGB2_G5_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB2_B6"){
+        select -r -ne RGB2_B6 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB2_B6_g" -number 1 -nr;
+        setAttr RGB2_B6_g.displayType 0; setAttr RGB2_B6_g.color 0; setAttr RGB2_B6_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB2_B6_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB3_R7"){
+        select -r -ne RGB3_R7 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB3_R7_g" -number 1 -nr;
+        setAttr RGB3_R7_g.displayType 0; setAttr RGB3_R7_g.color 0; setAttr RGB3_R7_g.overrideColorRGB 1 0.5 0.5; setAttr RGB3_R7_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB3_G8"){
+        select -r -ne RGB3_G8 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB3_G8_g" -number 1 -nr;
+        setAttr RGB3_G8_g.displayType 0; setAttr RGB3_G8_g.color 0; setAttr RGB3_G8_g.overrideColorRGB 0.5 1 0.5; setAttr RGB3_G8_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB3_B9"){
+        select -r -ne RGB3_B9 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB3_B9_g" -number 1 -nr;
+        setAttr RGB3_B9_g.displayType 0; setAttr RGB3_B9_g.color 0; setAttr RGB3_B9_g.overrideColorRGB 0.2049999833 0.74644804 1; setAttr RGB3_B9_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB4_R10"){
+        select -r -ne RGB4_R10 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB4_R10_g" -number 1 -nr;
+        setAttr RGB4_R10_g.displayType 0; setAttr RGB4_R10_g.color 0; setAttr RGB4_R10_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB4_R10_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB4_G11"){
+        select -r -ne RGB4_G11 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB4_G11_g" -number 1 -nr;
+        setAttr RGB4_G11_g.displayType 0; setAttr RGB4_G11_g.color 0; setAttr RGB4_G11_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB4_G11_g.overrideRGBColors 1; 
+}
+    if($RGB_RSobjidin =="RGB4_B12"){
+        select -r -ne RGB4_B12 ;
+        pickWalk -d up;
+        createDisplayLayer -name "RGB4_B12_g" -number 1 -nr;
+        setAttr RGB4_B12_g.displayType 0; setAttr RGB4_B12_g.color 0; setAttr RGB4_B12_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB4_B12_g.overrideRGBColors 1; 
+}
+}
+}
+
+
+
+
+//Sen层建aov
+global proc Senlayer_aov_pro()
+{
+editRenderLayerGlobals -currentRenderLayer Sen;
+source redshiftCreateAovTab;
+//RSAOV_Motion_pro();
+//Cha3S_AOV_pro();
+RSDepth_AOV_pro();
+RScustomAO_AOV_pro();
+RSEmission_AOV_pro();
+rs_DiffuseFilter_aov_pro();
+rs_GI_aov_pro();
+rs_Reflections_aov_pro();
+rs_Refractions_aov_pro();
+rs_SpecularLighting_aov_pro();
+rs_P_aov_pro();
+rs_VolumeLighting_aov_pro();
+rs_VolumeFogEmission_aov_pro();
+rs_N_aov_pro();
+rs_DiffuseLighting_aov_pro();
+rs_Shadows_aov_pro();
+rs_DiffuseLightingRaw_aov_pro();
+
+}
+
+//Cha层建aov
+global proc Chalayer_aov_pro()
+{
+editRenderLayerGlobals -currentRenderLayer Cha;
+source redshiftCreateAovTab;
+//RSAOV_Motion_pro();
+Cha3S_AOV_pro();
+RSDepth_AOV_pro();
+RScustomAO_AOV_pro();
+RScustomOC_AOV_pro();
+RSEmission_AOV_pro();
+rs_DiffuseFilter_aov_pro();
+rs_GI_aov_pro();
+rs_Reflections_aov_pro();
+rs_Refractions_aov_pro();
+rs_SpecularLighting_aov_pro();
+rs_P_aov_pro();
+//rs_VolumeLighting_aov_pro();
+//rs_VolumeFogEmission_aov_pro();
+rs_N_aov_pro();
+rs_DiffuseLighting_aov_pro();
+
+}
+
+//新建角色道具单独渲染的层
+global proc RSTransparent_G_pro()
+{
+    if(`objExists "Transparent_Group"`){
+        select -r Transparent_Group ;
+        SelectHierarchy;
+        int $Transp_num = size (`ls -sl`);
+        if ($Transp_num != 2 ){ 
+            string $renderlayer_all_name[] = `ls -typ "renderLayer"`;
+            int $shuliang = size($renderlayer_all_name);
+            int $A = 0;
+            for($i=0;$i<$shuliang;$i+=1){
+                if ($renderlayer_all_name[$i] == "BL"){
+                    RSTransparent_G_1_pro();
+                }
+                if ($renderlayer_all_name[$i] != "BL"){
+                    $A = $A+1;
+                } 
+            }
+            if($A == $shuliang){
+                createRenderLayer -name "BL" -number 1 -noRecurse Character_Group;
+                RSTransparent_G_1_pro();
+            }  
+        } 
+    }          
+}
+
+
+//玻璃加入BL层，上材质（内置）
+global proc RSTransparent_G_1_pro()
+{
+    editRenderLayerMembers -noRecurse BL Character_Group;
+    editRenderLayerGlobals -currentRenderLayer BL;
+    //层设渲染设置
+    ChaRenderLayer_set_pro();
+    //给材质
+    creat_RS_usebackground_m_pro();
+    select -r Cha_nor_Group ;
+    hyperShade -assign usebackground_BL_Material ;
+}
+
+//创建UB材质(内置)
+global proc creat_RS_usebackground_m_pro()
+{
+    if (!`objExists "usebackground_BL_Material"`)
+    {
+        shadingNode -n "usebackground_BL_Material" -asShader useBackground; 
+    } 
+    setAttr "usebackground_BL_Material.specularColor" -type double3 0 0 0 ;
+    setAttr "usebackground_BL_Material.reflectivity" 0;
+    setAttr "usebackground_BL_Material.reflectionLimit" 0;
+    setAttr "usebackground_BL_Material.shadowMask" 1;   
+}
+
+//选中物体上UB材质
+global proc RS_UB_M_final_pro()
+{
+SelectHierarchy;
+string $obj_All10[] =`ls -sl`;
+string $obj_mesh10;
+select -cl; 
+for ($obj_mesh10 in $obj_All10){
+    $NodeType10 = `nodeType $obj_mesh10`;
+    if ($NodeType10 == "mesh")
+    select -add $obj_mesh10 ;
+}
+string $objShape10[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod10[] =`ls -sl`;
+//给材质
+    creat_RS_usebackground_m_pro();
+    select -r $obj_mod10 ;
+    hyperShade -assign usebackground_BL_Material ;
+}
+
+
+
+//显示骨头 
+global proc showjoint_pro()
+{
+modelEditor -e -joints 1 modelPanel4;
+modelEditor -e -locators 1 modelPanel4;
+string $joint_G[] =`ls -type "joint"`;
+string $joint_in;
+for ($joint_in in $joint_G){
+    setAttr ($joint_in+".drawStyle") 1;
+}
+}
+
+//隐藏骨头 
+global proc hidejoint_pro()
+{
+modelEditor -e -joints 0 modelPanel4;
+modelEditor -e -locators 0 modelPanel4;
+modelEditor -e -cameras false modelPanel4;
+modelEditor -e -nurbsCurves false modelPanel4;
+}
+
+//关闭所有层 
+global proc closeAllRenderLayer_pro()
+{
+string $Rlayer1[]=`ls -type renderLayer`;
+string $renderLayers1;
+for($renderLayers1 in $Rlayer1)
+   {
+       if (`objExists ($renderLayers1+".renderable")`){
+       setAttr ($renderLayers1+".renderable") 0;
+   }
+   }
+}
+
+//断开灯光连接
+global proc rsbreak_light_pro()
+{
+string $Lightactive11[] = `ls -sl`;
+int $shuliang=size($Lightactive11) ;
+int $A1 = 0;
+for($i=1;$i<$shuliang;$i+=1)
+{   
+select -r $Lightactive11[0] ;
+select -tgl $Lightactive11[$i] ;
+lightlink -break -useActiveLights -useActiveObjects;      
+}
+}
+
+//连上灯光连接
+global proc rsmake_light_pro()
+{
+string $Lightactive12[] = `ls -sl`;
+int $shuliang=size($Lightactive12) ;
+
+for($i=1;$i<$shuliang;$i+=1)
+{   
+select -r $Lightactive12[0] ;
+select -tgl $Lightactive12[$i] ;
+lightlink -make -useActiveLights -useActiveObjects;     
+}
+}
+
+//参与反射on
+global proc Reflections_on()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".visibleInReflections");
+setAttr ($OBJin+".visibleInReflections") 1;
+}
+}
+
+//参与反射off
+global proc Reflections_off()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".visibleInReflections");
+setAttr ($OBJin+".visibleInReflections") 0;
+}
+}
+
+//参与折射on
+global proc Refractions_on()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".visibleInRefractions");
+setAttr ($OBJin+".visibleInRefractions") 1;
+}
+
+}
+
+//参与折射off
+global proc Refractions_off()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".visibleInRefractions");
+setAttr ($OBJin+".visibleInRefractions") 0;
+}
+
+}
+
+//产生投影on
+global proc CastsSha_on()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".castsShadows");  
+setAttr ($OBJin+".castsShadows") 1;
+}
+
+}
+
+//产生投影off
+global proc CastsSha_off()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".castsShadows");  
+setAttr ($OBJin+".castsShadows") 0;
+}
+
+}
+
+//接收投影on
+global proc ReceiveSha_on()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".receiveShadows");
+setAttr ($OBJin+".receiveShadows") 1;
+}
+
+}
+//接收投影off
+global proc ReceiveSha_off()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".receiveShadows");
+setAttr ($OBJin+".receiveShadows") 0;
+}
+
+}
+
+//visibility  on
+global proc Visbility_on()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".v");
+setAttr ($OBJin+".visibility") 1;
+}
+
+}
+
+//visibility  OFF
+global proc Visbility_off()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".v");
+setAttr ($OBJin+".visibility") 0;
+}
+
+}
+
+//渲染可视on
+global proc PrimaryVisbility_on()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".primaryVisibility");
+setAttr ($OBJin+".primaryVisibility") 1;
+}
+
+}
+//渲染可视off
+global proc PrimaryVisbility_off()
+{
+SelectHierarchy;
+string $obj_All3[] =`ls -sl`;
+string $obj_mesh1;
+select -cl; 
+for ($obj_mesh1 in $obj_All3){
+    $NodeType1 = `nodeType $obj_mesh1`;
+    if ($NodeType1 == "mesh")
+    select -add $obj_mesh1 ;
+}
+string $objShape[] =`ls -sl`;
+pickWalk -d up;
+string $obj_mod1[] =`ls -sl`;
+for($OBJin in $obj_mod1)
+{
+editRenderLayerAdjustment ($OBJin+".primaryVisibility");
+setAttr ($OBJin+".primaryVisibility") 0;
+}
+
+}
+
+
+//Character_Group只投影渲染不可视设置
+global proc Character_Group_PriVisibility_off_pro()
+{
+if (`objExists "Character_Group"`){
+   // editRenderLayerMembers -noRecurse Sen Character_Group;
+    if(!`objExists Cha_PriVisibility_off`){
+        select -r Character_Group ;
+        string $Cha_rsVisibilityset = `redshiftCreateVisibilityNode`;
+        rename $Cha_rsVisibilityset "Cha_PriVisibility_off";
+    }
+setAttr "Cha_PriVisibility_off.enable" 0;
+setAttr "Cha_PriVisibility_off.primaryRayVisible" 0;
+setAttr "Cha_PriVisibility_off.shadowReceiver" 0;
+setAttr "Cha_PriVisibility_off.shadowCaster" 1;
+editRenderLayerAdjustment -remove "Cha_PriVisibility_off.enable";
+setAttr "Cha_PriVisibility_off.enable" 0;
+editRenderLayerAdjustment "Cha_PriVisibility_off.enable";
+setAttr "Cha_PriVisibility_off.enable" 1;
+setAttr "Cha_PriVisibility_off.secondaryRayVisible" 0;
+}
+}
+
+//MV层（内置）
+global proc RSAOV_Motion_pro()
+{
+if(!`objExists "MotionVectors"`){
+rename (`redshiftCreateAov ("Motion Vectors")`) "MotionVectors";
+setAttr -type "string" MotionVectors.name "MotionVectors";
+}
+editRenderLayerAdjustment -remove "MotionVectors.enabled";
+setAttr "MotionVectors.enabled" 0;
+editRenderLayerAdjustment "MotionVectors.enabled";
+setAttr "MotionVectors.enabled" 1;
+setAttr "MotionVectors.maxMotionInPixels" 64;
+setAttr "MotionVectors.exrBits" 32;
+setAttr -type "string" MotionVectors.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "MotionVectors.fileFormat" 1;
+redshiftUpdateActiveAovList();
+print "AOV加入MV层";
+}
+
+
+//加入3s （内置）
+global proc Cha3S_AOV_pro()
+{
+source redshiftCreateAovTab;
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+if(!`objExists "SSS"`){
+rename (`redshiftCreateAov ("Sub Surface Scatter")`) "SSS";
+setAttr -type "string" SSS.name "SSS";
+}
+editRenderLayerAdjustment -remove "SSS.enabled";
+setAttr "SSS.enabled" 0;
+editRenderLayerAdjustment "SSS.enabled";
+setAttr "SSS.enabled" 1;
+setAttr -type "string" SSS.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "SSS.fileFormat" 1;
+redshiftUpdateActiveAovList();
+print "AOV加入3S";
+}
+
+//加入Z层
+global proc RSDepth_AOV_pro()
+{
+source redshiftCreateAovTab;
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+if(!`objExists "Z"`){
+rename (`redshiftCreateAov ("Depth")`) "Z";
+setAttr -type "string" Z.name "Z";
+}
+setAttr "Z.depthMode" 1;
+setAttr "Z.useCameraNearFar" 0;
+change_aov_Depth_max();
+editRenderLayerAdjustment -remove "Z.enabled";
+setAttr "Z.enabled" 0;
+editRenderLayerAdjustment "Z.enabled";
+setAttr "Z.enabled" 1;
+setAttr -type "string" Z.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "Z.fileFormat" 1;
+setAttr "Z.exrBits" 32;
+redshiftUpdateActiveAovList();
+print "AOV加入Z";
+}
+
+//调节Z最远值
+global proc change_aov_Depth_max()
+{
+int $Depth_max_zhi = `textField -q -text Depth_Scale ` ;
+setAttr "Z.maxDepth" $Depth_max_zhi;
+
+}
+
+
+//AOV加入AO层
+global proc RScustomAO_AOV_pro()
+{
+source redshiftCreateAovTab;
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+if(!`objExists "rs_AO"`){
+rename (`redshiftCreateAov ("Custom")`) "rs_AO";
+setAttr -type "string" rs_AO.name "rs_AO";
+}
+if(!`objExists  "NHRJ_aovAO_set_shader"`){
+shadingNode -n "NHRJ_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
+connectAttr -force NHRJ_aovAO_set_shader.outColor rs_AO.defaultShader;
+}
+setAttr "NHRJ_aovAO_set_shader.numSamples" 2048;
+setAttr "NHRJ_aovAO_set_shader.spread" 0.8;
+setAttr "NHRJ_aovAO_set_shader.fallOff" 3;
+setAttr "NHRJ_aovAO_set_shader.maxDistance" 10;
+editRenderLayerAdjustment -remove "rs_AO.enabled";
+setAttr "rs_AO.enabled" 0;
+editRenderLayerAdjustment "rs_AO.enabled";
+setAttr "rs_AO.enabled" 1;
+setAttr "rs_AO.exrBits" 32;
+setAttr -type "string" rs_AO.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr " rs_AO.fileFormat" 1;
+redshiftUpdateActiveAovList();
+print "AOV加入AO";
+}
+
+//AOV加入OC层
+global proc RScustomOC_AOV_pro()
+{
+source redshiftCreateAovTab;
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+if(!`objExists "rs_OC"`){
+rename (`redshiftCreateAov ("Custom")`) "rs_OC";
+setAttr -type "string" rs_OC.name "rs_OC";
+}
+if(!`objExists  "NHRJ_aovOC_set_shader"`){
+shadingNode -n "NHRJ_aovOC_set_shader" -asUtility ramp;
+shadingNode -n "NHRJ_aovOC_set_sampleshader" -asUtility samplerInfo;
+connectAttr -force NHRJ_aovOC_set_shader.outColor rs_OC.defaultShader;
+}
+setAttr NHRJ_aovOC_set_shader.colorEntryList[2].color -type double3 0.547278 0.547278 0.547278;
+setAttr NHRJ_aovOC_set_shader.colorEntryList[2].position 0.547278;
+setAttr "NHRJ_aovOC_set_shader.colorEntryList[0].color" -type double3 1 1 1 ;
+setAttr "NHRJ_aovOC_set_shader.colorEntryList[1].color" -type double3 0 0 0 ;
+setAttr "NHRJ_aovOC_set_shader.colorEntryList[2].position" 0.344;
+setAttr "NHRJ_aovOC_set_shader.colorEntryList[2].color" -type double3 0 0 0 ;
+setAttr "NHRJ_aovOC_set_shader.colorEntryList[1].position" 1;
+setAttr "NHRJ_aovOC_set_shader.colorEntryList[0].position" 0;
+connectAttr -f NHRJ_aovOC_set_sampleshader.facingRatio NHRJ_aovOC_set_shader.vCoord;
+setAttr "NHRJ_aovOC_set_shader.type" 0;
+setAttr "NHRJ_aovOC_set_shader.interpolation" 4;
+editRenderLayerAdjustment -remove "rs_OC.enabled";
+setAttr "rs_OC.enabled" 0;
+editRenderLayerAdjustment "rs_OC.enabled";
+setAttr "rs_OC.enabled" 1;
+setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr " rs_OC.fileFormat" 1;
+redshiftUpdateActiveAovList();
+print "AOV加入OC";
+}
+
+//加入Emission(内置)
+global proc RSEmission_AOV_pro()
+{
+source redshiftCreateAovTab;
+setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+if(!`objExists "Emission"`){
+rename (`redshiftCreateAov ("Emission")`) "Emission";
+setAttr -type "string" Emission.name "Emission";
+}
+editRenderLayerAdjustment -remove "Emission.enabled";
+setAttr "Emission.enabled" 0;
+setAttr "Emission.enabled" 0;
+editRenderLayerAdjustment "Emission.enabled";
+setAttr "Emission.enabled" 1;
+setAttr -type "string" Emission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "Emission.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建rs_DiffuseFilter(内置)
+global proc rs_DiffuseFilter_aov_pro(){
+if(!`objExists "DiffuseFilter"`){
+rename (`redshiftCreateAov ("Diffuse Filter")`) "DiffuseFilter";
+setAttr -type "string" DiffuseFilter.name "DiffuseFilter";
+}
+editRenderLayerAdjustment -remove "DiffuseFilter.enabled";
+setAttr "DiffuseFilter.enabled" 0;
+editRenderLayerAdjustment "DiffuseFilter.enabled";
+setAttr "DiffuseFilter.enabled" 1;
+setAttr -type "string" DiffuseFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "DiffuseFilter.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建GI(内置)
+global proc rs_GI_aov_pro(){
+if(!`objExists "GI"`){
+rename (`redshiftCreateAov ("Global Illumination")`) "GI";
+setAttr -type "string" GI.name "GI";
+}
+editRenderLayerAdjustment -remove "GI.enabled";
+setAttr "GI.enabled" 0;
+editRenderLayerAdjustment "GI.enabled";
+setAttr "GI.enabled" 1;
+setAttr -type "string" GI.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "GI.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建Reflections(内置)
+global proc rs_Reflections_aov_pro(){
+if(!`objExists "Reflections"`){
+rename (`redshiftCreateAov ("Reflections")`) "Reflections";
+setAttr -type "string" Reflections.name "Reflections";
+}
+editRenderLayerAdjustment -remove "Reflections.enabled";
+setAttr "Reflections.enabled" 0;
+editRenderLayerAdjustment "Reflections.enabled";
+setAttr "Reflections.enabled" 1;
+setAttr -type "string" Reflections.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "Reflections.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建Refractions(内置)
+global proc rs_Refractions_aov_pro(){
+if(!`objExists "Refractions"`){
+rename (`redshiftCreateAov ("Refractions")`) "Refractions";
+setAttr -type "string" Refractions.name "Refractions";
+}
+editRenderLayerAdjustment -remove "Refractions.enabled";
+setAttr "Refractions.enabled" 0;
+editRenderLayerAdjustment "Refractions.enabled";
+setAttr "Refractions.enabled" 1;
+setAttr -type "string" Refractions.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "Refractions.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+
+
+//创建Specular Lighting(内置)
+global proc rs_SpecularLighting_aov_pro(){
+if(!`objExists "SpecularLighting"`){
+rename (`redshiftCreateAov ("Specular Lighting")`) "SpecularLighting";
+setAttr -type "string" SpecularLighting.name "SpecularLighting";
+}
+editRenderLayerAdjustment -remove "SpecularLighting.enabled";
+setAttr "SpecularLighting.enabled" 0;
+editRenderLayerAdjustment "SpecularLighting.enabled";
+setAttr "SpecularLighting.enabled" 1;
+setAttr -type "string" SpecularLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "SpecularLighting.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建World Position(内置)
+global proc rs_P_aov_pro(){
+if(!`objExists "P"`){
+rename (`redshiftCreateAov ("World Position")`) "P";
+setAttr -type "string" P.name "P";
+}
+editRenderLayerAdjustment -remove "P.enabled";
+setAttr "P.enabled" 0;
+editRenderLayerAdjustment "P.enabled";
+setAttr "P.enabled" 1;
+setAttr -type "string" P.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "P.fileFormat" 1;
+setAttr "P.exrBits" 32;
+redshiftUpdateActiveAovList();
+}
+
+//创建Volume Lighting(内置)
+global proc rs_VolumeLighting_aov_pro(){
+if(!`objExists "VolumeLighting"`){
+rename (`redshiftCreateAov ("Volume Lighting")`) "VolumeLighting";
+setAttr -type "string" VolumeLighting.name "VolumeLighting";
+}
+editRenderLayerAdjustment -remove "VolumeLighting.enabled";
+setAttr "VolumeLighting.enabled" 0;
+editRenderLayerAdjustment "VolumeLighting.enabled";
+setAttr "VolumeLighting.enabled" 1;
+setAttr -type "string" VolumeLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "VolumeLighting.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建Volume Fog Emission(内置)
+global proc rs_VolumeFogEmission_aov_pro(){
+if(!`objExists "VolumeFogEmission"`){
+rename (`redshiftCreateAov ("Volume Fog Emission")`) "VolumeFogEmission";
+setAttr -type "string" VolumeFogEmission.name "VolumeFogEmission";
+}
+editRenderLayerAdjustment -remove "VolumeFogEmission.enabled";
+setAttr "VolumeFogEmission.enabled" 0;
+editRenderLayerAdjustment "VolumeFogEmission.enabled";
+setAttr "VolumeFogEmission.enabled" 1;
+setAttr -type "string" VolumeFogEmission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "VolumeFogEmission.fileFormat" 1;
+redshiftUpdateActiveAovList();
+
+}
+
+//创建Normals(内置)
+global proc rs_N_aov_pro(){
+if(!`objExists "N"`){
+rename (`redshiftCreateAov ("Normals")`) "N";
+setAttr -type "string" N.name "N";
+}
+editRenderLayerAdjustment -remove "N.enabled";
+setAttr "N.enabled" 0;
+editRenderLayerAdjustment "N.enabled";
+setAttr "N.enabled" 1;
+setAttr -type "string" N.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "N.fileFormat" 1;
+setAttr "N.exrBits" 32;
+redshiftUpdateActiveAovList();
+}
+
+//创建Diffuse Lighting(内置)
+global proc rs_DiffuseLighting_aov_pro(){
+if(!`objExists "DiffuseLighting"`){
+rename (`redshiftCreateAov ("Diffuse Lighting")`) "DiffuseLighting";
+setAttr -type "string" DiffuseLighting.name "DiffuseLighting";
+}
+editRenderLayerAdjustment -remove "DiffuseLighting.enabled";
+setAttr "DiffuseLighting.enabled" 0;
+editRenderLayerAdjustment "DiffuseLighting.enabled";
+setAttr "DiffuseLighting.enabled" 1;
+setAttr -type "string" DiffuseLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "DiffuseLighting.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建Shadows(内置)
+global proc rs_Shadows_aov_pro(){
+if(!`objExists "Shadows"`){
+rename (`redshiftCreateAov ("Shadows")`) "Shadows";
+setAttr -type "string" Shadows.name "Shadows";
+}
+editRenderLayerAdjustment -remove "Shadows.enabled";
+setAttr "Shadows.enabled" 0;
+editRenderLayerAdjustment "Shadows.enabled";
+setAttr "Shadows.enabled" 1;
+setAttr -type "string" Shadows.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "Shadows.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+
+
+//创建rs_DiffuseLightingRaw(内置)
+global proc rs_DiffuseLightingRaw_aov_pro(){
+if(!`objExists "DiffuseLightingRaw"`){
+rename (`redshiftCreateAov ("Diffuse Lighting Raw")`) "DiffuseLightingRaw";
+setAttr -type "string" DiffuseLightingRaw.name "DiffuseLightingRaw";
+}
+editRenderLayerAdjustment -remove "DiffuseLightingRaw.enabled";
+setAttr "DiffuseLightingRaw.enabled" 0;
+editRenderLayerAdjustment "DiffuseLightingRaw.enabled";
+setAttr "DiffuseLightingRaw.enabled" 1;
+setAttr -type "string" DiffuseLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+setAttr "DiffuseLightingRaw.fileFormat" 1;
+redshiftUpdateActiveAovList();
+}
+
+//创建建Cha aovRGB + cha圆滑
+global proc createChaaovRGBandSmooth()
+{ 
+createAOV_RGBlayer_new();
+
+smoothNode_auto_pro();
+
+
+}
+//一键分层
+global proc NHRJRenderlayer()
+{ 
+
+
+  NHRJ_RenderSet_1_pro();
+ string $renderlayer_all_name[] = `ls -typ "renderLayer"`;
+    string $RL_in;
+    for ($RL_in in $renderlayer_all_name){
+	    if ($RL_in == "defaultRenderLayer1"){
+	        renderLayerEditorDeleteLayer RenderLayerTab defaultRenderLayer1;
+	    }
+        if ($RL_in == "Sen_yiceng"){
+            renderLayerEditorRenderable RenderLayerTab $RL_in "0";
+        }
+    }
+    renderLayerEditorRenderable RenderLayerTab "defaultRenderLayer" "0";
+
+    //displaylayer里面用T模式显示都改掉
+     string $DSPLR[] = `ls -typ "displayLayer"`;
+     string $DSPLRin;
+	for ($DSPLRin in $DSPLR){
+	    int $num = `getAttr ($DSPLRin+".displayType")`;
+	    if ($num == 1){
+	    setAttr ($DSPLRin+".displayType") 0;
+	    }
+	}
+    //建圆滑节点
+    smoothNode_auto_pro();
+    //角色道具场景加入sen层,建aov
+    ChaAddintoSenLayer_auto_pro();
+    //建Cha层，加入角色道具,建aov
+    ChaAddintoChaLayer_auto_pro();
+    //Tool层，加入角色道具,建aov
+    ChaAddintoToolLayer_auto_pro();
+    //Sha层，加入角色道具
+    ChaAddintoShaLayer_auto_pro();
+    //建需要单独渲染的层
+    RSTransparent_G_pro();
+    //sengroup可视
+//   if (`objExists "Sen_Group"`){
+//        setAttr "Sen_Group.lodVisibility" 1;
+//    }
+    //关掉shape
+    //outlinerEditor -edit -showShapes false outlinerPanel3;
+    //删除多余材质球
+    //deleteUnusedShader1_pro();
+NHRJ_RenderSet_pro;
+
+}
