@@ -403,7 +403,7 @@ for ($RGB_RSobjidin in $RGB_RSobjid){
 }
 }
 
-/*
+
 //创建AOV_RGB层
 global proc createAOV_RGBlayer(){
 deleteRGBDisplayLayer();
@@ -459,7 +459,7 @@ if (`objExists rs_RGB4`){
 
 createRGBDisplayLayer();
 }
-*/
+
 
 //OC material button
 
