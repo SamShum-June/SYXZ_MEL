@@ -1894,24 +1894,596 @@
                 print ("Creat_ISO_maya2019"+"\n");
             }
 
-//////
+///////////// prs SET ///////////////////////////////////////////////////////////////////
+    /// 1K ///
+        global proc XRSZ_1K(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 1024;
+            setAttr defaultResolution.height 1024;
+            setAttr "defaultResolution.deviceAspectRatio" 1;
+            setAttr "defaultResolution.pixelAspect" 1;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
+
+    /// 2K ///
+        global proc XRSZ_2K(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 2048;
+            setAttr defaultResolution.height 2048;
+            setAttr "defaultResolution.deviceAspectRatio" 1;
+            setAttr "defaultResolution.pixelAspect" 1;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
+
+    /// 3K ///
+        global proc XRSZ_3K(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 3072;
+            setAttr defaultResolution.height 3072;
+            setAttr "defaultResolution.deviceAspectRatio" 1;
+            setAttr "defaultResolution.pixelAspect" 1;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
+
+    /// 4K ///
+        global proc XRSZ_4K(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 4096;
+            setAttr defaultResolution.height 4096;
+            setAttr "defaultResolution.deviceAspectRatio" 1;
+            setAttr "defaultResolution.pixelAspect" 1;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
+
+/*
+global proc DR(){
+    string $DRLJ=`textField -q -text DRSR`;
+    file -import  $DRLJ ;
+}*/
+
+    /// 自定义镜头分辨率///
+
+        global proc set_CS_imagesize(){
+            string $widthcs=`textField -q -text cs_width`;
+            string $Hightcs=`textField -q -text cs_Hight`;
+            setAttr defaultResolution.width $widthcs;
+            setAttr defaultResolution.height $Hightcs;
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
 
 
+///////////////////////////////////////////////////
 
 
+    /// HD720 ///
+        global proc XRSZ_HD720(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 1280;
+            setAttr defaultResolution.height 720;
+            setAttr "defaultResolution.deviceAspectRatio" 1.777;
+            setAttr "defaultResolution.pixelAspect" 1.000;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
 
+    /// HD1080 ///
+        global proc XRSZ_HD1080(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 1920;
+            setAttr defaultResolution.height 1080;
+            setAttr "defaultResolution.deviceAspectRatio" 1.777;
+            setAttr "defaultResolution.pixelAspect" 1.000;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
 
+    /// 4096_2305 ///
+        global proc XRSZ_4096_2305(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 4096;
+            setAttr defaultResolution.height 2305;
+            setAttr "defaultResolution.deviceAspectRatio" 1.777;
+            setAttr "defaultResolution.pixelAspect" 1.000;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
 
+    /// 720*1280 ///
+        global proc XRSZ_720_1280(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 720;
+            setAttr defaultResolution.height 1280;
+            setAttr "defaultResolution.deviceAspectRatio" 0.562;
+            setAttr "defaultResolution.pixelAspect" 1.000;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
 
+    /// 1080*1920 ///
+        global proc XRSZ_1080_1920(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 1080;
+            setAttr defaultResolution.height 1920;
+            setAttr "defaultResolution.deviceAspectRatio" 0.562;
+            setAttr "defaultResolution.pixelAspect" 1.000;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
 
+    /// 2305*4096 ///
+        global proc XRSZ_2305_4096(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+            setAttr "redshiftOptions.imageFormat" 2;
+            setAttr "defaultRenderGlobals.animation" 1;
+            setAttr "redshiftOptions.exrForceMultilayer" 1;
+            setAttr "redshiftOptions.exrMultipart" 1;
+            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+            string $Cam[] =`ls -ca`;
+            setAttr ($Cam[0]+".renderable") 1;
+            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+            setAttr "perspShape.farClipPlane" 10000000;
+            setAttr "perspShape.renderable" 0;
+            setAttr defaultResolution.width 2305;
+            setAttr defaultResolution.height 4096;
+            setAttr "defaultResolution.deviceAspectRatio" 0.563;
+            setAttr "defaultResolution.pixelAspect" 1.000;
+            setAttr "redshiftOptions.unifiedMinSamples" 512;
+            setAttr "redshiftOptions.unifiedMaxSamples" 512;
+            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+            setAttr "redshiftOptions.enableDebugCapture" 0;
+            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+            if( `objExists $RS_Volume[0]` ){
+            setAttr ($RS_Volume[0]+".enable") 0;}
+            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+            if( `objExists $RS_Photographic[0]` ){
+            setAttr ($RS_Photographic[0]+".enable") 0;}
+            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+            if( `objExists $RS_PhysicalSky[0]` ){
+            setAttr ($RS_PhysicalSky[0]+".on") 0;}
+            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+            setAttr "redshiftOptions.primaryGIEngine" 4;
+            setAttr "redshiftOptions.secondaryGIEngine" 0;
+        }
 
+/////////做镜头////////
+    ///1_Character_Group+ID
+        global proc Creat_Char_Group_ID(){
+            Creat_Char_Group();
+            SL_Char_Creat_ID();
+        }
 
+    ///2_Set_Sen_CHA_AOVsID
+        global proc Set_Sen_CHA_ID(){
+            Auto_Creat_AOVs_EXR();
+            Sen_Aovs_EXR();
+        }
 
+////2017横屏
+    ///Aovs+ISO+HD720
+        global proc Aovs_iso2017_HD720_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_HD720();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2017();
 
+        }
+    ///Aovs+ISO+HD1080
+        global proc Aovs_iso2017_HD1080_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_HD1080();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2017();
+        }
+    ///Aovs+ISO+4K
+        global proc Aovs_iso2017_4K_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_4096_2305();
+            creat_SHAlig();
+            importCHAlig();            
+            ISO_maya2017();
+        }
 
+////2019横屏
+    ///Aovs+ISO+HD720
+        global proc Aovs_iso2019_HD720_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_HD720();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2019();
+        }
+    ///Aovs+ISO+HD1080
+        global proc Aovs_iso2019_HD1080_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_HD1080();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2019();
+        }
+    ///Aovs+ISO+4K
+        global proc Aovs_iso2019_4K_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_4096_2305();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2019();
+        }
 
+////2017竖屏
+    ///Aovs_iso+720*1280
+        global proc Aovs_iso2017_720_1280_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_720_1280();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2017();
+        }
+    ///Aovs_iso+1080*1920
+        global proc Aovs_iso2017_1080_1920_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_1080_1920();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2017();
+        }
+    ///Aovs_iso+SP4K
+        global proc Aovs_iso2017_SP4K_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_2305_4096();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2017();
+        }
 
-
+////2019竖屏
+    ///Aovs_iso+720*1280
+        global proc Aovs_iso2019_720_1280_exr(){
+            RS_Full_Aovs_sam();
+            importCHAlig();
+            XRSZ_720_1280();
+            ISO_maya2019();
+        }
+    ///Aovs_iso+1080*1920
+        global proc Aovs_iso2019_1080_1920_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_1080_1920();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2019();
+        }
+    ///Aovs_iso+SP4K
+        global proc Aovs_iso2019_SP4K_exr(){
+            RS_Full_Aovs_sam();
+            XRSZ_2305_4096();
+            creat_SHAlig();
+            importCHAlig();
+            ISO_maya2019();
+        }
 
 
 
