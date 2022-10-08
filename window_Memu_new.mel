@@ -33,14 +33,22 @@
                 button -w 10 -h 40 -bgc 0 0 0.134 -l "打开Optimize and Creat ID Aovs SET 窗口" -c "Optimize_and_Creat_ID_Aovs_SET_window"; //ok
                         setParent ..; 
 
-        frameLayout  -l "AOVs SET"   -w 500 -h 130 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
+        frameLayout  -l "AOVs SET"   -w 500 -h 180 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
                 text -w 80 -h 13 -bgc 0 0 0.134 -l "Creat AOVs & ISO 选择你需要创建的Aovs 和 ISO使用的maya版本" ;
-                text -w 10  -h 10 -l "选择创建 AOVs 的种类" ; 
+                text -w 10  -h 10 -l "选择创建EXR AOVs 的种类" ; 
                 rowColumnLayout -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5 ;
-                        button -l "RS FULL AOVs" -c "RS_Full_Aovs_sam" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Full_Aovs" ; //ok
-                        button -l "RS POSE AOVs" -c "RS_Pose_Aovs_sam" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Pose_Aovs" ; //ok
-                        button -l "RS SEN AOVs"  -c "RS_Sen_Aovs_sam" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Sen_Aovs" ; //ok
-                        setParent ..;                    
+                        button -l "RS FULL AOVs EXR" -c "RS_Full_Aovs_exr" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Full_Aovs" ; //ok
+                        button -l "RS POSE AOVs EXR" -c "RS_Pose_Aovs_exr" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Pose_Aovs" ; //ok
+                        button -l "RS SEN AOVs EXR"  -c "RS_Sen_Aovs_exr" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Sen_Aovs" ; //ok
+                        setParent ..;
+
+                text -w 10  -h 10 -l "选择创建PNG AOVs 的种类" ; 
+                rowColumnLayout -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5 ;
+                        button -l "RS FULL AOVs PNG" -c "RS_Full_Aovs_png" -h 20 -w 110 -bgc 0.767 1.587 0.025 -ann "RS_Full_Aovs" ; //ok
+                        button -l "RS POSE AOVs PNG" -c "RS_Pose_Aovs_png" -h 20 -w 110 -bgc 0.767 1.587 0.025 -ann "RS_Pose_Aovs" ; //ok
+                        button -l "RS SEN AOVs PNG"  -c "RS_Sen_Aovs_png" -h 20 -w 110 -bgc 0.767 1.587 0.025 -ann "RS_Sen_Aovs" ; //ok
+                        setParent ..; 
+
                 text -w 10  -h 10 -l "选择创建 ISO 你现在使用的maya版本" ; 
                 rowColumnLayout -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5;            
                         button -l "ISO maya2017" -c "ISO_maya2017" -h 20 -w 110 -bgc 0 1 1 -ann "ISO_maya2017" ; //ok
