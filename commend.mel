@@ -1441,1060 +1441,988 @@
 
 
 ////////////// AOVs EXR & PNG ///////////////////////////////////////////////////////////////////////
-//EXR
-    ///////////Creat Full AOVs exr
-        global proc RS_Full_Aovs_exr(){
-            RScustom_AO_Aov_exr();
-            RScustom_OC_Aov_exr();
-            RS_Emission_Aov_exr();
-            RS_DiffuseFilter_Aov_exr();
-            RS_DiffuseLightingRaw_Aov_exr();
-            RS_MotionVectors_Aov_exr();
-            RS_ReflectionsFilter_Aov_exr();
-            RS_ReflectionsRaw_Aov_exr();
-            RS_RefractionsFilter_Aov_exr();
-            RS_RefractionsRaw_Aov_exr();
-            RS_SpecularLighting_Aov_exr();
-            RS_TransGIRaw_Aov_exr();
-            RS_TransLightingRaw_Aov_exr();
-            RS_VolumeFogEmission_Aov_exr();
-            RS_Shadows_Aov_exr();
-            RS_P_Aov_exr();
-            RS_Z_Aov_exr();
-            RS_N_Aov_exr();
-            RS_SSSRaw_Aov_exr();
-            RS_SSS_Aov_exr();
-            RS_GIRaw_Aov_exr();
-        }
-    ///////////Creat POSE AOVs exr
-        global proc RS_Pose_Aovs_exr(){
-            RScustom_AO_Aov_exr();
-            RScustom_OC_Aov_exr();
-            RS_DiffuseFilter_Aov_exr();
-            RS_Emission_Aov_exr();
-            RS_ReflectionsRaw_Aov_exr();
-            RS_SpecularLighting_Aov_exr();
-            RS_SSSRaw_Aov_exr();
-            RS_SSS_Aov_exr();
-        }
-    ///////////Creat SEN AOVs exr
-        global proc RS_Sen_Aovs_exr(){
-            RScustom_AO_Aov_exr();
-            RS_Emission_Aov_exr();
-            RS_DiffuseFilter_Aov_exr();
-            RS_ReflectionsRaw_Aov_exr();
-            RS_Shadows_Aov_exr();
-            RS_TransGIRaw_Aov_exr();
-            RS_GIRaw_Aov_exr();
-            RS_SpecularLighting_Aov_exr();
-            RS_P_Aov_exr();
-            RS_Z_Aov_exr();
-            RS_N_Aov_exr();
-            RS_VolumeFogEmission_Aov_exr();
-            RS_TransGIRaw_Aov_exr();
-            RS_TransLightingRaw_Aov_exr();
-        }
+    //EXR
+        ///////////Creat Full AOVs exr
+            global proc RS_Full_Aovs_exr(){
+                RScustom_AO_Aov_exr();
+                RScustom_OC_Aov_exr();
+                RS_Emission_Aov_exr();
+                RS_DiffuseFilter_Aov_exr();
+                RS_DiffuseLightingRaw_Aov_exr();
+                RS_MotionVectors_Aov_exr();
+                RS_ReflectionsFilter_Aov_exr();
+                RS_ReflectionsRaw_Aov_exr();
+                RS_RefractionsFilter_Aov_exr();
+                RS_RefractionsRaw_Aov_exr();
+                RS_SpecularLighting_Aov_exr();
+                RS_TransGIRaw_Aov_exr();
+                RS_TransLightingRaw_Aov_exr();
+                RS_VolumeFogEmission_Aov_exr();
+                RS_Shadows_Aov_exr();
+                RS_P_Aov_exr();
+                RS_Z_Aov_exr();
+                RS_N_Aov_exr();
+                RS_SSSRaw_Aov_exr();
+                RS_SSS_Aov_exr();
+                RS_GIRaw_Aov_exr();
+            }
+        ///////////Creat POSE AOVs exr
+            global proc RS_Pose_Aovs_exr(){
+                RScustom_AO_Aov_exr();
+                RScustom_OC_Aov_exr();
+                RS_DiffuseFilter_Aov_exr();
+                RS_Emission_Aov_exr();
+                RS_ReflectionsRaw_Aov_exr();
+                RS_SpecularLighting_Aov_exr();
+                RS_SSSRaw_Aov_exr();
+                RS_SSS_Aov_exr();
+            }
+        ///////////Creat SEN AOVs exr
+            global proc RS_Sen_Aovs_exr(){
+                RScustom_AO_Aov_exr();
+                RS_Emission_Aov_exr();
+                RS_DiffuseFilter_Aov_exr();
+                RS_ReflectionsRaw_Aov_exr();
+                RS_Shadows_Aov_exr();
+                RS_TransGIRaw_Aov_exr();
+                RS_GIRaw_Aov_exr();
+                RS_SpecularLighting_Aov_exr();
+                RS_P_Aov_exr();
+                RS_Z_Aov_exr();
+                RS_N_Aov_exr();
+                RS_VolumeFogEmission_Aov_exr();
+                RS_TransGIRaw_Aov_exr();
+                RS_TransLightingRaw_Aov_exr();
+            }
 
-//PNG
-    ///////////Creat Full AOVs png
-        global proc RS_Full_Aovs_png(){
-            RScustom_AO_Aov_png();
-            RScustom_OC_Aov_png();
-            RS_Emission_Aov_png();
-            RS_DiffuseFilter_Aov_png();
-            RS_DiffuseLightingRaw_Aov_png();
-            RS_MotionVectors_Aov_png();
-            RS_ReflectionsFilter_Aov_png();
-            RS_ReflectionsRaw_Aov_png();
-            RS_RefractionsFilter_Aov_png();
-            RS_RefractionsRaw_Aov_png();
-            RS_SpecularLighting_Aov_png();
-            RS_TransGIRaw_Aov_png();
-            RS_TransLightingRaw_Aov_png();
-            RS_VolumeFogEmission_Aov_png();
-            RS_Shadows_Aov_png();
-            RS_P_Aov_png();
-            RS_Z_Aov_png();
-            RS_N_Aov_png();
-            RS_SSSRaw_Aov_png();
-            RS_SSS_Aov_png();
-            RS_GIRaw_Aov_png();
-        }
-    ///////////Creat POSE AOVs png
-        global proc RS_Pose_Aovs_png(){
-            RScustom_AO_Aov_png();
-            RScustom_OC_Aov_png();
-            RS_DiffuseFilter_Aov_png();
-            RS_Emission_Aov_png();
-            RS_ReflectionsRaw_Aov_png();
-            RS_SpecularLighting_Aov_png();
-            RS_SSSRaw_Aov_png();
-            RS_SSS_Aov_png();
-        }
-    ///////////Creat SEN AOVs png
-        global proc RS_Sen_Aovs_png(){
-            RScustom_AO_Aov_png();
-            RS_Emission_Aov_png();
-            RS_DiffuseFilter_Aov_png();
-            RS_ReflectionsRaw_Aov_png();
-            RS_Shadows_Aov_png();
-            RS_TransGIRaw_Aov_png();
-            RS_GIRaw_Aov_png();
-            RS_SpecularLighting_Aov_png();
-            RS_P_Aov_png();
-            RS_Z_Aov_png();
-            RS_N_Aov_png();
-            RS_VolumeFogEmission_Aov_png();
-            RS_TransGIRaw_Aov_png();
-            RS_TransLightingRaw_Aov_png();
-        }
-
-
-///////////// AOVs prs exr ///////////////////////////////////////////////////////////////////
-    //Creat AOV AO exr
-        global proc RScustom_AO_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "rs_AO"`){
-            rename (`redshiftCreateAov ("Custom")`) "rs_AO";
-            setAttr -type "string" rs_AO.name "rs_AO";
+    //PNG
+        ///////////Creat Full AOVs png
+            global proc RS_Full_Aovs_png(){
+                RScustom_AO_Aov_png();
+                RScustom_OC_Aov_png();
+                RS_Emission_Aov_png();
+                RS_DiffuseFilter_Aov_png();
+                RS_DiffuseLightingRaw_Aov_png();
+                RS_MotionVectors_Aov_png();
+                RS_ReflectionsFilter_Aov_png();
+                RS_ReflectionsRaw_Aov_png();
+                RS_RefractionsFilter_Aov_png();
+                RS_RefractionsRaw_Aov_png();
+                RS_SpecularLighting_Aov_png();
+                RS_TransGIRaw_Aov_png();
+                RS_TransLightingRaw_Aov_png();
+                RS_VolumeFogEmission_Aov_png();
+                RS_Shadows_Aov_png();
+                RS_P_Aov_png();
+                RS_Z_Aov_png();
+                RS_N_Aov_png();
+                RS_SSSRaw_Aov_png();
+                RS_SSS_Aov_png();
+                RS_GIRaw_Aov_png();
             }
-            if(!`objExists  "RS_aovAO_set_shader"`){
-            shadingNode -n "RS_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
-            connectAttr -force RS_aovAO_set_shader.outColor rs_AO.defaultShader;
+        ///////////Creat POSE AOVs png
+            global proc RS_Pose_Aovs_png(){
+                RScustom_AO_Aov_png();
+                RScustom_OC_Aov_png();
+                RS_DiffuseFilter_Aov_png();
+                RS_Emission_Aov_png();
+                RS_ReflectionsRaw_Aov_png();
+                RS_SpecularLighting_Aov_png();
+                RS_SSSRaw_Aov_png();
+                RS_SSS_Aov_png();
             }
-            setAttr "RS_aovAO_set_shader.numexrples" 2048;
-            setAttr "RS_aovAO_set_shader.spread" 0.8;
-            setAttr "RS_aovAO_set_shader.fallOff" 3;
-            setAttr "RS_aovAO_set_shader.maxDistance" 10;
-            setAttr "rs_AO.enabled" 0;
-            setAttr "rs_AO.exrBits" 32;
-            setAttr -type "string" rs_AO.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_AO.dataType" 2;
-            setAttr "rs_AO.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_AO_exr"+"\n");
-        }
-    //Creat AOV OC exr
-        global proc RScustom_OC_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "rs_OC"`){
-            rename (`redshiftCreateAov ("Custom")`) "rs_OC";
-            setAttr -type "string" rs_OC.name "rs_OC";
+        ///////////Creat SEN AOVs png
+            global proc RS_Sen_Aovs_png(){
+                RScustom_AO_Aov_png();
+                RS_Emission_Aov_png();
+                RS_DiffuseFilter_Aov_png();
+                RS_ReflectionsRaw_Aov_png();
+                RS_Shadows_Aov_png();
+                RS_TransGIRaw_Aov_png();
+                RS_GIRaw_Aov_png();
+                RS_SpecularLighting_Aov_png();
+                RS_P_Aov_png();
+                RS_Z_Aov_png();
+                RS_N_Aov_png();
+                RS_VolumeFogEmission_Aov_png();
+                RS_TransGIRaw_Aov_png();
+                RS_TransLightingRaw_Aov_png();
             }
-            if(!`objExists  "RS_aovOC_set_shader"`){
-            shadingNode -n "RS_aovOC_set_shader" -asUtility ramp;
-            shadingNode -n "RS_aovOC_set_exrpleshader" -asUtility exrplerInfo;
-            connectAttr -force RS_aovOC_set_shader.outColor rs_OC.defaultShader;
-            }
-            setAttr RS_aovOC_set_shader.colorEntryList[2].color -type double3 0.547278 0.547278 0.547278;
-            setAttr RS_aovOC_set_shader.colorEntryList[2].position 0.547278;
-            setAttr "RS_aovOC_set_shader.colorEntryList[0].color" -type double3 1 1 1 ;
-            setAttr "RS_aovOC_set_shader.colorEntryList[1].color" -type double3 0 0 0 ;
-            setAttr "RS_aovOC_set_shader.colorEntryList[2].position" 0.344;
-            setAttr "RS_aovOC_set_shader.colorEntryList[2].color" -type double3 0 0 0 ;
-            setAttr "RS_aovOC_set_shader.colorEntryList[1].position" 1;
-            setAttr "RS_aovOC_set_shader.colorEntryList[0].position" 0;
-            connectAttr -f RS_aovOC_set_exrpleshader.facingRatio RS_aovOC_set_shader.vCoord;
-            setAttr "RS_aovOC_set_shader.type" 0;
-            setAttr "RS_aovOC_set_shader.interpolation" 4;
-            setAttr "rs_OC.enabled" 0;
-            setAttr "rs_OC.exrBits" 32;
-            setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_OC.dataType" 2;
-            setAttr "rs_OC.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_OC_exr"+"\n");
-        }
-    //Creat AOV Emission exr
-        global proc RS_Emission_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "Emission"`){
-            rename (`redshiftCreateAov ("Emission")`) "rs_Emission";
-            setAttr -type "string" rs_Emission.name "rs_Emission";
-            }
-            setAttr "rs_Emission.enabled" 0;
-            setAttr "rs_Emission.exrBits" 32;
-            setAttr -type "string" rs_Emission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_Emission.dataType" 2;
-            setAttr "rs_Emission.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Emission_exr"+"\n");
-        }
-    //Creat AOV DiffuseFilter exr
-        global proc RS_DiffuseFilter_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "DiffuseFilter"`){
-            rename (`redshiftCreateAov ("Diffuse Filter")`) "rs_DiffuseFilter";
-            setAttr -type "string" rs_DiffuseFilter.name "rs_DiffuseFilter";
-            }
-            setAttr "rs_DiffuseFilter.enabled" 0;
-            setAttr "rs_DiffuseFilter.exrBits" 32;
-            setAttr -type "string" rs_DiffuseFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_DiffuseFilter.dataType" 2;
-            setAttr "rs_DiffuseFilter.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_DiffuseFilter_exr"+"\n");
-        }
-    //Creat AOV Diffuse Lighting Raw exr
-        global proc RS_DiffuseLightingRaw_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "DiffuseLightingRaw"`){
-            rename (`redshiftCreateAov ("Diffuse Lighting Raw")`) "rs_DiffuseLightingRaw";
-            setAttr -type "string" rs_DiffuseLightingRaw.name "rs_DiffuseLightingRaw";
-            }
-            setAttr "rs_DiffuseLightingRaw.enabled" 0;
-            setAttr "rs_DiffuseLightingRaw.exrBits" 32;
-            setAttr -type "string" rs_DiffuseLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_DiffuseLightingRaw.dataType" 2;
-            setAttr "rs_DiffuseLightingRaw.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Diffuse Lighting Raw_exr"+"\n");
-        }
-    //Creat AOV Motion Vectors exr
-        global proc RS_MotionVectors_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "MotionVectors"`){
-            rename (`redshiftCreateAov ("Motion Vectors")`) "rs_MotionVectors";
-            setAttr -type "string" rs_MotionVectors.name "rs_MotionVectors";
-            }
-            setAttr "rs_MotionVectors.enabled" 0;
-            setAttr "rs_MotionVectors.exrBits" 32;
-            setAttr -type "string" rs_MotionVectors.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_MotionVectors.dataType" 2;
-            setAttr "rs_MotionVectors.fileFormat" 1;
-            setAttr "rs_MotionVectors.outputRawVectors" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Motion Vectors_exr"+"\n");
-        }
-    //Creat AOV Normals exr
-        global proc RS_N_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "N"`){
-            rename (`redshiftCreateAov ("Normals")`) "rs_N";
-            setAttr -type "string" rs_N.name "rs_N";
-            }
-            setAttr "rs_N.enabled" 0;
-            setAttr "rs_N.exrBits" 32;
-            setAttr -type "string" rs_N.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_N.dataType" 2;
-            setAttr "rs_N.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Normals_exr"+"\n");
-        }
-    //Creat AOV Reflections Filter exr
-        global proc RS_ReflectionsFilter_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "ReflectionsFilter"`){
-            rename (`redshiftCreateAov ("Reflections Filter")`) "rs_ReflectionsFilter";
-            setAttr -type "string" rs_ReflectionsFilter.name "rs_ReflectionsFilter";
-            }
-            setAttr "rs_ReflectionsFilter.enabled" 0;
-            setAttr "rs_ReflectionsFilter.exrBits" 32;
-            setAttr -type "string" rs_ReflectionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_ReflectionsFilter.dataType" 2;
-            setAttr "rs_ReflectionsFilter.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Reflections Filter_exr"+"\n");
-        }
-    //Creat AOV Reflections Raw exr
-        global proc RS_ReflectionsRaw_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "ReflectionsRaw"`){
-            rename (`redshiftCreateAov ("Reflections Raw")`) "rs_ReflectionsRaw";
-            setAttr -type "string" rs_ReflectionsRaw.name "rs_ReflectionsRaw";
-            }
-            setAttr "rs_ReflectionsRaw.enabled" 0;
-            setAttr "rs_ReflectionsRaw.exrBits" 32;
-            setAttr -type "string" rs_ReflectionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_ReflectionsRaw.dataType" 2;
-            setAttr "rs_ReflectionsRaw.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Reflections Raw_exr"+"\n");
-        }
-    //Creat AOV Refractions Filter exr
-        global proc RS_RefractionsFilter_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "RefractionsFilter"`){
-            rename (`redshiftCreateAov ("Refractions Filter")`) "rs_RefractionsFilter";
-            setAttr -type "string" rs_RefractionsFilter.name "rs_RefractionsFilter";
-            }
-            setAttr "rs_RefractionsFilter.enabled" 0;
-            setAttr "rs_RefractionsFilter.exrBits" 32;
-            setAttr -type "string" rs_RefractionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_RefractionsFilter.dataType" 2;
-            setAttr "rs_RefractionsFilter.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Refractions Filter_exr"+"\n");
-        }
-    //Creat AOV Refractions Raw exr
-        global proc RS_RefractionsRaw_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "RefractionsRaw"`){
-            rename (`redshiftCreateAov ("Refractions Raw")`) "rs_RefractionsRaw";
-            setAttr -type "string" rs_RefractionsRaw.name "rs_RefractionsRaw";
-            }
-            setAttr "rs_RefractionsRaw.enabled" 0;
-            setAttr "rs_RefractionsRaw.exrBits" 32;
-            setAttr -type "string" rs_RefractionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_RefractionsRaw.dataType" 2;
-            setAttr "rs_RefractionsRaw.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Refractions Raw_exr"+"\n");
-        }
-    //Creat AOV Specular Lighting exr
-        global proc RS_SpecularLighting_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "SpecularLighting"`){
-            rename (`redshiftCreateAov ("Specular Lighting")`) "rs_SpecularLighting";
-            setAttr -type "string" rs_SpecularLighting.name "rs_SpecularLighting";
-            }
-            setAttr "rs_SpecularLighting.enabled" 0;
-            setAttr "rs_SpecularLighting.exrBits" 32;
-            setAttr -type "string" rs_SpecularLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_SpecularLighting.dataType" 2;
-            setAttr "rs_SpecularLighting.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Specular Lighting_exr"+"\n");
-        }
-    //Creat AOV Sub Surface Scatter Raw exr
-        global proc RS_SSSRaw_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "SSSRaw"`){
-            rename (`redshiftCreateAov ("Sub Surface Scatter Raw")`) "rs_SSSRaw";
-            setAttr -type "string" rs_SSSRaw.name "rs_SSSRaw";
-            }
-            setAttr "rs_SSSRaw.enabled" 0;
-            setAttr "rs_SSSRaw.exrBits" 32;
-            setAttr -type "string" rs_SSSRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_SSSRaw.dataType" 2;
-            setAttr "rs_SSSRaw.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Sub Surface Scatter Raw_exr"+"\n");
-        }
-    //Creat AOV Sub Surface Scatter exr
-        global proc RS_SSS_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "SSS"`){
-            rename (`redshiftCreateAov ("Sub Surface Scatter")`) "rs_SSS";
-            setAttr -type "string" rs_SSS.name "rs_SSS";
-            }
-            setAttr "rs_SSS.enabled" 0;
-            setAttr "rs_SSS.exrBits" 32;
-            setAttr -type "string" rs_SSS.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_SSS.dataType" 2;
-            setAttr "rs_SSS.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Sub Surface Scatter_exr"+"\n");
-        }
-    //Creat AOV Translucency Lighting Raw exr
-        global proc RS_TransLightingRaw_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "TransLightingRaw"`){
-            rename (`redshiftCreateAov ("Translucency Lighting Raw")`) "rs_TransLightingRaw";
-            setAttr -type "string" rs_TransLightingRaw.name "rs_TransLightingRaw";
-            }
-            setAttr "rs_TransLightingRaw.enabled" 0;
-            setAttr "rs_TransLightingRaw.exrBits" 32;
-            setAttr -type "string" rs_TransLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_TransLightingRaw.dataType" 2;
-            setAttr "rs_TransLightingRaw.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Translucency Lighting Raw_exr"+"\n");
-        }
-    //Creat AOV World Position exr
-        global proc RS_P_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "P"`){
-            rename (`redshiftCreateAov ("World Position")`) "rs_P";
-            setAttr -type "string" rs_P.name "rs_P";
-            }
-            setAttr "rs_P.enabled" 0;
-            setAttr "rs_P.exrBits" 32;
-            setAttr -type "string" rs_P.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            //setAttr "rs_P.dataType" 2;
-            setAttr "rs_P.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_World Position_exr"+"\n");
-        }
-    //Creat AOV Depth exr
-        global proc RS_Z_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "Z"`){
-            rename (`redshiftCreateAov ("Depth")`) "rs_Z";
-            setAttr -type "string" rs_Z.name "rs_Z";
-            }
-            setAttr "rs_Z.enabled" 0;
-            setAttr "rs_Z.exrBits" 32;
-            setAttr -type "string" rs_Z.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            //setAttr "rs_Z.dataType" 2;
-            setAttr "rs_Z.fileFormat" 1;
-            setAttr "rs_Z.filterMode" 3;
-            setAttr "rs_Z.depthMode" 1;
-            setAttr "rs_Z.minDepth" 0;
-            setAttr "rs_Z.maxDepth" 100000;
-            redshiftUpdateActiveAovList();
-            print ("rs_Depth_exr"+"\n");
-        }
-    //Creat AOV Volume Fog Emission exr
-        global proc RS_VolumeFogEmission_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "VolumeFogEmission"`){
-            rename (`redshiftCreateAov ("Volume Fog Emission")`) "rs_VolumeFogEmission";
-            setAttr -type "string" rs_VolumeFogEmission.name "rs_VolumeFogEmission";
-            }
-            setAttr "rs_VolumeFogEmission.enabled" 0;
-            setAttr "rs_VolumeFogEmission.exrBits" 32;
-            setAttr -type "string" rs_VolumeFogEmission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_VolumeFogEmission.dataType" 2;
-            setAttr "rs_VolumeFogEmission.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Volume Fog Emission_exr"+"\n");
-        }
-    //Creat AOV Shadows exr
-        global proc RS_Shadows_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "Shadows"`){
-            rename (`redshiftCreateAov ("Shadows")`) "rs_Shadows";
-            setAttr -type "string" rs_Shadows.name "rs_Shadows";
-            }
-            setAttr "rs_Shadows.enabled" 0;
-            setAttr "rs_Shadows.exrBits" 32;
-            setAttr -type "string" rs_Shadows.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_Shadows.dataType" 2;
-            setAttr "rs_Shadows.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Shadows_exr"+"\n");
-        }
-    //Creat AOV Global Illumination Raw exr
-        global proc RS_GIRaw_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "GIRaw"`){
-            rename (`redshiftCreateAov ("Global Illumination Raw")`) "rs_GIRaw";
-            setAttr -type "string" rs_GIRaw.name "rs_GIRaw";
-            }
-            setAttr "rs_GIRaw.enabled" 0;
-            setAttr "rs_GIRaw.exrBits" 32;
-            setAttr -type "string" rs_GIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_GIRaw.dataType" 2;
-            setAttr "rs_GIRaw.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Global Illumination Raw_exr"+"\n");
-        }
-
-    //Creat AOV Translucency GI Raw exr
-        global proc RS_TransGIRaw_Aov_exr(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "TransGIRaw"`){
-            rename (`redshiftCreateAov ("Translucency GI Raw")`) "rs_TransGIRaw";
-            setAttr -type "string" rs_TransGIRaw.name "rs_TransGIRaw";
-            }
-            setAttr "rs_TransGIRaw.enabled" 0;
-            setAttr "rs_TransGIRaw.exrBits" 32;
-            setAttr -type "string" rs_TransGIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_TransGIRaw.dataType" 2;
-            setAttr "rs_TransGIRaw.fileFormat" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Translucency GI Raw_exr"+"\n");
-        }
-
-///////////// AOVs prs png ///////////////////////////////////////////////////////////////////
-    //Creat AOV AO png
-        global proc RScustom_AO_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "rs_AO"`){
-            rename (`redshiftCreateAov ("Custom")`) "rs_AO";
-            setAttr -type "string" rs_AO.name "rs_AO";
-            }
-            if(!`objExists  "RS_aovAO_set_shader"`){
-            shadingNode -n "RS_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
-            connectAttr -force RS_aovAO_set_shader.outColor rs_AO.defaultShader;
-            }
-            setAttr "RS_aovAO_set_shader.numexrples" 2048;
-            setAttr "RS_aovAO_set_shader.spread" 0.8;
-            setAttr "RS_aovAO_set_shader.fallOff" 3;
-            setAttr "RS_aovAO_set_shader.maxDistance" 10;
-            setAttr "rs_AO.enabled" 0;
-            setAttr "rs_AO.exrBits" 32;
-            setAttr -type "string" rs_AO.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_AO.dataType" 2;
-            setAttr "rs_AO.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_AO_png"+"\n");
-        }
-    //Creat AOV OC png
-        global proc RScustom_OC_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "rs_OC"`){
-            rename (`redshiftCreateAov ("Custom")`) "rs_OC";
-            setAttr -type "string" rs_OC.name "rs_OC";
-            }
-            if(!`objExists  "RS_aovOC_set_shader"`){
-            shadingNode -n "RS_aovOC_set_shader" -asUtility ramp;
-            shadingNode -n "RS_aovOC_set_exrpleshader" -asUtility exrplerInfo;
-            connectAttr -force RS_aovOC_set_shader.outColor rs_OC.defaultShader;
-            }
-            setAttr RS_aovOC_set_shader.colorEntryList[2].color -type double3 0.547278 0.547278 0.547278;
-            setAttr RS_aovOC_set_shader.colorEntryList[2].position 0.547278;
-            setAttr "RS_aovOC_set_shader.colorEntryList[0].color" -type double3 1 1 1 ;
-            setAttr "RS_aovOC_set_shader.colorEntryList[1].color" -type double3 0 0 0 ;
-            setAttr "RS_aovOC_set_shader.colorEntryList[2].position" 0.344;
-            setAttr "RS_aovOC_set_shader.colorEntryList[2].color" -type double3 0 0 0 ;
-            setAttr "RS_aovOC_set_shader.colorEntryList[1].position" 1;
-            setAttr "RS_aovOC_set_shader.colorEntryList[0].position" 0;
-            connectAttr -f RS_aovOC_set_exrpleshader.facingRatio RS_aovOC_set_shader.vCoord;
-            setAttr "RS_aovOC_set_shader.type" 0;
-            setAttr "RS_aovOC_set_shader.interpolation" 4;
-            setAttr "rs_OC.enabled" 0;
-            setAttr "rs_OC.exrBits" 32;
-            setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_OC.dataType" 2;
-            setAttr "rs_OC.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_OC_png"+"\n");
-        }
-    //Creat AOV Emission png
-        global proc RS_Emission_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "Emission"`){
-            rename (`redshiftCreateAov ("Emission")`) "rs_Emission";
-            setAttr -type "string" rs_Emission.name "rs_Emission";
-            }
-            setAttr "rs_Emission.enabled" 0;
-            setAttr "rs_Emission.exrBits" 32;
-            setAttr -type "string" rs_Emission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_Emission.dataType" 2;
-            setAttr "rs_Emission.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Emission_png"+"\n");
-        }
-    //Creat AOV DiffuseFilter png
-        global proc RS_DiffuseFilter_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "DiffuseFilter"`){
-            rename (`redshiftCreateAov ("Diffuse Filter")`) "rs_DiffuseFilter";
-            setAttr -type "string" rs_DiffuseFilter.name "rs_DiffuseFilter";
-            }
-            setAttr "rs_DiffuseFilter.enabled" 0;
-            setAttr "rs_DiffuseFilter.exrBits" 32;
-            setAttr -type "string" rs_DiffuseFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_DiffuseFilter.dataType" 2;
-            setAttr "rs_DiffuseFilter.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_DiffuseFilter_png"+"\n");
-        }
-    //Creat AOV Diffuse Lighting Raw png
-        global proc RS_DiffuseLightingRaw_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "DiffuseLightingRaw"`){
-            rename (`redshiftCreateAov ("Diffuse Lighting Raw")`) "rs_DiffuseLightingRaw";
-            setAttr -type "string" rs_DiffuseLightingRaw.name "rs_DiffuseLightingRaw";
-            }
-            setAttr "rs_DiffuseLightingRaw.enabled" 0;
-            setAttr "rs_DiffuseLightingRaw.exrBits" 32;
-            setAttr -type "string" rs_DiffuseLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_DiffuseLightingRaw.dataType" 2;
-            setAttr "rs_DiffuseLightingRaw.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Diffuse Lighting Raw_png"+"\n");
-        }
-    //Creat AOV Motion Vectors png
-        global proc RS_MotionVectors_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "MotionVectors"`){
-            rename (`redshiftCreateAov ("Motion Vectors")`) "rs_MotionVectors";
-            setAttr -type "string" rs_MotionVectors.name "rs_MotionVectors";
-            }
-            setAttr "rs_MotionVectors.enabled" 0;
-            setAttr "rs_MotionVectors.exrBits" 32;
-            setAttr -type "string" rs_MotionVectors.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_MotionVectors.dataType" 2;
-            setAttr "rs_MotionVectors.fileFormat" 2;
-            setAttr "rs_MotionVectors.outputRawVectors" 1;
-            redshiftUpdateActiveAovList();
-            print ("rs_Motion Vectors_png"+"\n");
-        }
-    //Creat AOV Normals png
-        global proc RS_N_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "N"`){
-            rename (`redshiftCreateAov ("Normals")`) "rs_N";
-            setAttr -type "string" rs_N.name "rs_N";
-            }
-            setAttr "rs_N.enabled" 0;
-            setAttr "rs_N.exrBits" 32;
-            setAttr -type "string" rs_N.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_N.dataType" 2;
-            setAttr "rs_N.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Normals_png"+"\n");
-        }
-    //Creat AOV Reflections Filter png
-        global proc RS_ReflectionsFilter_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "ReflectionsFilter"`){
-            rename (`redshiftCreateAov ("Reflections Filter")`) "rs_ReflectionsFilter";
-            setAttr -type "string" rs_ReflectionsFilter.name "rs_ReflectionsFilter";
-            }
-            setAttr "rs_ReflectionsFilter.enabled" 0;
-            setAttr "rs_ReflectionsFilter.exrBits" 32;
-            setAttr -type "string" rs_ReflectionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_ReflectionsFilter.dataType" 2;
-            setAttr "rs_ReflectionsFilter.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Reflections Filter_png"+"\n");
-        }
-    //Creat AOV Reflections Raw png
-        global proc RS_ReflectionsRaw_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "ReflectionsRaw"`){
-            rename (`redshiftCreateAov ("Reflections Raw")`) "rs_ReflectionsRaw";
-            setAttr -type "string" rs_ReflectionsRaw.name "rs_ReflectionsRaw";
-            }
-            setAttr "rs_ReflectionsRaw.enabled" 0;
-            setAttr "rs_ReflectionsRaw.exrBits" 32;
-            setAttr -type "string" rs_ReflectionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_ReflectionsRaw.dataType" 2;
-            setAttr "rs_ReflectionsRaw.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Reflections Raw_png"+"\n");
-        }
-    //Creat AOV Refractions Filter png
-        global proc RS_RefractionsFilter_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "RefractionsFilter"`){
-            rename (`redshiftCreateAov ("Refractions Filter")`) "rs_RefractionsFilter";
-            setAttr -type "string" rs_RefractionsFilter.name "rs_RefractionsFilter";
-            }
-            setAttr "rs_RefractionsFilter.enabled" 0;
-            setAttr "rs_RefractionsFilter.exrBits" 32;
-            setAttr -type "string" rs_RefractionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_RefractionsFilter.dataType" 2;
-            setAttr "rs_RefractionsFilter.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Refractions Filter_png"+"\n");
-        }
-    //Creat AOV Refractions Raw png
-        global proc RS_RefractionsRaw_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "RefractionsRaw"`){
-            rename (`redshiftCreateAov ("Refractions Raw")`) "rs_RefractionsRaw";
-            setAttr -type "string" rs_RefractionsRaw.name "rs_RefractionsRaw";
-            }
-            setAttr "rs_RefractionsRaw.enabled" 0;
-            setAttr "rs_RefractionsRaw.exrBits" 32;
-            setAttr -type "string" rs_RefractionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_RefractionsRaw.dataType" 2;
-            setAttr "rs_RefractionsRaw.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Refractions Raw_png"+"\n");
-        }
-    //Creat AOV Specular Lighting png
-        global proc RS_SpecularLighting_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "SpecularLighting"`){
-            rename (`redshiftCreateAov ("Specular Lighting")`) "rs_SpecularLighting";
-            setAttr -type "string" rs_SpecularLighting.name "rs_SpecularLighting";
-            }
-            setAttr "rs_SpecularLighting.enabled" 0;
-            setAttr "rs_SpecularLighting.exrBits" 32;
-            setAttr -type "string" rs_SpecularLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_SpecularLighting.dataType" 2;
-            setAttr "rs_SpecularLighting.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Specular Lighting_png"+"\n");
-        }
-    //Creat AOV Sub Surface Scatter Raw png
-        global proc RS_SSSRaw_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "SSSRaw"`){
-            rename (`redshiftCreateAov ("Sub Surface Scatter Raw")`) "rs_SSSRaw";
-            setAttr -type "string" rs_SSSRaw.name "rs_SSSRaw";
-            }
-            setAttr "rs_SSSRaw.enabled" 0;
-            setAttr "rs_SSSRaw.exrBits" 32;
-            setAttr -type "string" rs_SSSRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_SSSRaw.dataType" 2;
-            setAttr "rs_SSSRaw.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Sub Surface Scatter Raw_png"+"\n");
-        }
-    //Creat AOV Sub Surface Scatter png
-        global proc RS_SSS_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "SSS"`){
-            rename (`redshiftCreateAov ("Sub Surface Scatter")`) "rs_SSS";
-            setAttr -type "string" rs_SSS.name "rs_SSS";
-            }
-            setAttr "rs_SSS.enabled" 0;
-            setAttr "rs_SSS.exrBits" 32;
-            setAttr -type "string" rs_SSS.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_SSS.dataType" 2;
-            setAttr "rs_SSS.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Sub Surface Scatter_png"+"\n");
-        }
-    //Creat AOV Translucency Lighting Raw png
-        global proc RS_TransLightingRaw_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "TransLightingRaw"`){
-            rename (`redshiftCreateAov ("Translucency Lighting Raw")`) "rs_TransLightingRaw";
-            setAttr -type "string" rs_TransLightingRaw.name "rs_TransLightingRaw";
-            }
-            setAttr "rs_TransLightingRaw.enabled" 0;
-            setAttr "rs_TransLightingRaw.exrBits" 32;
-            setAttr -type "string" rs_TransLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_TransLightingRaw.dataType" 2;
-            setAttr "rs_TransLightingRaw.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Translucency Lighting Raw_png"+"\n");
-        }
-    //Creat AOV World Position png
-        global proc RS_P_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "P"`){
-            rename (`redshiftCreateAov ("World Position")`) "rs_P";
-            setAttr -type "string" rs_P.name "rs_P";
-            }
-            setAttr "rs_P.enabled" 0;
-            setAttr "rs_P.exrBits" 32;
-            setAttr -type "string" rs_P.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            //setAttr "rs_P.dataType" 2;
-            setAttr "rs_P.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_World Position_png"+"\n");
-        }
-    //Creat AOV Depth png
-        global proc RS_Z_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "Z"`){
-            rename (`redshiftCreateAov ("Depth")`) "rs_Z";
-            setAttr -type "string" rs_Z.name "rs_Z";
-            }
-            setAttr "rs_Z.enabled" 0;
-            setAttr "rs_Z.exrBits" 32;
-            setAttr -type "string" rs_Z.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            //setAttr "rs_Z.dataType" 2;
-            setAttr "rs_Z.fileFormat" 2;
-            setAttr "rs_Z.filterMode" 3;
-            setAttr "rs_Z.depthMode" 1;
-            setAttr "rs_Z.minDepth" 0;
-            setAttr "rs_Z.maxDepth" 100000;
-            redshiftUpdateActiveAovList();
-            print ("rs_Depth_png"+"\n");
-        }
-    //Creat AOV Volume Fog Emission png
-        global proc RS_VolumeFogEmission_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "VolumeFogEmission"`){
-            rename (`redshiftCreateAov ("Volume Fog Emission")`) "rs_VolumeFogEmission";
-            setAttr -type "string" rs_VolumeFogEmission.name "rs_VolumeFogEmission";
-            }
-            setAttr "rs_VolumeFogEmission.enabled" 0;
-            setAttr "rs_VolumeFogEmission.exrBits" 32;
-            setAttr -type "string" rs_VolumeFogEmission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_VolumeFogEmission.dataType" 2;
-            setAttr "rs_VolumeFogEmission.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Volume Fog Emission_png"+"\n");
-        }
-    //Creat AOV Shadows png
-        global proc RS_Shadows_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "Shadows"`){
-            rename (`redshiftCreateAov ("Shadows")`) "rs_Shadows";
-            setAttr -type "string" rs_Shadows.name "rs_Shadows";
-            }
-            setAttr "rs_Shadows.enabled" 0;
-            setAttr "rs_Shadows.exrBits" 32;
-            setAttr -type "string" rs_Shadows.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_Shadows.dataType" 2;
-            setAttr "rs_Shadows.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Shadows_png"+"\n");
-        }
-    //Creat AOV Global Illumination Raw png
-        global proc RS_GIRaw_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "GIRaw"`){
-            rename (`redshiftCreateAov ("Global Illumination Raw")`) "rs_GIRaw";
-            setAttr -type "string" rs_GIRaw.name "rs_GIRaw";
-            }
-            setAttr "rs_GIRaw.enabled" 0;
-            setAttr "rs_GIRaw.exrBits" 32;
-            setAttr -type "string" rs_GIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_GIRaw.dataType" 2;
-            setAttr "rs_GIRaw.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Global Illumination Raw_png"+"\n");
-        }
-
-    //Creat AOV Translucency GI Raw png
-        global proc RS_TransGIRaw_Aov_png(){
-            source redshiftCreateAovTab;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            if(!`objExists "TransGIRaw"`){
-            rename (`redshiftCreateAov ("Translucency GI Raw")`) "rs_TransGIRaw";
-            setAttr -type "string" rs_TransGIRaw.name "rs_TransGIRaw";
-            }
-            setAttr "rs_TransGIRaw.enabled" 0;
-            setAttr "rs_TransGIRaw.exrBits" 32;
-            setAttr -type "string" rs_TransGIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "rs_TransGIRaw.dataType" 2;
-            setAttr "rs_TransGIRaw.fileFormat" 2;
-            redshiftUpdateActiveAovList();
-            print ("rs_Translucency GI Raw_png"+"\n");
-        }
 
 
-    /////////// Creat ISO //////////////////////////////////////
-        //Creat 2017 RedshiftPhotographicExposure
-            global proc ISO_maya2017(){
-                shadingNode -asUtility RedshiftPhotographicExposure;
-                rename rsPhotographicExposure1 "ISO_maya2017" ;
-                setAttr "ISO_maya2017.enable" 0;
-                redshiftChangeGlobalShader ISO_maya2017 "exposure";
-                redshiftUpdateGlobalShader "exposure" "rsControl_expText" "rsControl_expSelButton";
-                autoUpdateAttrEd;
-                print ("Creat_ISO_maya2017"+"\n");
+    ///////////// AOVs prs exr ///////////////////////////////////////////////////////////////////
+        //Creat AOV AO exr
+            global proc RScustom_AO_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "rs_AO"`){
+                rename (`redshiftCreateAov ("Custom")`) "rs_AO";
+                setAttr -type "string" rs_AO.name "rs_AO";
+                }
+                if(!`objExists  "RS_aovAO_set_shader"`){
+                shadingNode -n "RS_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
+                connectAttr -force RS_aovAO_set_shader.outColor rs_AO.defaultShader;
+                }
+                setAttr "RS_aovAO_set_shader.numSamples" 2048;
+                setAttr "RS_aovAO_set_shader.spread" 0.8;
+                setAttr "RS_aovAO_set_shader.fallOff" 3;
+                setAttr "RS_aovAO_set_shader.maxDistance" 10;
+                setAttr "rs_AO.enabled" 0;
+                setAttr "rs_AO.exrBits" 32;
+                setAttr -type "string" rs_AO.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_AO.dataType" 2;
+                setAttr "rs_AO.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_AO_exr"+"\n");
             }
-        //Creat 2019 postEffects
-            global proc ISO_maya2019(){
-                shadingNode -asUtility RedshiftPostEffects;
-                rename rsPostEffects1 "ISO_maya2019" ;
-                redshiftChangeGlobalShader ISO_maya2019 "postEffects";
-                print ("Creat_ISO_maya2019"+"\n");
+        //Creat AOV OC exr
+            global proc RScustom_OC_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "rs_OC"`){
+                rename (`redshiftCreateAov ("Custom")`) "rs_OC";
+                setAttr -type "string" rs_OC.name "rs_OC";
+                }
+                if(!`objExists  "RS_aovOC_set_shader"`){
+                shadingNode -n "RS_aovOC_set_shader" -asUtility ramp;
+                shadingNode -n "RS_aovOC_set_sampleshader" -asUtility samplerInfo;
+                connectAttr -force RS_aovOC_set_shader.outColor rs_OC.defaultShader;
+                }
+                setAttr RS_aovOC_set_shader.colorEntryList[2].color -type double3 0.547278 0.547278 0.547278;
+                setAttr RS_aovOC_set_shader.colorEntryList[2].position 0.547278;
+                setAttr "RS_aovOC_set_shader.colorEntryList[0].color" -type double3 1 1 1 ;
+                setAttr "RS_aovOC_set_shader.colorEntryList[1].color" -type double3 0 0 0 ;
+                setAttr "RS_aovOC_set_shader.colorEntryList[2].position" 0.344;
+                setAttr "RS_aovOC_set_shader.colorEntryList[2].color" -type double3 0 0 0 ;
+                setAttr "RS_aovOC_set_shader.colorEntryList[1].position" 1;
+                setAttr "RS_aovOC_set_shader.colorEntryList[0].position" 0;
+                connectAttr -f RS_aovOC_set_sampleshader.facingRatio RS_aovOC_set_shader.vCoord;
+                setAttr "RS_aovOC_set_shader.type" 0;
+                setAttr "RS_aovOC_set_shader.interpolation" 4;
+                setAttr "rs_OC.enabled" 0;
+                setAttr "rs_OC.exrBits" 32;
+                setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_OC.dataType" 2;
+                setAttr "rs_OC.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_OC_exr"+"\n");
             }
+        //Creat AOV Emission exr
+            global proc RS_Emission_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "Emission"`){
+                rename (`redshiftCreateAov ("Emission")`) "rs_Emission";
+                setAttr -type "string" rs_Emission.name "rs_Emission";
+                }
+                setAttr "rs_Emission.enabled" 0;
+                setAttr "rs_Emission.exrBits" 32;
+                setAttr -type "string" rs_Emission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_Emission.dataType" 2;
+                setAttr "rs_Emission.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Emission_exr"+"\n");
+            }
+        //Creat AOV DiffuseFilter exr
+            global proc RS_DiffuseFilter_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "DiffuseFilter"`){
+                rename (`redshiftCreateAov ("Diffuse Filter")`) "rs_DiffuseFilter";
+                setAttr -type "string" rs_DiffuseFilter.name "rs_DiffuseFilter";
+                }
+                setAttr "rs_DiffuseFilter.enabled" 0;
+                setAttr "rs_DiffuseFilter.exrBits" 32;
+                setAttr -type "string" rs_DiffuseFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_DiffuseFilter.dataType" 2;
+                setAttr "rs_DiffuseFilter.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_DiffuseFilter_exr"+"\n");
+            }
+        //Creat AOV Diffuse Lighting Raw exr
+            global proc RS_DiffuseLightingRaw_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "DiffuseLightingRaw"`){
+                rename (`redshiftCreateAov ("Diffuse Lighting Raw")`) "rs_DiffuseLightingRaw";
+                setAttr -type "string" rs_DiffuseLightingRaw.name "rs_DiffuseLightingRaw";
+                }
+                setAttr "rs_DiffuseLightingRaw.enabled" 0;
+                setAttr "rs_DiffuseLightingRaw.exrBits" 32;
+                setAttr -type "string" rs_DiffuseLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_DiffuseLightingRaw.dataType" 2;
+                setAttr "rs_DiffuseLightingRaw.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Diffuse Lighting Raw_exr"+"\n");
+            }
+        //Creat AOV Motion Vectors exr
+            global proc RS_MotionVectors_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "MotionVectors"`){
+                rename (`redshiftCreateAov ("Motion Vectors")`) "rs_MotionVectors";
+                setAttr -type "string" rs_MotionVectors.name "rs_MotionVectors";
+                }
+                setAttr "rs_MotionVectors.enabled" 0;
+                setAttr "rs_MotionVectors.exrBits" 32;
+                setAttr -type "string" rs_MotionVectors.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_MotionVectors.dataType" 2;
+                setAttr "rs_MotionVectors.fileFormat" 1;
+                setAttr "rs_MotionVectors.outputRawVectors" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Motion Vectors_exr"+"\n");
+            }
+        //Creat AOV Normals exr
+            global proc RS_N_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "N"`){
+                rename (`redshiftCreateAov ("Normals")`) "rs_N";
+                setAttr -type "string" rs_N.name "rs_N";
+                }
+                setAttr "rs_N.enabled" 0;
+                setAttr "rs_N.exrBits" 32;
+                setAttr -type "string" rs_N.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_N.dataType" 2;
+                setAttr "rs_N.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Normals_exr"+"\n");
+            }
+        //Creat AOV Reflections Filter exr
+            global proc RS_ReflectionsFilter_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "ReflectionsFilter"`){
+                rename (`redshiftCreateAov ("Reflections Filter")`) "rs_ReflectionsFilter";
+                setAttr -type "string" rs_ReflectionsFilter.name "rs_ReflectionsFilter";
+                }
+                setAttr "rs_ReflectionsFilter.enabled" 0;
+                setAttr "rs_ReflectionsFilter.exrBits" 32;
+                setAttr -type "string" rs_ReflectionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_ReflectionsFilter.dataType" 2;
+                setAttr "rs_ReflectionsFilter.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Reflections Filter_exr"+"\n");
+            }
+        //Creat AOV Reflections Raw exr
+            global proc RS_ReflectionsRaw_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "ReflectionsRaw"`){
+                rename (`redshiftCreateAov ("Reflections Raw")`) "rs_ReflectionsRaw";
+                setAttr -type "string" rs_ReflectionsRaw.name "rs_ReflectionsRaw";
+                }
+                setAttr "rs_ReflectionsRaw.enabled" 0;
+                setAttr "rs_ReflectionsRaw.exrBits" 32;
+                setAttr -type "string" rs_ReflectionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_ReflectionsRaw.dataType" 2;
+                setAttr "rs_ReflectionsRaw.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Reflections Raw_exr"+"\n");
+            }
+        //Creat AOV Refractions Filter exr
+            global proc RS_RefractionsFilter_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "RefractionsFilter"`){
+                rename (`redshiftCreateAov ("Refractions Filter")`) "rs_RefractionsFilter";
+                setAttr -type "string" rs_RefractionsFilter.name "rs_RefractionsFilter";
+                }
+                setAttr "rs_RefractionsFilter.enabled" 0;
+                setAttr "rs_RefractionsFilter.exrBits" 32;
+                setAttr -type "string" rs_RefractionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_RefractionsFilter.dataType" 2;
+                setAttr "rs_RefractionsFilter.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Refractions Filter_exr"+"\n");
+            }
+        //Creat AOV Refractions Raw exr
+            global proc RS_RefractionsRaw_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "RefractionsRaw"`){
+                rename (`redshiftCreateAov ("Refractions Raw")`) "rs_RefractionsRaw";
+                setAttr -type "string" rs_RefractionsRaw.name "rs_RefractionsRaw";
+                }
+                setAttr "rs_RefractionsRaw.enabled" 0;
+                setAttr "rs_RefractionsRaw.exrBits" 32;
+                setAttr -type "string" rs_RefractionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_RefractionsRaw.dataType" 2;
+                setAttr "rs_RefractionsRaw.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Refractions Raw_exr"+"\n");
+            }
+        //Creat AOV Specular Lighting exr
+            global proc RS_SpecularLighting_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "SpecularLighting"`){
+                rename (`redshiftCreateAov ("Specular Lighting")`) "rs_SpecularLighting";
+                setAttr -type "string" rs_SpecularLighting.name "rs_SpecularLighting";
+                }
+                setAttr "rs_SpecularLighting.enabled" 0;
+                setAttr "rs_SpecularLighting.exrBits" 32;
+                setAttr -type "string" rs_SpecularLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_SpecularLighting.dataType" 2;
+                setAttr "rs_SpecularLighting.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Specular Lighting_exr"+"\n");
+            }
+        //Creat AOV Sub Surface Scatter Raw exr
+            global proc RS_SSSRaw_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "SSSRaw"`){
+                rename (`redshiftCreateAov ("Sub Surface Scatter Raw")`) "rs_SSSRaw";
+                setAttr -type "string" rs_SSSRaw.name "rs_SSSRaw";
+                }
+                setAttr "rs_SSSRaw.enabled" 0;
+                setAttr "rs_SSSRaw.exrBits" 32;
+                setAttr -type "string" rs_SSSRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_SSSRaw.dataType" 2;
+                setAttr "rs_SSSRaw.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Sub Surface Scatter Raw_exr"+"\n");
+            }
+        //Creat AOV Sub Surface Scatter exr
+            global proc RS_SSS_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "SSS"`){
+                rename (`redshiftCreateAov ("Sub Surface Scatter")`) "rs_SSS";
+                setAttr -type "string" rs_SSS.name "rs_SSS";
+                }
+                setAttr "rs_SSS.enabled" 0;
+                setAttr "rs_SSS.exrBits" 32;
+                setAttr -type "string" rs_SSS.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_SSS.dataType" 2;
+                setAttr "rs_SSS.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Sub Surface Scatter_exr"+"\n");
+            }
+        //Creat AOV Translucency Lighting Raw exr
+            global proc RS_TransLightingRaw_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "TransLightingRaw"`){
+                rename (`redshiftCreateAov ("Translucency Lighting Raw")`) "rs_TransLightingRaw";
+                setAttr -type "string" rs_TransLightingRaw.name "rs_TransLightingRaw";
+                }
+                setAttr "rs_TransLightingRaw.enabled" 0;
+                setAttr "rs_TransLightingRaw.exrBits" 32;
+                setAttr -type "string" rs_TransLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_TransLightingRaw.dataType" 2;
+                setAttr "rs_TransLightingRaw.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Translucency Lighting Raw_exr"+"\n");
+            }
+        //Creat AOV World Position exr
+            global proc RS_P_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "P"`){
+                rename (`redshiftCreateAov ("World Position")`) "rs_P";
+                setAttr -type "string" rs_P.name "rs_P";
+                }
+                setAttr "rs_P.enabled" 0;
+                setAttr "rs_P.exrBits" 32;
+                setAttr -type "string" rs_P.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                //setAttr "rs_P.dataType" 2;
+                setAttr "rs_P.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_World Position_exr"+"\n");
+            }
+        //Creat AOV Depth exr
+            global proc RS_Z_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "Z"`){
+                rename (`redshiftCreateAov ("Depth")`) "rs_Z";
+                setAttr -type "string" rs_Z.name "rs_Z";
+                }
+                setAttr "rs_Z.enabled" 0;
+                setAttr "rs_Z.exrBits" 32;
+                setAttr -type "string" rs_Z.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                //setAttr "rs_Z.dataType" 2;
+                setAttr "rs_Z.fileFormat" 1;
+                setAttr "rs_Z.filterMode" 3;
+                setAttr "rs_Z.depthMode" 1;
+                setAttr "rs_Z.minDepth" 0;
+                setAttr "rs_Z.maxDepth" 100000;
+                redshiftUpdateActiveAovList();
+                print ("rs_Depth_exr"+"\n");
+            }
+        //Creat AOV Volume Fog Emission exr
+            global proc RS_VolumeFogEmission_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "VolumeFogEmission"`){
+                rename (`redshiftCreateAov ("Volume Fog Emission")`) "rs_VolumeFogEmission";
+                setAttr -type "string" rs_VolumeFogEmission.name "rs_VolumeFogEmission";
+                }
+                setAttr "rs_VolumeFogEmission.enabled" 0;
+                setAttr "rs_VolumeFogEmission.exrBits" 32;
+                setAttr -type "string" rs_VolumeFogEmission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_VolumeFogEmission.dataType" 2;
+                setAttr "rs_VolumeFogEmission.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Volume Fog Emission_exr"+"\n");
+            }
+        //Creat AOV Shadows exr
+            global proc RS_Shadows_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "Shadows"`){
+                rename (`redshiftCreateAov ("Shadows")`) "rs_Shadows";
+                setAttr -type "string" rs_Shadows.name "rs_Shadows";
+                }
+                setAttr "rs_Shadows.enabled" 0;
+                setAttr "rs_Shadows.exrBits" 32;
+                setAttr -type "string" rs_Shadows.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_Shadows.dataType" 2;
+                setAttr "rs_Shadows.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Shadows_exr"+"\n");
+            }
+        //Creat AOV Global Illumination Raw exr
+            global proc RS_GIRaw_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "GIRaw"`){
+                rename (`redshiftCreateAov ("Global Illumination Raw")`) "rs_GIRaw";
+                setAttr -type "string" rs_GIRaw.name "rs_GIRaw";
+                }
+                setAttr "rs_GIRaw.enabled" 0;
+                setAttr "rs_GIRaw.exrBits" 32;
+                setAttr -type "string" rs_GIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_GIRaw.dataType" 2;
+                setAttr "rs_GIRaw.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Global Illumination Raw_exr"+"\n");
+            }
+
+        //Creat AOV Translucency GI Raw exr
+            global proc RS_TransGIRaw_Aov_exr(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "TransGIRaw"`){
+                rename (`redshiftCreateAov ("Translucency GI Raw")`) "rs_TransGIRaw";
+                setAttr -type "string" rs_TransGIRaw.name "rs_TransGIRaw";
+                }
+                setAttr "rs_TransGIRaw.enabled" 0;
+                setAttr "rs_TransGIRaw.exrBits" 32;
+                setAttr -type "string" rs_TransGIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_TransGIRaw.dataType" 2;
+                setAttr "rs_TransGIRaw.fileFormat" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Translucency GI Raw_exr"+"\n");
+            }
+
+    ///////////// AOVs prs png ///////////////////////////////////////////////////////////////////
+        //Creat AOV AO png
+            global proc RScustom_AO_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "rs_AO"`){
+                rename (`redshiftCreateAov ("Custom")`) "rs_AO";
+                setAttr -type "string" rs_AO.name "rs_AO";
+                }
+                if(!`objExists  "RS_aovAO_set_shader"`){
+                shadingNode -n "RS_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
+                connectAttr -force RS_aovAO_set_shader.outColor rs_AO.defaultShader;
+                }
+                setAttr "RS_aovAO_set_shader.numSamples" 2048;
+                setAttr "RS_aovAO_set_shader.spread" 0.8;
+                setAttr "RS_aovAO_set_shader.fallOff" 3;
+                setAttr "RS_aovAO_set_shader.maxDistance" 10;
+                setAttr "rs_AO.enabled" 0;
+                setAttr "rs_AO.exrBits" 32;
+                setAttr -type "string" rs_AO.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_AO.dataType" 2;
+                setAttr "rs_AO.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_AO_png"+"\n");
+            }
+        //Creat AOV OC png
+            global proc RScustom_OC_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "rs_OC"`){
+                rename (`redshiftCreateAov ("Custom")`) "rs_OC";
+                setAttr -type "string" rs_OC.name "rs_OC";
+                }
+                if(!`objExists  "RS_aovOC_set_shader"`){
+                shadingNode -n "RS_aovOC_set_shader" -asUtility ramp;
+                shadingNode -n "RS_aovOC_set_sampleshader" -asUtility samplerInfo;
+                connectAttr -force RS_aovOC_set_shader.outColor rs_OC.defaultShader;
+                }
+                setAttr RS_aovOC_set_shader.colorEntryList[2].color -type double3 0.547278 0.547278 0.547278;
+                setAttr RS_aovOC_set_shader.colorEntryList[2].position 0.547278;
+                setAttr "RS_aovOC_set_shader.colorEntryList[0].color" -type double3 1 1 1 ;
+                setAttr "RS_aovOC_set_shader.colorEntryList[1].color" -type double3 0 0 0 ;
+                setAttr "RS_aovOC_set_shader.colorEntryList[2].position" 0.344;
+                setAttr "RS_aovOC_set_shader.colorEntryList[2].color" -type double3 0 0 0 ;
+                setAttr "RS_aovOC_set_shader.colorEntryList[1].position" 1;
+                setAttr "RS_aovOC_set_shader.colorEntryList[0].position" 0;
+                connectAttr -f RS_aovOC_set_sampleshader.facingRatio RS_aovOC_set_shader.vCoord;
+                setAttr "RS_aovOC_set_shader.type" 0;
+                setAttr "RS_aovOC_set_shader.interpolation" 4;
+                setAttr "rs_OC.enabled" 0;
+                setAttr "rs_OC.exrBits" 32;
+                setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_OC.dataType" 2;
+                setAttr "rs_OC.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_OC_png"+"\n");
+            }
+        //Creat AOV Emission png
+            global proc RS_Emission_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "Emission"`){
+                rename (`redshiftCreateAov ("Emission")`) "rs_Emission";
+                setAttr -type "string" rs_Emission.name "rs_Emission";
+                }
+                setAttr "rs_Emission.enabled" 0;
+                setAttr "rs_Emission.exrBits" 32;
+                setAttr -type "string" rs_Emission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_Emission.dataType" 2;
+                setAttr "rs_Emission.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Emission_png"+"\n");
+            }
+        //Creat AOV DiffuseFilter png
+            global proc RS_DiffuseFilter_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "DiffuseFilter"`){
+                rename (`redshiftCreateAov ("Diffuse Filter")`) "rs_DiffuseFilter";
+                setAttr -type "string" rs_DiffuseFilter.name "rs_DiffuseFilter";
+                }
+                setAttr "rs_DiffuseFilter.enabled" 0;
+                setAttr "rs_DiffuseFilter.exrBits" 32;
+                setAttr -type "string" rs_DiffuseFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_DiffuseFilter.dataType" 2;
+                setAttr "rs_DiffuseFilter.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_DiffuseFilter_png"+"\n");
+            }
+        //Creat AOV Diffuse Lighting Raw png
+            global proc RS_DiffuseLightingRaw_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "DiffuseLightingRaw"`){
+                rename (`redshiftCreateAov ("Diffuse Lighting Raw")`) "rs_DiffuseLightingRaw";
+                setAttr -type "string" rs_DiffuseLightingRaw.name "rs_DiffuseLightingRaw";
+                }
+                setAttr "rs_DiffuseLightingRaw.enabled" 0;
+                setAttr "rs_DiffuseLightingRaw.exrBits" 32;
+                setAttr -type "string" rs_DiffuseLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_DiffuseLightingRaw.dataType" 2;
+                setAttr "rs_DiffuseLightingRaw.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Diffuse Lighting Raw_png"+"\n");
+            }
+        //Creat AOV Motion Vectors png
+            global proc RS_MotionVectors_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "MotionVectors"`){
+                rename (`redshiftCreateAov ("Motion Vectors")`) "rs_MotionVectors";
+                setAttr -type "string" rs_MotionVectors.name "rs_MotionVectors";
+                }
+                setAttr "rs_MotionVectors.enabled" 0;
+                setAttr "rs_MotionVectors.exrBits" 32;
+                setAttr -type "string" rs_MotionVectors.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_MotionVectors.dataType" 2;
+                setAttr "rs_MotionVectors.fileFormat" 2;
+                setAttr "rs_MotionVectors.outputRawVectors" 1;
+                redshiftUpdateActiveAovList();
+                print ("rs_Motion Vectors_png"+"\n");
+            }
+        //Creat AOV Normals png
+            global proc RS_N_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "N"`){
+                rename (`redshiftCreateAov ("Normals")`) "rs_N";
+                setAttr -type "string" rs_N.name "rs_N";
+                }
+                setAttr "rs_N.enabled" 0;
+                setAttr "rs_N.exrBits" 32;
+                setAttr -type "string" rs_N.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_N.dataType" 2;
+                setAttr "rs_N.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Normals_png"+"\n");
+            }
+        //Creat AOV Reflections Filter png
+            global proc RS_ReflectionsFilter_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "ReflectionsFilter"`){
+                rename (`redshiftCreateAov ("Reflections Filter")`) "rs_ReflectionsFilter";
+                setAttr -type "string" rs_ReflectionsFilter.name "rs_ReflectionsFilter";
+                }
+                setAttr "rs_ReflectionsFilter.enabled" 0;
+                setAttr "rs_ReflectionsFilter.exrBits" 32;
+                setAttr -type "string" rs_ReflectionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_ReflectionsFilter.dataType" 2;
+                setAttr "rs_ReflectionsFilter.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Reflections Filter_png"+"\n");
+            }
+        //Creat AOV Reflections Raw png
+            global proc RS_ReflectionsRaw_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "ReflectionsRaw"`){
+                rename (`redshiftCreateAov ("Reflections Raw")`) "rs_ReflectionsRaw";
+                setAttr -type "string" rs_ReflectionsRaw.name "rs_ReflectionsRaw";
+                }
+                setAttr "rs_ReflectionsRaw.enabled" 0;
+                setAttr "rs_ReflectionsRaw.exrBits" 32;
+                setAttr -type "string" rs_ReflectionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_ReflectionsRaw.dataType" 2;
+                setAttr "rs_ReflectionsRaw.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Reflections Raw_png"+"\n");
+            }
+        //Creat AOV Refractions Filter png
+            global proc RS_RefractionsFilter_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "RefractionsFilter"`){
+                rename (`redshiftCreateAov ("Refractions Filter")`) "rs_RefractionsFilter";
+                setAttr -type "string" rs_RefractionsFilter.name "rs_RefractionsFilter";
+                }
+                setAttr "rs_RefractionsFilter.enabled" 0;
+                setAttr "rs_RefractionsFilter.exrBits" 32;
+                setAttr -type "string" rs_RefractionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_RefractionsFilter.dataType" 2;
+                setAttr "rs_RefractionsFilter.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Refractions Filter_png"+"\n");
+            }
+        //Creat AOV Refractions Raw png
+            global proc RS_RefractionsRaw_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "RefractionsRaw"`){
+                rename (`redshiftCreateAov ("Refractions Raw")`) "rs_RefractionsRaw";
+                setAttr -type "string" rs_RefractionsRaw.name "rs_RefractionsRaw";
+                }
+                setAttr "rs_RefractionsRaw.enabled" 0;
+                setAttr "rs_RefractionsRaw.exrBits" 32;
+                setAttr -type "string" rs_RefractionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_RefractionsRaw.dataType" 2;
+                setAttr "rs_RefractionsRaw.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Refractions Raw_png"+"\n");
+            }
+        //Creat AOV Specular Lighting png
+            global proc RS_SpecularLighting_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "SpecularLighting"`){
+                rename (`redshiftCreateAov ("Specular Lighting")`) "rs_SpecularLighting";
+                setAttr -type "string" rs_SpecularLighting.name "rs_SpecularLighting";
+                }
+                setAttr "rs_SpecularLighting.enabled" 0;
+                setAttr "rs_SpecularLighting.exrBits" 32;
+                setAttr -type "string" rs_SpecularLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_SpecularLighting.dataType" 2;
+                setAttr "rs_SpecularLighting.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Specular Lighting_png"+"\n");
+            }
+        //Creat AOV Sub Surface Scatter Raw png
+            global proc RS_SSSRaw_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "SSSRaw"`){
+                rename (`redshiftCreateAov ("Sub Surface Scatter Raw")`) "rs_SSSRaw";
+                setAttr -type "string" rs_SSSRaw.name "rs_SSSRaw";
+                }
+                setAttr "rs_SSSRaw.enabled" 0;
+                setAttr "rs_SSSRaw.exrBits" 32;
+                setAttr -type "string" rs_SSSRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_SSSRaw.dataType" 2;
+                setAttr "rs_SSSRaw.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Sub Surface Scatter Raw_png"+"\n");
+            }
+        //Creat AOV Sub Surface Scatter png
+            global proc RS_SSS_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "SSS"`){
+                rename (`redshiftCreateAov ("Sub Surface Scatter")`) "rs_SSS";
+                setAttr -type "string" rs_SSS.name "rs_SSS";
+                }
+                setAttr "rs_SSS.enabled" 0;
+                setAttr "rs_SSS.exrBits" 32;
+                setAttr -type "string" rs_SSS.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_SSS.dataType" 2;
+                setAttr "rs_SSS.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Sub Surface Scatter_png"+"\n");
+            }
+        //Creat AOV Translucency Lighting Raw png
+            global proc RS_TransLightingRaw_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "TransLightingRaw"`){
+                rename (`redshiftCreateAov ("Translucency Lighting Raw")`) "rs_TransLightingRaw";
+                setAttr -type "string" rs_TransLightingRaw.name "rs_TransLightingRaw";
+                }
+                setAttr "rs_TransLightingRaw.enabled" 0;
+                setAttr "rs_TransLightingRaw.exrBits" 32;
+                setAttr -type "string" rs_TransLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_TransLightingRaw.dataType" 2;
+                setAttr "rs_TransLightingRaw.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Translucency Lighting Raw_png"+"\n");
+            }
+        //Creat AOV World Position png
+            global proc RS_P_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "P"`){
+                rename (`redshiftCreateAov ("World Position")`) "rs_P";
+                setAttr -type "string" rs_P.name "rs_P";
+                }
+                setAttr "rs_P.enabled" 0;
+                setAttr "rs_P.exrBits" 32;
+                setAttr -type "string" rs_P.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                //setAttr "rs_P.dataType" 2;
+                setAttr "rs_P.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_World Position_png"+"\n");
+            }
+        //Creat AOV Depth png
+            global proc RS_Z_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "Z"`){
+                rename (`redshiftCreateAov ("Depth")`) "rs_Z";
+                setAttr -type "string" rs_Z.name "rs_Z";
+                }
+                setAttr "rs_Z.enabled" 0;
+                setAttr "rs_Z.exrBits" 32;
+                setAttr -type "string" rs_Z.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                //setAttr "rs_Z.dataType" 2;
+                setAttr "rs_Z.fileFormat" 2;
+                setAttr "rs_Z.filterMode" 3;
+                setAttr "rs_Z.depthMode" 1;
+                setAttr "rs_Z.minDepth" 0;
+                setAttr "rs_Z.maxDepth" 100000;
+                redshiftUpdateActiveAovList();
+                print ("rs_Depth_png"+"\n");
+            }
+        //Creat AOV Volume Fog Emission png
+            global proc RS_VolumeFogEmission_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "VolumeFogEmission"`){
+                rename (`redshiftCreateAov ("Volume Fog Emission")`) "rs_VolumeFogEmission";
+                setAttr -type "string" rs_VolumeFogEmission.name "rs_VolumeFogEmission";
+                }
+                setAttr "rs_VolumeFogEmission.enabled" 0;
+                setAttr "rs_VolumeFogEmission.exrBits" 32;
+                setAttr -type "string" rs_VolumeFogEmission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_VolumeFogEmission.dataType" 2;
+                setAttr "rs_VolumeFogEmission.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Volume Fog Emission_png"+"\n");
+            }
+        //Creat AOV Shadows png
+            global proc RS_Shadows_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "Shadows"`){
+                rename (`redshiftCreateAov ("Shadows")`) "rs_Shadows";
+                setAttr -type "string" rs_Shadows.name "rs_Shadows";
+                }
+                setAttr "rs_Shadows.enabled" 0;
+                setAttr "rs_Shadows.exrBits" 32;
+                setAttr -type "string" rs_Shadows.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_Shadows.dataType" 2;
+                setAttr "rs_Shadows.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Shadows_png"+"\n");
+            }
+        //Creat AOV Global Illumination Raw png
+            global proc RS_GIRaw_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "GIRaw"`){
+                rename (`redshiftCreateAov ("Global Illumination Raw")`) "rs_GIRaw";
+                setAttr -type "string" rs_GIRaw.name "rs_GIRaw";
+                }
+                setAttr "rs_GIRaw.enabled" 0;
+                setAttr "rs_GIRaw.exrBits" 32;
+                setAttr -type "string" rs_GIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_GIRaw.dataType" 2;
+                setAttr "rs_GIRaw.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Global Illumination Raw_png"+"\n");
+            }
+
+        //Creat AOV Translucency GI Raw png
+            global proc RS_TransGIRaw_Aov_png(){
+                source redshiftCreateAovTab;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                if(!`objExists "TransGIRaw"`){
+                rename (`redshiftCreateAov ("Translucency GI Raw")`) "rs_TransGIRaw";
+                setAttr -type "string" rs_TransGIRaw.name "rs_TransGIRaw";
+                }
+                setAttr "rs_TransGIRaw.enabled" 0;
+                setAttr "rs_TransGIRaw.exrBits" 32;
+                setAttr -type "string" rs_TransGIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "rs_TransGIRaw.dataType" 2;
+                setAttr "rs_TransGIRaw.fileFormat" 2;
+                redshiftUpdateActiveAovList();
+                print ("rs_Translucency GI Raw_png"+"\n");
+            }
+
+
+        /////////// Creat ISO //////////////////////////////////////
+            //Creat 2017 RedshiftPhotographicExposure
+                global proc ISO_maya2017(){
+                    shadingNode -asUtility RedshiftPhotographicExposure;
+                    rename rsPhotographicExposure1 "ISO_maya2017" ;
+                    setAttr "ISO_maya2017.enable" 0;
+                    redshiftChangeGlobalShader ISO_maya2017 "exposure";
+                    redshiftUpdateGlobalShader "exposure" "rsControl_expText" "rsControl_expSelButton";
+                    autoUpdateAttrEd;
+                    print ("Creat_ISO_maya2017"+"\n");
+                }
+            //Creat 2019 postEffects
+                global proc ISO_maya2019(){
+                    shadingNode -asUtility RedshiftPostEffects;
+                    rename rsPostEffects1 "ISO_maya2019" ;
+                    redshiftChangeGlobalShader ISO_maya2019 "postEffects";
+                    print ("Creat_ISO_maya2019"+"\n");
+                }
 
 ///////////// prs SET ///////////////////////////////////////////////////////////////////
-    /// 1K ///
-        global proc XRSZ_1K(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+////////prs SET EXR & PNG/////////
+    ////镜头大小
+        /// 1K ///
+            global proc XRSZ_1K(){
+                setAttr "defaultResolution.width" 1024;
+                setAttr "defaultResolution.height" 1024;
+                setAttr "defaultResolution.deviceAspectRatio" 1;
+                setAttr "defaultResolution.pixelAspect" 1;
+            }
+        /// 2K ///
+            global proc XRSZ_2K(){
+                setAttr defaultResolution.width 2048;
+                setAttr defaultResolution.height 2048;
+                setAttr "defaultResolution.deviceAspectRatio" 1;
+                setAttr "defaultResolution.pixelAspect" 1;
+            }
+        /// 3K ///
+            global proc XRSZ_3K(){
+                setAttr defaultResolution.width 3072;
+                setAttr defaultResolution.height 3072;
+                setAttr "defaultResolution.deviceAspectRatio" 1;
+                setAttr "defaultResolution.pixelAspect" 1;
+            }
+        /// 4K ///
+            global proc XRSZ_4K(){
+                setAttr defaultResolution.width 4096;
+                setAttr defaultResolution.height 4096;
+                setAttr "defaultResolution.deviceAspectRatio" 1;
+                setAttr "defaultResolution.pixelAspect" 1;
+            }
+        /// HD720 ///
+            global proc XRSZ_HD720(){
+                setAttr defaultResolution.width 1280;
+                setAttr defaultResolution.height 720;
+                setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                setAttr "defaultResolution.pixelAspect" 1.000;
+            }
+        /// HD1080 ///
+            global proc XRSZ_HD1080(){
+                setAttr defaultResolution.width 1920;
+                setAttr defaultResolution.height 1080;
+                setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                setAttr "defaultResolution.pixelAspect" 1.000;
+            }
+        /// 4096_2305 ///
+            global proc XRSZ_4096_2305(){
+                setAttr defaultResolution.width 4096;
+                setAttr defaultResolution.height 2305;
+                setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                setAttr "defaultResolution.pixelAspect" 1.000;
+            }
+        /// 720*1280 ///
+            global proc XRSZ_720_1280(){
+                setAttr defaultResolution.width 720;
+                setAttr defaultResolution.height 1280;
+                setAttr "defaultResolution.deviceAspectRatio" 0.562;
+                setAttr "defaultResolution.pixelAspect" 1.000;
+            }
+        /// 1080*1920 ///
+            global proc XRSZ_1080_1920(){
+                setAttr defaultResolution.width 1080;
+                setAttr defaultResolution.height 1920;
+                setAttr "defaultResolution.deviceAspectRatio" 0.562;
+                setAttr "defaultResolution.pixelAspect" 1.000;
+            }
+        /// 2305*4096 ///
+            global proc XRSZ_2305_4096(){
+                setAttr defaultResolution.width 2305;
+                setAttr defaultResolution.height 4096;
+                setAttr "defaultResolution.deviceAspectRatio" 0.563;
+                setAttr "defaultResolution.pixelAspect" 1.000;
+            }
+
+
+        /*
+        global proc DR(){
+            string $DRLJ=`textField -q -text DRSR`;
+            file -import  $DRLJ ;
+        }*/
+        ////////prs SET EXR 自定义分辨率 /////////
+            ///最终调用////
+                global proc set_CS_imagesize_exr(){
+                    custom_camset();
+                    camset_export_EXR();
+                    camset_render_set();
+
+                    //print($width "*" $Hight);
+                    //headsUpMessage -time 5 ($width "*" $Hight);
+                }
+
+            /// 自定义镜头分辨率///
+
+                global proc custom_camset(){
+                    string $widthcs=`textField -q -text cs_width`;
+                    string $Hightcs=`textField -q -text cs_Hight`;
+                }
+
+
+    //CAM输出格式为EXR
+        global proc camset_export_EXR(){
+            setAttr "redshiftOptions.imageFormat" 1;
+        }
+        
+    //CAM输出格式为PNG
+        global proc camset_export_PNG(){
             setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 1024;
-            setAttr defaultResolution.height 1024;
-            setAttr "defaultResolution.deviceAspectRatio" 1;
-            setAttr "defaultResolution.pixelAspect" 1;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
         }
 
-    /// 2K ///
-        global proc XRSZ_2K(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
+    ///渲染参数预设///
+        global proc camset_render_set(){
+            setAttr "defaultRenderGlobals.currentRenderer" -type "string" "redshift";
+            setAttr "defaultRenderGlobals.imageFilePrefix" -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
             setAttr "defaultRenderGlobals.animation" 1;
             setAttr "redshiftOptions.exrForceMultilayer" 1;
             setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 2048;
-            setAttr defaultResolution.height 2048;
-            setAttr "defaultResolution.deviceAspectRatio" 1;
-            setAttr "defaultResolution.pixelAspect" 1;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
-        }
-
-    /// 3K ///
-        global proc XRSZ_3K(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 3072;
-            setAttr defaultResolution.height 3072;
-            setAttr "defaultResolution.deviceAspectRatio" 1;
-            setAttr "defaultResolution.pixelAspect" 1;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
-        }
-
-    /// 4K ///
-        global proc XRSZ_4K(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 4096;
-            setAttr defaultResolution.height 4096;
-            setAttr "defaultResolution.deviceAspectRatio" 1;
-            setAttr "defaultResolution.pixelAspect" 1;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
-        }
-
-/*
-global proc DR(){
-    string $DRLJ=`textField -q -text DRSR`;
-    file -import  $DRLJ ;
-}*/
-
-    /// 自定义镜头分辨率///
-
-        global proc set_CS_imagesize(){
-            string $widthcs=`textField -q -text cs_width`;
-            string $Hightcs=`textField -q -text cs_Hight`;
-            setAttr defaultResolution.width $widthcs;
-            setAttr defaultResolution.height $Hightcs;
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
+            setAttr "defaultResolution.aspectLock" 0;
             setAttr "defaultRenderGlobals.enableDefaultLight" 0;
             string $Cam[] =`ls -ca`;
             setAttr ($Cam[0]+".renderable") 1;
@@ -2525,260 +2453,177 @@ global proc DR(){
         }
 
 
-///////////////////////////////////////////////////
-
-
-    /// HD720 ///
-        global proc XRSZ_HD720(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 1280;
-            setAttr defaultResolution.height 720;
-            setAttr "defaultResolution.deviceAspectRatio" 1.777;
-            setAttr "defaultResolution.pixelAspect" 1.000;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
+/////// CAM PRS SET EXR & PNG///
+    //1K EXR//
+        global proc XRSZ_1K_exr(){
+            XRSZ_1K();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_1K_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_1K_EXR"+"\n");
+        }
+    //1K PNG//
+        global proc XRSZ_1K_png(){
+            XRSZ_1K();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_1K_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_1K_PNG"+"\n");
         }
 
-    /// HD1080 ///
-        global proc XRSZ_HD1080(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 1920;
-            setAttr defaultResolution.height 1080;
-            setAttr "defaultResolution.deviceAspectRatio" 1.777;
-            setAttr "defaultResolution.pixelAspect" 1.000;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
+    //2K EXR//
+        global proc XRSZ_2K_exr(){
+            XRSZ_2K();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_2K_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_2K_EXR"+"\n");
+        }
+    //2K PNG//
+        global proc XRSZ_2K_png(){
+            XRSZ_2K();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_2K_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_2K_PNG"+"\n");
         }
 
-    /// 4096_2305 ///
-        global proc XRSZ_4096_2305(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 4096;
-            setAttr defaultResolution.height 2305;
-            setAttr "defaultResolution.deviceAspectRatio" 1.777;
-            setAttr "defaultResolution.pixelAspect" 1.000;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
+    //3K EXR//
+        global proc XRSZ_3K_exr(){
+            XRSZ_3K();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_3K_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_3K_EXR"+"\n");
+        }
+    //3K PNG//
+        global proc XRSZ_3K_png(){
+            XRSZ_3K();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_3K_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_3K_PNG"+"\n");
         }
 
-    /// 720*1280 ///
-        global proc XRSZ_720_1280(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 720;
-            setAttr defaultResolution.height 1280;
-            setAttr "defaultResolution.deviceAspectRatio" 0.562;
-            setAttr "defaultResolution.pixelAspect" 1.000;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
+    //4K EXR//
+        global proc XRSZ_4K_exr(){
+            XRSZ_4K();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_4K_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_4K_EXR"+"\n");
+        }
+    //4K PNG//
+        global proc XRSZ_4K_png(){
+            XRSZ_4K();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_4K_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_4K_PNG"+"\n");
         }
 
-    /// 1080*1920 ///
-        global proc XRSZ_1080_1920(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 1080;
-            setAttr defaultResolution.height 1920;
-            setAttr "defaultResolution.deviceAspectRatio" 0.562;
-            setAttr "defaultResolution.pixelAspect" 1.000;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
+    //HD720 EXR//
+        global proc XRSZ_HD720_exr(){
+            XRSZ_HD720();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_HD720_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_HD720_EXR"+"\n");
+        }
+    //HD720 PNG//
+        global proc XRSZ_HD720_png(){
+            XRSZ_HD720();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_HD720_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_HD720_PNG"+"\n");
         }
 
-    /// 2305*4096 ///
-        global proc XRSZ_2305_4096(){
-            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
-            setAttr defaultRenderGlobals.imageFilePrefix -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
-            setAttr "redshiftOptions.imageFormat" 2;
-            setAttr "defaultRenderGlobals.animation" 1;
-            setAttr "redshiftOptions.exrForceMultilayer" 1;
-            setAttr "redshiftOptions.exrMultipart" 1;
-            setAttr "defaultResolution.aspectLock" 1;
-            setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-            string $Cam[] =`ls -ca`;
-            setAttr ($Cam[0]+".renderable") 1;
-            setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
-            setAttr "perspShape.farClipPlane" 10000000;
-            setAttr "perspShape.renderable" 0;
-            setAttr defaultResolution.width 2305;
-            setAttr defaultResolution.height 4096;
-            setAttr "defaultResolution.deviceAspectRatio" 0.563;
-            setAttr "defaultResolution.pixelAspect" 1.000;
-            setAttr "redshiftOptions.unifiedMinSamples" 512;
-            setAttr "redshiftOptions.unifiedMaxSamples" 512;
-            setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
-            setAttr "redshiftOptions.unifiedRandomizePattern" 0;
-            setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
-            setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
-            setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
-            setAttr "redshiftOptions.enableDebugCapture" 0;
-            string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
-            if( `objExists $RS_Volume[0]` ){
-            setAttr ($RS_Volume[0]+".enable") 0;}
-            string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
-            if( `objExists $RS_Photographic[0]` ){
-            setAttr ($RS_Photographic[0]+".enable") 0;}
-            string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
-            if( `objExists $RS_PhysicalSky[0]` ){
-            setAttr ($RS_PhysicalSky[0]+".on") 0;}
-            setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
-            setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
-            setAttr "redshiftOptions.primaryGIEngine" 4;
-            setAttr "redshiftOptions.secondaryGIEngine" 0;
+    //HD1080 EXR//
+        global proc XRSZ_HD1080_exr(){
+            XRSZ_HD1080();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_HD1080_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_HD1080_EXR"+"\n");
         }
+    //HD1080 PNG//
+        global proc XRSZ_HD1080_png(){
+            XRSZ_HD1080();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_HD1080_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_HD1080_PNG"+"\n");
+        }
+
+    //4096_2305 EXR//
+        global proc XRSZ_4096_2305_exr(){
+            XRSZ_4096_2305();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_4096_2305_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_4096_2305_EXR"+"\n");
+        }
+    //4096_2305 PNG//
+        global proc XRSZ_4096_2305_png(){
+            XRSZ_4096_2305();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_4096_2305_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_4096_2305_PNG"+"\n");
+        }
+
+    //720_1280 EXR//
+        global proc XRSZ_720_1280_exr(){
+            XRSZ_720_1280();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_720_1280_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_720_1280_EXR"+"\n");
+        }
+    //720_1280 PNG//
+        global proc XRSZ_720_1280_png(){
+            XRSZ_720_1280();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_720_1280_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_720_1280_PNG"+"\n");
+        }
+
+    //1080_1920 EXR//
+        global proc XRSZ_1080_1920_exr(){
+            XRSZ_1080_1920();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_1080_1920_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_1080_1920_EXR"+"\n");
+        }
+    //1080_1920 PNG//
+        global proc XRSZ_1080_1920_png(){
+            XRSZ_720_1280();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_1080_1920_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_1080_1920_PNG"+"\n");
+        }
+
+    //2305_4096 EXR//
+        global proc XRSZ_2305_4096_exr(){
+            XRSZ_2305_4096();
+            camset_export_EXR();
+            camset_render_set();
+            print("XRSZ_2305_4096_EXR"+"\n");
+            headsUpMessage -time 5 ("XRSZ_2305_4096_EXR"+"\n");
+        }
+    //2305_4096 PNG//
+        global proc XRSZ_2305_4096_png(){
+            XRSZ_2305_4096();
+            camset_export_PNG();
+            camset_render_set();
+            print("XRSZ_2305_4096_PNG"+"\n");
+            headsUpMessage -time 5 ("XRSZ_2305_4096_PNG"+"\n");
+        }
+
 
 /////////做镜头////////
     ///1_Character_Group+ID
@@ -2796,7 +2641,7 @@ global proc DR(){
 ////2017横屏
     ///Aovs+ISO+HD720
         global proc Aovs_iso2017_HD720_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_HD720();
             creat_SHAlig();
             importCHAlig();
@@ -2805,7 +2650,7 @@ global proc DR(){
         }
     ///Aovs+ISO+HD1080
         global proc Aovs_iso2017_HD1080_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_HD1080();
             creat_SHAlig();
             importCHAlig();
@@ -2813,7 +2658,7 @@ global proc DR(){
         }
     ///Aovs+ISO+4K
         global proc Aovs_iso2017_4K_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_4096_2305();
             creat_SHAlig();
             importCHAlig();            
@@ -2823,7 +2668,7 @@ global proc DR(){
 ////2019横屏
     ///Aovs+ISO+HD720
         global proc Aovs_iso2019_HD720_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_HD720();
             creat_SHAlig();
             importCHAlig();
@@ -2831,7 +2676,7 @@ global proc DR(){
         }
     ///Aovs+ISO+HD1080
         global proc Aovs_iso2019_HD1080_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_HD1080();
             creat_SHAlig();
             importCHAlig();
@@ -2839,7 +2684,7 @@ global proc DR(){
         }
     ///Aovs+ISO+4K
         global proc Aovs_iso2019_4K_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_4096_2305();
             creat_SHAlig();
             importCHAlig();
@@ -2849,7 +2694,7 @@ global proc DR(){
 ////2017竖屏
     ///Aovs_iso+720*1280
         global proc Aovs_iso2017_720_1280_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_720_1280();
             creat_SHAlig();
             importCHAlig();
@@ -2857,7 +2702,7 @@ global proc DR(){
         }
     ///Aovs_iso+1080*1920
         global proc Aovs_iso2017_1080_1920_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_1080_1920();
             creat_SHAlig();
             importCHAlig();
@@ -2865,7 +2710,7 @@ global proc DR(){
         }
     ///Aovs_iso+SP4K
         global proc Aovs_iso2017_SP4K_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_2305_4096();
             creat_SHAlig();
             importCHAlig();
@@ -2875,14 +2720,14 @@ global proc DR(){
 ////2019竖屏
     ///Aovs_iso+720*1280
         global proc Aovs_iso2019_720_1280_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             importCHAlig();
             XRSZ_720_1280();
             ISO_maya2019();
         }
     ///Aovs_iso+1080*1920
         global proc Aovs_iso2019_1080_1920_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_1080_1920();
             creat_SHAlig();
             importCHAlig();
@@ -2890,7 +2735,7 @@ global proc DR(){
         }
     ///Aovs_iso+SP4K
         global proc Aovs_iso2019_SP4K_exr(){
-            RS_Full_Aovs_sam();
+            RS_Full_Aovs_exr();
             XRSZ_2305_4096();
             creat_SHAlig();
             importCHAlig();

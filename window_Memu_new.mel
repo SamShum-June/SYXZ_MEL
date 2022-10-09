@@ -56,23 +56,42 @@
                 setParent ..;
                 setParent ..;
 
-        frameLayout  -l "Prs SET"   -w 500 -h 120 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
+        frameLayout  -l "Prs SET EXR"   -w 500 -h 120 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
                 text -w 500 -h 10 -bgc 0 0 0.134 -l "方形                 自定义                                                              " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
-                        button  -l "1K"    -c "XRSZ_1K" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
-                        button  -l "2K"    -c "XRSZ_2K" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok    
-                        button  -l "3K"    -c "XRSZ_3K" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
-                        button  -l "4K"    -c "XRSZ_4K" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
+                        button  -l "1K"    -c "XRSZ_1K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
+                        button  -l "2K"    -c "XRSZ_2K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok    
+                        button  -l "3K"    -c "XRSZ_3K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
+                        button  -l "4K"    -c "XRSZ_4K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
                         text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight ; button  -l "set Size" -c "set_CS_imagesize" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658;
                         setParent ..;
                 text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
-                        button  -l "HD720"    -c "XRSZ_HD720" -h 18 -w 50 -bgc 1 0.5 0.6;       //ok
-                        button  -l "HD1080"    -c "XRSZ_HD1080" -h 18 -w 50 -bgc 1 0.5 0.6;     //ok
-                        button  -l "4096_2305"    -c "XRSZ_4096_2305" -h 18 -w 70 -bgc 1 0.5 0.6;       //ok
-                        button  -l "720*1280"    -c "XRSZ_720_1280" -h 18 -w 80 -bgc 1 1 0.6;         //ok
-                        button  -l "1080*1920"    -c "XRSZ_1080_1920" -h 18 -w 80 -bgc 1 1 0.6;       //ok
-                        button  -l "2305_4096"    -c "XRSZ_2305_4096" -h 18 -w 70 -bgc 1 1 0.6;         //ok               
+                        button  -l "HD720"    -c "XRSZ_HD720_exr" -h 18 -w 50 -bgc 1 0.5 0.6;       //ok
+                        button  -l "HD1080"    -c "XRSZ_HD1080_exr" -h 18 -w 50 -bgc 1 0.5 0.6;     //ok
+                        button  -l "4096_2305"    -c "XRSZ_4096_2305_exr" -h 18 -w 70 -bgc 1 0.5 0.6;       //ok
+                        button  -l "720*1280"    -c "XRSZ_720_1280_exr" -h 18 -w 80 -bgc 1 1 0.6;         //ok
+                        button  -l "1080*1920"    -c "XRSZ_1080_1920_exr" -h 18 -w 80 -bgc 1 1 0.6;       //ok
+                        button  -l "2305_4096"    -c "XRSZ_2305_4096_exr" -h 18 -w 70 -bgc 1 1 0.6;         //ok               
+                setParent ..;
+                setParent ..; 
+        frameLayout  -l "Prs SET PNG"   -w 500 -h 120 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
+                text -w 500 -h 10 -bgc 0 0 0.134 -l "方形                 自定义                                                              " ; 
+                rowColumnLayout  -nr 1  -cs 1 5;
+                        button  -l "1K"    -c "XRSZ_1K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
+                        button  -l "2K"    -c "XRSZ_2K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok    
+                        button  -l "3K"    -c "XRSZ_3K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
+                        button  -l "4K"    -c "XRSZ_4K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
+                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight ; button  -l "set Size" -c "set_CS_imagesize" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658;
+                        setParent ..;
+                text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
+                rowColumnLayout  -nr 1  -cs 1 5;
+                        button  -l "HD720"    -c "XRSZ_HD720_png" -h 18 -w 50 -bgc 1 0.5 0.6;       //ok
+                        button  -l "HD1080"    -c "XRSZ_HD1080_png" -h 18 -w 50 -bgc 1 0.5 0.6;     //ok
+                        button  -l "4096_2305"    -c "XRSZ_4096_2305_png" -h 18 -w 70 -bgc 1 0.5 0.6;       //ok
+                        button  -l "720*1280"    -c "XRSZ_720_1280_png" -h 18 -w 80 -bgc 1 1 0.6;         //ok
+                        button  -l "1080*1920"    -c "XRSZ_1080_1920_png" -h 18 -w 80 -bgc 1 1 0.6;       //ok
+                        button  -l "2305_4096"    -c "XRSZ_2305_4096_png" -h 18 -w 70 -bgc 1 1 0.6;         //ok               
                 setParent ..;
                 setParent ..; 
         frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 60 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
