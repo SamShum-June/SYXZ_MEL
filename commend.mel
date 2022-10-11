@@ -1321,33 +1321,33 @@
     //1_Custom ID AOVs PNG
         global proc Cs_Char_IDAovs_PNG(){
             source redshiftCreateAovTab;
-            rename (`redshiftCreateAov "Puzzle Matte"`) Cs_Char_ID_PNG;
-            setAttr -type "string" Cs_Char_ID_PNG.name "Cs_Char_ID_PNG";
-            setAttr "Cs_Char_ID_PNG.dataType" 2;    
-            setAttr "Cs_Char_ID_PNG.fileFormat" 2;
-            setAttr "Cs_Char_ID_PNG.mode" 1;
-            setAttr "Cs_Char_ID_PNG.redId" 111;
-            setAttr "Cs_Char_ID_PNG.greenId" 222;
-            setAttr "Cs_Char_ID_PNG.blueId" 333;
-            setAttr "Cs_Char_ID_PNG.enabled" 0;
-            setAttr "Cs_Char_ID_PNG.exrBits" 32;
-            selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 0 -camera 0 -texture 0 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 0;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Cs_Char_ID_PNG;
+            setAttr -type "string" RGB_Cs_Char_ID_PNG.name "RGB_Cs_Char_ID_PNG";
+            setAttr "RGB_Cs_Char_ID_PNG.dataType" 2;    
+            setAttr "RGB_Cs_Char_ID_PNG.fileFormat" 2;
+            setAttr "RGB_Cs_Char_ID_PNG.mode" 1;
+            setAttr "RGB_Cs_Char_ID_PNG.redId" 111;
+            setAttr "RGB_Cs_Char_ID_PNG.greenId" 222;
+            setAttr "RGB_Cs_Char_ID_PNG.blueId" 333;
+            setAttr "RGB_Cs_Char_ID_PNG.enabled" 0;
+            setAttr "RGB_Cs_Char_ID_PNG.exrBits" 32;
+            selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 1 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 1;
         }
     
     //1_Custom ID AOVs EXR
         global proc Cs_Char_IDAovs_EXR(){
             source redshiftCreateAovTab;
-            rename (`redshiftCreateAov "Puzzle Matte"`) Cs_Char_ID_EXR;
-            setAttr -type "string" Cs_Char_ID_EXR.name "Cs_Char_ID_EXR";
-            setAttr "Cs_Char_ID_EXR.dataType" 2;    
-            setAttr "Cs_Char_ID_EXR.fileFormat" 1;
-            setAttr "Cs_Char_ID_EXR.mode" 1;
-            setAttr "Cs_Char_ID_EXR.redId" 111;
-            setAttr "Cs_Char_ID_EXR.greenId" 222;
-            setAttr "Cs_Char_ID_EXR.blueId" 333;
-            setAttr "Cs_Char_ID_EXR.enabled" 0;
-            setAttr "Cs_Char_ID_EXR.exrBits" 32;
-            selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 0 -camera 0 -texture 0 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 0;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Cs_Char_ID_EXR;
+            setAttr -type "string" RGB_Cs_Char_ID_EXR.name "RGB_Cs_Char_ID_EXR";
+            setAttr "RGB_Cs_Char_ID_EXR.dataType" 2;    
+            setAttr "RGB_Cs_Char_ID_EXR.fileFormat" 1;
+            setAttr "RGB_Cs_Char_ID_EXR.mode" 1;
+            setAttr "RGB_Cs_Char_ID_EXR.redId" 111;
+            setAttr "RGB_Cs_Char_ID_EXR.greenId" 222;
+            setAttr "RGB_Cs_Char_ID_EXR.blueId" 333;
+            setAttr "RGB_Cs_Char_ID_EXR.enabled" 0;
+            setAttr "RGB_Cs_Char_ID_EXR.exrBits" 32;
+            selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 1 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 1;
         }
 
     //2_Cs Red ID
@@ -2287,24 +2287,40 @@
             }
 
 
-        /////////// Creat ISO //////////////////////////////////////
-            //Creat 2017 RedshiftPhotographicExposure
-                global proc ISO_maya2017(){
-                    shadingNode -asUtility RedshiftPhotographicExposure;
-                    rename rsPhotographicExposure1 "ISO_maya2017" ;
-                    setAttr "ISO_maya2017.enable" 0;
-                    redshiftChangeGlobalShader ISO_maya2017 "exposure";
-                    redshiftUpdateGlobalShader "exposure" "rsControl_expText" "rsControl_expSelButton";
-                    autoUpdateAttrEd;
-                    print ("Creat_ISO_maya2017"+"\n");
-                }
-            //Creat 2019 postEffects
-                global proc ISO_maya2019(){
-                    shadingNode -asUtility RedshiftPostEffects;
-                    rename rsPostEffects1 "ISO_maya2019" ;
-                    redshiftChangeGlobalShader ISO_maya2019 "postEffects";
-                    print ("Creat_ISO_maya2019"+"\n");
-                }
+/////////// Creat ISO //////////////////////////////////////
+    //Creat 2017 RedshiftPhotographicExposure
+        global proc ISO_maya2017(){
+            file -import -type "mayaBinary""//192.168.23.65/ab$/Light_Library/_SYXZ/iso_maya2017.mb";
+            /*
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            fillSelectedTabForCurrentRenderer;
+            fillSelectedTabForCurrentRenderer;
+            shadingNode -asUtility RedshiftPhotographicExposure -n "ISO_maya2017";
+            
+            redshiftChangeGlobalShader ISO_maya2017 "exposure";
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            fillSelectedTabForCurrentRenderer;
+            fillSelectedTabForCurrentRenderer;
+            redshiftChangeGlobalShader ISO_maya2017 "exposure";
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            fillSelectedTabForCurrentRenderer;
+            fillSelectedTabForCurrentRenderer;
+            redshiftChangeGlobalShader ISO_maya2017 "exposure";
+            // Result: 0 //
+            setAttr "ISO_maya2017.enable" 0;
+            autoUpdateAttrEd;
+            */
+            print ("Creat_ISO_maya2017"+"\n");
+        }
+    //Creat 2019 postEffects
+        global proc ISO_maya2019(){
+            setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+            shadingNode -asUtility RedshiftPostEffects;
+            rename rsPostEffects1 "ISO_maya2019" ;
+            redshiftChangeGlobalShader ISO_maya2019 "postEffects";
+            
+            print ("Creat_ISO_maya2019"+"\n");
+        }
 
 ///////////// prs SET ///////////////////////////////////////////////////////////////////
 ////////prs SET EXR & PNG/////////
@@ -2318,64 +2334,64 @@
             }
         /// 2K ///
             global proc XRSZ_2K(){
-                setAttr defaultResolution.width 2048;
-                setAttr defaultResolution.height 2048;
+                setAttr "defaultResolution.width" 2048;
+                setAttr "defaultResolution.height" 2048;
                 setAttr "defaultResolution.deviceAspectRatio" 1;
                 setAttr "defaultResolution.pixelAspect" 1;
             }
         /// 3K ///
             global proc XRSZ_3K(){
-                setAttr defaultResolution.width 3072;
-                setAttr defaultResolution.height 3072;
+                setAttr "defaultResolution.width" 3072;
+                setAttr "defaultResolution.height" 3072;
                 setAttr "defaultResolution.deviceAspectRatio" 1;
                 setAttr "defaultResolution.pixelAspect" 1;
             }
         /// 4K ///
             global proc XRSZ_4K(){
-                setAttr defaultResolution.width 4096;
-                setAttr defaultResolution.height 4096;
+                setAttr "defaultResolution.width" 4096;
+                setAttr "defaultResolution.height" 4096;
                 setAttr "defaultResolution.deviceAspectRatio" 1;
                 setAttr "defaultResolution.pixelAspect" 1;
             }
         /// HD720 ///
             global proc XRSZ_HD720(){
-                setAttr defaultResolution.width 1280;
-                setAttr defaultResolution.height 720;
+                setAttr "defaultResolution.width" 1280;
+                setAttr "defaultResolution.height" 720;
                 setAttr "defaultResolution.deviceAspectRatio" 1.777;
                 setAttr "defaultResolution.pixelAspect" 1.000;
             }
         /// HD1080 ///
             global proc XRSZ_HD1080(){
-                setAttr defaultResolution.width 1920;
-                setAttr defaultResolution.height 1080;
+                setAttr "defaultResolution.width" 1920;
+                setAttr "defaultResolution.height" 1080;
                 setAttr "defaultResolution.deviceAspectRatio" 1.777;
                 setAttr "defaultResolution.pixelAspect" 1.000;
             }
         /// 4096_2305 ///
             global proc XRSZ_4096_2305(){
-                setAttr defaultResolution.width 4096;
-                setAttr defaultResolution.height 2305;
+                setAttr "defaultResolution.width" 4096;
+                setAttr "defaultResolution.height" 2305;
                 setAttr "defaultResolution.deviceAspectRatio" 1.777;
                 setAttr "defaultResolution.pixelAspect" 1.000;
             }
         /// 720*1280 ///
             global proc XRSZ_720_1280(){
-                setAttr defaultResolution.width 720;
-                setAttr defaultResolution.height 1280;
+                setAttr "defaultResolution.width" 720;
+                setAttr "defaultResolution.height" 1280;
                 setAttr "defaultResolution.deviceAspectRatio" 0.562;
                 setAttr "defaultResolution.pixelAspect" 1.000;
             }
         /// 1080*1920 ///
             global proc XRSZ_1080_1920(){
-                setAttr defaultResolution.width 1080;
-                setAttr defaultResolution.height 1920;
+                setAttr "defaultResolution.width" 1080;
+                setAttr "defaultResolution.height" 1920;
                 setAttr "defaultResolution.deviceAspectRatio" 0.562;
                 setAttr "defaultResolution.pixelAspect" 1.000;
             }
         /// 2305*4096 ///
             global proc XRSZ_2305_4096(){
-                setAttr defaultResolution.width 2305;
-                setAttr defaultResolution.height 4096;
+                setAttr "defaultResolution.width" 2305;
+                setAttr "defaultResolution.height" 4096;
                 setAttr "defaultResolution.deviceAspectRatio" 0.563;
                 setAttr "defaultResolution.pixelAspect" 1.000;
             }
@@ -2389,9 +2405,9 @@
         ////////prs SET EXR 自定义分辨率 /////////
             ///最终调用////
                 global proc set_CS_imagesize_exr(){
-                    custom_camset();
-                    camset_export_EXR();
                     camset_render_set();
+                    camset_export_EXR();
+                    custom_camset();
 
                     //print($width "*" $Hight);
                     //headsUpMessage -time 5 ($width "*" $Hight);
@@ -2400,8 +2416,10 @@
             /// 自定义镜头分辨率///
 
                 global proc custom_camset(){
-                    string $widthcs=`textField -q -text cs_width`;
-                    string $Hightcs=`textField -q -text cs_Hight`;
+                    string $widthcs =`textField -q -text cs_width`;
+                    string $Hightcs =`textField -q -text cs_Hight`;
+                    setAttr "defaultResolution.width" $widthcs;
+                    setAttr "defaultResolution.height" $Hightcs;
                 }
 
 
@@ -2437,6 +2455,8 @@
             setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
             setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
             setAttr "redshiftOptions.enableDebugCapture" 0;
+            setAttr "redshiftOptions.fileGammaMode" 4;
+
             string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
             if( `objExists $RS_Volume[0]` ){
             setAttr ($RS_Volume[0]+".enable") 0;}
@@ -2450,176 +2470,177 @@
             setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
             setAttr "redshiftOptions.primaryGIEngine" 4;
             setAttr "redshiftOptions.secondaryGIEngine" 0;
+            setAttr "redshiftOptions.samplingGammaMode" 2;
         }
 
 
 /////// CAM PRS SET EXR & PNG///
     //1K EXR//
         global proc XRSZ_1K_exr(){
-            XRSZ_1K();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_1K();          
             print("XRSZ_1K_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_1K_EXR"+"\n");
         }
     //1K PNG//
         global proc XRSZ_1K_png(){
-            XRSZ_1K();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_1K();
             print("XRSZ_1K_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_1K_PNG"+"\n");
         }
 
     //2K EXR//
         global proc XRSZ_2K_exr(){
-            XRSZ_2K();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_2K();           
             print("XRSZ_2K_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_2K_EXR"+"\n");
         }
     //2K PNG//
         global proc XRSZ_2K_png(){
-            XRSZ_2K();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_2K();
             print("XRSZ_2K_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_2K_PNG"+"\n");
         }
 
     //3K EXR//
         global proc XRSZ_3K_exr(){
-            XRSZ_3K();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_3K();
             print("XRSZ_3K_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_3K_EXR"+"\n");
         }
     //3K PNG//
         global proc XRSZ_3K_png(){
-            XRSZ_3K();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_3K();
             print("XRSZ_3K_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_3K_PNG"+"\n");
         }
 
     //4K EXR//
         global proc XRSZ_4K_exr(){
-            XRSZ_4K();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_4K();
             print("XRSZ_4K_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_4K_EXR"+"\n");
         }
     //4K PNG//
         global proc XRSZ_4K_png(){
-            XRSZ_4K();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_4K();
             print("XRSZ_4K_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_4K_PNG"+"\n");
         }
 
     //HD720 EXR//
         global proc XRSZ_HD720_exr(){
-            XRSZ_HD720();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_HD720();
             print("XRSZ_HD720_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_HD720_EXR"+"\n");
         }
     //HD720 PNG//
         global proc XRSZ_HD720_png(){
-            XRSZ_HD720();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_HD720();
             print("XRSZ_HD720_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_HD720_PNG"+"\n");
         }
 
     //HD1080 EXR//
         global proc XRSZ_HD1080_exr(){
-            XRSZ_HD1080();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_HD1080();
             print("XRSZ_HD1080_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_HD1080_EXR"+"\n");
         }
     //HD1080 PNG//
         global proc XRSZ_HD1080_png(){
-            XRSZ_HD1080();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_HD1080();
             print("XRSZ_HD1080_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_HD1080_PNG"+"\n");
         }
 
     //4096_2305 EXR//
         global proc XRSZ_4096_2305_exr(){
-            XRSZ_4096_2305();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_4096_2305();
             print("XRSZ_4096_2305_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_4096_2305_EXR"+"\n");
         }
     //4096_2305 PNG//
         global proc XRSZ_4096_2305_png(){
-            XRSZ_4096_2305();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_4096_2305();
             print("XRSZ_4096_2305_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_4096_2305_PNG"+"\n");
         }
 
     //720_1280 EXR//
         global proc XRSZ_720_1280_exr(){
-            XRSZ_720_1280();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_720_1280();
             print("XRSZ_720_1280_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_720_1280_EXR"+"\n");
         }
     //720_1280 PNG//
         global proc XRSZ_720_1280_png(){
-            XRSZ_720_1280();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_720_1280();
             print("XRSZ_720_1280_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_720_1280_PNG"+"\n");
         }
 
     //1080_1920 EXR//
         global proc XRSZ_1080_1920_exr(){
-            XRSZ_1080_1920();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_1080_1920();
             print("XRSZ_1080_1920_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_1080_1920_EXR"+"\n");
         }
     //1080_1920 PNG//
         global proc XRSZ_1080_1920_png(){
-            XRSZ_720_1280();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_720_1280();
             print("XRSZ_1080_1920_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_1080_1920_PNG"+"\n");
         }
 
     //2305_4096 EXR//
         global proc XRSZ_2305_4096_exr(){
-            XRSZ_2305_4096();
-            camset_export_EXR();
             camset_render_set();
+            camset_export_EXR();
+            XRSZ_2305_4096();
             print("XRSZ_2305_4096_EXR"+"\n");
             headsUpMessage -time 5 ("XRSZ_2305_4096_EXR"+"\n");
         }
     //2305_4096 PNG//
         global proc XRSZ_2305_4096_png(){
-            XRSZ_2305_4096();
-            camset_export_PNG();
             camset_render_set();
+            camset_export_PNG();
+            XRSZ_2305_4096();
             print("XRSZ_2305_4096_PNG"+"\n");
             headsUpMessage -time 5 ("XRSZ_2305_4096_PNG"+"\n");
         }
@@ -2641,111 +2662,133 @@
 ////2017横屏
     ///Aovs+ISO+HD720
         global proc Aovs_iso2017_HD720_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_HD720();
+            ISO_maya2017();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2017();
+            
 
         }
     ///Aovs+ISO+HD1080
         global proc Aovs_iso2017_HD1080_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_HD1080();
+            ISO_maya2017();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2017();
         }
     ///Aovs+ISO+4K
         global proc Aovs_iso2017_4K_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_4096_2305();
+            ISO_maya2017();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();            
-            ISO_maya2017();
         }
 
 ////2019横屏
     ///Aovs+ISO+HD720
         global proc Aovs_iso2019_HD720_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_HD720();
+            ISO_maya2019();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2019();
         }
     ///Aovs+ISO+HD1080
         global proc Aovs_iso2019_HD1080_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_HD1080();
+            ISO_maya2019();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2019();
         }
     ///Aovs+ISO+4K
         global proc Aovs_iso2019_4K_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_4096_2305();
+            ISO_maya2019();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2019();
         }
 
 ////2017竖屏
     ///Aovs_iso+720*1280
         global proc Aovs_iso2017_720_1280_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_720_1280();
+            ISO_maya2017();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2017();
         }
     ///Aovs_iso+1080*1920
         global proc Aovs_iso2017_1080_1920_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_1080_1920();
+            ISO_maya2017();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2017();
+            
         }
     ///Aovs_iso+SP4K
         global proc Aovs_iso2017_SP4K_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_2305_4096();
+            ISO_maya2017();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2017();
+            
         }
 
 ////2019竖屏
     ///Aovs_iso+720*1280
         global proc Aovs_iso2019_720_1280_exr(){
-            RS_Full_Aovs_exr();
-            importCHAlig();
             XRSZ_720_1280();
             ISO_maya2019();
+            RS_Full_Aovs_exr();
+            creat_SHAlig();
+            importCHAlig();
+            
+            
         }
     ///Aovs_iso+1080*1920
         global proc Aovs_iso2019_1080_1920_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_1080_1920();
+            ISO_maya2019();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2019();
+            
         }
     ///Aovs_iso+SP4K
         global proc Aovs_iso2019_SP4K_exr(){
-            RS_Full_Aovs_exr();
             XRSZ_2305_4096();
+            ISO_maya2019();
+            RS_Full_Aovs_exr();
             creat_SHAlig();
             importCHAlig();
-            ISO_maya2019();
+            
         }
 
 
+////////// Do POSE PNG
+    //2_to do sth
+        global proc Do_pose_2_to_do_sth(){
+            smooth();
+            XRSZ_4K_png();
+            RS_Pose_Aovs_png();
+            Cs_Char_IDAovs_PNG();
+            importCHAlig();
+            ISO_maya2017();
+            print("Do_pose_2_to_do_sth");
+            headsUpMessage -time 5 ("Do_pose_2_to_do_sth");
+        }
 
-
-
+////////// sel obj
+    global proc sel_obj(){
+        selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 1 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 1;
+    }
 
 
 

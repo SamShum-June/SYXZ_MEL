@@ -1,0 +1,418 @@
+// Result: scriptEditorPanel1Window|scriptEditorPanel1|formLayout48|formLayout50|paneLayout1|cmdScrollFieldReporter1 // 
+fillSelectedTabForCurrentRenderer;
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Enable";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputProgressiveRenderingFrame|rsLayout_ProgressiveRenderingFrameColumn|checkBoxGrp5 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputProgressiveRenderingFrame|rsLayout_ProgressiveRenderingFrameColumn|checkBoxGrp5 redshiftOptions.progressiveRenderingEnabled ;
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Force Progressive for IPR";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputProgressiveRenderingFrame|rsLayout_ProgressiveRenderingFrameColumn|checkBoxGrp6 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputProgressiveRenderingFrame|rsLayout_ProgressiveRenderingFrameColumn|checkBoxGrp6 redshiftOptions.autoProgressiveRenderingIprEnabled ;
+attrFieldSliderGrp -label "Passes" -attribute redshiftOptions.progressiveRenderingNumPasses;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputProgressiveRenderingFrame|rsLayout_ProgressiveRenderingFrameColumn|attrFieldSliderGrp1 // 
+attrFieldSliderGrp -label "Min Samples" -attribute redshiftOptions.unifiedMinSamples rsControl_UnifiedMinSamples;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|rsControl_UnifiedMinSamples // 
+attrFieldSliderGrp -label "Max Samples" -attribute redshiftOptions.unifiedMaxSamples rsControl_UnifiedMaxSamples;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|rsControl_UnifiedMaxSamples // 
+attrFieldSliderGrp -label "Adaptive Error Threshold" -attribute redshiftOptions.unifiedAdaptiveErrorThreshold;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|attrFieldSliderGrp2 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Show Samples";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|checkBoxGrp7 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|checkBoxGrp7 redshiftOptions.unifiedDebugDrawSamples ;
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Don抰 Automatically Reduce Samples of Other Effects";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|checkBoxGrp8 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|checkBoxGrp8 redshiftOptions.unifiedDisableDivision ;
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Randomize Pattern on Each Frame";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|checkBoxGrp9 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputUnifiedSamplingFrame|rsLayout_UnifiedSamplingFrameColumn|checkBoxGrp9 redshiftOptions.unifiedRandomizePattern ;
+attrFieldSliderGrp -label "Filter Size" -attribute redshiftOptions.unifiedFilterSize;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSampleFilteringFrame|rsLayout_SampleFilteringFrameColumn|attrFieldSliderGrp3 // 
+attrFieldSliderGrp -label "Max Subsample Intensity" -attribute redshiftOptions.unifiedMaxOverbright;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSampleFilteringFrame|rsLayout_SampleFilteringFrameColumn|attrFieldSliderGrp4 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Override Samples";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp10 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp10 redshiftOptions.reflectionSamplesOverrideEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp10" -replacePrevious -attributeChange "redshiftOptions.reflectionSamplesOverrideEnable" "redshiftUpdateSamplingOverridesAttributes";
+// Result: 105 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Override Samples";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp11 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp11 redshiftOptions.refractionSamplesOverrideEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp11" -replacePrevious -attributeChange "redshiftOptions.refractionSamplesOverrideEnable" "redshiftUpdateSamplingOverridesAttributes";
+// Result: 106 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Override Samples";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp12 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp12 redshiftOptions.AOSamplesOverrideEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp12" -replacePrevious -attributeChange "redshiftOptions.AOSamplesOverrideEnable" "redshiftUpdateSamplingOverridesAttributes";
+// Result: 107 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Override Samples";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp13 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp13 redshiftOptions.lightSamplesOverrideEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp13" -replacePrevious -attributeChange "redshiftOptions.lightSamplesOverrideEnable" "redshiftUpdateSamplingOverridesAttributes";
+// Result: 108 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Override Samples";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp14 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp14 redshiftOptions.volumeSamplesOverrideEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp14" -replacePrevious -attributeChange "redshiftOptions.volumeSamplesOverrideEnable" "redshiftUpdateSamplingOverridesAttributes";
+// Result: 109 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Override Samples";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp15 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp15 redshiftOptions.singleScatteringSamplesOverrideEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputSamplingOverridesFrame|rsLayout_SamplingOverridesFrameColumn|checkBoxGrp15" -replacePrevious -attributeChange "redshiftOptions.singleScatteringSamplesOverrideEnable" "redshiftUpdateSamplingOverridesAttributes";
+// Result: 110 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Enable" rsControl_MotionBlurEnable;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurEnable // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurEnable redshiftOptions.motionBlurEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurEnable" -replacePrevious -attributeChange "redshiftOptions.motionBlurEnable" "redshiftUpdateMotionBlurAttributes";
+// Result: 117 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Enable Deformation Blur" rsControl_MotionBlurDeformationEnable;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurDeformationEnable // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurDeformationEnable redshiftOptions.motionBlurDeformationEnable ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurDeformationEnable" -replacePrevious -attributeChange "redshiftOptions.motionBlurDeformationEnable" "redshiftUpdateMotionBlurAttributes";
+// Result: 118 // 
+attrFieldSliderGrp -label "Transformation Steps" -attribute redshiftOptions.motionBlurNumTransformationSteps rsControl_MotionBlurNumTransformationSteps;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurNumTransformationSteps // 
+attrFieldSliderGrp -label "Frame Duration" -attribute redshiftOptions.motionBlurFrameDuration rsControl_MotionBlurFrameDuration;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurFrameDuration // 
+attrFieldSliderGrp -label "Shutter Start" -attribute redshiftOptions.motionBlurShutterStart rsControl_MotionBlurShutterStart;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurShutterStart // 
+attrFieldSliderGrp -label "Shutter End" -attribute redshiftOptions.motionBlurShutterEnd rsControl_MotionBlurShutterEnd;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurShutterEnd // 
+attrFieldSliderGrp -label "Shutter efficiency" -attribute redshiftOptions.motionBlurShutterEfficiency rsControl_MotionBlurShutterEfficiency;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputMotionBlurFrame|rsLayout_MotionBlurFrameColumn|rsControl_MotionBlurShutterEfficiency // 
+control -edit -enable false rsControl_MotionBlurDeformationEnable;
+// Result: rsControl_MotionBlurDeformationEnable // 
+control -edit -enable false rsControl_MotionBlurNumTransformationSteps;
+// Result: rsControl_MotionBlurNumTransformationSteps // 
+control -edit -enable false rsControl_MotionBlurFrameDuration;
+// Result: rsControl_MotionBlurFrameDuration // 
+control -edit -enable false rsControl_MotionBlurShutterStart;
+// Result: rsControl_MotionBlurShutterStart // 
+control -edit -enable false rsControl_MotionBlurShutterEnd;
+// Result: rsControl_MotionBlurShutterEnd // 
+control -edit -enable false rsControl_MotionBlurShutterPosition;
+// Result: rsControl_MotionBlurShutterPosition // 
+control -edit -enable false rsControl_MotionBlurShutterEfficiency;
+// Result: rsControl_MotionBlurShutterEfficiency // 
+attrFieldSliderGrp -label "Gamma" -attribute redshiftOptions.displayGammaValue rsControl_DisplayGammaValue;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_DisplayGammaValue // 
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_DisplayGammaValue" -replacePrevious -attributeChange "redshiftOptions.displayGammaValue" "redshiftUpdateGammaAttributes";
+// Result: 119 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Automatically Correct Color Inputs" rsControl_GammaCorrectColorInputs;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_GammaCorrectColorInputs // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_GammaCorrectColorInputs redshiftOptions.gammaCorrectColorInputs ;
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_GammaCorrectColorInputs" -replacePrevious -attributeChange "redshiftOptions.gammaCorrectColorInputs" "redshiftUpdateGammaAttributes";
+// Result: 120 // 
+attrEnumOptionMenuGrp -label "Mode" -attribute redshiftOptions.fileGammaMode -enumeratedItem 0 "No Gamma" -enumeratedItem 1 "Use Custom Gamma" -enumeratedItem 2 "Use Display Gamma" -enumeratedItem 4 "Automatic";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|attrEnumOptionMenuGrp3 // 
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|attrEnumOptionMenuGrp3" -replacePrevious -attributeChange "redshiftOptions.fileGammaMode" "redshiftUpdateGammaAttributes";
+// Result: 121 // 
+attrFieldSliderGrp -label "Gamma" -attribute redshiftOptions.fileGammaValue rsControl_FileGammaValue;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_FileGammaValue // 
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_FileGammaValue" -replacePrevious -attributeChange "redshiftOptions.fileGammaValue" "redshiftUpdateGammaAttributes";
+// Result: 122 // 
+attrEnumOptionMenuGrp -label "Mode" -attribute redshiftOptions.samplingGammaMode -enumeratedItem 0 "No Gamma" -enumeratedItem 1 "Use Custom Gamma" -enumeratedItem 2 "Automatic";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|attrEnumOptionMenuGrp4 // 
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|attrEnumOptionMenuGrp4" -replacePrevious -attributeChange "redshiftOptions.samplingGammaMode" "redshiftUpdateGammaAttributes";
+// Result: 123 // 
+attrFieldSliderGrp -label "Gamma" -attribute redshiftOptions.samplingGammaValue rsControl_SamplingGammaValue;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_SamplingGammaValue // 
+scriptJob -parent "unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputGammaFrame|rsLayout_GammaFrameColumn|rsControl_SamplingGammaValue" -replacePrevious -attributeChange "redshiftOptions.samplingGammaValue" "redshiftUpdateGammaAttributes";
+// Result: 124 // 
+control -edit -enable false rsControl_FileGammaValue;
+// Result: rsControl_FileGammaValue // 
+control -edit -enable false rsControl_SamplingGammaValue;
+// Result: rsControl_SamplingGammaValue // 
+str(round (2.2, 2))
+# Result: 2.2 # 
+str(round (2.2, 2))
+# Result: 2.2 # 
+str(round (-1, 2))
+# Result: -1.0 # 
+control -edit -enable false rsControl_DisplayGammaValue;
+// Result: rsControl_DisplayGammaValue // 
+control -edit -enable false rsControl_GammaCorrectColorInputs;
+// Result: rsControl_GammaCorrectColorInputs // 
+control -edit -enable false rsControl_GammaCorrectColorAttributes;
+// Result: rsControl_GammaCorrectColorAttributes // 
+attrFieldSliderGrp -label "Units to Meter Scale" -attribute redshiftOptions.photometricUnitsToMeterScale;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputPhotometricUnitsFrame|rsLayout_PhotometricUnitsFrameColumn|attrFieldSliderGrp5 // 
+attrFieldSliderGrp -label "cd/m^2 Factor" -attribute redshiftOptions.photometricCandelaMetersSquaredFactor;
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputPhotometricUnitsFrame|rsLayout_PhotometricUnitsFrameColumn|attrFieldSliderGrp6 // 
+checkBoxGrp -numberOfCheckBoxes 1 -label "" -label1 "Enable";
+// Result: unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputQuantizeto8bitandDitherFrame|rsLayout_Quantizeto8bitandDitherFrameColumn|checkBoxGrp16 // 
+connectControl -index 2 unifiedRenderGlobalsWindow|menuBarLayout3|rgMainForm|tabForm|redshiftTabLayout|redshiftOutputTab|rsLayout_OutputTabScroll|rsLayout_OutputTabColumn|rsLayout_OutputMainLayout|rsLayout_OutputColumn|rsLayout_OutputQuantizeto8bitandDitherFrame|rsLayout_Quantizeto8bitandDitherFrameColumn|checkBoxGrp16 redshiftOptions.quantizeTo8BitAndDither ;
+
+
+
+
+string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
+//redshiftAddAov;
+string $OBJnumin2;
+
+for($OBJnumin2 in $OBJnum)
+{
+
+    int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`; 
+    if ( $objIDnumID == 3){ RS_ConditionCreateAOV_RGB1(); }
+    if ( $objIDnumID == 6){ RS_ConditionCreateAOV_RGB2(); }
+    //if ( $objIDnumID == 9){ RS_ConditionCreateAOV_RGB3(); }
+    //if ( $objIDnumID == 12){ RS_ConditionCreateAOV_RGB4(); }
+    //if ( $objIDnumID == 15){ RS_ConditionCreateAOV_RGB5(); }
+    //if ( $objIDnumID == 18){ RS_ConditionCreateAOV_RGB6(); }
+    //if ( $objIDnumID == 21){ RS_ConditionCreateAOV_RGB7(); }
+   
+}
+
+
+       //不存在的情况下创建RGB1
+            global proc RS_ConditionCreateAOV_RGB1(){
+                string $AOVall1[] = `ls -typ "RedshiftAOV"`;
+                int $B1 = 0;
+                for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
+                { 
+                if ($AOVall1[$q1] == "rs_RGB1"){
+                    setAttr ($AOVall1[$q1]+".enabled") 0;
+                    editRenderLayerAdjustment ($AOVall1[$q1]+".enabled");
+                    setAttr ($AOVall1[$q1]+".enabled") 1;
+                    $B1 = $B1+1;
+                }
+                }
+                if($B1 == 0)
+                {
+                    RS_createAOV_RGB1();
+                }
+                
+            }
+            
+        //不存在的情况下创建RGB2
+            global proc RS_ConditionCreateAOV_RGB2(){
+                string $AOVall2[] = `ls -typ "RedshiftAOV"`;
+                int $B2 = 0;
+                for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
+                { 
+                if ($AOVall2[$q2] == "rs_RGB2"){
+                    setAttr ($AOVall2[$q2]+".enabled") 0;
+                    editRenderLayerAdjustment ($AOVall2[$q2]+".enabled");
+                    setAttr ($AOVall2[$q2]+".enabled") 1;
+                    $B2 = $B2+1;
+                }
+                }
+                if($B2 == 0)
+                {
+                    RS_createAOV_RGB2();
+                }
+            }
+
+        //不存在的情况下创建RGB3
+            global proc RS_ConditionCreateAOV_RGB3(){
+                string $AOVall3[] = `ls -typ "RedshiftAOV"`;
+                int $B3 = 0;
+                for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
+                { 
+                if ($AOVall3[$q3] == "rs_RGB3"){
+                    setAttr ($AOVall3[$q3]+".enabled") 0;
+                    editRenderLayerAdjustment ($AOVall3[$q3]+".enabled");
+                    setAttr ($AOVall3[$q3]+".enabled") 1;
+                    $B3 = $B3+1;
+                }
+                }
+                if($B3 == 0)
+                {
+                    RS_createAOV_RGB3();
+                }
+            }
+
+        //不存在的情况下创建RGB4
+            global proc RS_ConditionCreateAOV_RGB4(){
+                string $AOVall4[] = `ls -typ "RedshiftAOV"`;
+                int $B4 = 0;
+                for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
+                { 
+                if ($AOVall4[$q4] == "rs_RGB4"){
+                    setAttr ($AOVall4[$q4]+".enabled") 0;
+                    editRenderLayerAdjustment ($AOVall4[$q4]+".enabled");
+                    setAttr ($AOVall4[$q4]+".enabled") 1;
+                    $B4 = $B4+1;
+                }
+                }
+                if($B4 == 0)
+                {
+                    RS_createAOV_RGB4();
+                }
+            }
+
+        //不存在的情况下创建RGB5
+            global proc RS_ConditionCreateAOV_RGB5(){
+                string $AOVall5[] = `ls -typ "RedshiftAOV"`;
+                int $B5 = 0;
+                for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
+                { 
+                if ($AOVall5[$q5] == "rs_RGB5"){
+                    setAttr ($AOVall5[$q5]+".enabled") 0;
+                    editRenderLayerAdjustment ($AOVall5[$q5]+".enabled");
+                    setAttr ($AOVall5[$q5]+".enabled") 1;
+                    $B5 = $B5+1;
+                }
+                }
+                if($B5 == 0)
+                {
+                    RS_createAOV_RGB5();
+                }
+            }
+
+        //不存在的情况下创建RGB6
+            global proc RS_ConditionCreateAOV_RGB6(){
+                string $AOVall6[] = `ls -typ "RedshiftAOV"`;
+                int $B6 = 0;
+                for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
+                { 
+                if ($AOVall6[$q6] == "rs_RGB6"){
+                    setAttr ($AOVall6[$q6]+".enabled") 0;
+                    editRenderLayerAdjustment ($AOVall6[$q6]+".enabled");
+                    setAttr ($AOVall6[$q6]+".enabled") 1;
+                    $B6 = $B6+1;
+                }
+                }
+                if($B6 == 0)
+                {
+                    RS_createAOV_RGB6();
+                }
+            }
+
+        //不存在的情况下创建RGB7
+            global proc RS_ConditionCreateAOV_RGB7(){
+                string $AOVall7[] = `ls -typ "RedshiftAOV"`;
+                int $B7 = 0;
+                for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
+                { 
+                if ($AOVall7[$q7] == "rs_RGB7"){
+                    setAttr ($AOVall7[$q7]+".enabled") 0;
+                    editRenderLayerAdjustment ($AOVall7[$q7]+".enabled");
+                    setAttr ($AOVall7[$q7]+".enabled") 1;
+                    $B7 = $B7+1;
+                }
+                }
+                if($B7 == 0)
+                {
+                    RS_createAOV_RGB7();
+                }
+            }
+            //创建AOV_RGB1
+global proc RS_createAOV_RGB1(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB1";
+redshiftUpdateActiveAovList();
+setAttr -type "string" rs_RGB1.name "rs_RGB1";
+setAttr "rs_RGB1.fileFormat" 1;
+setAttr "rs_RGB1.mode" 1;
+setAttr "rs_RGB1.redId" 1;
+setAttr "rs_RGB1.greenId" 2;
+setAttr "rs_RGB1.blueId" 3;
+setAttr "rs_RGB1.enabled" 0;
+//editRenderLayerAdjustment "rs_RGB1.enabled";
+setAttr "rs_RGB1.enabled" 1;
+
+}
+
+//创建AOV_RGB2
+global proc RS_createAOV_RGB2(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB2";
+redshiftUpdateActiveAovList();
+setAttr -type "string" rs_RGB2.name "rs_RGB2";
+setAttr "rs_RGB2.fileFormat" 1;
+setAttr "rs_RGB2.mode" 1;
+setAttr "rs_RGB2.redId" 4;
+setAttr "rs_RGB2.greenId" 5;
+setAttr "rs_RGB2.blueId" 6;
+setAttr "rs_RGB2.enabled" 0;
+//editRenderLayerAdjustment "rs_RGB2.enabled";
+setAttr "rs_RGB2.enabled" 1;
+}
+
+//创建AOV_RGB3
+global proc RS_createAOV_RGB3(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB3";
+redshiftUpdateActiveAovList();
+setAttr -type "string" rs_RGB3.name "rs_RGB3";
+setAttr "rs_RGB3.fileFormat" 1;
+setAttr "rs_RGB3.mode" 1;
+setAttr "rs_RGB3.redId" 7;
+setAttr "rs_RGB3.greenId" 8;
+setAttr "rs_RGB3.blueId" 9;
+setAttr "rs_RGB3.enabled" 0;
+editRenderLayerAdjustment "rs_RGB3.enabled";
+setAttr "rs_RGB3.enabled" 1;
+}
+
+//创建AOV_RGB4
+global proc RS_createAOV_RGB4(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB4";
+redshiftUpdateActiveAovList();
+setAttr -type "string" rs_RGB4.name "rs_RGB4";
+setAttr "rs_RGB4.fileFormat" 1;
+setAttr "rs_RGB4.mode" 1;
+setAttr "rs_RGB4.redId" 10;
+setAttr "rs_RGB4.greenId" 11;
+setAttr "rs_RGB4.blueId" 12;
+setAttr "rs_RGB4.enabled" 0;
+editRenderLayerAdjustment "rs_RGB4.enabled";
+setAttr "rs_RGB4.enabled" 1;
+}
+
+
+//创建AOV_RGB5
+global proc RS_createAOV_RGB5(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB5";
+redshiftUpdateActiveAovList();
+setAttr -type "string" rs_RGB5.name "rs_RGB5";
+setAttr -type "string" rs_RGB5.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_RGB5/<Scene>_<RenderLayer>_RGB5";
+setAttr "rs_RGB5.dataType" 2;
+setAttr "rs_RGB5.fileFormat" 2;
+setAttr "rs_RGB5.mode" 1;
+setAttr "rs_RGB5.redId" 13;
+setAttr "rs_RGB5.greenId" 14;
+setAttr "rs_RGB5.blueId" 15;
+setAttr "rs_RGB5.enabled" 0;
+editRenderLayerAdjustment "rs_RGB5.enabled";
+setAttr "rs_RGB5.enabled" 1;
+}
+
+
+//创建AOV_RGB6
+global proc RS_createAOV_RGB6(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB6";
+redshiftUpdateActiveAovList();
+setAttr -type "string" rs_RGB6.name "rs_RGB6";
+setAttr -type "string" rs_RGB6.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_RGB6/<Scene>_<RenderLayer>_RGB6";
+setAttr "rs_RGB6.dataType" 2;
+setAttr "rs_RGB6.fileFormat" 2;
+setAttr "rs_RGB6.mode" 1;
+setAttr "rs_RGB6.redId" 16;
+setAttr "rs_RGB6.greenId" 17;
+setAttr "rs_RGB6.blueId" 18;
+setAttr "rs_RGB6.enabled" 0;
+editRenderLayerAdjustment "rs_RGB6.enabled";
+setAttr "rs_RGB6.enabled" 1;
+}
+
+
+//创建AOV_RGB7
+global proc RS_createAOV_RGB7(){
+source redshiftCreateAovTab;
+rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB7";
+redshiftUpdateActiveAovList();
+setAttr -type "string" rs_RGB7.name "rs_RGB7";
+setAttr -type "string" rs_RGB7.filePrefix "<Scene>/<Camera>/<Scene>_<RenderLayer>_RGB7/<Scene>_<RenderLayer>_RGB7";
+setAttr "rs_RGB7.dataType" 2;
+setAttr "rs_RGB7.fileFormat" 2;
+setAttr "rs_RGB7.mode" 1;
+setAttr "rs_RGB7.redId" 19;
+setAttr "rs_RGB7.greenId" 20;
+setAttr "rs_RGB7.blueId" 21;
+setAttr "rs_RGB7.enabled" 0;
+editRenderLayerAdjustment "rs_RGB7.enabled";
+setAttr "rs_RGB7.enabled" 1;
+}

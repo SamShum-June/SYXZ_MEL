@@ -17,7 +17,10 @@
         {
                 deleteUI -window DO_CAM_window;
         }
-
+                if  (`window -exists DO_POSE_window`)
+        {
+                deleteUI -window DO_POSE_window;
+        }
         window -t "SYXZ"  syxzwindow;columnLayout -adj 1;
         rowColumnLayout -adjustableColumn true -ca ;
         frameLayout  -l "杂项" -cll 0 -mh 5 -w 500 -h 55;
@@ -28,10 +31,6 @@
                 button -l "Creat_SHA_Lig" -c "creat_SHAlig" -w 120 -h 20 -bgc 0.196 0.151 0.134 -ann "创建阴影灯光";       //ok     
                 setParent ..;
                 setParent ..;
-
-        frameLayout  -l "Optimize and Creat ID Aovs SET 整理和创建ID Aovs"   -w 500 -h 60 -cll 0 -mh 5 -bgc 0 0 0.134;
-                button -w 10 -h 40 -bgc 0 0 0.134 -l "打开Optimize and Creat ID Aovs SET 窗口" -c "Optimize_and_Creat_ID_Aovs_SET_window"; //ok
-                        setParent ..; 
 
         frameLayout  -l "AOVs SET"   -w 500 -h 180 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
                 text -w 80 -h 13 -bgc 0 0 0.134 -l "Creat AOVs & ISO 选择你需要创建的Aovs 和 ISO使用的maya版本" ;
@@ -94,10 +93,18 @@
                         button  -l "2305_4096"    -c "XRSZ_2305_4096_png" -h 18 -w 70 -bgc 1 1 0.6;         //ok               
                 setParent ..;
                 setParent ..; 
+
+        frameLayout  -l "Optimize and Creat ID Aovs SET 整理和创建ID Aovs"   -w 500 -h 60 -cll 0 -mh 5 -bgc 0 0 0.134;
+                button -w 10 -h 40 -bgc 0 0 0.134 -l "打开Optimize and Creat ID Aovs SET 窗口" -c "Optimize_and_Creat_ID_Aovs_SET_window"; //ok
+                        setParent ..; 
+
         frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 60 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
                         button -w 10 -h 30 -bgc 0.025 1.244 0.767 -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口" -c "DO_CAM_window"; //ok
                         setParent ..; 
 
+        frameLayout  -l "做POSE PNG"   -w 500 -h 60 -cll 0 -cl 0 -mh 5 -bgc 0.027 0.212 0.352;
+                        button -w 10 -h 30 -bgc 0.049 0.455 0.762 -l "做POSE PNG  窗口" -c "DO_POSE_window"; //ok
+                        setParent ..; 
 
         window -e  /*-h 200 */   -w 500 syxzwindow;
         showWindow syxzwindow;
@@ -242,4 +249,40 @@
 
                 showWindow DO_CAM_window;
         }
+
+//////// DO POSE  ////////////////////             
+    /////////做POSE 窗口/////////////
+        global proc  DO_POSE_window(){
+
+                if  (`window -exists DO_POSE_window`)
+                {
+                deleteUI -window DO_POSE_window;
+                }
+                window -t "DO_POSE 4K PNG" DO_POSE_window;columnLayout -adj 1;
+                rowColumnLayout -adjustableColumn true -w 350 -ca;
+                frameLayout  -l "DO_POSE 4K PNG "   -w 350 -h 150 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "SEL OBJ" -bgc 0.539 0.873 0.928 -w 350 -h 28 -c "sel_obj"; //ok
+                        setParent ..;        
+                text -w 10  -h 10 -l "Creat ID";
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "1_Cs Red ID" -bgc 0.32 0 0 -w 110 -h 28 -ann "选择物体创建为红色ID" -c "Cs_Red_ID" ; //ok
+                        button -l "1_Cs Green ID" -bgc 0 0.32 0 -w 110 -h 28 -ann "选择物体创建为绿色ID" -c "Cs_Green_ID" ; //ok
+                        button -l "1_Cs Blue ID" -bgc 0 0 0.32 -w 110 -h 28 -ann "选择物体创建为蓝色ID"  -c "Cs_Blue_ID" ; //ok
+                        setParent ..;   
+
+                text -w 10  -h 10 -l "DO_POSE 4K PNG";
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "2_Creat_Char_Group" -bgc 1 0.65 0.13 -w 120 -h 28 -ann "角色打组 Character_Group" -c "Creat_Char_Group"; //ok
+                        button -l "3_to do sth" -bgc 0 1 1 -w 150 -h 28 -c "Do_pose_2_to_do_sth" -ann "选择char Group创建Creat smooth+RS pose AOVs png+CS IDAovs PNG+ISOmaya2017+4K+Import cha lig" ;  //ok
+                        setParent ..;   
+
+                showWindow DO_POSE_window;
+        }
+        
+
+
+
+
+
 
