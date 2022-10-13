@@ -2369,33 +2369,21 @@
             }
 
 
-        /*
-        global proc DR(){
-            string $DRLJ=`textField -q -text DRSR`;
-            file -import  $DRLJ ;
-        }*/
         ////////prs SET EXR 自定义分辨率 /////////
             ///最终调用////
                 global proc set_CS_imagesize_exr(){
                     camset_render_set();
                     camset_export_EXR();
                     custom_camset();
-
-                    //print($width "*" $Hight);
-                    //headsUpMessage -time 5 ($width "*" $Hight);
+                    print($width "*" $Hight);
+                    headsUpMessage -time 5 ($width "*" $Hight);
                 }
-/*
-                    text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;
-                    textField -w 100 -h 18 cs_width ;
-                    text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;
-                    textField -w 100 -h 18 cs_Hight ; 
-                    button  -l "set Size" -c "set_CS_imagesize_exr" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658;
-*/
+
             /// 自定义镜头分辨率///
 
                 global proc custom_camset(){
-                    string $widthcs =`textField -q -text cs_width`;
-                    string $Hightcs =`textField -q -text cs_Hight`;
+                    int $widthcs =`textField -q -text cs_width`;
+                    int $Hightcs =`textField -q -text cs_Hight`;
                     setAttr "defaultResolution.width" $widthcs ;
                     setAttr "defaultResolution.height" $Hightcs ;
                 }
