@@ -62,7 +62,7 @@
                         button  -l "2K"    -c "XRSZ_2K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok    
                         button  -l "3K"    -c "XRSZ_3K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
                         button  -l "4K"    -c "XRSZ_4K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
-                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight ; button  -l "set Size" -c "set_CS_imagesize_exr" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658;
+                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width_EXR ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight_EXR ; button  -l "set Size" -c "set_CS_imagesize_exr" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
                         setParent ..;
                 text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
@@ -81,7 +81,7 @@
                         button  -l "2K"    -c "XRSZ_2K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok    
                         button  -l "3K"    -c "XRSZ_3K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
                         button  -l "4K"    -c "XRSZ_4K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
-                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight ; button  -l "set Size" -c "set_CS_imagesize" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658;
+                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width_PNG ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight_PNG ; button  -l "set Size" -c "set_CS_imagesize_PNG" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
                         setParent ..;
                 text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
@@ -152,8 +152,7 @@
                         text -w 10 -h 10 -l "All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" -ann "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" ;
                         rowColumnLayout  -nr 1 -cs 1 5 -rowHeight 1 30;
                         button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 28 -ann "角色打组" -c "Creat_Char_Group"; //ok
-                        button -l "2_Auto Aovs ID EXR" -bgc 0 0.551 1  -w 160 -h 28 -ann "自动创建AOVs & ID 输出EXR" -c "createAOV_RGBlayer_new"; //QT
-                        //button -l "2_Auto Aovs ID PNG" -bgc 1 0.5 0.6 -w 160 -h 28 -ann "自动创建AOVs & ID 输出PNG" -c "Auto_Aovs_ID_PNG";
+                        button -l "2_Auto Aovs ID EXR" -bgc 0 0.551 1  -w 160 -h 28 -ann "自动创建AOVs & ID 输出EXR" -c "Auto_Aovs_ID_EXR"; //ok
                         setParent ..;       
                         text -w 10  -h 10 -l "Auto Char ID 创建角色组后 手动选择角色创建ID" -ann "创建角色组后 手动选择角色创建ID"; 
                         rowColumnLayout  -nr 1  -cs 1 5 -rowHeight 1 30;                        
@@ -199,19 +198,28 @@
 
                 window -t "DO_CAM_做镜头 EXR" DO_CAM_window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 500 -ca;
-                frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 300 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
+                frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 450 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "0_SEL OBJ" -bgc 0.539 0.873 0.928 -w 500 -h 20 -c "sel_obj"; //ok
+                        setParent ..;   
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
                         text -w 80 -l "Creat Group:";
-                        button -l "1_Character_Group+ID" -bgc 1 0.65 0.13 -w 120 -h 28 -c "Creat_Char_Group_ID";  //ok
-                        button -l "1_Sen_Group" -bgc 0 1 1 -w 120 -h 28 -c "Creat_sen_Group";  //ok
-                        button -l "2_Set_Sen_CHA_AOVsID" -bgc 1 0 1 -w 140 -h 28 -c "Set_Sen_CHA_ID";   //ok
+                        button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 28 -ann "角色打组" -c "Creat_Char_Group";
+                        button -l "1_Sen_Group" -bgc 0 1 1 -w 160 -h 28 -c "Creat_sen_Group";  //ok
                         setParent ..;
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;                 
                         text -w 60 -l "CS SEN ID:";
-                        button -l "3_SEN Red ID" -bgc 0.32 0 0 -w 130 -h 28 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //ok
-                        button -l "3_SEN Green ID" -bgc 0 0.32 0  -w 130 -h 28 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //ok
-                        button -l "3_SEN Blue ID" -bgc 0 0 0.32 -w 130 -h 28 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //ok
-                        setParent ..;                
+                        button -l "2_SEN Red ID" -bgc 0.32 0 0 -w 130 -h 28 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //ok
+                        button -l "2_SEN Green ID" -bgc 0 0.32 0  -w 130 -h 28 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //ok
+                        button -l "2_SEN Blue ID" -bgc 0 0 0.32 -w 130 -h 28 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //ok
+                        setParent ..;
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
+                        text -w 150 -l "Set_Sen_CHA_AOVsID:";
+                        button -l "3_Set_Sen_CHA_AOVsID" -bgc 0.442 1 0 -w 140 -h 28 -c "Set_Sen_CHA_ID";   //ok
+
+                        setParent ..;
+
+                text -w 500 -h 23 -l "选择屏幕方向";
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 3;
                         text -w 60 -bgc 0.327 1 0.641 -l "2017横屏:";
                         button -l "Aovs+ISO+HD720" -bgc 0.327 1 0.641 -w 140 -h 28 -c "Aovs_iso2017_HD720_exr"; //ok
@@ -239,12 +247,12 @@
 
                         text -w 70 -bgc 0.327 1 0.641 -l "AOVs+iso2017+自定义分辨率:";
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;        
-                        text -w 80 -h 18 -l "Width_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 18 Width_CS_17 ;text -w 80 -h 18 -l "Hight_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 18 Hight_CS_17 ; button  -l "AOVs2017+自定义分辨率" -c "A0vs2017_CS_imagesize" -ann "AOVs2017+自定义分辨率" -h 18 -w 150 -bgc 0.327 1 0.641;
+                        text -w 80 -h 28 -l "Width_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 28 Width_CS_17 ;text -w 80 -h 28 -l "Hight_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 28 Hight_CS_17 ; button  -l "AOVs2017+自定义分辨率" -c "A0vs2017_CS_imagesize" -ann "AOVs2017+自定义分辨率" -h 28 -w 150 -bgc 0.327 1 0.641; //ok
                         setParent ..;
 
                         text -w 70 -bgc 0.539 0.873 0.928 -l "AOVs+iso2019+自定义分辨率:";
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;        
-                        text -w 80 -h 18 -l "Width_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 18 Width_CS_19 ;text -w 80 -h 18 -l "Hight_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 18 Hight_CS_19 ; button  -l "AOVs2019+自定义分辨率" -c "A0vs2019_CS_imagesize" -ann "AOVs2019+自定义分辨率" -h 18 -w 150 -bgc 0.539 0.873 0.928;
+                        text -w 80 -h 28 -l "Width_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 28 Width_CS_19 ;text -w 80 -h 28 -l "Hight_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 28 Hight_CS_19 ; button  -l "AOVs2019+自定义分辨率" -c "A0vs2019_CS_imagesize" -ann "AOVs2019+自定义分辨率" -h 28 -w 150 -bgc 0.539 0.873 0.928; //ok
                         setParent ..;
 
                 showWindow DO_CAM_window;

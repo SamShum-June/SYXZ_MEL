@@ -82,7 +82,7 @@
     // 2_Auto Aovs ID EXR ///////////
         //创建AOV_RGB层
 
-            global proc createAOV_RGBlayer_new(){
+            global proc Auto_Aovs_ID_EXR(){
 
                 //自动根据新增属性给角色建id (只修改属性为0的)
                 createChaId_id();
@@ -392,65 +392,65 @@
                     if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7(); }
                 }
                 
-                if (`objExists rs_RGB1`){
+                if (`objExists RGB1`){
                     if (!`objExists RGB1_R1`){
                         if (!`objExists RGB1_G2`){
                             if (!`objExists RGB1_B3`){
-                                delete rs_RGB1;
+                                delete RGB1;
                             }
                         }
                     }
                 }
-                if (`objExists rs_RGB2`){
+                if (`objExists RGB2`){
                     if (!`objExists RGB2_R4`){
                         if (!`objExists RGB2_G5`){
                             if (!`objExists RGB2_B6`){
-                                delete rs_RGB2;
+                                delete RGB2;
                             }
                         }
                     }
                 }
-                if (`objExists rs_RGB3`){
+                if (`objExists RGB3`){
                     if (!`objExists RGB3_R7`){
                         if (!`objExists RGB3_G8`){
                             if (!`objExists RGB3_B9`){
-                                delete rs_RGB3;
+                                delete RGB3;
                             }
                         }
                     }
                 }
-                if (`objExists rs_RGB4`){
+                if (`objExists RGB4`){
                     if (!`objExists RGB4_R10`){
                         if (!`objExists RGB4_G11`){
                             if (!`objExists RGB4_B12`){
-                                delete rs_RGB4;
+                                delete RGB4;
                             }
                         }
                     }
                 }
-                if (`objExists rs_RGB5`){
+                if (`objExists RGB5`){
                     if (!`objExists RGB5_R13`){
                         if (!`objExists RGB5_G14`){
                             if (!`objExists RGB5_B15`){
-                                delete rs_RGB5;
+                                delete RGB5;
                             }
                         }
                     }
                 }
-                if (`objExists rs_RGB6`){
+                if (`objExists RGB6`){
                     if (!`objExists RGB6_R16`){
                         if (!`objExists RGB6_G17`){
                             if (!`objExists RGB6_B18`){
-                                delete rs_RGB6;
+                                delete RGB6;
                             }
                         }
                     }
                 }
-                if (`objExists rs_RGB7`){
+                if (`objExists RGB7`){
                     if (!`objExists RGB7_R19`){
                         if (!`objExists RGB7_G20`){
                             if (!`objExists RGB7_B21`){
-                                delete rs_RGB7;
+                                delete RGB7;
                             }
                         }
                     }
@@ -599,7 +599,7 @@
                 int $B1 = 0;
                 for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
                 { 
-                if ($AOVall1[$q1] == "rs_RGB1"){
+                if ($AOVall1[$q1] == "RGB1"){
                     setAttr ($AOVall1[$q1]+".enabled") 0;
                     $B1 = $B1+1;
                 }
@@ -616,7 +616,7 @@
                 int $B2 = 0;
                 for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
                 { 
-                if ($AOVall2[$q2] == "rs_RGB2"){
+                if ($AOVall2[$q2] == "RGB2"){
                     setAttr ($AOVall2[$q2]+".enabled") 0;
                     $B2 = $B2+1;
                 }
@@ -633,7 +633,7 @@
                 int $B3 = 0;
                 for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
                 { 
-                if ($AOVall3[$q3] == "rs_RGB3"){
+                if ($AOVall3[$q3] == "RGB3"){
                     setAttr ($AOVall3[$q3]+".enabled") 0;
                     $B3 = $B3+1;
                 }
@@ -650,7 +650,7 @@
                 int $B4 = 0;
                 for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
                 { 
-                if ($AOVall4[$q4] == "rs_RGB4"){
+                if ($AOVall4[$q4] == "RGB4"){
                     setAttr ($AOVall4[$q4]+".enabled") 0;
                     $B4 = $B4+1;
                 }
@@ -667,7 +667,7 @@
                 int $B5 = 0;
                 for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
                 { 
-                if ($AOVall5[$q5] == "rs_RGB5"){
+                if ($AOVall5[$q5] == "RGB5"){
                     setAttr ($AOVall5[$q5]+".enabled") 0;
                     $B5 = $B5+1;
                 }
@@ -684,7 +684,7 @@
                 int $B6 = 0;
                 for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
                 { 
-                if ($AOVall6[$q6] == "rs_RGB6"){
+                if ($AOVall6[$q6] == "RGB6"){
                     setAttr ($AOVall6[$q6]+".enabled") 0;
                     $B6 = $B6+1;
                 }
@@ -701,7 +701,7 @@
                 int $B7 = 0;
                 for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
                 { 
-                if ($AOVall7[$q7] == "rs_RGB7"){
+                if ($AOVall7[$q7] == "RGB7"){
                     setAttr ($AOVall7[$q7]+".enabled") 0;
                     $B7 = $B7+1;
                 }
@@ -715,130 +715,130 @@
         //创建AOV_RGB1
             global proc RS_createAOV_RGB1(){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB1";
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
                 redshiftUpdateActiveAovList();
-                setAttr -type "string" rs_RGB1.name "rs_RGB1";
-                setAttr -type "string" rs_RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "rs_RGB1.dataType" 2;
-                setAttr "rs_RGB1.fileFormat" 1;
-                setAttr "rs_RGB1.exrBits" 32;
-                setAttr "rs_RGB1.mode" 1;
-                setAttr "rs_RGB1.redId" 1;
-                setAttr "rs_RGB1.greenId" 2;
-                setAttr "rs_RGB1.blueId" 3;
-                setAttr "rs_RGB1.enabled" 0;
-                print ("rs_RGB1"+"\n");
+                setAttr -type "string" RGB1.name "RGB1";
+                setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB1.dataType" 2;
+                setAttr "RGB1.fileFormat" 1;
+                setAttr "RGB1.exrBits" 32;
+                setAttr "RGB1.mode" 1;
+                setAttr "RGB1.redId" 1;
+                setAttr "RGB1.greenId" 2;
+                setAttr "RGB1.blueId" 3;
+                setAttr "RGB1.enabled" 0;
+                print ("RGB1"+"\n");
             }
 
         //创建AOV_RGB2
             global proc RS_createAOV_RGB2(){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB2";
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
                 redshiftUpdateActiveAovList();
-                setAttr -type "string" rs_RGB2.name "rs_RGB2";
-                setAttr -type "string" rs_RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "rs_RGB2.dataType" 2;
-                setAttr "rs_RGB2.fileFormat" 1;
-                setAttr "rs_RGB2.exrBits" 32;
-                setAttr "rs_RGB2.mode" 1;
-                setAttr "rs_RGB2.redId" 4;
-                setAttr "rs_RGB2.greenId" 5;
-                setAttr "rs_RGB2.blueId" 6;
-                setAttr "rs_RGB2.enabled" 0;
-                print ("rs_RGB2"+"\n");
+                setAttr -type "string" RGB2.name "RGB2";
+                setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB2.dataType" 2;
+                setAttr "RGB2.fileFormat" 1;
+                setAttr "RGB2.exrBits" 32;
+                setAttr "RGB2.mode" 1;
+                setAttr "RGB2.redId" 4;
+                setAttr "RGB2.greenId" 5;
+                setAttr "RGB2.blueId" 6;
+                setAttr "RGB2.enabled" 0;
+                print ("RGB2"+"\n");
             }
 
         //创建AOV_RGB3
             global proc RS_createAOV_RGB3(){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB3";
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
                 redshiftUpdateActiveAovList();
-                setAttr -type "string" rs_RGB3.name "rs_RGB3";
-                setAttr -type "string" rs_RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "rs_RGB3.dataType" 2;
-                setAttr "rs_RGB3.fileFormat" 1;
-                setAttr "rs_RGB3.exrBits" 32;
-                setAttr "rs_RGB3.mode" 1;
-                setAttr "rs_RGB3.redId" 7;
-                setAttr "rs_RGB3.greenId" 8;
-                setAttr "rs_RGB3.blueId" 9;
-                setAttr "rs_RGB3.enabled" 0;
-                print ("rs_RGB3"+"\n");
+                setAttr -type "string" RGB3.name "RGB3";
+                setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB3.dataType" 2;
+                setAttr "RGB3.fileFormat" 1;
+                setAttr "RGB3.exrBits" 32;
+                setAttr "RGB3.mode" 1;
+                setAttr "RGB3.redId" 7;
+                setAttr "RGB3.greenId" 8;
+                setAttr "RGB3.blueId" 9;
+                setAttr "RGB3.enabled" 0;
+                print ("RGB3"+"\n");
             }
 
         //创建AOV_RGB4
             global proc RS_createAOV_RGB4(){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB4";
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
                 redshiftUpdateActiveAovList();
-                setAttr -type "string" rs_RGB4.name "rs_RGB4";
-                setAttr -type "string" rs_RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "rs_RGB4.dataType" 2;
-                setAttr "rs_RGB4.fileFormat" 1;
-                setAttr "rs_RGB4.exrBits" 32;
-                setAttr "rs_RGB4.mode" 1;
-                setAttr "rs_RGB4.redId" 10;
-                setAttr "rs_RGB4.greenId" 11;
-                setAttr "rs_RGB4.blueId" 12;
-                setAttr "rs_RGB4.enabled" 0;
-                print ("rs_RGB4"+"\n");
+                setAttr -type "string" RGB4.name "RGB4";
+                setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB4.dataType" 2;
+                setAttr "RGB4.fileFormat" 1;
+                setAttr "RGB4.exrBits" 32;
+                setAttr "RGB4.mode" 1;
+                setAttr "RGB4.redId" 10;
+                setAttr "RGB4.greenId" 11;
+                setAttr "RGB4.blueId" 12;
+                setAttr "RGB4.enabled" 0;
+                print ("RGB4"+"\n");
             }
 
 
         //创建AOV_RGB5
             global proc RS_createAOV_RGB5(){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB5";
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
                 redshiftUpdateActiveAovList();
-                setAttr -type "string" rs_RGB5.name "rs_RGB5";
-                setAttr -type "string" rs_RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "rs_RGB5.dataType" 2;
-                setAttr "rs_RGB5.fileFormat" 1;
-                setAttr "rs_RGB5.exrBits" 32;
-                setAttr "rs_RGB5.mode" 1;
-                setAttr "rs_RGB5.redId" 13;
-                setAttr "rs_RGB5.greenId" 14;
-                setAttr "rs_RGB5.blueId" 15;
-                setAttr "rs_RGB5.enabled" 0;
-                print ("rs_RGB5"+"\n");
+                setAttr -type "string" RGB5.name "RGB5";
+                setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB5.dataType" 2;
+                setAttr "RGB5.fileFormat" 1;
+                setAttr "RGB5.exrBits" 32;
+                setAttr "RGB5.mode" 1;
+                setAttr "RGB5.redId" 13;
+                setAttr "RGB5.greenId" 14;
+                setAttr "RGB5.blueId" 15;
+                setAttr "RGB5.enabled" 0;
+                print ("RGB5"+"\n");
             }
 
 
         //创建AOV_RGB6
             global proc RS_createAOV_RGB6(){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB6";
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
                 redshiftUpdateActiveAovList();
-                setAttr -type "string" rs_RGB6.name "rs_RGB6";
-                setAttr -type "string" rs_RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "rs_RGB6.dataType" 2;
-                setAttr "rs_RGB6.fileFormat" 1;
-                setAttr "rs_RGB6.exrBits" 32;
-                setAttr "rs_RGB6.mode" 1;
-                setAttr "rs_RGB6.redId" 16;
-                setAttr "rs_RGB6.greenId" 17;
-                setAttr "rs_RGB6.blueId" 18;
-                setAttr "rs_RGB6.enabled" 0;
-                print ("rs_RGB6"+"\n");
+                setAttr -type "string" RGB6.name "RGB6";
+                setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB6.dataType" 2;
+                setAttr "RGB6.fileFormat" 1;
+                setAttr "RGB6.exrBits" 32;
+                setAttr "RGB6.mode" 1;
+                setAttr "RGB6.redId" 16;
+                setAttr "RGB6.greenId" 17;
+                setAttr "RGB6.blueId" 18;
+                setAttr "RGB6.enabled" 0;
+                print ("RGB6"+"\n");
             }
 
 
         //创建AOV_RGB7
             global proc RS_createAOV_RGB7(){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "rs_RGB7";
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
                 redshiftUpdateActiveAovList();
-                setAttr -type "string" rs_RGB7.name "rs_RGB7";
-                setAttr -type "string" rs_RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "rs_RGB7.dataType" 2;
-                setAttr "rs_RGB7.fileFormat" 1;
-                setAttr "rs_RGB7.exrBits" 32;
-                setAttr "rs_RGB7.mode" 1;
-                setAttr "rs_RGB7.redId" 19;
-                setAttr "rs_RGB7.greenId" 20;
-                setAttr "rs_RGB7.blueId" 21;
-                setAttr "rs_RGB7.enabled" 0;
-                print ("rs_RGB7"+"\n");
+                setAttr -type "string" RGB7.name "RGB7";
+                setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB7.dataType" 2;
+                setAttr "RGB7.fileFormat" 1;
+                setAttr "RGB7.exrBits" 32;
+                setAttr "RGB7.mode" 1;
+                setAttr "RGB7.redId" 19;
+                setAttr "RGB7.greenId" 20;
+                setAttr "RGB7.blueId" 21;
+                setAttr "RGB7.enabled" 0;
+                print ("RGB7"+"\n");
             }
 
         //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
@@ -1364,50 +1364,52 @@
     //2_SEN ID EXR
         global proc Sen_Aovs_EXR(){
             source redshiftCreateAovTab;
-            rename (`redshiftCreateAov "Puzzle Matte"`) RGBSen_EXR;
-            setAttr -type "string" RGBSen_EXR.name "RGBSen_EXR";
-            setAttr "RGBSen_EXR.dataType" 2;    
-            setAttr "RGBSen_EXR.fileFormat" 1;
-            setAttr "RGBSen_EXR.mode" 1;
-            setAttr "RGBSen_EXR.redId" 9999;
-            setAttr "RGBSen_EXR.greenId" 9998;
-            setAttr "RGBSen_EXR.blueId" 9997;
-            setAttr "RGBSen_EXR.enabled" 0;
-            setAttr "RGBSen_EXR.exrBits" 32;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen_EXR;
+            redshiftUpdateActiveAovList();
+            setAttr -type "string" RGB_Sen_EXR.name "RGB_Sen_EXR";
+            setAttr "RGB_Sen_EXR.dataType" 2;    
+            setAttr "RGB_Sen_EXR.fileFormat" 1;
+            setAttr "RGB_Sen_EXR.mode" 1;
+            setAttr "RGB_Sen_EXR.redId" 9999;
+            setAttr "RGB_Sen_EXR.greenId" 9998;
+            setAttr "RGB_Sen_EXR.blueId" 9997;
+            setAttr "RGB_Sen_EXR.enabled" 0;
+            setAttr "RGB_Sen_EXR.exrBits" 32;
         }
 
     //2_SEN ID PNG
         global proc Sen_Aovs_PNG(){
             source redshiftCreateAovTab;
-            rename (`redshiftCreateAov "Puzzle Matte"`) RGBSen_PNG;
-            setAttr -type "string" RGBSen_PNG.name "RGBSen_PNG";
-            setAttr "RGBSen_PNG.dataType" 2;    
-            setAttr "RGBSen_PNG.fileFormat" 2;
-            setAttr "RGBSen_PNG.mode" 1;
-            setAttr "RGBSen_PNG.redId" 9999;
-            setAttr "RGBSen_PNG.greenId" 9998;
-            setAttr "RGBSen_PNG.blueId" 9997;
-            setAttr "RGBSen_PNG.enabled" 0;
-            setAttr "RGBSen_PNG.exrBits" 32;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen_PNG;
+            redshiftUpdateActiveAovList();
+            setAttr -type "string" RGB_Sen_PNG.name "RGB_Sen_PNG";
+            setAttr "RGB_Sen_PNG.dataType" 2;    
+            setAttr "RGB_Sen_PNG.fileFormat" 2;
+            setAttr "RGB_Sen_PNG.mode" 1;
+            setAttr "RGB_Sen_PNG.redId" 9999;
+            setAttr "RGB_Sen_PNG.greenId" 9998;
+            setAttr "RGB_Sen_PNG.blueId" 9997;
+            setAttr "RGB_Sen_PNG.enabled" 0;
+            setAttr "RGB_Sen_PNG.exrBits" 32;
         }
 
     //3_SEN Red ID
         global proc SEN_Red_ID(){
             ls -sl;
-            rename(redshiftCreateObjectIdNode()) SenID_R;
-            setAttr "SenID_R.objectId" 9999;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_R;
+            setAttr "Sen_ID_R.objectId" 9999;
         }
     //3_SEN Green ID
         global proc SEN_Green_ID(){
             ls -sl;
-            rename(redshiftCreateObjectIdNode()) SenID_G;
-            setAttr "SenID_G.objectId" 9998;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_G;
+            setAttr "Sen_ID_G.objectId" 9998;
         }
     //3_SEN Blue ID
         global proc SEN_Blue_ID(){
             ls -sl;
-            rename(redshiftCreateObjectIdNode()) SenID_B;
-            setAttr "SenID_B.objectId" 9997;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_B;
+            setAttr "Sen_ID_B.objectId" 9997;
         }
 
 
@@ -2374,18 +2376,29 @@
                 global proc set_CS_imagesize_exr(){
                     camset_render_set();
                     camset_export_EXR();
-                    custom_camset();
-                    print($width "*" $Hight);
-                    headsUpMessage -time 5 ($width "*" $Hight);
+                    custom_camset_EXR();
                 }
 
+                global proc set_CS_imagesize_PNG(){
+                    camset_render_set();
+                    camset_export_PNG();
+                    custom_camset_PNG();
+                }
+             
             /// 自定义镜头分辨率///
 
-                global proc custom_camset(){
-                    int $widthcs =`textField -q -text cs_width`;
-                    int $Hightcs =`textField -q -text cs_Hight`;
-                    setAttr "defaultResolution.width" $widthcs ;
-                    setAttr "defaultResolution.height" $Hightcs ;
+                global proc custom_camset_EXR(){
+                    int $widthcs_EXR =`textField -q -text cs_width_EXR`;
+                    int $Hightcs_EXR =`textField -q -text cs_Hight_EXR`;
+                    setAttr "defaultResolution.width" $widthcs_EXR ;
+                    setAttr "defaultResolution.height" $Hightcs_EXR ;
+                }
+
+                global proc custom_camset_PNG(){
+                    int $widthcs_PNG =`textField -q -text cs_width_PNG`;
+                    int $Hightcs_PNG =`textField -q -text cs_Hight_PNG`;
+                    setAttr "defaultResolution.width" $widthcs_PNG ;
+                    setAttr "defaultResolution.height" $Hightcs_PNG ;
                 }
 
 
@@ -2613,21 +2626,18 @@
 
 
 /////////做镜头////////
-    ///1_Character_Group+ID
-        global proc Creat_Char_Group_ID(){
-            Creat_Char_Group();
-            SL_Char_Creat_ID();
-        }
 
-    ///2_Set_Sen_CHA_AOVsID
+    ///3_Set_Sen_CHA_AOVsID
         global proc Set_Sen_CHA_ID(){
-            Auto_Creat_AOVs_EXR();
+            Auto_Aovs_ID_EXR();
             Sen_Aovs_EXR();
         }
 
 ////2017横屏
-    ///Aovs+ISO+HD720
+    ///Aovs+ISO+HD720   
         global proc Aovs_iso2017_HD720_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_HD720();
             ISO_maya2017();
             RS_Full_Aovs_exr();
@@ -2638,6 +2648,8 @@
         }
     ///Aovs+ISO+HD1080
         global proc Aovs_iso2017_HD1080_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_HD1080();
             ISO_maya2017();
             RS_Full_Aovs_exr();
@@ -2646,6 +2658,8 @@
         }
     ///Aovs+ISO+4K
         global proc Aovs_iso2017_4K_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_4096_2305();
             ISO_maya2017();
             RS_Full_Aovs_exr();
@@ -2656,6 +2670,8 @@
 ////2019横屏
     ///Aovs+ISO+HD720
         global proc Aovs_iso2019_HD720_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_HD720();
             ISO_maya2019();
             RS_Full_Aovs_exr();
@@ -2664,6 +2680,8 @@
         }
     ///Aovs+ISO+HD1080
         global proc Aovs_iso2019_HD1080_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_HD1080();
             ISO_maya2019();
             RS_Full_Aovs_exr();
@@ -2672,6 +2690,8 @@
         }
     ///Aovs+ISO+4K
         global proc Aovs_iso2019_4K_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_4096_2305();
             ISO_maya2019();
             RS_Full_Aovs_exr();
@@ -2682,6 +2702,8 @@
 ////2017竖屏
     ///Aovs_iso+720*1280
         global proc Aovs_iso2017_720_1280_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_720_1280();
             ISO_maya2017();
             RS_Full_Aovs_exr();
@@ -2690,6 +2712,8 @@
         }
     ///Aovs_iso+1080*1920
         global proc Aovs_iso2017_1080_1920_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_1080_1920();
             ISO_maya2017();
             RS_Full_Aovs_exr();
@@ -2699,6 +2723,8 @@
         }
     ///Aovs_iso+SP4K
         global proc Aovs_iso2017_SP4K_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_2305_4096();
             ISO_maya2017();
             RS_Full_Aovs_exr();
@@ -2710,6 +2736,8 @@
 ////2019竖屏
     ///Aovs_iso+720*1280
         global proc Aovs_iso2019_720_1280_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_720_1280();
             ISO_maya2019();
             RS_Full_Aovs_exr();
@@ -2720,6 +2748,8 @@
         }
     ///Aovs_iso+1080*1920
         global proc Aovs_iso2019_1080_1920_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_1080_1920();
             ISO_maya2019();
             RS_Full_Aovs_exr();
@@ -2729,6 +2759,8 @@
         }
     ///Aovs_iso+SP4K
         global proc Aovs_iso2019_SP4K_exr(){
+            camset_render_set();
+            camset_export_EXR();
             XRSZ_2305_4096();
             ISO_maya2019();
             RS_Full_Aovs_exr();
@@ -2736,6 +2768,46 @@
             importCHAlig();
             
         }
+
+
+////////AOVs+iso 2017 2019 +自定义分辨率 /////////
+    ///最终调用////
+        global proc A0vs2017_CS_imagesize(){
+            camset_render_set();
+            camset_export_EXR();
+            custom_camset_CS_17_EXR();
+            ISO_maya2017();
+            RS_Full_Aovs_exr();
+            creat_SHAlig();
+            importCHAlig();
+        }
+        global proc A0vs2019_CS_imagesize(){
+            camset_render_set();
+            camset_export_EXR();
+            custom_camset_CS_19_EXR();
+            ISO_maya2019();
+            RS_Full_Aovs_exr();
+            creat_SHAlig();
+            importCHAlig();
+        }
+
+      
+    /// 自定义镜头分辨率///
+
+        global proc custom_camset_CS_17_EXR(){
+            int $widthcs_CS_17_EXR =`textField -q -text Width_CS_17`;
+            int $Hightcs_CS_17_EXR =`textField -q -text Hight_CS_17`;
+            setAttr "defaultResolution.width" $widthcs_CS_17_EXR;
+            setAttr "defaultResolution.height" $Hightcs_CS_17_EXR;
+        }
+
+        global proc custom_camset_CS_19_EXR(){
+            int $widthcs_CS_19_EXR =`textField -q -text Width_CS_19`;
+            int $Hightcs_CS_19_EXR =`textField -q -text Hight_CS_19`;
+            setAttr "defaultResolution.width" $widthcs_CS_19_EXR;
+            setAttr "defaultResolution.height" $Hightcs_CS_19_EXR;
+        }
+
 
 
 ////////// Do POSE PNG
