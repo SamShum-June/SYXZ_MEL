@@ -58,20 +58,20 @@
         frameLayout  -l "Prs SET EXR"   -w 500 -h 120 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
                 text -w 500 -h 10 -bgc 0 0 0.134 -l "方形                 自定义                                                              " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
-                        button  -l "1K"    -c "XRSZ_1K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
-                        button  -l "2K"    -c "XRSZ_2K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok    
-                        button  -l "3K"    -c "XRSZ_3K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
-                        button  -l "4K"    -c "XRSZ_4K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
+                        button  -l "1K"    -c "XRSZ_1K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
+                        button  -l "2K"    -c "XRSZ_2K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok    
+                        button  -l "3K"    -c "XRSZ_3K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
+                        button  -l "4K"    -c "XRSZ_4K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
                         text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width_EXR ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight_EXR ; button  -l "set Size" -c "set_CS_imagesize_exr" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
                         setParent ..;
                 text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
-                        button  -l "HD720"    -c "XRSZ_HD720_exr" -h 18 -w 50 -bgc 1 0.5 0.6;       //ok
-                        button  -l "HD1080"    -c "XRSZ_HD1080_exr" -h 18 -w 50 -bgc 1 0.5 0.6;     //ok
-                        button  -l "4096_2305"    -c "XRSZ_4096_2305_exr" -h 18 -w 70 -bgc 1 0.5 0.6;       //ok
-                        button  -l "720*1280"    -c "XRSZ_720_1280_exr" -h 18 -w 80 -bgc 1 1 0.6;         //ok
-                        button  -l "1080*1920"    -c "XRSZ_1080_1920_exr" -h 18 -w 80 -bgc 1 1 0.6;       //ok
-                        button  -l "2305_4096"    -c "XRSZ_2305_4096_exr" -h 18 -w 70 -bgc 1 1 0.6;         //ok               
+                        button  -l "HD720"    -c "XRSZ_HD720_exr" -h 18 -w 50 -bgc 1 0.5 0.6;           //ok
+                        button  -l "HD1080"    -c "XRSZ_HD1080_exr" -h 18 -w 50 -bgc 1 0.5 0.6;         //ok
+                        button  -l "4096_2305"    -c "XRSZ_4096_2305_exr" -h 18 -w 70 -bgc 1 0.5 0.6;   //ok
+                        button  -l "720*1280"    -c "XRSZ_720_1280_exr" -h 18 -w 80 -bgc 1 1 0.6;       //ok
+                        button  -l "1080*1920"    -c "XRSZ_1080_1920_exr" -h 18 -w 80 -bgc 1 1 0.6;     //ok
+                        button  -l "2305_4096"    -c "XRSZ_2305_4096_exr" -h 18 -w 70 -bgc 1 1 0.6;     //ok               
                 setParent ..;
                 setParent ..; 
         frameLayout  -l "Prs SET PNG"   -w 500 -h 120 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
@@ -153,6 +153,7 @@
                         rowColumnLayout  -nr 1 -cs 1 5 -rowHeight 1 30;
                         button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 28 -ann "角色打组" -c "Creat_Char_Group"; //ok
                         button -l "2_Auto Aovs ID EXR" -bgc 0 0.551 1  -w 160 -h 28 -ann "自动创建AOVs & ID 输出EXR" -c "Auto_Aovs_ID_EXR"; //ok
+                        button -l "2_Auto Creat AOVs PNG" -bgc 1 0.5 0.6 -w 160 -h 28 -ann "自动创建AOVs 输出EXR" -c "Auto_Creat_AOVs_PNG";
                         setParent ..;       
                         text -w 10  -h 10 -l "Auto Char ID 创建角色组后 手动选择角色创建ID" -ann "创建角色组后 手动选择角色创建ID"; 
                         rowColumnLayout  -nr 1  -cs 1 5 -rowHeight 1 30;                        
