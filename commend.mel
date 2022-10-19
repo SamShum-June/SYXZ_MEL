@@ -2264,7 +2264,7 @@
 /////////// Creat ISO //////////////////////////////////////
     //Creat 2017 RedshiftPhotographicExposure
         global proc ISO_maya2017(){
-            file -import -type "mayaBinary""//192.168.23.65/ab$/Light_Library/_SYXZ/iso_maya2017.mb";
+            file -import -type "mayaBinary""//192.168.23.65/ab$/Light_Library/_SYXZ/ISO_maya2017.mb";
             /*
             setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
             fillSelectedTabForCurrentRenderer;
