@@ -153,7 +153,7 @@
                         rowColumnLayout  -nr 1 -cs 1 5 -rowHeight 1 30;
                         button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 28 -ann "角色打组" -c "Creat_Char_Group"; //ok
                         button -l "2_Auto Aovs ID EXR" -bgc 0 0.551 1  -w 160 -h 28 -ann "自动创建AOVs & ID 输出EXR" -c "Auto_Aovs_ID_EXR"; //ok
-                        button -l "2_Auto Aovs ID PNG" -bgc 1 0.5 0.6 -w 160 -h 28 -ann "自动创建AOVs & ID 输出PNG" -c "Auto_Aovs_ID_PNG";
+                        button -l "2_Auto Aovs ID PNG" -bgc 1 0.5 0.6 -w 160 -h 28 -ann "自动创建AOVs & ID 输出PNG" -c "Auto_Aovs_ID_PNG"; //ok
                         setParent ..;       
                         text -w 10  -h 10 -l "Auto Char ID 创建角色组后 手动选择角色创建ID" -ann "创建角色组后 手动选择角色创建ID"; 
                         rowColumnLayout  -nr 1  -cs 1 5 -rowHeight 1 30;                        
