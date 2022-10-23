@@ -104,17 +104,727 @@
                 give_ChaId_id_num();
 
                 //AOV中创建RGB层，并删除没用的RGB
-                RS_AOV_RGB_createAndDelete();
+                RS_AOV_RGB_createAndDelete_EXR();
 
                 createRGBDisplayLayer();
 
                 //CharIdCheck全部归0
                 checkchaID000();
 
+                //选择物体增加圆滑节点
+                smoothNode_auto_pro();
+
             }
 
 
+        //AOV中创建RGB层，并删除没用的RGB   EXR
+            global proc RS_AOV_RGB_createAndDelete_EXR(){
+                string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
+                string $OBJnumin2 ;
+                for($OBJnumin2 in $OBJnum)
+                {
+                    int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`;   
+                    if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1_EXR(); }
+                    if ( ($objIDnumID > 3) && ($objIDnumID <= 6)){ RS_ConditionCreateAOV_RGB2_EXR(); }
+                    if ( ($objIDnumID > 6) && ($objIDnumID <= 9)){ RS_ConditionCreateAOV_RGB3_EXR(); }
+                    if ( ($objIDnumID > 9) && ($objIDnumID <= 12)){ RS_ConditionCreateAOV_RGB4_EXR(); }
+                    if ( ($objIDnumID > 12) && ($objIDnumID <= 15)){ RS_ConditionCreateAOV_RGB5_EXR(); }
+                    if ( ($objIDnumID > 15) && ($objIDnumID <= 18)){ RS_ConditionCreateAOV_RGB6_EXR(); }
+                    if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7_EXR(); }
+                }
+                
+                if (`objExists RGB1`){
+                    if (!`objExists RGB1_R1`){
+                        if (!`objExists RGB1_G2`){
+                            if (!`objExists RGB1_B3`){
+                                delete RGB1;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB2`){
+                    if (!`objExists RGB2_R4`){
+                        if (!`objExists RGB2_G5`){
+                            if (!`objExists RGB2_B6`){
+                                delete RGB2;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB3`){
+                    if (!`objExists RGB3_R7`){
+                        if (!`objExists RGB3_G8`){
+                            if (!`objExists RGB3_B9`){
+                                delete RGB3;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB4`){
+                    if (!`objExists RGB4_R10`){
+                        if (!`objExists RGB4_G11`){
+                            if (!`objExists RGB4_B12`){
+                                delete RGB4;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB5`){
+                    if (!`objExists RGB5_R13`){
+                        if (!`objExists RGB5_G14`){
+                            if (!`objExists RGB5_B15`){
+                                delete RGB5;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB6`){
+                    if (!`objExists RGB6_R16`){
+                        if (!`objExists RGB6_G17`){
+                            if (!`objExists RGB6_B18`){
+                                delete RGB6;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB7`){
+                    if (!`objExists RGB7_R19`){
+                        if (!`objExists RGB7_G20`){
+                            if (!`objExists RGB7_B21`){
+                                delete RGB7;
+                            }
+                        }
+                    }
+                }
+            }
 
+        //不存在的情况下创建RGB1_EXR
+            global proc RS_ConditionCreateAOV_RGB1_EXR(){
+                string $AOVall1[] = `ls -typ "RedshiftAOV"`;
+                int $B1 = 0;
+                for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
+                { 
+                if ($AOVall1[$q1] == "RGB1"){
+                    setAttr ($AOVall1[$q1]+".enabled") 0;
+                    $B1 = $B1+1;
+                }
+                }
+                if($B1 == 0)
+                {
+                    RS_createAOV_RGB1_EXR();
+                }
+            }
+
+        //不存在的情况下创建RGB2
+            global proc RS_ConditionCreateAOV_RGB2_EXR(){
+                string $AOVall2[] = `ls -typ "RedshiftAOV"`;
+                int $B2 = 0;
+                for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
+                { 
+                if ($AOVall2[$q2] == "RGB2"){
+                    setAttr ($AOVall2[$q2]+".enabled") 0;
+                    $B2 = $B2+1;
+                }
+                }
+                if($B2 == 0)
+                {
+                    RS_createAOV_RGB2_EXR();
+                }
+            }
+
+        //不存在的情况下创建RGB3
+            global proc RS_ConditionCreateAOV_RGB3_EXR(){
+                string $AOVall3[] = `ls -typ "RedshiftAOV"`;
+                int $B3 = 0;
+                for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
+                { 
+                if ($AOVall3[$q3] == "RGB3"){
+                    setAttr ($AOVall3[$q3]+".enabled") 0;
+                    $B3 = $B3+1;
+                }
+                }
+                if($B3 == 0)
+                {
+                    RS_createAOV_RGB3_EXR();
+                }
+            }
+
+        //不存在的情况下创建RGB4
+            global proc RS_ConditionCreateAOV_RGB4_EXR(){
+                string $AOVall4[] = `ls -typ "RedshiftAOV"`;
+                int $B4 = 0;
+                for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
+                { 
+                if ($AOVall4[$q4] == "RGB4"){
+                    setAttr ($AOVall4[$q4]+".enabled") 0;
+                    $B4 = $B4+1;
+                }
+                }
+                if($B4 == 0)
+                {
+                    RS_createAOV_RGB4_EXR();
+                }
+            }
+
+        //不存在的情况下创建RGB5
+            global proc RS_ConditionCreateAOV_RGB5_EXR(){
+                string $AOVall5[] = `ls -typ "RedshiftAOV"`;
+                int $B5 = 0;
+                for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
+                { 
+                if ($AOVall5[$q5] == "RGB5"){
+                    setAttr ($AOVall5[$q5]+".enabled") 0;
+                    $B5 = $B5+1;
+                }
+                }
+                if($B5 == 0)
+                {
+                    RS_createAOV_RGB5_EXR();
+                }
+            }
+
+        //不存在的情况下创建RGB6
+            global proc RS_ConditionCreateAOV_RGB6_EXR(){
+                string $AOVall6[] = `ls -typ "RedshiftAOV"`;
+                int $B6 = 0;
+                for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
+                { 
+                if ($AOVall6[$q6] == "RGB6"){
+                    setAttr ($AOVall6[$q6]+".enabled") 0;
+                    $B6 = $B6+1;
+                }
+                }
+                if($B6 == 0)
+                {
+                    RS_createAOV_RGB6_EXR();
+                }
+            }
+
+        //不存在的情况下创建RGB7
+            global proc RS_ConditionCreateAOV_RGB7_EXR(){
+                string $AOVall7[] = `ls -typ "RedshiftAOV"`;
+                int $B7 = 0;
+                for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
+                { 
+                if ($AOVall7[$q7] == "RGB7"){
+                    setAttr ($AOVall7[$q7]+".enabled") 0;
+                    $B7 = $B7+1;
+                }
+                }
+                if($B7 == 0)
+                {
+                    RS_createAOV_RGB7_EXR();
+                }
+            }
+
+        //创建AOV_RGB1
+            global proc RS_createAOV_RGB1_EXR(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB1.name "RGB1";
+                setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB1.dataType" 2;
+                setAttr "RGB1.fileFormat" 1;
+                setAttr "RGB1.exrBits" 32;
+                setAttr "RGB1.mode" 1;
+                setAttr "RGB1.redId" 1;
+                setAttr "RGB1.greenId" 2;
+                setAttr "RGB1.blueId" 3;
+                setAttr "RGB1.enabled" 0;
+                print ("RGB1"+"\n");
+            }
+
+        //创建AOV_RGB2
+            global proc RS_createAOV_RGB2_EXR(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB2.name "RGB2";
+                setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB2.dataType" 2;
+                setAttr "RGB2.fileFormat" 1;
+                setAttr "RGB2.exrBits" 32;
+                setAttr "RGB2.mode" 1;
+                setAttr "RGB2.redId" 4;
+                setAttr "RGB2.greenId" 5;
+                setAttr "RGB2.blueId" 6;
+                setAttr "RGB2.enabled" 0;
+                print ("RGB2"+"\n");
+            }
+
+        //创建AOV_RGB3
+            global proc RS_createAOV_RGB3_EXR(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB3.name "RGB3";
+                setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB3.dataType" 2;
+                setAttr "RGB3.fileFormat" 1;
+                setAttr "RGB3.exrBits" 32;
+                setAttr "RGB3.mode" 1;
+                setAttr "RGB3.redId" 7;
+                setAttr "RGB3.greenId" 8;
+                setAttr "RGB3.blueId" 9;
+                setAttr "RGB3.enabled" 0;
+                print ("RGB3"+"\n");
+            }
+
+        //创建AOV_RGB4
+            global proc RS_createAOV_RGB4_EXR(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB4.name "RGB4";
+                setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB4.dataType" 2;
+                setAttr "RGB4.fileFormat" 1;
+                setAttr "RGB4.exrBits" 32;
+                setAttr "RGB4.mode" 1;
+                setAttr "RGB4.redId" 10;
+                setAttr "RGB4.greenId" 11;
+                setAttr "RGB4.blueId" 12;
+                setAttr "RGB4.enabled" 0;
+                print ("RGB4"+"\n");
+            }
+
+
+        //创建AOV_RGB5
+            global proc RS_createAOV_RGB5_EXR(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB5.name "RGB5";
+                setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB5.dataType" 2;
+                setAttr "RGB5.fileFormat" 1;
+                setAttr "RGB5.exrBits" 32;
+                setAttr "RGB5.mode" 1;
+                setAttr "RGB5.redId" 13;
+                setAttr "RGB5.greenId" 14;
+                setAttr "RGB5.blueId" 15;
+                setAttr "RGB5.enabled" 0;
+                print ("RGB5"+"\n");
+            }
+
+
+        //创建AOV_RGB6
+            global proc RS_createAOV_RGB6_EXR(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB6.name "RGB6";
+                setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB6.dataType" 2;
+                setAttr "RGB6.fileFormat" 1;
+                setAttr "RGB6.exrBits" 32;
+                setAttr "RGB6.mode" 1;
+                setAttr "RGB6.redId" 16;
+                setAttr "RGB6.greenId" 17;
+                setAttr "RGB6.blueId" 18;
+                setAttr "RGB6.enabled" 0;
+                print ("RGB6"+"\n");
+            }
+
+
+        //创建AOV_RGB7
+            global proc RS_createAOV_RGB7_EXR(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB7.name "RGB7";
+                setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB7.dataType" 2;
+                setAttr "RGB7.fileFormat" 1;
+                setAttr "RGB7.exrBits" 32;
+                setAttr "RGB7.mode" 1;
+                setAttr "RGB7.redId" 19;
+                setAttr "RGB7.greenId" 20;
+                setAttr "RGB7.blueId" 21;
+                setAttr "RGB7.enabled" 0;
+                print ("RGB7"+"\n");
+            }
+
+    //////////////////////////////////////////////////////////
+
+    // 2_Auto Aovs ID PNG ///////////
+        //创建AOV_RGB层
+
+            global proc Auto_Aovs_ID_PNG(){
+
+                //自动根据新增属性给角色建id (只修改属性为0的)
+                createChaId_id();
+
+                //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
+                checkchaID_and_create_id();
+
+                deleteRGBDisplayLayer();
+
+                //改id名字和数值
+                RS_changeObjidName();
+
+                //放在rgb建ID后，给角色打组一个属性编号，重复多次，防止有些更改了id数值，角色组的名字编号跟不回
+                give_ChaId_id_num();
+                give_ChaId_id_num();
+                give_ChaId_id_num();
+                give_ChaId_id_num();
+                give_ChaId_id_num();
+                give_ChaId_id_num();
+
+                //AOV中创建RGB层，并删除没用的RGB
+                RS_AOV_RGB_createAndDelete_PNG();
+
+                createRGBDisplayLayer();
+
+                //CharIdCheck全部归0
+                checkchaID000();
+
+                //选择物体增加圆滑节点
+                smoothNode_auto_pro();
+
+            }   
+
+
+
+
+
+
+
+
+        //AOV中创建RGB层，并删除没用的RGB   PNG
+            global proc RS_AOV_RGB_createAndDelete_PNG(){
+                string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
+                string $OBJnumin2 ;
+                for($OBJnumin2 in $OBJnum)
+                {
+                    int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`;   
+                    if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1_PNG(); }
+                    if ( ($objIDnumID > 3) && ($objIDnumID <= 6)){ RS_ConditionCreateAOV_RGB2_PNG(); }
+                    if ( ($objIDnumID > 6) && ($objIDnumID <= 9)){ RS_ConditionCreateAOV_RGB3_PNG(); }
+                    if ( ($objIDnumID > 9) && ($objIDnumID <= 12)){ RS_ConditionCreateAOV_RGB4_PNG(); }
+                    if ( ($objIDnumID > 12) && ($objIDnumID <= 15)){ RS_ConditionCreateAOV_RGB5_PNG(); }
+                    if ( ($objIDnumID > 15) && ($objIDnumID <= 18)){ RS_ConditionCreateAOV_RGB6_PNG(); }
+                    if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7_PNG(); }
+                }
+                
+                if (`objExists RGB1`){
+                    if (!`objExists RGB1_R1`){
+                        if (!`objExists RGB1_G2`){
+                            if (!`objExists RGB1_B3`){
+                                delete RGB1;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB2`){
+                    if (!`objExists RGB2_R4`){
+                        if (!`objExists RGB2_G5`){
+                            if (!`objExists RGB2_B6`){
+                                delete RGB2;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB3`){
+                    if (!`objExists RGB3_R7`){
+                        if (!`objExists RGB3_G8`){
+                            if (!`objExists RGB3_B9`){
+                                delete RGB3;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB4`){
+                    if (!`objExists RGB4_R10`){
+                        if (!`objExists RGB4_G11`){
+                            if (!`objExists RGB4_B12`){
+                                delete RGB4;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB5`){
+                    if (!`objExists RGB5_R13`){
+                        if (!`objExists RGB5_G14`){
+                            if (!`objExists RGB5_B15`){
+                                delete RGB5;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB6`){
+                    if (!`objExists RGB6_R16`){
+                        if (!`objExists RGB6_G17`){
+                            if (!`objExists RGB6_B18`){
+                                delete RGB6;
+                            }
+                        }
+                    }
+                }
+                if (`objExists RGB7`){
+                    if (!`objExists RGB7_R19`){
+                        if (!`objExists RGB7_G20`){
+                            if (!`objExists RGB7_B21`){
+                                delete RGB7;
+                            }
+                        }
+                    }
+                }
+            }
+
+        //不存在的情况下创建RGB1_EXR
+            global proc RS_ConditionCreateAOV_RGB1_PNG(){
+                string $AOVall1[] = `ls -typ "RedshiftAOV"`;
+                int $B1 = 0;
+                for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
+                { 
+                if ($AOVall1[$q1] == "RGB1"){
+                    setAttr ($AOVall1[$q1]+".enabled") 0;
+                    $B1 = $B1+1;
+                }
+                }
+                if($B1 == 0)
+                {
+                    RS_createAOV_RGB1_PNG();
+                }
+            }
+
+        //不存在的情况下创建RGB2
+            global proc RS_ConditionCreateAOV_RGB2_PNG(){
+                string $AOVall2[] = `ls -typ "RedshiftAOV"`;
+                int $B2 = 0;
+                for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
+                { 
+                if ($AOVall2[$q2] == "RGB2"){
+                    setAttr ($AOVall2[$q2]+".enabled") 0;
+                    $B2 = $B2+1;
+                }
+                }
+                if($B2 == 0)
+                {
+                    RS_createAOV_RGB2_PNG();
+                }
+            }
+
+        //不存在的情况下创建RGB3
+            global proc RS_ConditionCreateAOV_RGB3_PNG(){
+                string $AOVall3[] = `ls -typ "RedshiftAOV"`;
+                int $B3 = 0;
+                for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
+                { 
+                if ($AOVall3[$q3] == "RGB3"){
+                    setAttr ($AOVall3[$q3]+".enabled") 0;
+                    $B3 = $B3+1;
+                }
+                }
+                if($B3 == 0)
+                {
+                    RS_createAOV_RGB3_PNG();
+                }
+            }
+
+        //不存在的情况下创建RGB4
+            global proc RS_ConditionCreateAOV_RGB4_PNG(){
+                string $AOVall4[] = `ls -typ "RedshiftAOV"`;
+                int $B4 = 0;
+                for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
+                { 
+                if ($AOVall4[$q4] == "RGB4"){
+                    setAttr ($AOVall4[$q4]+".enabled") 0;
+                    $B4 = $B4+1;
+                }
+                }
+                if($B4 == 0)
+                {
+                    RS_createAOV_RGB4_PNG();
+                }
+            }
+
+        //不存在的情况下创建RGB5
+            global proc RS_ConditionCreateAOV_RGB5_PNG(){
+                string $AOVall5[] = `ls -typ "RedshiftAOV"`;
+                int $B5 = 0;
+                for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
+                { 
+                if ($AOVall5[$q5] == "RGB5"){
+                    setAttr ($AOVall5[$q5]+".enabled") 0;
+                    $B5 = $B5+1;
+                }
+                }
+                if($B5 == 0)
+                {
+                    RS_createAOV_RGB5_PNG();
+                }
+            }
+
+        //不存在的情况下创建RGB6
+            global proc RS_ConditionCreateAOV_RGB6_PNG(){
+                string $AOVall6[] = `ls -typ "RedshiftAOV"`;
+                int $B6 = 0;
+                for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
+                { 
+                if ($AOVall6[$q6] == "RGB6"){
+                    setAttr ($AOVall6[$q6]+".enabled") 0;
+                    $B6 = $B6+1;
+                }
+                }
+                if($B6 == 0)
+                {
+                    RS_createAOV_RGB6_PNG();
+                }
+            }
+
+        //不存在的情况下创建RGB7
+            global proc RS_ConditionCreateAOV_RGB7_PNG(){
+                string $AOVall7[] = `ls -typ "RedshiftAOV"`;
+                int $B7 = 0;
+                for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
+                { 
+                if ($AOVall7[$q7] == "RGB7"){
+                    setAttr ($AOVall7[$q7]+".enabled") 0;
+                    $B7 = $B7+1;
+                }
+                }
+                if($B7 == 0)
+                {
+                    RS_createAOV_RGB7_PNG();
+                }
+            }
+
+        //创建AOV_RGB1
+            global proc RS_createAOV_RGB1_PNG(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB1.name "RGB1";
+                setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB1.dataType" 2;
+                setAttr "RGB1.fileFormat" 2;
+                setAttr "RGB1.exrBits" 32;
+                setAttr "RGB1.mode" 1;
+                setAttr "RGB1.redId" 1;
+                setAttr "RGB1.greenId" 2;
+                setAttr "RGB1.blueId" 3;
+                setAttr "RGB1.enabled" 0;
+                print ("RGB1"+"\n");
+            }
+
+        //创建AOV_RGB2
+            global proc RS_createAOV_RGB2_PNG(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB2.name "RGB2";
+                setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB2.dataType" 2;
+                setAttr "RGB2.fileFormat" 2;
+                setAttr "RGB2.exrBits" 32;
+                setAttr "RGB2.mode" 1;
+                setAttr "RGB2.redId" 4;
+                setAttr "RGB2.greenId" 5;
+                setAttr "RGB2.blueId" 6;
+                setAttr "RGB2.enabled" 0;
+                print ("RGB2"+"\n");
+            }
+
+        //创建AOV_RGB3
+            global proc RS_createAOV_RGB3_PNG(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB3.name "RGB3";
+                setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB3.dataType" 2;
+                setAttr "RGB3.fileFormat" 2;
+                setAttr "RGB3.exrBits" 32;
+                setAttr "RGB3.mode" 1;
+                setAttr "RGB3.redId" 7;
+                setAttr "RGB3.greenId" 8;
+                setAttr "RGB3.blueId" 9;
+                setAttr "RGB3.enabled" 0;
+                print ("RGB3"+"\n");
+            }
+
+        //创建AOV_RGB4
+            global proc RS_createAOV_RGB4_PNG(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB4.name "RGB4";
+                setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB4.dataType" 2;
+                setAttr "RGB4.fileFormat" 2;
+                setAttr "RGB4.exrBits" 32;
+                setAttr "RGB4.mode" 1;
+                setAttr "RGB4.redId" 10;
+                setAttr "RGB4.greenId" 11;
+                setAttr "RGB4.blueId" 12;
+                setAttr "RGB4.enabled" 0;
+                print ("RGB4"+"\n");
+            }
+
+
+        //创建AOV_RGB5
+            global proc RS_createAOV_RGB5_PNG(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB5.name "RGB5";
+                setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB5.dataType" 2;
+                setAttr "RGB5.fileFormat" 2;
+                setAttr "RGB5.exrBits" 32;
+                setAttr "RGB5.mode" 1;
+                setAttr "RGB5.redId" 13;
+                setAttr "RGB5.greenId" 14;
+                setAttr "RGB5.blueId" 15;
+                setAttr "RGB5.enabled" 0;
+                print ("RGB5"+"\n");
+            }
+
+
+        //创建AOV_RGB6
+            global proc RS_createAOV_RGB6_PNG(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB6.name "RGB6";
+                setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB6.dataType" 2;
+                setAttr "RGB6.fileFormat" 2;
+                setAttr "RGB6.exrBits" 32;
+                setAttr "RGB6.mode" 1;
+                setAttr "RGB6.redId" 16;
+                setAttr "RGB6.greenId" 17;
+                setAttr "RGB6.blueId" 18;
+                setAttr "RGB6.enabled" 0;
+                print ("RGB6"+"\n");
+            }
+
+
+        //创建AOV_RGB7
+            global proc RS_createAOV_RGB7_PNG(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
+                redshiftUpdateActiveAovList();
+                setAttr -type "string" RGB7.name "RGB7";
+                setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                setAttr "RGB7.dataType" 2;
+                setAttr "RGB7.fileFormat" 2;
+                setAttr "RGB7.exrBits" 32;
+                setAttr "RGB7.mode" 1;
+                setAttr "RGB7.redId" 19;
+                setAttr "RGB7.greenId" 20;
+                setAttr "RGB7.blueId" 21;
+                setAttr "RGB7.enabled" 0;
+                print ("RGB7"+"\n");
+            }
+
+    //////////////////////////////////////////////////////////
+
+    //共用
+    //创建ID
         //自动根据新增属性给角色建id (只修改属性为0的)
             global proc createChaId_id(){
                 string $transf_all[] = `ls -typ "transform"`;
@@ -150,7 +860,20 @@
                         }
                     }
                 }
+
+                string $transf_alla[] = `ls -typ "transform"`;
+                string $transf_allain ;
+                for ($transf_allain in $transf_alla){
+                    if (`objExists ($transf_allain +".CharIdCheck")`){
+                        int $cha_G_CharIdCheck_num =`getAttr ($transf_allain +".CharIdCheck")`;
+                        if ($cha_G_CharIdCheck_num == 0){
+                                select -r $transf_allain;
+                                redshiftCreateObjectIdNode();
+                            }
+                        }
+                }
             }
+
 
         //删掉RGB display分组 
             global proc deleteRGBDisplayLayer(){ 
@@ -376,86 +1099,6 @@
             }
 
 
-        //AOV中创建RGB层，并删除没用的RGB
-            global proc RS_AOV_RGB_createAndDelete(){
-                string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
-                string $OBJnumin2 ;
-                for($OBJnumin2 in $OBJnum)
-                {
-                    int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`;   
-                    if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1(); }
-                    if ( ($objIDnumID > 3) && ($objIDnumID <= 6)){ RS_ConditionCreateAOV_RGB2(); }
-                    if ( ($objIDnumID > 6) && ($objIDnumID <= 9)){ RS_ConditionCreateAOV_RGB3(); }
-                    if ( ($objIDnumID > 9) && ($objIDnumID <= 12)){ RS_ConditionCreateAOV_RGB4(); }
-                    if ( ($objIDnumID > 12) && ($objIDnumID <= 15)){ RS_ConditionCreateAOV_RGB5(); }
-                    if ( ($objIDnumID > 15) && ($objIDnumID <= 18)){ RS_ConditionCreateAOV_RGB6(); }
-                    if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7(); }
-                }
-                
-                if (`objExists RGB1`){
-                    if (!`objExists RGB1_R1`){
-                        if (!`objExists RGB1_G2`){
-                            if (!`objExists RGB1_B3`){
-                                delete RGB1;
-                            }
-                        }
-                    }
-                }
-                if (`objExists RGB2`){
-                    if (!`objExists RGB2_R4`){
-                        if (!`objExists RGB2_G5`){
-                            if (!`objExists RGB2_B6`){
-                                delete RGB2;
-                            }
-                        }
-                    }
-                }
-                if (`objExists RGB3`){
-                    if (!`objExists RGB3_R7`){
-                        if (!`objExists RGB3_G8`){
-                            if (!`objExists RGB3_B9`){
-                                delete RGB3;
-                            }
-                        }
-                    }
-                }
-                if (`objExists RGB4`){
-                    if (!`objExists RGB4_R10`){
-                        if (!`objExists RGB4_G11`){
-                            if (!`objExists RGB4_B12`){
-                                delete RGB4;
-                            }
-                        }
-                    }
-                }
-                if (`objExists RGB5`){
-                    if (!`objExists RGB5_R13`){
-                        if (!`objExists RGB5_G14`){
-                            if (!`objExists RGB5_B15`){
-                                delete RGB5;
-                            }
-                        }
-                    }
-                }
-                if (`objExists RGB6`){
-                    if (!`objExists RGB6_R16`){
-                        if (!`objExists RGB6_G17`){
-                            if (!`objExists RGB6_B18`){
-                                delete RGB6;
-                            }
-                        }
-                    }
-                }
-                if (`objExists RGB7`){
-                    if (!`objExists RGB7_R19`){
-                        if (!`objExists RGB7_G20`){
-                            if (!`objExists RGB7_B21`){
-                                delete RGB7;
-                            }
-                        }
-                    }
-                }
-            }
 
         //创建RGBdisplaylayer
             global proc createRGBDisplayLayer(){ 
@@ -593,299 +1236,16 @@
             }
             
 
-        //不存在的情况下创建RGB1
-            global proc RS_ConditionCreateAOV_RGB1(){
-                string $AOVall1[] = `ls -typ "RedshiftAOV"`;
-                int $B1 = 0;
-                for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
-                { 
-                if ($AOVall1[$q1] == "RGB1"){
-                    setAttr ($AOVall1[$q1]+".enabled") 0;
-                    $B1 = $B1+1;
-                }
-                }
-                if($B1 == 0)
-                {
-                    RS_createAOV_RGB1();
-                }
-            }
-
-        //不存在的情况下创建RGB2
-            global proc RS_ConditionCreateAOV_RGB2(){
-                string $AOVall2[] = `ls -typ "RedshiftAOV"`;
-                int $B2 = 0;
-                for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
-                { 
-                if ($AOVall2[$q2] == "RGB2"){
-                    setAttr ($AOVall2[$q2]+".enabled") 0;
-                    $B2 = $B2+1;
-                }
-                }
-                if($B2 == 0)
-                {
-                    RS_createAOV_RGB2();
-                }
-            }
-
-        //不存在的情况下创建RGB3
-            global proc RS_ConditionCreateAOV_RGB3(){
-                string $AOVall3[] = `ls -typ "RedshiftAOV"`;
-                int $B3 = 0;
-                for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
-                { 
-                if ($AOVall3[$q3] == "RGB3"){
-                    setAttr ($AOVall3[$q3]+".enabled") 0;
-                    $B3 = $B3+1;
-                }
-                }
-                if($B3 == 0)
-                {
-                    RS_createAOV_RGB3();
-                }
-            }
-
-        //不存在的情况下创建RGB4
-            global proc RS_ConditionCreateAOV_RGB4(){
-                string $AOVall4[] = `ls -typ "RedshiftAOV"`;
-                int $B4 = 0;
-                for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
-                { 
-                if ($AOVall4[$q4] == "RGB4"){
-                    setAttr ($AOVall4[$q4]+".enabled") 0;
-                    $B4 = $B4+1;
-                }
-                }
-                if($B4 == 0)
-                {
-                    RS_createAOV_RGB4();
-                }
-            }
-
-        //不存在的情况下创建RGB5
-            global proc RS_ConditionCreateAOV_RGB5(){
-                string $AOVall5[] = `ls -typ "RedshiftAOV"`;
-                int $B5 = 0;
-                for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
-                { 
-                if ($AOVall5[$q5] == "RGB5"){
-                    setAttr ($AOVall5[$q5]+".enabled") 0;
-                    $B5 = $B5+1;
-                }
-                }
-                if($B5 == 0)
-                {
-                    RS_createAOV_RGB5();
-                }
-            }
-
-        //不存在的情况下创建RGB6
-            global proc RS_ConditionCreateAOV_RGB6(){
-                string $AOVall6[] = `ls -typ "RedshiftAOV"`;
-                int $B6 = 0;
-                for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
-                { 
-                if ($AOVall6[$q6] == "RGB6"){
-                    setAttr ($AOVall6[$q6]+".enabled") 0;
-                    $B6 = $B6+1;
-                }
-                }
-                if($B6 == 0)
-                {
-                    RS_createAOV_RGB6();
-                }
-            }
-
-        //不存在的情况下创建RGB7
-            global proc RS_ConditionCreateAOV_RGB7(){
-                string $AOVall7[] = `ls -typ "RedshiftAOV"`;
-                int $B7 = 0;
-                for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
-                { 
-                if ($AOVall7[$q7] == "RGB7"){
-                    setAttr ($AOVall7[$q7]+".enabled") 0;
-                    $B7 = $B7+1;
-                }
-                }
-                if($B7 == 0)
-                {
-                    RS_createAOV_RGB7();
-                }
-            }
-
-        //创建AOV_RGB1
-            global proc RS_createAOV_RGB1(){
-                source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
-                redshiftUpdateActiveAovList();
-                setAttr -type "string" RGB1.name "RGB1";
-                setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB1.dataType" 2;
-                setAttr "RGB1.fileFormat" 1;
-                setAttr "RGB1.exrBits" 32;
-                setAttr "RGB1.mode" 1;
-                setAttr "RGB1.redId" 1;
-                setAttr "RGB1.greenId" 2;
-                setAttr "RGB1.blueId" 3;
-                setAttr "RGB1.enabled" 0;
-                print ("RGB1"+"\n");
-            }
-
-        //创建AOV_RGB2
-            global proc RS_createAOV_RGB2(){
-                source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
-                redshiftUpdateActiveAovList();
-                setAttr -type "string" RGB2.name "RGB2";
-                setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB2.dataType" 2;
-                setAttr "RGB2.fileFormat" 1;
-                setAttr "RGB2.exrBits" 32;
-                setAttr "RGB2.mode" 1;
-                setAttr "RGB2.redId" 4;
-                setAttr "RGB2.greenId" 5;
-                setAttr "RGB2.blueId" 6;
-                setAttr "RGB2.enabled" 0;
-                print ("RGB2"+"\n");
-            }
-
-        //创建AOV_RGB3
-            global proc RS_createAOV_RGB3(){
-                source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
-                redshiftUpdateActiveAovList();
-                setAttr -type "string" RGB3.name "RGB3";
-                setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB3.dataType" 2;
-                setAttr "RGB3.fileFormat" 1;
-                setAttr "RGB3.exrBits" 32;
-                setAttr "RGB3.mode" 1;
-                setAttr "RGB3.redId" 7;
-                setAttr "RGB3.greenId" 8;
-                setAttr "RGB3.blueId" 9;
-                setAttr "RGB3.enabled" 0;
-                print ("RGB3"+"\n");
-            }
-
-        //创建AOV_RGB4
-            global proc RS_createAOV_RGB4(){
-                source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
-                redshiftUpdateActiveAovList();
-                setAttr -type "string" RGB4.name "RGB4";
-                setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB4.dataType" 2;
-                setAttr "RGB4.fileFormat" 1;
-                setAttr "RGB4.exrBits" 32;
-                setAttr "RGB4.mode" 1;
-                setAttr "RGB4.redId" 10;
-                setAttr "RGB4.greenId" 11;
-                setAttr "RGB4.blueId" 12;
-                setAttr "RGB4.enabled" 0;
-                print ("RGB4"+"\n");
-            }
-
-
-        //创建AOV_RGB5
-            global proc RS_createAOV_RGB5(){
-                source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
-                redshiftUpdateActiveAovList();
-                setAttr -type "string" RGB5.name "RGB5";
-                setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB5.dataType" 2;
-                setAttr "RGB5.fileFormat" 1;
-                setAttr "RGB5.exrBits" 32;
-                setAttr "RGB5.mode" 1;
-                setAttr "RGB5.redId" 13;
-                setAttr "RGB5.greenId" 14;
-                setAttr "RGB5.blueId" 15;
-                setAttr "RGB5.enabled" 0;
-                print ("RGB5"+"\n");
-            }
-
-
-        //创建AOV_RGB6
-            global proc RS_createAOV_RGB6(){
-                source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
-                redshiftUpdateActiveAovList();
-                setAttr -type "string" RGB6.name "RGB6";
-                setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB6.dataType" 2;
-                setAttr "RGB6.fileFormat" 1;
-                setAttr "RGB6.exrBits" 32;
-                setAttr "RGB6.mode" 1;
-                setAttr "RGB6.redId" 16;
-                setAttr "RGB6.greenId" 17;
-                setAttr "RGB6.blueId" 18;
-                setAttr "RGB6.enabled" 0;
-                print ("RGB6"+"\n");
-            }
-
-
-        //创建AOV_RGB7
-            global proc RS_createAOV_RGB7(){
-                source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
-                redshiftUpdateActiveAovList();
-                setAttr -type "string" RGB7.name "RGB7";
-                setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB7.dataType" 2;
-                setAttr "RGB7.fileFormat" 1;
-                setAttr "RGB7.exrBits" 32;
-                setAttr "RGB7.mode" 1;
-                setAttr "RGB7.redId" 19;
-                setAttr "RGB7.greenId" 20;
-                setAttr "RGB7.blueId" 21;
-                setAttr "RGB7.enabled" 0;
-                print ("RGB7"+"\n");
-            }
-
-        //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
-            global proc checkchaID_and_create_id(){
-                string $id_all[] = `ls -typ "RedshiftObjectId"`;
-                string $id_allin;
-                for ($id_allin in $id_all){
-                    int $id_numin1 = `getAttr ($id_allin+".objectId")`;
-                    if ($id_numin1 > 0){
-                        if ($id_numin1 <= 21){
-                            select -r -ne $id_allin ;
-                            pickWalk -d up;
-                            string $cha_G_locator[] =`ls -sl`;
-                            string $cha_G_locatorin;
-                            for ($cha_G_locatorin in $cha_G_locator){
-                            if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
-                                    setAttr ($cha_G_locatorin+".CharIdCheck") 1;                    
-                                }
-                            }
-                        }
-                    }
-                }
-
-                string $transf_alla[] = `ls -typ "transform"`;
-                string $transf_allain ;
-                for ($transf_allain in $transf_alla){
-                    if (`objExists ($transf_allain +".CharIdCheck")`){
-                        int $cha_G_CharIdCheck_num =`getAttr ($transf_allain +".CharIdCheck")`;
-                        if ($cha_G_CharIdCheck_num == 0){
-                                select -r $transf_allain;
-                                redshiftCreateObjectIdNode();
-                            }
-                        }
-                }
-            }
-
         //CharIdCheck全部归0
-            global proc checkchaID000(){
-                string $transf_allb[] = `ls -typ "transform"`;
-                string $transf_allbin ;
-                for ($transf_allbin in $transf_allb){
-                if (`objExists ($transf_allbin +".CharIdCheck")`){
-                    setAttr ($transf_allbin +".CharIdCheck") 0 ;         
+                global proc checkchaID000(){
+                    string $transf_allb[] = `ls -typ "transform"`;
+                    string $transf_allbin ;
+                    for ($transf_allbin in $transf_allb){
+                    if (`objExists ($transf_allbin +".CharIdCheck")`){
+                        setAttr ($transf_allbin +".CharIdCheck") 0 ;         
+                        }
                     }
                 }
-            }
-
 
         //建圆滑节点
             global proc smoothNode_auto_pro()
