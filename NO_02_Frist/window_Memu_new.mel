@@ -283,7 +283,8 @@
                 text -w 10  -h 10 -l "DO_POSE 4K PNG";
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
                         button -l "2_Creat_Char_Group" -bgc 1 0.65 0.13 -w 120 -h 28 -ann "角色打组 Character_Group" -c "Creat_Char_Group"; //ok
-                        button -l "3_to do sth" -bgc 0 1 1 -w 150 -h 28 -c "Do_pose_2_to_do_sth" -ann "选择char Group创建Creat smooth+RS pose AOVs png+CS IDAovs PNG+ISOmaya2017+4K+Import cha lig" ;  //ok
+                        button -l "3_to do sth_2017" -bgc 0 1 1 -w 100 -h 28 -c "Do_pose_2_to_do_sth_2017" -ann "选择char Group创建Creat smooth+RS pose AOVs png+CS IDAovs PNG+ISOmaya2017+4K+Import cha lig" ;  //ok
+                        button -l "3_to do sth_2019" -bgc 0 1 1 -w 100 -h 28 -c "Do_pose_2_to_do_sth_2019" -ann "选择char Group创建Creat smooth+RS pose AOVs png+CS IDAovs PNG+ISOmaya2019+4K+Import cha lig" ;  //ok
                         setParent ..;   
 
                 showWindow DO_POSE_window;

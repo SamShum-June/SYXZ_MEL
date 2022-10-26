@@ -3172,15 +3172,26 @@
 
 ////////// Do POSE PNG
     //2_to do sth
-        global proc Do_pose_2_to_do_sth(){
+        global proc Do_pose_2_to_do_sth_2017(){
             smooth();
             XRSZ_4K_png();
             RS_Pose_Aovs_png();
             Cs_Char_IDAovs_PNG();
             importCHAlig();
             ISO_maya2017();
-            print("Do_pose_2_to_do_sth");
-            headsUpMessage -time 5 ("Do_pose_2_to_do_sth");
+            print("Do_pose_2_to_do_sth_2017");
+            headsUpMessage -time 5 ("Do_pose_2_to_do_sth_2017");
+        }
+
+        global proc Do_pose_2_to_do_sth_2019(){
+            smooth();
+            XRSZ_4K_png();
+            RS_Pose_Aovs_png();
+            Cs_Char_IDAovs_PNG();
+            importCHAlig();
+            ISO_maya2019();
+            print("Do_pose_2_to_do_sth_2019");
+            headsUpMessage -time 5 ("Do_pose_2_to_do_sth_2019");
         }
 
 ////////// sel obj
