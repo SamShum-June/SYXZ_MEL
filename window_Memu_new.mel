@@ -21,7 +21,7 @@
         {
                 deleteUI -window DO_POSE_window;
         }
-        window -t "SYXZ"  syxzwindow;columnLayout -adj 1;
+        window -t "SYXZ"  -s 0 syxzwindow;columnLayout -adj 1;
         rowColumnLayout -adjustableColumn true -ca ;
         frameLayout  -l "杂项" -cll 0 -mh 5 -w 500 -h 55;
                 rowColumnLayout -numberOfRows 1  -rowHeight 1 20 -cs 1 3 ;
@@ -123,7 +123,7 @@
                 deleteUI -window import_STH_window;
             }
 
-            window -t "导入窗口" import_STH_window;
+            window -t "导入窗口" -s 0 import_STH_window;
                 rowColumnLayout -adjustableColumn true -w 710 -ca;
                     frameLayout  -l "粘贴需要导入文件的路径"   -w 710 -h 60 -cll 0 -mh 5;
                         rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 5 ;
@@ -146,7 +146,7 @@
                 deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;
                 }
 
-                window -t "Optimize and Creat ID Aovs SET 整理和创建ID Aovs" Optimize_and_Creat_ID_Aovs_SET_window;columnLayout -adj 1;
+                window -t "Optimize and Creat ID Aovs SET 整理和创建ID Aovs" -s 0 Optimize_and_Creat_ID_Aovs_SET_window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 500 -ca;
                 frameLayout -l "Optimize and Creat ID Aovs SET 整理和创建ID Aovs" -w 150 -h 120 -cll 0 -mh 5 -bgc 0 0 0.134;
                         text -w 10 -h 10 -l "All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" -ann "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" ;
@@ -197,7 +197,7 @@
                 deleteUI -window DO_CAM_window;
                 }
 
-                window -t "DO_CAM_做镜头 EXR" DO_CAM_window;columnLayout -adj 1;
+                window -t "DO_CAM_做镜头 EXR" -s 0 DO_CAM_window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 500 -ca;
                 frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 450 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
@@ -267,7 +267,7 @@
                 {
                 deleteUI -window DO_POSE_window;
                 }
-                window -t "DO_POSE 4K PNG" DO_POSE_window;columnLayout -adj 1;
+                window -t "DO_POSE 4K PNG" -s 0 DO_POSE_window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 350 -ca;
                 frameLayout  -l "DO_POSE 4K PNG "   -w 350 -h 150 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;

@@ -1,342 +1,964 @@
+//一键分发任务V6 全面更新分发代码,细化部分功能,直接分发窗口化,输出查错文件。by cm20131130
+//一键分发任务V6.1 改进UI增加功能 by cm20131204
+//一键分发任务V6.5 修正已知BUG，添加修复材质、批量分发、取消平滑、项目路径等功能键 by cm20131212
+//一键分发任务V6.6 修正G8命名 增加渲染组单文件夹渲染设置 暂时禁用批量分发 by cm20140108
+
+/*
+脚本流程图
+
+ 组件初始化OneC---\				   /更新预览按钮-----读取组件参数OneT-----填充文字回显窗口
+			   	   生成窗口OneS----
+ 特殊组件  OneP---/				   \分发任务按钮-----读取组件参数OneT-----回写部分组件参数
+
+*/
 
 
+//-----------------------------------------------------------------------组件初始化OneC in OneS
+proc string OneC1()  //系列名字
+{
+    string $exportSysCmd1 = `optionVar -q "bb_SeriesName"`;
+	string $exportSysCmd2;
+    if($exportSysCmd1 == "0")
+    {
+	optionVar -sv "bb_SeriesName" "GG";
+	$exportSysCmd2 = "系列短名";
+    }else
+    {
+    $exportSysCmd2 = `optionVar -q "bb_SeriesName"`;
+    }
+    return $exportSysCmd2;
+}
+
+proc string OneC2() //分发人
+{
+    string $exportSysCmd1 = `optionVar -q "bb_ManName"`;
+	string $exportSysCmd2;
+    if($exportSysCmd1 == "0")
+    {
+	optionVar -sv "bb_ManName" "CM";
+	$exportSysCmd2 = "姓名字母";
+    }else
+    {
+    $exportSysCmd2 = `optionVar -q "bb_ManName"`;
+    }
+    return $exportSysCmd2;
+}
+
+proc int	OneC4() //分发分段
+{
+
+    int $startFrame	= `getAttr "defaultRenderGlobals.startFrame"`;
+	int $endFrame	= `getAttr "defaultRenderGlobals.endFrame"`;		
+	int $zs = $endFrame - $startFrame ;	
+	int $exportSysCmd;
+	if($zs<=21)				{$exportSysCmd = 5	;}
+	if($zs<=51  && $zs>21)	{$exportSysCmd = 10	;}
+	if($zs<=81  && $zs>51)	{$exportSysCmd = 15	;} 
+	if($zs<=101 && $zs>81)	{$exportSysCmd = 20	;} 
+	if($zs>101)				{$exportSysCmd = 25	;} 
+	return $exportSysCmd;
+}
+
+proc string OneC5() //分发服务器
+{
+    string $exportSysCmd = `optionVar -q "bb_ManagerName"`;
+    return $exportSysCmd;
+}
+
+proc int	OneC6() //自动渲染
+{
+    string $exportSysCmd1 = `optionVar -q "bb_AutoRender"`;
+	string $exportSysCmd2;
+    if($exportSysCmd1 == 1)
+    {
+	$exportSysCmd2 = 0;
+    }
+    else if($exportSysCmd1 == 2)
+    {
+	$exportSysCmd2 = 1;
+    }
+    else 
+    {
+	optionVar -iv "bb_AutoRender" 1;
+    $exportSysCmd2 = `optionVar -q "bb_AutoRender"`;
+    }
+    return $exportSysCmd2;
+}
+
+proc int	OneC7() //生成LOG
+{
+    string $exportSysCmd1 = `optionVar -q "bb_RenderLog"`;
+	string $exportSysCmd2;
+    if($exportSysCmd1 == 1)
+    {
+	$exportSysCmd2 = 0;
+    }
+    else if($exportSysCmd1 == 2)
+    {
+	$exportSysCmd2 = 1;
+    }
+    else 
+    {
+	optionVar -iv "bb_RenderLog" 2;
+    $exportSysCmd2 = `optionVar -q "bb_RenderLog"`;
+    }
+    return $exportSysCmd2;
+}
+
+proc int	OneC8() //服务器选择
+{
+    int	$exportSysCmd1 = `optionVar -q "bb_SeverSelect"`;
+    if($exportSysCmd1 == 0)
+    {
+	optionVar -iv "bb_SeverSelect" 4;
+    $exportSysCmd1 = `optionVar -q "bb_SeverSelect"`;
+    }
+    return $exportSysCmd1;
+}
+
+proc int	OneC9() //渲染组别选择
+{
+    int	$exportSysCmd1 = `optionVar -q "bb_TeamSelect"`;
+    if($exportSysCmd1 == 0)
+    {
+	optionVar -iv "bb_TeamSelect" 1;
+    $exportSysCmd1 = `optionVar -q "bb_TeamSelect"`;
+    }
+    return $exportSysCmd1;
+}
+
+proc int	OneC12() //备份到Z盘
+{
+    string $exportSysCmd1 = `optionVar -q "bb_CopyToZ"`;
+	string $exportSysCmd2;
+    if($exportSysCmd1 == 1)
+    {
+	$exportSysCmd2 = 0;
+    }
+    else if($exportSysCmd1 == 2)
+    {
+	$exportSysCmd2 = 1;
+    }
+    else 
+    {
+	optionVar -iv "bb_CopyToZ" 1;
+    $exportSysCmd2 = `optionVar -q "bb_CopyToZ"`;
+    }
+    return $exportSysCmd2;
+}
+
+proc string OneC13() //使用说明
+{
+    string $exportSysCmd = "					  使用说明\n通缉系列：系列的短名例如“GG7”“BES”须统一规范;\n通缉犯：写入分发人可以识别的短名，如“SM”；\n优先：渲染的优先级别，1是最高，100是最低；\n分段：渲染文件每段需要渲染多少帧；\n使用自定义名字：当名字无法符合要求时候可以手动输入；\n城管大队：分别为渲染和特效组，区别为输出路径不一样；\n(渲染	：把目录Set到Part文件夹下，会自动创建文件夹)\n(渲染改	：把目录Set到Shot文件夹下，进行覆盖渲染)\n(特效	：序列会输出到Edition_Groups\Render Source)\n自动：分发完立刻加入渲染，不勾选则须服务端手动开始；\n证据：勾选会生成MAYA渲染日志信息，用于程序查错；\n备到Z：特效组备份文件用；\n服务器：选择需要分发的服务器，可以自定义输入IP；\n平滑开关：临时关闭平滑节点加快窗口，分发后会自动还原；\n修复材质：尝试最大化保留出错渲染层的材质（功能测试）；\n打开路径：打开当前文件夹；\nLOG：直接打开LOG日志文件夹；\n更新预览：检查渲染信息是否正确；\n发布悬赏：分发任务。\n\n						插件有BUG请第一时间反馈特效组";
+    return $exportSysCmd;
+}
+
+//-----------------------------------------------------------------------特殊组件OneP
+global proc OneP1() //写入log
+{
+	//----------------------------------文件名字
+	string $TlogMblog = OneP13();  
+	string $Tlog1 = `file -q -ns`;
+	string $fnamef = OneP15b();
+	string $fnamef2 = OneP6();
+	string $fnamef3;
+	string $join1 = OneT10();
+	if($join1 == 2)
+	{
+	$fnamef3 = $fnamef2 ;
+	}
+	else{
+	$fnamef3 = $fnamef2 + "/" + $Tlog1 ;
+	}
+	
+	string $fname  = $fnamef + $TlogMblog;
+	$fileId = `fopen $fname "w"`; 
+	//----------------------------------层名字数量
+	string $TlogR1[] = `ls -type renderLayer`;
+	string $TlogR2;
+	string $TlogR3;
+	int $TlogR4;
+	string $TlogR5[]={};
+	string $TlogR6;
+	string $TlogR7;
+	for($TlogR2 in $TlogR1)
+	{
+    $TlogR3 = $TlogR2 + ".renderable";
+    $TlogR4 = `getAttr $TlogR3` ;
+    if($TlogR4>0)
+    	{
+      	 stringArrayInsertAtIndex(1,$TlogR5,$TlogR2);
+    	}
+	}
+	float $startFrame = OneT8();
+	float $endFrame = OneT9();			
+	//----------------------------------写入文本
+	fprint $fileId $fnamef3 ;         //项目路径
+	fprint $fileId "\n" ;  
+	fprint $fileId $Tlog1;       //文件名字
+	fprint $fileId "\n" ; 
+	fprint $fileId $startFrame ;    //开始帧
+	fprint $fileId "\n" ; 
+	fprint $fileId $endFrame   ;    //结束帧
+	fprint $fileId "\n" ; 
+	fprint $fileId (size($TlogR5)); //层数
+	fprint $fileId "\n" ; 
+	for($TlogR6 in $TlogR5)
+	{
+	$TlogR7 = `formValidObjectName ($TlogR6)`;
+	fprint $fileId $TlogR7   ;      //层名称
+	fprint $fileId "\n" ; 
+	}
+	//----------------------------------文本关闭
+	fclose $fileId;
+}
+
+global proc OneP2() //写入分发段数
+{
+	float $startFrame = OneT8();
+	float $endFrame = OneT9();	
+	int $za = OneT4();
+	$fname	= "c:/joinRender.txt"; 
+	$fId	= `fopen $fname "w"`; 
+    int $iz ;
+    $za--;
+    for($i = $startFrame ;$i <= $endFrame; $i += $za+1)
+    {
+        int $endMarker;
+        if (($i + $za) > $endFrame)
+            $endMarker=$endFrame;
+        else
+            $endMarker=($i + $za);
+        fprint $fId ("frames" + ($i) + "-" + ($endMarker) + "\t" + ($i) + "\t" + ($endMarker) + "\n");
+    }
+    fclose $fId;
+}
+
+global proc OneP3() //还原平滑
+{
+		if(`objExists fuckU`)
+	{
+		
+	string $cba[]=`listAttr -cb fuckU`;
+	int $cbk=size($cba);
+	int $ck;
+	for($ck=0;$ck<($cbk);$ck++)
+	{
+		//读取通道数值
+		int $ci=`getAttr ("fuckU"+"."+$cba[$ck])`;
+		//读取通道名字
+ 		string $cn=`attributeQuery -node "fuckU" -nn $cba[$ck]`;
+		//设平滑数值
+		string $cn2[];
+		tokenize $cn "." $cn2;
+		if(`objExists $cn2[0]`)
+			{
+			setAttr $cn $ci;	
+			}
+	}
+	delete "fuckU";
+	button -e -label "平滑开" -bgc 0.364 0.564 0.304 OneS10;
+	}
+}
+
+proc string OneP4() //回写自动渲染
+{
+	int		$submitJobCmd6 = OneT6();     
+	string	$submitJobCmd6a;
+	if($submitJobCmd6 == 0)
+	{
+		optionVar -iv "bb_AutoRender" 1; 
+		$submitJobCmd6a = "-suspended";
+	}
+	else
+	{
+		optionVar -iv "bb_AutoRender" 2; 
+		$submitJobCmd6a = "";
+	}
+	return $submitJobCmd6a;
+}
+
+proc string OneP5() //检测项目名字
+{
+	string $joinAll;
+	if(`OneT13` == 0)
+	{
+	string $join1	= `file -q -sn`;   //读取路径
+	string $join2	= `file -q -ns`;   //文件名称
+	string $join3	= `substitute "hot_" $join2 ""`; //镜头号
+	string $join4[];   //路径分段
+	tokenize $join1 "/" $join4; 
+	string $join5	= match("....[0-9]+",$join4[2]);
+	string $date1	= `system("DATE")`;    //系统时间
+	string $date2[];   //系统时间分段1
+	string $date3[];   //系统时间分段2
+	tokenize $date1 " " $date2;
+	tokenize $date2[1] "/" $date3;
+	string $jo1		= OneT1(); //系列名字
+//	string $jo2		= match("[0-9]+",$join5); //集数
+	string $jo3		= OneT2(); //分发人
+	string $jo4 = ("_" + $date3[1] + $date3[2]);
+	//-------------------------------------------------------
+		$joinAll = ($jo1 + "_" + $join3 + "_" + $jo3 + $jo4); 
+	}
+	else
+	{
+		$joinAll = `textField  -q -tx OneS14`;
+	}
+	return $joinAll ;
+}
+
+proc string OneP6() //判断特效组渲染组输出路径
+{
+	string $join1 = OneT10();
+	string $join2 = `workspace -fn`;
+	string $join5[] = stringToStringArray($join2,"/"); 
+	string $join4 ;
+	if($join1 == 3)
+	{
+		setAttr "defaultRenderGlobals.imageFilePrefix" -type "string" "<Scene>/<Camera>/<RenderLayer>/<RenderLayer>";
+		$join4 = stringArrayToString({$join5[0],$join5[1],$join5[2],"Render Source",$join5[5]},"/");
+	}
+	else if($join1 == 1)
+	{
+		setAttr "defaultRenderGlobals.imageFilePrefix" -type "string" "<Scene>/<Camera>/<RenderLayer>/<RenderLayer>";
+		$join4 = $join2 ;
+	}
+	else if($join1 == 2)
+	{
+		workspace -fr images "";
+		setAttr "defaultRenderGlobals.imageFilePrefix" -type "string" "<Camera>/<RenderLayer>/<RenderLayer>";
+		$join4 = $join2 ;
+	}
+	return $join4;
+}
+
+global proc OneP7() //分发任务
+{
+	string $jo6		=	OneP5(); //项目名字
+	string $jo7		=	OneT3(); //优先级别
+	string $jo8		=	OneT5(); //读取服务器	
+	string $jo9		=	OneT6(); //读取自动渲染
+	string $jo10	=	OneP4(); //读取和回写自动渲染
+	string $fname	=	"c:/joinRender.txt";
+	string $join1 = OneP6();    //读取输出路径
+	string $join2 = `workspace -fn`;
+	string $join3 = `file -q -sn`;   //读取文件路径
+	//-------------------------------------------------------
+print `system ("\"\"C:/Program Files (x86)/Autodesk/Backburner/cmdjob.exe\" -jobName \"" + $jo6 + "\" -description \"\" -manager " + $jo8 + " " + $jo10 + " -priority " + $jo7 + " -timeout 3000 -taskList \"" + $fname + "\" -taskName 1 \"C:/Program Files/Autodesk/Maya2012/bin/Render.exe\" -r file -s %tp2 -e %tp3 -proj \"" + $join2 + "\" -rd \"" + $join1 + "\"  \"" + $join3 + "\"")`;
+
+}
+
+global proc OneP8() //写入服务器文本框
+{
+    int	$exportSysCmd1 = `optionVar -q "bb_SeverSelect"`;
+    if($exportSysCmd1 == 1)
+    {
+    	textField -e -editable false -tx "192.168.0.175" OneS8 ;
+    }else if($exportSysCmd1 == 2)
+    {
+    	textField -e -editable false -tx "192.168.0.80" OneS8 ;
+    }else if($exportSysCmd1 == 3)
+    {
+    	textField -e -editable false -tx "192.168.0.89" OneS8 ;
+    }else if($exportSysCmd1 == 4)
+    {
+    	textField -e -editable true -tx `optionVar -q "bb_ManagerName"` OneS8;
+    }
+}
 
 
+proc string OneP9() //检测时间轴和渲染帧
+{
+	string $SM;
+	int $SM2=`playbackOptions -q -min`;
+	int $EM2=`playbackOptions -q -max`;
+	if( `OneT8` ==$SM2&& `OneT9`==$EM2)
+	{
+	 	$SM = "";
+	}
+	else
+	{
+		$SM = "▁▂▃▅▆▇  提示：时间轴和渲染帧数不一样  ▇▆▅▃▂▁\n\n";
+	}
+	return $SM;
+}
 
+global proc OneP10() //分发成功刷新信息
+{
+	string $Tlog1 = `file -q -ns`;
+	string $fnamef2 = OneP6();
+	string $fnamef3 ;
+	string $fnamef4 = `workspace -fn`;
+	string $join1 = OneT10();
+	if($join1 == 2)
+	{
+	$fnamef3 = $fnamef2 ;
+	}
+	else{
+	$fnamef3 = $fnamef2 + "/" + $Tlog1 ;
+	}
+	string	$submitJobCmd2 = OneT8()+ "<--->" +OneT9();
+	string	$submitJobCmd = "\n------MAYA式导弹发射完成，轰炸进度可用Monitor检查。------\n\n" + "分发名称：  "  + OneP5() + OneP14() +  "\n\nSet目录:    " + $fnamef4 +  "\n\n序列位置:    "  + $fnamef3 +"\n\n"+ OneP9()+"开始结束帧:    " + $submitJobCmd2 + "\n\n渲染分段:\n" +  OneP11();
+	scrollField -e -tx $submitJobCmd Cm_1;
+}
 
-    //AOV中创建RGB层，并删除没用的RGB   PNG
-        global proc RS_AOV_RGB_createAndDelete_PNG(){
-            string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
-            string $OBJnumin2 ;
-            for($OBJnumin2 in $OBJnum)
+proc string OneP11() //读取分发段数
+{
+	float $startFrame = OneT8();
+	float $endFrame = OneT9();	
+	int $za = OneT4();
+	string $Marker;
+    int $iz ;
+    $za--;
+    for($i = $startFrame ;$i <= $endFrame; $i += $za+1)
+    {
+        int $endMarker;
+        if (($i + $za) > $endFrame)
+        {
+            $endMarker=$endFrame;
+        }
+        else
+        {
+            $endMarker=($i + $za);
+        }
+        	$Marker  = $Marker + "frames" + ($i) + "-" + ($endMarker) + "\n";
+      
+    }
+    return $Marker;
+    	
+}
+
+global proc OneP12() //备份到Z盘
+{
+	string $joinpath = `file -q -sn`;   //读取路径
+	string $npath = toNativePath( $joinpath );  //本身路径
+	string $dsdpaths[];
+	tokenize $joinpath "/" $dsdpaths; //路径分段组合
+	string $zpppath = "Z:"+"\\"+$dsdpaths[1]+"\\"+$dsdpaths[2]+"\\"+$dsdpaths[3]+"\\"+$dsdpaths[4]+"\\"+$dsdpaths[5]+"\\"; 
+	string $x = "xcopy " + $npath + " " + $zpppath + " " +"/y";
+	system($x);
+}
+
+proc string OneP13()  //计算Mblog叠加版本名称
+{
+	string $Tlog1 = `file -q -ns`;
+//	string $Mblog1 = "DIR " + OneP15b()+ $Tlog1 + ".*.Mblog  /B /A 2>nul";
+//	string $Mblog2 = `system($Mblog1)`; 
+	string $Mblog3[] = `getFileList -fld (OneP15b()) -fs ($Tlog1 + ".*.Mblog")`;
+	int $Mblog12;
+	int $Mblog10 = size($Mblog3);
+	if($Mblog10 > 0)
+	{
+	string $Mblog5;
+	string $Mblog6[];
+	int $Mblog7;
+	int $Mblog7a=0;
+	int $Mblog8[]={};
+		for($Mblog5 in $Mblog3)
+		{
+		tokenize $Mblog5 "." $Mblog6;
+		$Mblog7 = $Mblog6[1];
+		$Mblog8[$Mblog7a] = $Mblog7;
+		$Mblog7a += 1 ;
+		}
+	int $Mblog9[] = `sort $Mblog8`;
+	int $Mblog11 = $Mblog9[$Mblog10-1];
+	 $Mblog12 = $Mblog11 + 1;
+	}else
+	{
+	 $Mblog12 = 1;
+	}
+	string $Tlog1 = `file -q -ns`;
+	string $Tlog2 = $Tlog1+ "." + $Mblog12 +".Mblog";
+return $Tlog2;
+}
+
+proc string OneP14() //检测时间轴和渲染帧
+{
+	string $SM;
+	string $SM2=OneP13();
+	if( `OneT7` == 0)
+	{
+	 	$SM = "";
+	}
+	else
+	{
+		$SM = "\n" + "日志名称：  "  + $SM2 + "";
+	}
+	return $SM;
+}
+
+proc string OneP15a() //项目路径
+{
+	string $load1	= `file -q -sn`;
+	string $load2	= `file -q -ns`;
+	string $load3	=  $load2 + ".mb";
+	string $load4	= `substitute $load3 $load1 ""`;
+	return $load4;
+}
+
+proc string OneP15b() //判断LOG路径
+{
+//	string $path = "\"D:\\06systool\\";
+	string $join1 = OneT10();
+	string $join2 = OneP15a();
+	string $join3[];
+	tokenize $join2 "/" $join3;
+	string $load1;
+	if($join1 == 3)
+	{
+		$load1 = substituteAllString($join2, "/", "\\"); //替换斜杠 
+	} 
+	else{
+		$load1 = "\\\\R80\\alienbrainWork1\\Render_Log\\" + $join3[1] + "\\";
+		sysFile -makeDir $load1;
+	}
+	return $load1;
+}
+
+global proc OneP15c() //打开LOG路径
+{
+//	string $load1 = "explorer.exe " + OneP15b();
+//	system($load1);
+	system("load " + OneP15b());
+}
+
+global proc OneP15() //打开项目路径
+{
+	system("load " + OneP15a());
+}
+
+proc OneP16() //取消平滑功能
+{
+if(`objExists fuckU`)
+	{OneP3();}
+else
+	{
+	createNode  "script" -n "fuckU";
+	string $sa[]=`ls -typ polySmoothFace`;
+	int $skk=size($sa);
+	//储存数值
+	int $sk; 
+	for($sk=0;$sk<($skk);$sk++)
+	{
+	//读取divi
+	string $sc=($sa[$sk]+".divisions");
+    $si=`getAttr ($sc)`;
+	//数值写入节点
+    addAttr -ln ("A_"+$sk)  -nn $sc -dv $si fuckU;
+    setAttr -e-channelBox true ("fuckU"+".A_"+$sk);
+    	//divi归0
+    setAttr $sc 0;
+	}
+	//----------------选取所有PF
+	string $sf[]=`ls -type mesh`;
+	int $sfk=size($sf);
+	int $ski;
+	for($ski=0;$ski<($sfk);$ski++)
+	{
+	string $spf= ($sf[$ski]+".displaySmoothMesh") ;
+    $spf2=`getAttr $spf`;
+    //print $spf2;
+	if($spf2>0)
+		{
+    	addAttr -ln ("B_"+$ski)  -nn $spf -dv  $spf2 fuckU;
+    	setAttr -e-channelBox true ("fuckU"+".B_"+$ski);
+    	setAttr ($spf) 0;
+    	}  
+	};
+	button -e -label "平滑关" -bgc 0.764 0.313 0.313 OneS10;
+	select -cl;
+	}
+}
+
+global proc OneP17() //打开文件
+{
+	string $px1 = OneP15a(); //检测路径
+	$px1 = $px1 + "/";  //待用
+	string $px2 = substituteAllString($px1, "/", "\\"); //替换斜杠
+	$px2 = "DIR \""  + $px2 + "*.mb\" /B";  //CMD输入
+	$px2 = `system($px2)`;  //CMD执行
+	string $px3[];     //分段值
+	tokenize $px2 "\n" $px3;  //分段执行
+	headsUpMessage $px3;
+	for($px4 in $px3)   //FORIN循环
+    {
+	string $px5[];     //踢除回车用
+	tokenize $px4 "\r" $px5;  //分段执行
+	headsUpMessage $px5[0];
+	string $px6 = "file -f -options \"v=0\" -typ \"mayaBinary\" -o " +"\"" + $px1 + $px5[0] +"\""; //添加引号
+	eval($px6);
+	gOneJobCmd2;
+	}
+} 
+
+global proc OneP18() //修复材质V1.0（测试）
+{
+	string $layers[] = `ls -type renderLayer`;
+	string $format1;	string $format2;	string $format3;	string $format4;	string $format5;	string $format6;
+	scrollField -e -tx "" Cm_1;
+    for ($l in $layers) 
+    {
+        $format1 = `format -stringArg $l ("\n-----------------------------------------------\n正在检测层：^1s \n ")`;
+        scrollField -e -it $format1 Cm_1;
+        string $conns[] = `listConnections -d 0 -c 1 -p 1 ($l + ".outAdjustments")`;
+
+        for ($i=0; $i<size($conns); $i+=2) 
+        {
+            for ($j=$i+2; $j<size($conns); $j+=2) 
             {
-                int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`;   
-                if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1_PNG(); }
-                if ( ($objIDnumID > 3) && ($objIDnumID <= 6)){ RS_ConditionCreateAOV_RGB2_PNG(); }
-                if ( ($objIDnumID > 6) && ($objIDnumID <= 9)){ RS_ConditionCreateAOV_RGB3_PNG(); }
-                if ( ($objIDnumID > 9) && ($objIDnumID <= 12)){ RS_ConditionCreateAOV_RGB4_PNG(); }
-                if ( ($objIDnumID > 12) && ($objIDnumID <= 15)){ RS_ConditionCreateAOV_RGB5_PNG(); }
-                if ( ($objIDnumID > 15) && ($objIDnumID <= 18)){ RS_ConditionCreateAOV_RGB6_PNG(); }
-                if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7_PNG(); }
-            }
-            
-            if (`objExists RGB1`){
-                if (!`objExists RGB1_R1`){
-                    if (!`objExists RGB1_G2`){
-                        if (!`objExists RGB1_B3`){
-                            delete RGB1;
-                        }
-                    }
+                if ($conns[$j+1] == $conns[$i+1]) 
+                {
+                    $format2 = `format -stringArg $conns[$i] -stringArg $conns[$i+1] ("正在戳断重复的 outPlug \n ^1s \n ^2s  \n")`;
+                    scrollField -e -it $format2 Cm_1;
+                    disconnectAttr $conns[$i+1] $conns[$i];
+                    $plugName = substitute("outPlug", $conns[$i], "outValue");
+                    string $other[] = `connectionInfo -dfs $plugName`;
+                    $format3 = `format -stringArg $plugName -stringArg $other[0] ("正在戳断重复的 outValue \n ^1s \n ^2s  \n")`;
+                    scrollField -e -it $format3 Cm_1;
+                    disconnectAttr $plugName $other[0];
+                   break;
                 }
             }
-            if (`objExists RGB2`){
-                if (!`objExists RGB2_R4`){
-                    if (!`objExists RGB2_G5`){
-                        if (!`objExists RGB2_B6`){
-                            delete RGB2;
-                        }
+        }
+    }
+    
+    for ($l in $layers) 
+    {
+        $format1 = `format -stringArg $l ("\n-----------------------------------------------\n正在检测层：^1s \n ")`;
+        scrollField -e -it $format1 Cm_1;
+        string $conns[] = `listConnections -d 0 -c 1 -p 1 ($l + ".outAdjustments")`;
+        string $SGOverrides[] = `listConnections -type "shadingEngine" -s 1 -d 0 ($l+".shadingGroupOverride")`;  
+		editRenderLayerGlobals -currentRenderLayer $l;        
+		
+        for ($i=0; $i<size($conns); $i+=2) 
+        {
+   			$adjPlug = $conns[$i];
+            $scnPlug = $conns[$i+1];
+            $adjValue = substitute("outPlug", $conns[$i], "outValue");
+            string $dsgPlugs[] = `connectionInfo -dfs $adjValue`;
+            $SG = plugNode($dsgPlugs[0]);
+            if(size($SGOverrides))
+                $SG = $SGOverrides[0];
+            $nodeType = `nodeType $SG`;
+            if($nodeType != "shadingEngine")
+                continue;
+            $scnPlugParent = "";
+            string $scnParentDstPlug[] = {};
+            $scnPlug = `connectionInfo -ges $scnPlug`;
+            string $scnDstPlug[] = `connectionInfo -dfs $scnPlug`;
+            	if(`gmatch $scnPlug "*objectGroups*"`) 
+           		 {
+                $scnPlugParent = `match ".*instObjGroups\\[[0-9]+\\]" $scnPlug`;
+                $scnParentDstPlug = `connectionInfo -dfs $scnPlugParent`;
+           		 }
+
+            $done = false;
+            for($p = 0; $p < size($scnDstPlug); $p++) 
+            {
+                $scnDstNode = plugNode($scnDstPlug[$p]);
+                if(`nodeType $scnDstNode` == "shadingEngine") 
+                {
+                    if($SG != $scnDstNode) 
+                    {
+                       $format2 =  `format -stringArg $adjValue -stringArg $dsgPlugs[0] ("正在戳断不正确的outAdjustment \n ^1s \n ^2s  \n")`;
+                   		scrollField -e -it $format2 Cm_1;
+                        disconnectAttr $adjValue $dsgPlugs[0];
+                       $format3 =  `format -stringArg $adjValue -stringArg $scnDstNode ("建立新的outAdjustment 连接 \n ^1s dagSetMembers \n ^2s dagSetMembers \n")`;
+                       scrollField -e -it $format2 Cm_1;
+                        connectAttr -na $adjValue ($scnDstNode + ".dagSetMembers");
                     }
+                    $done = true;
+                    break;
                 }
             }
-            if (`objExists RGB3`){
-                if (!`objExists RGB3_R7`){
-                    if (!`objExists RGB3_G8`){
-                        if (!`objExists RGB3_B9`){
-                            delete RGB3;
-                        }
-                    }
-                }
-            }
-            if (`objExists RGB4`){
-                if (!`objExists RGB4_R10`){
-                    if (!`objExists RGB4_G11`){
-                        if (!`objExists RGB4_B12`){
-                            delete RGB4;
-                        }
-                    }
-                }
-            }
-            if (`objExists RGB5`){
-                if (!`objExists RGB5_R13`){
-                    if (!`objExists RGB5_G14`){
-                        if (!`objExists RGB5_B15`){
-                            delete RGB5;
-                        }
-                    }
-                }
-            }
-            if (`objExists RGB6`){
-                if (!`objExists RGB6_R16`){
-                    if (!`objExists RGB6_G17`){
-                        if (!`objExists RGB6_B18`){
-                            delete RGB6;
-                        }
-                    }
-                }
-            }
-            if (`objExists RGB7`){
-                if (!`objExists RGB7_R19`){
-                    if (!`objExists RGB7_G20`){
-                        if (!`objExists RGB7_B21`){
-                            delete RGB7;
-                        }
-                    }
-                }
-            }
-        }
+		}
+	}
+    
+   scrollField -e -it "\n-----------------------------------------------\n材质修复v1.0 修正完毕 有问题请反馈特效组" Cm_1;
 
-    //不存在的情况下创建RGB1_EXR
-        global proc RS_ConditionCreateAOV_RGB1_PNG(){
-            string $AOVall1[] = `ls -typ "RedshiftAOV"`;
-            int $B1 = 0;
-            for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
-            { 
-            if ($AOVall1[$q1] == "RGB1"){
-                setAttr ($AOVall1[$q1]+".enabled") 0;
-                $B1 = $B1+1;
-            }
-            }
-            if($B1 == 0)
-            {
-                RS_createAOV_RGB1_PNG();
-            }
-        }
+}
+//-----------------------------------------------------------------------读取组件OneS to OneT
+proc string OneT1() //读取系列名字
+{
+    string $exportSysCmd = `textField  -q -tx OneS1`;
+    return $exportSysCmd;
+}
 
-    //不存在的情况下创建RGB2
-        global proc RS_ConditionCreateAOV_RGB2_PNG(){
-            string $AOVall2[] = `ls -typ "RedshiftAOV"`;
-            int $B2 = 0;
-            for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
-            { 
-            if ($AOVall2[$q2] == "RGB2"){
-                setAttr ($AOVall2[$q2]+".enabled") 0;
-                $B2 = $B2+1;
-            }
-            }
-            if($B2 == 0)
-            {
-                RS_createAOV_RGB2_PNG();
-            }
-        }
+proc string OneT2() //读取分发人
+{
+    string $exportSysCmd = `textField  -q -tx OneS2`;
+    return $exportSysCmd;
+}
 
-    //不存在的情况下创建RGB3
-        global proc RS_ConditionCreateAOV_RGB3_PNG(){
-            string $AOVall3[] = `ls -typ "RedshiftAOV"`;
-            int $B3 = 0;
-            for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
-            { 
-            if ($AOVall3[$q3] == "RGB3"){
-                setAttr ($AOVall3[$q3]+".enabled") 0;
-                $B3 = $B3+1;
-            }
-            }
-            if($B3 == 0)
-            {
-                RS_createAOV_RGB3_PNG();
-            }
-        }
+proc string OneT3() //优先级别
+{
+    string $exportSysCmd = `intField  -q -v OneS3`;
+    return $exportSysCmd;
+}
 
-    //不存在的情况下创建RGB4
-        global proc RS_ConditionCreateAOV_RGB4_PNG(){
-            string $AOVall4[] = `ls -typ "RedshiftAOV"`;
-            int $B4 = 0;
-            for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
-            { 
-            if ($AOVall4[$q4] == "RGB4"){
-                setAttr ($AOVall4[$q4]+".enabled") 0;
-                $B4 = $B4+1;
-            }
-            }
-            if($B4 == 0)
-            {
-                RS_createAOV_RGB4_PNG();
-            }
-        }
+proc string OneT4() //读取分段
+{
+    string $exportSysCmd = `intField  -q -v OneS4`;
+    return $exportSysCmd;
+}
 
-    //不存在的情况下创建RGB5
-        global proc RS_ConditionCreateAOV_RGB5_PNG(){
-            string $AOVall5[] = `ls -typ "RedshiftAOV"`;
-            int $B5 = 0;
-            for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
-            { 
-            if ($AOVall5[$q5] == "RGB5"){
-                setAttr ($AOVall5[$q5]+".enabled") 0;
-                $B5 = $B5+1;
-            }
-            }
-            if($B5 == 0)
-            {
-                RS_createAOV_RGB5_PNG();
-            }
-        }
+proc string OneT5() //读取服务器
+{
+    string $exportSysCmd = `textField  -q -tx OneS8`;
+    return $exportSysCmd;
+}
 
-    //不存在的情况下创建RGB6
-        global proc RS_ConditionCreateAOV_RGB6_PNG(){
-            string $AOVall6[] = `ls -typ "RedshiftAOV"`;
-            int $B6 = 0;
-            for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
-            { 
-            if ($AOVall6[$q6] == "RGB6"){
-                setAttr ($AOVall6[$q6]+".enabled") 0;
-                $B6 = $B6+1;
-            }
-            }
-            if($B6 == 0)
-            {
-                RS_createAOV_RGB6_PNG();
-            }
-        }
+proc int	OneT6() //读取自动渲染
+{
+    int		$exportSysCmd = `checkBox -q -v OneS6`;
+    return	$exportSysCmd;
+}
 
-    //不存在的情况下创建RGB7
-        global proc RS_ConditionCreateAOV_RGB7_PNG(){
-            string $AOVall7[] = `ls -typ "RedshiftAOV"`;
-            int $B7 = 0;
-            for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
-            { 
-            if ($AOVall7[$q7] == "RGB7"){
-                setAttr ($AOVall7[$q7]+".enabled") 0;
-                $B7 = $B7+1;
-            }
-            }
-            if($B7 == 0)
-            {
-                RS_createAOV_RGB7_PNG();
-            }
-        }
+proc int	OneT7() //读取生成LOG
+{
+    int		$exportSysCmd = `checkBox -q -v OneS7`;
+	return	$exportSysCmd;
+}
 
-    //创建AOV_RGB1
-        global proc RS_createAOV_RGB1_PNG(){
-            source redshiftCreateAovTab;
-            rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
-            redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB1.name "RGB1";
-            setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "RGB1.dataType" 2;
-            setAttr "RGB1.fileFormat" 2;
-            setAttr "RGB1.exrBits" 32;
-            setAttr "RGB1.mode" 1;
-            setAttr "RGB1.redId" 1;
-            setAttr "RGB1.greenId" 2;
-            setAttr "RGB1.blueId" 3;
-            setAttr "RGB1.enabled" 0;
-            print ("RGB1"+"\n");
-        }
+proc float	OneT8() //开始帧
+{
+    float	$exportSysCmd = `getAttr "defaultRenderGlobals.startFrame"`;
+	return	$exportSysCmd;
+}
 
-    //创建AOV_RGB2
-        global proc RS_createAOV_RGB2_PNG(){
-            source redshiftCreateAovTab;
-            rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
-            redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB2.name "RGB2";
-            setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "RGB2.dataType" 2;
-            setAttr "RGB2.fileFormat" 2;
-            setAttr "RGB2.exrBits" 32;
-            setAttr "RGB2.mode" 1;
-            setAttr "RGB2.redId" 4;
-            setAttr "RGB2.greenId" 5;
-            setAttr "RGB2.blueId" 6;
-            setAttr "RGB2.enabled" 0;
-            print ("RGB2"+"\n");
-        }
+proc float	OneT9() //结束帧
+{
+    float	$exportSysCmd = `getAttr "defaultRenderGlobals.endFrame"`;
+	return	$exportSysCmd;
+}
 
-    //创建AOV_RGB3
-        global proc RS_createAOV_RGB3_PNG(){
-            source redshiftCreateAovTab;
-            rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
-            redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB3.name "RGB3";
-            setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "RGB3.dataType" 2;
-            setAttr "RGB3.fileFormat" 2;
-            setAttr "RGB3.exrBits" 32;
-            setAttr "RGB3.mode" 1;
-            setAttr "RGB3.redId" 7;
-            setAttr "RGB3.greenId" 8;
-            setAttr "RGB3.blueId" 9;
-            setAttr "RGB3.enabled" 0;
-            print ("RGB3"+"\n");
-        }
+proc int	OneT10() //读取组别
+{
+    int		$exportSysCmd = `radioButtonGrp -q -sl OneS11`;
+	return	$exportSysCmd;
+}
 
-    //创建AOV_RGB4
-        global proc RS_createAOV_RGB4_PNG(){
-            source redshiftCreateAovTab;
-            rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
-            redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB4.name "RGB4";
-            setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "RGB4.dataType" 2;
-            setAttr "RGB4.fileFormat" 2;
-            setAttr "RGB4.exrBits" 32;
-            setAttr "RGB4.mode" 1;
-            setAttr "RGB4.redId" 10;
-            setAttr "RGB4.greenId" 11;
-            setAttr "RGB4.blueId" 12;
-            setAttr "RGB4.enabled" 0;
-            print ("RGB4"+"\n");
-        }
+proc string OneT11() //读取平滑开关文字
+{
+	string $exportSysCmd;
+	if(`objExists fuckU`)
+	{
+		$exportSysCmd = "平滑关";
+	}
+	else{
+		$exportSysCmd = "平滑开";
+	}
+	return $exportSysCmd;
+}
+
+proc int	OneT12() //读取备份Z盘
+{
+    int		$exportSysCmd = `checkBox -q -v OneS12`;
+    return	$exportSysCmd;
+}
+
+proc int	OneT13() //读取是否任务名称
+{
+    int		$exportSysCmd = `checkBox -q -v OneS13`;
+    return	$exportSysCmd;
+}
+
+proc float OneT14A() //读取平滑开关按钮颜色A
+{
+	float $exportSysCmd;
+	if(`objExists fuckU`)
+	{
+		$exportSysCmd = 0.764;
+	}
+	else{
+		$exportSysCmd = 0.364;
+	}
+	return $exportSysCmd;
+}
+
+proc float OneT14B() //读取平滑开关按钮颜色B
+{
+	float $exportSysCmd;
+	if(`objExists fuckU`)
+	{
+		$exportSysCmd = 0.313;
+	}
+	else{
+		$exportSysCmd = 0.564;
+	}
+	return $exportSysCmd;
+}
+
+proc float OneT14C() //读取平滑开关按钮颜色C
+{
+	float $exportSysCmd;
+	if(`objExists fuckU`)
+	{
+		$exportSysCmd = 0.313;
+	}
+	else{
+		$exportSysCmd = 0.304;
+	}
+	return $exportSysCmd;
+}
 
 
-    //创建AOV_RGB5
-        global proc RS_createAOV_RGB5_PNG(){
-            source redshiftCreateAovTab;
-            rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
-            redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB5.name "RGB5";
-            setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "RGB5.dataType" 2;
-            setAttr "RGB5.fileFormat" 2;
-            setAttr "RGB5.exrBits" 32;
-            setAttr "RGB5.mode" 1;
-            setAttr "RGB5.redId" 13;
-            setAttr "RGB5.greenId" 14;
-            setAttr "RGB5.blueId" 15;
-            setAttr "RGB5.enabled" 0;
-            print ("RGB5"+"\n");
-        }
+proc int	OneT15() //读取是否批量分发
+{
+    int		$exportSysCmd = `checkBox -q -v OneS15`;
+    return	$exportSysCmd;
+}
 
+//-----------------------------------------------------------------------填充文字gOneJobCmd
+global proc gOneJobCmd()
+{  
+	OneP2();
+	string $Tlog1 = `file -q -ns`;
+	string $fnamef2 = OneP6();
+	string $fnamef3 ;
+	string $fnamef4 = `workspace -fn`;
+	string $join1 = OneT10();
+	if($join1 == 2)
+	{
+	$fnamef3 = $fnamef2 ;
+	}
+	else{
+	$fnamef3 = $fnamef2 + "/" + $Tlog1 ;
+	}
 
-    //创建AOV_RGB6
-        global proc RS_createAOV_RGB6_PNG(){
-            source redshiftCreateAovTab;
-            rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
-            redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB6.name "RGB6";
-            setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "RGB6.dataType" 2;
-            setAttr "RGB6.fileFormat" 2;
-            setAttr "RGB6.exrBits" 32;
-            setAttr "RGB6.mode" 1;
-            setAttr "RGB6.redId" 16;
-            setAttr "RGB6.greenId" 17;
-            setAttr "RGB6.blueId" 18;
-            setAttr "RGB6.enabled" 0;
-            print ("RGB6"+"\n");
-        }
+	string	$submitJobCmd2 = OneT8()+ "<--->" +OneT9();
+	string	$submitJobCmd = "分发名称：  "  + OneP5() + OneP14() +  "\n\nSet目录:    " + $fnamef4 +  "\n\n序列位置:    "  + $fnamef3 +"\n\n"+ OneP9()+"开始结束帧:    " + $submitJobCmd2 + "\n\n渲染分段:\n" +  OneP11();
+	scrollField -e -tx $submitJobCmd Cm_1;
+}
 
+//-----------------------------------------------------------------------分发任务gOneJobCmd2
+global proc gOneJobCmd2()
+{  
 
-    //创建AOV_RGB7
-        global proc RS_createAOV_RGB7_PNG(){
-            source redshiftCreateAovTab;
-            rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
-            redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB7.name "RGB7";
-            setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-            setAttr "RGB7.dataType" 2;
-            setAttr "RGB7.fileFormat" 2;
-            setAttr "RGB7.exrBits" 32;
-            setAttr "RGB7.mode" 1;
-            setAttr "RGB7.redId" 19;
-            setAttr "RGB7.greenId" 20;
-            setAttr "RGB7.blueId" 21;
-            setAttr "RGB7.enabled" 0;
-            print ("RGB7"+"\n");
-        }
+	string $submitJobCmd1 = OneT1();     //系列名字
+	optionVar -sv "bb_SeriesName" $submitJobCmd1; //回写系列名字
+	
+	string $submitJobCmd2 = OneT2();     //分发人
+	optionVar -sv "bb_ManName" $submitJobCmd2; //回写分发人
+	
+	string $submitJobCmd5 = OneT5();     //服务器
+	optionVar -sv "bb_ManagerName" $submitJobCmd5; //回写服务器
+	
+	int	   $submitJobCmd7 = OneT7();     //回写生成Log
+	if($submitJobCmd7 == 0)
+	{
+		optionVar -iv "bb_RenderLog" 1; 
+	}
+	else
+	{
+		optionVar -iv "bb_RenderLog" 2; 
+		OneP1();
+	}
+	
+	int	   $submitJobCmd12 = OneT12();   //回写备份到Z盘
+	if($submitJobCmd12 == 0)
+	{
+		optionVar -iv "bb_CopyToZ" 1; 
+	}
+	else
+	{
+		optionVar -iv "bb_CopyToZ" 2; 
+		OneP12();
+	}
+	
+	OneP2();    //回写joinRender.txt
+	OneP3();    //还原平滑
+	file -save; //最终保存
+	OneP7();    //分发任务
+	OneP10();   //回显信息
+}
 
+//-----------------------------------------------------------------------分发任务gOneJobCmd3
+global proc gOneJobCmd3()
+{  
+	if(`OneT15` == 0)
+	{
+		gOneJobCmd2;
+	}
+	else
+	{
+		OneP17();
+	}
+}
 
+//-----------------------------------------------------------------------生成窗口
 
+if (`window -q -ex OneW`) deleteUI OneW;
+string $OneEW = `window -t "一键发射任务V6.6" -s 0 -vis 1 -bgc 0.266667 0.266667 0.266667 -wh 400 350 OneW` ;
 
-
+    columnLayout -adjustableColumn true;
+       text -label "-- 悬赏公告栏 --" -fn "boldLabelFont" -h 30;
+       
+    rowColumnLayout -nc 11 -cw 1 50 -cw 2 30 -cw 3 40 -cw 4 30 -cw 5 25 -cw 6 25 -cw 7 25 -cw 8 25 -cw 9 5 -cw 10 15 -cw 11 120 ;
+        text -label "通缉系列" ;
+textField -tx `OneC1` OneS1;
+        text -label "通缉犯" ;
+textField -tx `OneC2` OneS2;
+        text -label "优先" ;
+intField -v 50 -min 1 -max 100 OneS3;  
+        text -label "分段" ;
+intField -v `OneC4` -min 1 OneS4; 
+		text -label "" ;
+checkBox -v 0 
+		-onc ("textField -e -editable false OneS1;textField -e -editable false OneS2;textField -e -editable true -bgc 0 0 0 OneS14")
+		-ofc ("textField -e -editable true -bgc 0 0 0 OneS1;textField -e -editable true -bgc 0 0 0 OneS2;textField -e -editable false OneS14")
+		OneS13;  //自定义名称
+textField -editable false -tx "使用自定义名字" OneS14;
+    setParent ..;
+    
+    rowColumnLayout -nc 6 -cw 1 210 -cw 2 10 -cw 3 55 -cw 4 55 -cw 5 55 -cw 6 1;
+radioButtonGrp
+		-numberOfRadioButtons 3
+		-label "城管大队" -label1 "渲染" -label2 "渲染改" -label3 "特效" -cw 1 50 -cw 2 50 -cw 3 55 -cw 4 50 
+			-onCommand1 ("optionVar -iv \"bb_TeamSelect\" 1")
+			-onCommand2 ("optionVar -iv \"bb_TeamSelect\" 2")
+			-onCommand3 ("optionVar -iv \"bb_TeamSelect\" 3")
+			-sl `OneC9` OneS11;
+			text -label "" ;
+checkBox  -label ("自动") -v `OneC6` OneS6;
+checkBox  -label ("证据") -v `OneC7` OneS7;
+checkBox  -label ("备到Z")  -v `OneC12` OneS12;
+checkBox  -label ("批")  -v 0 OneS15;
+    setParent ..;
+rowColumnLayout -nc 3 -cw 1 270 -cw 2 5 -cw 3 115;
+	radioButtonGrp
+		-numberOfRadioButtons 4
+		-label "服务器" -label1 "A175" -label2 "R80" -label3 "R89" -label4 "自定义" -cw 1 50 -cw 2 50 -cw 3 50 -cw 4 50 
+			-onCommand1 ("textField -e -editable false -tx \"192.168.0.175\" OneS8 ; optionVar -iv \"bb_SeverSelect\" 1 ; optionVar -sv \"bb_ManagerName\" \"192.168.0.175\"")
+			-onCommand2 ("textField -e -editable false -tx \"192.168.0.80\" OneS8 ; optionVar -iv \"bb_SeverSelect\" 2 ; optionVar -sv \"bb_ManagerName\" \"192.168.0.80\"")
+			-onCommand3 ("textField -e -editable false -tx \"192.168.0.89\" OneS8 ; optionVar -iv \"bb_SeverSelect\" 3 ; optionVar -sv \"bb_ManagerName\" \"192.168.0.89\"")
+			-onCommand4 ("textField -e -editable true -bgc 0 0 0 -tx `optionVar -q \"bb_ManagerName\"` OneS8;optionVar -iv \"bb_SeverSelect\" 4")
+			-sl `OneC8` OnsS9;
+			text -label "" ;
+	textField -editable true -tx `optionVar -q "bb_ManagerName"` OneS8;
+	OneP8();
+setParent ..;
+    
+scrollField -w 380 -h 290 -ww true -editable false -bgc 0.130706 0.164706 0.164706 -tx `OneC13` Cm_1;
+    setParent ..;  
+     
+    rowColumnLayout -nc 4 -cw 1 75 -cw 2 75 -cw 3 80 -cw 4 165;
+    		columnLayout;
+			button -w 75 -h 25 -label `OneT11`  -bgc `OneT14A` `OneT14B` `OneT14C` -command "OneP16" OneS10;
+			button -w 75 -h 25 -label "修复材质v1.0" -bgc 0.300000 0.404706 0.404706 -command "OneP18";
+			setParent ..;
+			columnLayout;
+			button -w 75 -h 25 -label "文件路径" -bgc 0.364706 0.364706 0.304706 -command "OneP15";
+			button -w 75 -h 25 -label "LOG" -bgc 0.404706 0.304706 0.304706 -command "OneP15c";
+			setParent ..;
+		button -h 50 -label "更新预览" -bgc 0.364706 0.264706 0.364706 -command "gOneJobCmd";
+		button -h 50 -label "发布悬赏" -bgc 0.364706 0.364706 0.464706 -command "gOneJobCmd3";
+    setParent ..;
+    
+    window -e -wh 400 350 OneW;
+showWindow $OneEW;
 
 
 
