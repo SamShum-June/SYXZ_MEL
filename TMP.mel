@@ -891,7 +891,7 @@ global proc gOneJobCmd3()
 //-----------------------------------------------------------------------生成窗口
 
 if (`window -q -ex OneW`) deleteUI OneW;
-string $OneEW = `window -t "一键发射任务V6.6" -s 0 -vis 1 -bgc 0.266667 0.266667 0.266667 -wh 400 350 OneW` ;
+string $OneEW = `window -t "一键发射任务V6.6" -s 1 -vis 1 -bgc 0.266667 0.266667 0.266667 -wh 400 350 OneW` ;
 
     columnLayout -adjustableColumn true;
        text -label "-- 悬赏公告栏 --" -fn "boldLabelFont" -h 30;

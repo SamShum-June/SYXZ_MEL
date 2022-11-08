@@ -21,7 +21,7 @@
         {
                 deleteUI -window DO_POSE_window;
         }
-        window -t "SYXZ"  -s 0 syxzwindow;columnLayout -adj 1;
+        window -t "SYXZ" -s 0 syxzwindow;columnLayout -adj 1;
         rowColumnLayout -adjustableColumn true -ca ;
         frameLayout  -l "杂项" -cll 0 -mh 5 -w 500 -h 55;
                 rowColumnLayout -numberOfRows 1  -rowHeight 1 20 -cs 1 3 ;
@@ -62,7 +62,9 @@
                         button  -l "2K"    -c "XRSZ_2K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok    
                         button  -l "3K"    -c "XRSZ_3K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
                         button  -l "4K"    -c "XRSZ_4K_exr" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
-                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width_EXR ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight_EXR ; button  -l "set Size" -c "set_CS_imagesize_exr" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
+                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width_EXR ;
+                        text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight_EXR ; 
+                        button  -l "set Size" -c "set_CS_imagesize_exr" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
                         setParent ..;
                 text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
@@ -81,7 +83,9 @@
                         button  -l "2K"    -c "XRSZ_2K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok    
                         button  -l "3K"    -c "XRSZ_3K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
                         button  -l "4K"    -c "XRSZ_4K_png" -h 18 -w 25 -bgc 0.174 0.767 0.977;     //ok
-                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width_PNG ;text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight_PNG ; button  -l "set Size" -c "set_CS_imagesize_PNG" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
+                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width_PNG ;
+                        text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight_PNG ; 
+                        button  -l "set Size" -c "set_CS_imagesize_PNG" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
                         setParent ..;
                 text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
                 rowColumnLayout  -nr 1  -cs 1 5;
@@ -99,14 +103,15 @@
                         setParent ..; 
 
         frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 60 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
-                        button -w 10 -h 30 -bgc 0.025 1.244 0.767 -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口" -c "DO_CAM_window"; //ok
+                        button -w 10 -h 30 -bgc 0.025 1.244 0.767 -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口" 
+                        -c "DO_CAM_window"; //ok
                         setParent ..; 
 
         frameLayout  -l "做POSE PNG"   -w 500 -h 60 -cll 0 -cl 0 -mh 5 -bgc 0.027 0.212 0.352;
                         button -w 10 -h 30 -bgc 0.049 0.455 0.762 -l "做POSE PNG  窗口" -c "DO_POSE_window"; //ok
                         setParent ..; 
 
-        window -e  /*-h 200 */   -w 500 syxzwindow;
+        window -e -w 500 syxzwindow;
         showWindow syxzwindow;
         }
         SYXZ;
@@ -123,7 +128,7 @@
                 deleteUI -window import_STH_window;
             }
 
-            window -t "导入窗口" -s 0 import_STH_window;
+            window -t "导入窗口"  -s 0 import_STH_window;
                 rowColumnLayout -adjustableColumn true -w 710 -ca;
                     frameLayout  -l "粘贴需要导入文件的路径"   -w 710 -h 60 -cll 0 -mh 5;
                         rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 5 ;
@@ -146,10 +151,11 @@
                 deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;
                 }
 
-                window -t "Optimize and Creat ID Aovs SET 整理和创建ID Aovs" -s 0 Optimize_and_Creat_ID_Aovs_SET_window;columnLayout -adj 1;
+                window -t "Optimize and Creat ID Aovs SET 整理和创建ID Aovs"  -s 0 Optimize_and_Creat_ID_Aovs_SET_window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 500 -ca;
                 frameLayout -l "Optimize and Creat ID Aovs SET 整理和创建ID Aovs" -w 150 -h 120 -cll 0 -mh 5 -bgc 0 0 0.134;
-                        text -w 10 -h 10 -l "All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" -ann "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" ;
+                        text -w 10 -h 10 -l "All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" 
+                        -ann "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" ;
                         rowColumnLayout  -nr 1 -cs 1 5 -rowHeight 1 30;
                         button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 28 -ann "角色打组" -c "Creat_Char_Group"; //ok
                         button -l "2_Auto Aovs ID EXR" -bgc 0 0.551 1  -w 160 -h 28 -ann "自动创建AOVs & ID 输出EXR" -c "Auto_Aovs_ID_EXR"; //ok
@@ -197,9 +203,10 @@
                 deleteUI -window DO_CAM_window;
                 }
 
-                window -t "DO_CAM_做镜头 EXR" -s 0 DO_CAM_window;columnLayout -adj 1;
+                window -t "DO_CAM_做镜头 EXR"  -s 0 DO_CAM_window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 500 -ca;
-                frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 450 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
+                frameLayout  -l "做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   
+                -w 500 -h 450 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
                         button -l "0_SEL OBJ" -bgc 0.539 0.873 0.928 -w 500 -h 20 -c "sel_obj"; //ok
                         setParent ..;   
@@ -248,12 +255,16 @@
 
                         text -w 70 -bgc 0.327 1 0.641 -l "AOVs+iso2017+自定义分辨率:";
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;        
-                        text -w 80 -h 28 -l "Width_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 28 Width_CS_17 ;text -w 80 -h 28 -l "Hight_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 28 Hight_CS_17 ; button  -l "AOVs2017+自定义分辨率" -c "A0vs2017_CS_imagesize" -ann "AOVs2017+自定义分辨率" -h 28 -w 150 -bgc 0.327 1 0.641; //ok
+                        text -w 80 -h 28 -l "Width_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 28 Width_CS_17 ;
+                        text -w 80 -h 28 -l "Hight_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 28 Hight_CS_17 ; 
+                        button  -l "AOVs2017+自定义分辨率" -c "A0vs2017_CS_imagesize" -ann "AOVs2017+自定义分辨率" -h 28 -w 150 -bgc 0.327 1 0.641; //ok
                         setParent ..;
 
                         text -w 70 -bgc 0.539 0.873 0.928 -l "AOVs+iso2019+自定义分辨率:";
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;        
-                        text -w 80 -h 28 -l "Width_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 28 Width_CS_19 ;text -w 80 -h 28 -l "Hight_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 28 Hight_CS_19 ; button  -l "AOVs2019+自定义分辨率" -c "A0vs2019_CS_imagesize" -ann "AOVs2019+自定义分辨率" -h 28 -w 150 -bgc 0.539 0.873 0.928; //ok
+                        text -w 80 -h 28 -l "Width_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 28 Width_CS_19 ;
+                        text -w 80 -h 28 -l "Hight_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 28 Hight_CS_19 ; 
+                        button  -l "AOVs2019+自定义分辨率" -c "A0vs2019_CS_imagesize" -ann "AOVs2019+自定义分辨率" -h 28 -w 150 -bgc 0.539 0.873 0.928; //ok
                         setParent ..;
 
                 showWindow DO_CAM_window;
@@ -267,7 +278,7 @@
                 {
                 deleteUI -window DO_POSE_window;
                 }
-                window -t "DO_POSE 4K PNG" -s 0 DO_POSE_window;columnLayout -adj 1;
+                window -t "DO_POSE 4K PNG"  -s 0 DO_POSE_window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 350 -ca;
                 frameLayout  -l "DO_POSE 4K PNG "   -w 350 -h 150 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
@@ -283,7 +294,10 @@
                 text -w 10  -h 10 -l "DO_POSE 4K PNG";
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
                         button -l "2_Creat_Char_Group" -bgc 1 0.65 0.13 -w 120 -h 28 -ann "角色打组 Character_Group" -c "Creat_Char_Group"; //ok
-                        button -l "3_to do sth" -bgc 0 1 1 -w 150 -h 28 -c "Do_pose_2_to_do_sth" -ann "选择char Group创建Creat smooth+RS pose AOVs png+CS IDAovs PNG+ISOmaya2017+4K+Import cha lig" ;  //ok
+                        button -l "3_to do sth_2017" -bgc 0 1 1 -w 100 -h 28 -c "Do_pose_2_to_do_sth_2017" 
+                        -ann "选择char Group创建Creat smooth+RS pose AOVs png+CS IDAovs PNG+ISOmaya2017+4K+Import cha lig" ;  //ok
+                        button -l "3_to do sth_2019" -bgc 0 1 1 -w 100 -h 28 -c "Do_pose_2_to_do_sth_2019" 
+                        -ann "选择char Group创建Creat smooth+RS pose AOVs png+CS IDAovs PNG+ISOmaya2019+4K+Import cha lig" ;  //ok
                         setParent ..;   
 
                 showWindow DO_POSE_window;
