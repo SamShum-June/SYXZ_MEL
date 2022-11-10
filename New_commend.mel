@@ -1916,7 +1916,7 @@
 
 
 //////// DO CAM  ////////////////////             
-    /////////做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口/////////////
+    /////////做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口/////////////
         ////////// sel obj
             global proc sel_obj(){
                 selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 1 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 1;
@@ -1933,97 +1933,78 @@
     ////2017横屏
         ///Aovs+ISO+HD720   
             global proc Aovs_iso2017_HD720(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_HD720();
+                Render_Cam_HD720();
                 ISO_maya2017();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
-                
             }
         ///Aovs+ISO+HD1080
-            global proc Aovs_iso2017_HD1080_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_HD1080();
+            global proc Aovs_iso2017_HD1080(){
+                Render_Cam_HD1080();
                 ISO_maya2017();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
             }
         ///Aovs+ISO+4K
-            global proc Aovs_iso2017_4K_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_4096_2305();
+            global proc Aovs_iso2017_4K(){
+                Render_Cam_4096_2305();
                 ISO_maya2017();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
-                importCHAlig();            
+                importCHAlig();
             }
 
     ////2019横屏
         ///Aovs+ISO+HD720
-            global proc Aovs_iso2019_HD720_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_HD720();
+            global proc Aovs_iso2019_HD720(){
+                Render_Cam_HD720();
                 ISO_maya2019();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
             }
         ///Aovs+ISO+HD1080
-            global proc Aovs_iso2019_HD1080_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_HD1080();
+            global proc Aovs_iso2019_HD1080(){
+                Render_Cam_HD1080();
                 ISO_maya2019();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
             }
         ///Aovs+ISO+4K
-            global proc Aovs_iso2019_4K_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_4096_2305();
+            global proc Aovs_iso2019_4K(){
+                Render_Cam_4096_2305();
                 ISO_maya2019();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
             }
 
     ////2017竖屏
         ///Aovs_iso+720*1280
-            global proc Aovs_iso2017_720_1280_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_720_1280();
+            global proc Aovs_iso2017_720_1280(){
+                Render_Cam_720_1280();
                 ISO_maya2017();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
             }
         ///Aovs_iso+1080*1920
-            global proc Aovs_iso2017_1080_1920_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_1080_1920();
+            global proc Aovs_iso2017_1080_1920(){
+                Render_Cam_1080_1920();
                 ISO_maya2017();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
                 
             }
         ///Aovs_iso+SP4K
-            global proc Aovs_iso2017_SP4K_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_2305_4096();
+            global proc Aovs_iso2017_SP4K(){
+                Render_Cam_2305_4096();
                 ISO_maya2017();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
                 
@@ -2031,35 +2012,29 @@
 
     ////2019竖屏
         ///Aovs_iso+720*1280
-            global proc Aovs_iso2019_720_1280_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_720_1280();
+            global proc Aovs_iso2019_720_1280(){
+                Render_Cam_720_1280();
                 ISO_maya2019();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
                 
                 
             }
         ///Aovs_iso+1080*1920
-            global proc Aovs_iso2019_1080_1920_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_1080_1920();
+            global proc Aovs_iso2019_1080_1920(){
+                Render_Cam_1080_1920();
                 ISO_maya2019();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
                 
             }
         ///Aovs_iso+SP4K
-            global proc Aovs_iso2019_SP4K_exr(){
-                camset_render_set();
-                camset_export_EXR();
-                XRSZ_2305_4096();
+            global proc Aovs_iso2019_SP4K(){
+                Render_Cam_2305_4096();
                 ISO_maya2019();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
                 
@@ -2069,20 +2044,18 @@
     ////////AOVs+iso 2017 2019 +自定义分辨率 /////////
         ///最终调用////
             global proc A0vs2017_CS_imagesize(){
-                camset_render_set();
-                camset_export_EXR();
-                custom_camset_CS_17_EXR();
+                custom_camset_CS_17();
+                SET_RenderSet();
                 ISO_maya2017();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
             }
             global proc A0vs2019_CS_imagesize(){
-                camset_render_set();
-                camset_export_EXR();
-                custom_camset_CS_19_EXR();
+                custom_camset_CS_19();
+                SET_RenderSet();
                 ISO_maya2019();
-                RS_Full_Aovs_exr();
+                RS_Full_Aovs();
                 creat_SHAlig();
                 importCHAlig();
             }
@@ -2090,17 +2063,47 @@
         
         /// 自定义镜头分辨率///
 
-            global proc custom_camset_CS_17_EXR(){
-                int $widthcs_CS_17_EXR =`textField -q -text Width_CS_17`;
-                int $Hightcs_CS_17_EXR =`textField -q -text Hight_CS_17`;
-                setAttr "defaultResolution.width" $widthcs_CS_17_EXR;
-                setAttr "defaultResolution.height" $Hightcs_CS_17_EXR;
+            global proc custom_camset_CS_17(){
+                int $widthcs_CS_17 =`textField -q -text Width_CS_17`;
+                int $Hightcs_CS_17 =`textField -q -text Hight_CS_17`;
+                setAttr "defaultResolution.width" $widthcs_CS_17;
+                setAttr "defaultResolution.height" $Hightcs_CS_17;
             }
 
-            global proc custom_camset_CS_19_EXR(){
-                int $widthcs_CS_19_EXR =`textField -q -text Width_CS_19`;
-                int $Hightcs_CS_19_EXR =`textField -q -text Hight_CS_19`;
-                setAttr "defaultResolution.width" $widthcs_CS_19_EXR;
-                setAttr "defaultResolution.height" $Hightcs_CS_19_EXR;
+            global proc custom_camset_CS_19(){
+                int $widthcs_CS_19 =`textField -q -text Width_CS_19`;
+                int $Hightcs_CS_19 =`textField -q -text Hight_CS_19`;
+                setAttr "defaultResolution.width" $widthcs_CS_19;
+                setAttr "defaultResolution.height" $Hightcs_CS_19;
             }
+
+
+
+////////// Do POSE 正方形4K 
+    //2_Do_pose_2_to_do_sth_2017_4K
+        global proc Do_pose_2_to_do_sth_2017_4K(){
+            smoothNode_auto_pro();
+            Render_Cam_4K();
+            RS_Pose_Aovs();
+            Cs_Char_IDAovs();
+            importCHAlig();
+            ISO_maya2017();
+            print("一键起飞 2017方形4K");
+            headsUpMessage -time 5 ("一键起飞 2017方形4K");
+        }
+
+    //2_Do_pose_2_to_do_sth_2019_4K
+        global proc Do_pose_2_to_do_sth_2019_4K(){
+            smoothNode_auto_pro();
+            Render_Cam_4K();
+            RS_Pose_Aovs();
+            Cs_Char_IDAovs();
+            importCHAlig();
+            ISO_maya2019();
+            print("一键起飞 2019方形4K");
+            headsUpMessage -time 5 ("一键起飞 2019方形4K");
+        }
+
+
+
 
