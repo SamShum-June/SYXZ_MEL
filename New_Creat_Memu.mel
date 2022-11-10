@@ -1,95 +1,360 @@
 /////////////////// 运行时显示窗口 //////////////////////////////
+    ///选择最终输出格式 EXR or PNG//
+        global proc SYXZ_Master_Window(){
+            if(`window -exists SYXZ_Master_Window`){deleteUI -window SYXZ_Master_Window;}
+            if(`window -exists syxzwindow`){deleteUI -window syxzwindow;}
+            if(`window -exists import_STH_window`){deleteUI -window import_STH_window;}
+            if(`window -exists Optimize_and_Creat_ID_Aovs_SET_window`){deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;}
+            if(`window -exists DO_CAM_window`){deleteUI -window DO_CAM_window;}
+            if(`window -exists DO_POSE_window`){deleteUI -window DO_POSE_window;}
 
-
-        global proc SYXZ (){
-
-                if  (`window -exists syxzwindow`)
-        {
-                deleteUI -window syxzwindow;
-        }
-                if  (`window -exists import_STH_window`)
-        {
-                deleteUI -window import_STH_window;
-        }
-                if  (`window -exists Optimize_and_Creat_ID_Aovs_SET_window`)
-        {
-                deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;
-        }
-                if  (`window -exists DO_CAM_window`)
-        {
-                deleteUI -window DO_CAM_window;
-        }
-                if  (`window -exists DO_POSE_window`)
-        {
-                deleteUI -window DO_POSE_window;
-        }
-        window -t "SYXZ"  -s 0 syxzwindow;
-        columnLayout ColumnLayout;
-        rowColumnLayout -adjustableColumn true -ca ;
-        frameLayout -labelVisible false -marginWidth 5 -marginHeight 5;
-        columnLayout;
-        frameLayout  -l "选择最终输出格式 EXR or PNG" -cll 0 -mh 5 -w 500 -h 55 -bgc 0.5 0 1;
-                rowColumnLayout -numberOfColumns 3 -columnWidth 1 180 -columnWidth 2 180 ;
-                radioCollection;
-                radioButton -l "输出格式_EXR(默认)" -bgc 0 0.551 1 -cc "int $Export_sth = 1"; //okk
-                radioButton -l "输出格式_PNG" -bgc 1 0.5 0.6 -cc "int $Export_sth = 2"; //okk
-                setParent ..;
-                setParent ..;
-
-        frameLayout  -l "杂项" -cll 0 -mh 5 -w 500 -h 55;
-                rowColumnLayout -numberOfRows 1  -rowHeight 1 20 -cs 1 3 ;
-                button -l"打开导入窗口" -c "importSTHWindows" -w 120 -h 20 -bgc 1 0 1 -ann "打开自定义导入窗口"; //okk
-                button -l "Creat_smooth" -c "smooth" -w 120 -h 20 -bgc 0 1 0.559 -ann "选择模型创建smooth"; //okk
-                button -l "import_CHA_Lig" -c "importCHAlig" -w 120 -h 20 -bgc 0.442 1 0 -ann "导入角色灯光"; //okk
-                button -l "Creat_SHA_Lig" -c "creat_SHAlig" -w 120 -h 20 -bgc 0.196 0.151 0.134 -ann "创建阴影灯光"; //okk
-                setParent ..;
-                setParent ..;
-
-        frameLayout  -l "AOVs SET"   -w 500 -h 180 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
-                text -w 80 -h 13 -bgc 0 0 0.134 -l "Creat AOVs & ISO 选择你需要创建的Aovs 和 ISO使用的maya版本" ;
-                text -w 10  -h 10 -l "选择创建 AOVs 的种类" ; 
-                rowColumnLayout -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5 ;
-                        button -l "RS FULL AOVs" -c "RS_Full_Aovs" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Full_Aovs" ; //okk
-                        button -l "RS POSE AOVs" -c "RS_Pose_Aovs" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Pose_Aovs" ; //okk
-                        button -l "RS SEN AOVs"  -c "RS_Sen_Aovs" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Sen_Aovs" ; //okk
-                        setParent ..;
-
-                text -w 10  -h 10 -l "选择创建 ISO 你现在使用的maya版本" ; 
-                rowColumnLayout -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5;            
-                        button -l "ISO maya2017" -c "ISO_maya2017" -h 20 -w 110 -bgc 0 1 1 -ann "ISO_maya2017" ; //okk
-                        button -l "ISO maya2019"  -c "ISO_maya2019" -h 18 -w 110 -bgc 0 1 1 -ann "ISO_maya2019" ; //okk
-                setParent ..;
-                setParent ..;
-
-        frameLayout  -l "CAM Prs SET"   -w 500 -h 120 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
-                text -w 500 -h 10 -bgc 0 0 0.134 -l "方形                 自定义                                                              " ; 
-                rowColumnLayout  -nr 1  -cs 1 5;
-                        button  -l "1K" -c "Render_Cam_1K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
-                        button  -l "2K" -c "Render_Cam_2K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok    
-                        button  -l "3K" -c "Render_Cam_3K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
-                        button  -l "4K" -c "Render_Cam_4K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //ok
-                        text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width ;
-                        text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight ; 
-                        button  -l "set Size" -c "Custom_CAM_imagesize" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //ok
-                        setParent ..;
-                text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
-                rowColumnLayout  -nr 1  -cs 1 5;
-                        button  -l "HD720" -c "Render_Cam_HD720" -h 18 -w 50 -bgc 1 0.5 0.6;           //ok
-                        button  -l "HD1080" -c "Render_Cam_HD1080" -h 18 -w 50 -bgc 1 0.5 0.6;         //ok
-                        button  -l "4096_2305" -c "Render_Cam_4096_2305" -h 18 -w 70 -bgc 1 0.5 0.6;   //ok
-                        button  -l "720*1280" -c "Render_Cam_720_1280" -h 18 -w 80 -bgc 1 1 0.6;       //ok
-                        button  -l "1080*1920" -c "Render_Cam_1080_1920" -h 18 -w 80 -bgc 1 1 0.6;     //ok
-                        button  -l "2305_4096" -c "Render_Cam_2305_4096" -h 18 -w 70 -bgc 1 1 0.6;     //ok               
-                setParent ..;
-                setParent ..; 
-
-
-
-
-
-
-        window -e  -w 500 syxzwindow;
-        showWindow syxzwindow;
+            window -t "选择最终输出格式" -s 0 SYXZ_Master_Window;
+            columnLayout ColumnLayout;
+            rowColumnLayout -adjustableColumn true -ca ;
+            frameLayout -labelVisible false -marginWidth 5 -marginHeight 5;
+            columnLayout;
+            frameLayout  -l "选择最终输出格式 EXR or PNG" -cll 0 -mh 5 -w 360 -h 80 -bgc 0.5 0 1;
+                    rowColumnLayout -numberOfColumns 3 -columnWidth 1 180 -columnWidth 2 180 ;
+                    radioCollection;
+                    radioButton -l "     输出格式_EXR(默认)" -h 50 -bgc 0 0.551 1 -cc "int $Export_sth = 1"; //okk
+                    radioButton -l "     输出格式_PNG" -h 50 -bgc 1 0.5 0.6 -cc "int $Export_sth = 2"; //okk
+                    setParent ..; 
+                    setParent ..;
+                    text -w 10 -h 10 -l " ";             
+                    button -l "关闭窗口 & 开启SYXZ" -command ("delete_UI_SYXZ_Master_Window_SYXZWINDOW") -w 360 -h 30 -bgc 0.087 0.872 0.548;
+            
+            window -e  -w 360 -h 80 SYXZ_Master_Window;
+            showWindow SYXZ_Master_Window;
         }
         int $Export_sth = 1;
-        SYXZ;
+        SYXZ_Master_Window;
+
+        ///删除SYXZ_Master_Window 再打开 SYXZ Window//
+            global proc delete_UI_SYXZ_Master_Window_SYXZWINDOW(){
+                deleteUI -window SYXZ_Master_Window;
+                SYXZ;
+            } 
+
+    //打开SYXZ Window
+        global proc SYXZ (){
+            if(`window -exists SYXZ_Master_Window`){deleteUI -window SYXZ_Master_Window;}
+            if(`window -exists syxzwindow`){deleteUI -window syxzwindow;}
+
+            window -t "SYXZ"  -s 0 syxzwindow;
+            columnLayout ColumnLayout;
+            rowColumnLayout -adjustableColumn true -ca ;
+            frameLayout -labelVisible false -marginWidth 5 -marginHeight 5;
+            columnLayout;
+            frameLayout  -l "选择最终输出格式 EXR or PNG" -cll 0 -mh 5 -w 500 -h 55 -bgc 0.5 0 1;
+                    rowColumnLayout -numberOfColumns 3 -columnWidth 1 180 -columnWidth 2 180 ;
+                    radioCollection;
+                    radioButton -l "     输出格式_EXR(默认)" -h 30 -bgc 0 0.551 1 -cc "int $Export_sth = 1"; //okk
+                    radioButton -l "     输出格式_PNG" -h 30 -bgc 1 0.5 0.6 -cc "int $Export_sth = 2"; //okk
+                    setParent ..;
+                    setParent ..;
+                text -w 10 -h 18 -l " "; 
+
+            frameLayout  -l "杂项" -cll 0 -mh 5 -w 500 -h 55;
+                    rowColumnLayout -numberOfRows 1  -rowHeight 1 20 -cs 1 3 ;
+                    button -l"打开导入窗口" -c "importSTHWindows" -w 120 -h 20 -bgc 1 0 1 -ann "打开自定义导入窗口"; //okk
+                    button -l "Creat_smooth" -c "smooth" -w 120 -h 20 -bgc 0 1 0.559 -ann "选择模型创建smooth"; //okk
+                    button -l "import_CHA_Lig" -c "importCHAlig" -w 120 -h 20 -bgc 0.442 1 0 -ann "导入角色灯光"; //okk
+                    button -l "Creat_SHA_Lig" -c "creat_SHAlig" -w 120 -h 20 -bgc 0.196 0.151 0.134 -ann "创建阴影灯光"; //okk
+                    setParent ..;
+                    setParent ..;
+
+            frameLayout  -l "AOVs SET"   -w 500 -h 130 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
+                    text -w 80 -h 13 -bgc 0 0 0.134 -l "Creat AOVs & ISO 选择你需要创建的Aovs 和 ISO使用的maya版本" ;
+                    text -w 10  -h 10 -l "选择创建 AOVs 的种类" ; 
+                    rowColumnLayout -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5 ;
+                            button -l "RS FULL AOVs" -c "RS_Full_Aovs" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Full_Aovs" ; //okk
+                            button -l "RS POSE AOVs" -c "RS_Pose_Aovs" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Pose_Aovs" ; //okk
+                            button -l "RS SEN AOVs"  -c "RS_Sen_Aovs" -h 20 -w 110 -bgc 0.767 0.587 0.025 -ann "RS_Sen_Aovs" ; //okk
+                    setParent ..;
+
+                    text -w 10  -h 10 -l "选择创建 ISO 你现在使用的maya版本" ; 
+                    rowColumnLayout -w 500 -numberOfColumns 3 -columnWidth 1 160 -columnWidth 2 160 -columnWidth 3 160 -cs 1 3 -cs 3 5 -cs 2 5;            
+                            button -l "ISO maya2017" -c "ISO_maya2017" -h 20 -w 110 -bgc 0 1 1 -ann "ISO_maya2017" ; //okk
+                            button -l "ISO maya2019"  -c "ISO_maya2019" -h 18 -w 110 -bgc 0 1 1 -ann "ISO_maya2019" ; //okk
+                    setParent ..;
+                    setParent ..;
+
+            frameLayout  -l "CAM Prs SET"   -w 500 -h 120 -cll 0 -mh 5 -bgc 0.196 0.151 0.134;
+                    text -w 500 -h 10 -bgc 0 0 0.134 -l "方形                 自定义                                                              " ; 
+                    rowColumnLayout  -nr 1  -cs 1 5;
+                            button  -l "1K" -c "Render_Cam_1K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //okk
+                            button  -l "2K" -c "Render_Cam_2K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //okk
+                            button  -l "3K" -c "Render_Cam_3K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //okk
+                            button  -l "4K" -c "Render_Cam_4K" -h 18 -w 25 -bgc 0.174 0.767 0.977;         //okk
+                            text -w 50 -h 18 -l "Width" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_width ;
+                            text -w 50 -h 18 -l "Hight" -bgc 0.572 0.394 0.658;textField -w 100 -h 18 cs_Hight ; 
+                            button  -l "set Size" -c "Custom_CAM_imagesize" -ann "自定义镜头分辨率" -h 18 -w 50 -bgc 0.572 0.394 0.658; //okk
+                    setParent ..;
+                    text -w 500  -h 10 -bgc 0 0 0.134 -l "横版                                                 竖版                        " ; 
+                    rowColumnLayout  -nr 1  -cs 1 5;
+                            button  -l "HD720" -c "Render_Cam_HD720" -h 18 -w 50 -bgc 1 0.5 0.6;           //okk
+                            button  -l "HD1080" -c "Render_Cam_HD1080" -h 18 -w 50 -bgc 1 0.5 0.6;         //okk
+                            button  -l "4096_2305" -c "Render_Cam_4096_2305" -h 18 -w 70 -bgc 1 0.5 0.6;   //okk
+                            button  -l "720*1280" -c "Render_Cam_720_1280" -h 18 -w 80 -bgc 1 1 0.6;       //okk
+                            button  -l "1080*1920" -c "Render_Cam_1080_1920" -h 18 -w 80 -bgc 1 1 0.6;     //okk
+                            button  -l "2305_4096" -c "Render_Cam_2305_4096" -h 18 -w 70 -bgc 1 1 0.6;     //okk
+                    setParent ..;
+                    setParent ..; 
+
+            frameLayout  -l "Optimize and Creat ID Aovs SET 整理和创建ID Aovs"   -w 500 -h 60 -cll 0 -mh 5 -bgc 0 0 0.134;
+                    button -w 10 -h 40 -bgc 0 0 0.134 -l "打开Optimize and Creat ID Aovs SET 窗口" -c "Optimize_and_Creat_ID_Aovs_SET_window"; //okk
+            setParent ..; 
+
+            frameLayout  -l "做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   -w 500 -h 60 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
+                            button -w 10 -h 30 -bgc 0.025 1.244 0.767 -l "做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口" 
+                            -c "DO_CAM_window"; //okk
+            setParent ..; 
+
+            frameLayout  -l "做POSE"   -w 500 -h 60 -cll 0 -cl 0 -mh 5 -bgc 0.027 0.212 0.352;
+                            button -w 10 -h 30 -bgc 0.049 0.455 0.762 -l "做POSE  窗口" -c "DO_POSE_window"; //okk
+            setParent ..; 
+
+            window -e  -w 500 -h 100 syxzwindow;
+            showWindow syxzwindow;
+        }
+    
+
+//////////////////////引用显示窗口内容/////////////////////////////////////
+/////////////////////杂项////////////////////////////////////////////////////
+    ///////打开导入窗口 ////////////////////////
+        global proc importSTHWindows(){
+            if(`window -exists SYXZ_Master_Window`){deleteUI -window SYXZ_Master_Window;}
+            if(`window -exists import_STH_window`){deleteUI -window import_STH_window;}
+
+            window -t "导入窗口"  -s 0 import_STH_window;
+                rowColumnLayout -adjustableColumn true -w 710 -ca;
+                    frameLayout  -l "粘贴需要导入文件的路径"   -w 710 -h 60 -cll 0 -mh 5;
+                        rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 5 ;
+                            textField  -w 600  data_line; button -l"起飞了 需要等待" -w 100 -c "import_now" ;
+                            setParent ..;
+                            setParent ..;
+
+            window -e  -w 710 -h 60 import_STH_window;
+            showWindow import_STH_window;
+        }
+
+/////////// Optimize and Creat ID Aovs SET 整理和创建ID Aovs /////////////////
+    /////////打开 Optimize and Creat ID Aovs SET 整理和创建ID Aovs 窗口/////////////
+        global proc  Optimize_and_Creat_ID_Aovs_SET_window(){
+            if(`window -exists SYXZ_Master_Window`){deleteUI -window SYXZ_Master_Window;}
+            if(`window -exists syxzwindow`){deleteUI -window syxzwindow;}
+            if(`window -exists Optimize_and_Creat_ID_Aovs_SET_window`){deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;}
+
+                window -t "Optimize and Creat ID Aovs SET 整理和创建ID Aovs"  -s 0 Optimize_and_Creat_ID_Aovs_SET_window;columnLayout -adj 1;
+                rowColumnLayout -adjustableColumn true -w 500 -ca;
+
+                frameLayout  -l "选择最终输出格式 EXR or PNG" -cll 0 -mh 5 -w 500 -h 55 -bgc 0.5 0 1;
+                        rowColumnLayout -numberOfColumns 3 -columnWidth 1 180 -columnWidth 2 180 ;
+                        radioCollection;
+                        radioButton -l "     输出格式_EXR(默认)" -h 30 -bgc 0 0.551 1 -cc "int $Export_sth = 1"; //okk
+                        radioButton -l "     输出格式_PNG" -h 30 -bgc 1 0.5 0.6 -cc "int $Export_sth = 2"; //okk
+                        setParent ..;
+                        setParent ..;
+                    text -w 10 -h 18 -l " ";
+
+                frameLayout -l "Optimize and Creat ID Aovs SET 整理和创建ID Aovs" -w 150 -h 120 -cll 0 -mh 5 -bgc 0 0 0.134;
+                        text -w 10 -h 10 -l "All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" 
+                        -ann "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" ;
+                        rowColumnLayout  -nr 1 -cs 1 5 -rowHeight 1 30;
+                        button -l "1_角色打组" -bgc 1 0.65 0.13 -w 180 -h 30 -ann "角色打组" -c "Creat_Char_Group"; //ok
+                        button -l "2_自动创建AOVs 和 ID" -bgc 0.5 0.547 1 -w 250 -h 30 -ann "自动创建AOVs 和 ID" -c "Auto_Aovs_ID"; //ok
+                        setParent ..;
+
+                        text -w 10  -h 10 -l "Auto Char ID 创建角色组后 手动选择角色创建ID" -ann "创建角色组后 手动选择角色创建ID"; 
+                        rowColumnLayout  -nr 1  -cs 1 5 -rowHeight 1 30;                        
+                        button -l "1_选择角色自动创建ID" -bgc 0.572 0.394 1 -w 180 -h 30 -ann "选择角色自动创建ID" -c "SL_Char_Creat_ID";    //ok          
+                        button -l "2_自动创建AOVs" -bgc 0.5 0.547 1 -w 250 -h 30 -ann "自动创建AOVs" -c "Auto_Creat_AOVs";    //ok
+                        setParent ..;
+                        setParent ..;  
+
+                frameLayout -w 150 -h 80 -bgc 0 0 0.134 -cll 0 -mh 5 -l "选择面单个模型上色可以用下面这个" ;
+                        text -w 10  -h 10 -l "Custom SET ID 自定义设置ID" -ann "自定义设置ID";
+                        rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "1_创建ID的Aovs"  -bgc 0.5 0.547 1 -w 180 -h 30 -ann "创建ID的Aovs" -c "Cs_Char_IDAovs"; //ok
+                        button -l "2_选择物体创建为红色ID" -bgc 0.32 0 0 -w 150 -h 30 -ann "选择物体创建为红色ID" -c "Cs_Red_ID" ; //ok
+                        button -l "2_选择物体创建为绿色ID" -bgc 0 0.32 0 -w 150 -h 30 -ann "选择物体创建为绿色ID" -c "Cs_Green_ID" ; //ok
+                        button -l "2_选择物体创建为蓝色ID" -bgc 0 0 0.32 -w 150 -h 30 -ann "选择物体创建为蓝色ID"  -c "Cs_Blue_ID" ; //ok
+                        setParent ..;
+                        setParent ..;
+
+                frameLayout -w 150 -h 120 -bgc 0 0 0.134  -cll 0 -mh 5 -l "手动创建场景 Aovs ID" ;
+                        text -w 10 -h 10 -l "Cs Group Aovs ID 手动创建场景组 设置 Aovs" -ann "手动创建场景组 设置 Aovs"; 
+                        rowColumnLayout -numberOfColumns 3 -columnWidth 1 200 -columnWidth 2 200 -columnWidth 3 200 -cs 1 5 -cs 3 5 -cs 2 5 ;
+                        button -l "1_场景打组" -bgc 1 0.65 0.13 -w 150 -h 30 -c "Creat_sen_Group"; //ok
+                        button -l "2_设置场景ID" -bgc 0.5 0.547 1 -w 150 -h 30 -ann "设置Aovs" -c "Sen_Aovs_EXR"; //ok
+                        setParent ..;
+                        rowColumnLayout -numberOfColumns 3 -columnWidth 1 200 -columnWidth 2 200 -columnWidth 3 200 -cs 1 5 -cs 3 5 -cs 2 5 ;
+                        button -l "3_选择物体创建为红色ID" -bgc 0.32 0 0 -w 150 -h 30 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //ok
+                        button -l "3_选择物体创建为绿色ID" -bgc 0 0.32 0  -w 150 -h 30 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //ok
+                        button -l "3_选择物体创建为蓝色ID" -bgc 0 0 0.32 -w 150 -h 30 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //ok
+                        setParent ..;
+                        setParent ..;
+
+                text -w 10 -h 20 -l " "; 
+                button -l "返回SYXZ" -command ("delete_UI_Optimize_and_Creat_ID_Aovs_SET_window_SYXZWINDOW") -w 200 -h 30 -bgc 0.087 0.872 0.548;
+
+                window -e  -w 650 -h 450 Optimize_and_Creat_ID_Aovs_SET_window;
+                showWindow Optimize_and_Creat_ID_Aovs_SET_window;
+        }
+
+        ///删除Optimize_and_Creat_ID_Aovs_SET_window 再打开 SYXZ Window//
+            global proc delete_UI_Optimize_and_Creat_ID_Aovs_SET_window_SYXZWINDOW(){
+                deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;
+                SYXZ;
+            } 
+
+
+//////// DO CAM  ////////////////////             
+    /////////做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口/////////////
+        global proc  DO_CAM_window(){
+            if(`window -exists SYXZ_Master_Window`){deleteUI -window SYXZ_Master_Window;}
+            if(`window -exists syxzwindow`){deleteUI -window syxzwindow;}
+            if(`window -exists DO_CAM_window`){deleteUI -window DO_CAM_window;}
+
+                window -t "DO_CAM_做镜头"  -s 0 DO_CAM_window;columnLayout -adj 1;
+                rowColumnLayout -adjustableColumn true -w 500 -ca;
+
+                frameLayout  -l "选择最终输出格式 EXR or PNG" -cll 0 -mh 5 -w 500 -h 55 -bgc 0.5 0 1;
+                        rowColumnLayout -numberOfColumns 3 -columnWidth 1 180 -columnWidth 2 180 ;
+                        radioCollection;
+                        radioButton -l "     输出格式_EXR(默认)" -h 30 -bgc 0 0.551 1 -cc "int $Export_sth = 1"; //okk
+                        radioButton -l "     输出格式_PNG" -h 30 -bgc 1 0.5 0.6 -cc "int $Export_sth = 2"; //okk
+                        setParent ..;
+                        setParent ..;
+                    text -w 10 -h 18 -l " ";
+
+                frameLayout  -l "做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   
+                -w 500 -h 450 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "0_SEL OBJ" -bgc 0.539 0.873 0.928 -w 500 -h 20 -c "sel_obj"; //ok
+                        setParent ..;   
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
+                        text -w 80 -l "Creat Group:";
+                        button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 30 -ann "角色打组" -c "Creat_Char_Group";
+                        button -l "1_Sen_Group" -bgc 0 1 1 -w 160 -h 30 -c "Creat_sen_Group";  //ok
+                        setParent ..;
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;                 
+                        text -w 60 -l "CS SEN ID:";
+                        button -l "2_SEN Red ID" -bgc 0.32 0 0 -w 130 -h 30 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //ok
+                        button -l "2_SEN Green ID" -bgc 0 0.32 0  -w 130 -h 30 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //ok
+                        button -l "2_SEN Blue ID" -bgc 0 0 0.32 -w 130 -h 30 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //ok
+                        setParent ..;
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
+                        text -w 150 -l "Set_Sen_CHA_AOVsID:";
+                        button -l "3_Set_Sen_CHA_AOVsID" -bgc 0.442 1 0 -w 140 -h 30 -c "Set_Sen_CHA_ID";   //ok
+
+                        setParent ..;
+
+                text -w 500 -h 23 -l "选择屏幕方向";
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 3;
+                        text -w 60 -bgc 0.327 1 0.641 -l "2017横屏:";
+                        button -l "Aovs+ISO+HD720" -bgc 0.327 1 0.641 -w 140 -h 30 -c "Aovs_iso2017_HD720"; //ok
+                        button -l "Aovs+ISO+HD1080" -bgc 0.327 1 0.641 -w 140 -h 30 -c "Aovs_iso2017_HD1080"; //ok
+                        button -l "Aovs+ISO+4K" -bgc 0.327 1 0.641 -w 140 -h 30 -c "Aovs_iso2017_4K";  //ok
+                        setParent ..;
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 3;   
+                        text -w 60 -bgc 0.539 0.873 0.928 -l "2019横屏:";                      
+                        button -l "Aovs+ISO+HD720" -bgc 0.539 0.873 0.928 -w 140 -h 30 -c "Aovs_iso2019_HD720"; //ok
+                        button -l "Aovs+ISO+HD1080" -bgc 0.539 0.873 0.928 -w 140 -h 30 -c "Aovs_iso2019_HD1080"; //ok
+                        button -l "Aovs+ISO+4K" -bgc 0.539 0.873 0.928 -w 140 -h 30 -c "Aovs_iso2019_4K"; //ok    
+                        setParent ..; 
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 3;        
+                        text -w 60 -bgc 0.327 1 0.641 -l "2017竖屏:";
+                        button -l "Aovs_ISO+720*1280" -bgc 0.327 1 0.641 -w 140 -h 30 -c "Aovs_iso2017_720_1280"; //ok
+                        button -l "Aovs_ISO+1080*1920" -bgc 0.327 1 0.641 -w 140 -h 30 -c "Aovs_iso2017_1080_1920"; //ok
+                        button -l "Aovs_ISO+SP4K" -bgc 0.327 1 0.641 -w 140 -h 30 -c "Aovs_iso2017_SP4K"; //ok         
+                        setParent ..;   
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 3;
+                        text -w 60 -bgc 0.539 0.873 0.928 -l "2019竖屏:";
+                        button -l "Aovs_ISO+720*1280" -bgc 0.539 0.873 0.928 -w 140 -h 30 -c "Aovs_iso2019_720_1280"; //ok
+                        button -l "Aovs_ISO+1080*1920" -bgc 0.539 0.873 0.928 -w 140 -h 30 -c "Aovs_iso2019_1080_1920"; //ok
+                        button -l "Aovs_ISO+SP4K" -bgc 0.539 0.873 0.928 -w 140 -h 30 -c "Aovs_iso2019_SP4K"; //ok
+                        setParent ..; 
+
+                        text -w 70 -bgc 0.327 1 0.641 -l "AOVs+iso2017+自定义分辨率:";
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;        
+                        text -w 80 -h 30 -l "Width_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 30 Width_CS_17 ;
+                        text -w 80 -h 30 -l "Hight_CS_17" -bgc 0.327 1 0.641;textField -w 70 -h 30 Hight_CS_17 ; 
+                        button  -l "AOVs2017+自定义分辨率" -c "A0vs2017_CS_imagesize" -ann "AOVs2017+自定义分辨率" -h 30 -w 150 -bgc 0.327 1 0.641; //ok
+                        setParent ..;
+
+                        text -w 70 -bgc 0.539 0.873 0.928 -l "AOVs+iso2019+自定义分辨率:";
+                rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;        
+                        text -w 80 -h 30 -l "Width_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 30 Width_CS_19 ;
+                        text -w 80 -h 30 -l "Hight_CS_19" -bgc 0.539 0.873 0.928;textField -w 70 -h 30 Hight_CS_19 ; 
+                        button  -l "AOVs2019+自定义分辨率" -c "A0vs2019_CS_imagesize" -ann "AOVs2019+自定义分辨率" -h 30 -w 150 -bgc 0.539 0.873 0.928; //ok
+                        setParent ..;
+
+                text -w 10 -h 20 -l " "; 
+                button -l "返回SYXZ" -command ("delete_UI_DO_CAM_window_SYXZWINDOW") -w 200 -h 30 -bgc 0.087 0.872 0.548;
+
+                showWindow DO_CAM_window;
+        }
+        ///删除DO_CAM_window 再打开 SYXZ Window//
+            global proc delete_UI_DO_CAM_window_SYXZWINDOW(){
+                deleteUI -window DO_CAM_window;
+                SYXZ;
+            } 
+
+
+
+//////// DO POSE  ////////////////////             
+    /////////做POSE 窗口/////////////
+        global proc  DO_POSE_window(){
+            if(`window -exists SYXZ_Master_Window`){deleteUI -window SYXZ_Master_Window;}
+            if(`window -exists syxzwindow`){deleteUI -window syxzwindow;}
+            if(`window -exists DO_POSE_window`){deleteUI -window DO_POSE_window;}
+
+                window -t "To DO POSE"  -s 0 DO_POSE_window;columnLayout -adj 1;
+                rowColumnLayout -adjustableColumn true -w 350 -ca;
+
+                frameLayout  -l "选择最终输出格式 EXR or PNG" -cll 0 -mh 5 -w 500 -h 55 -bgc 0.5 0 1;
+                        rowColumnLayout -numberOfColumns 3 -columnWidth 1 180 -columnWidth 2 180 ;
+                        radioCollection;
+                        radioButton -l "     输出格式_EXR(默认)" -h 30 -bgc 0 0.551 1 -cc "int $Export_sth = 1"; //okk
+                        radioButton -l "     输出格式_PNG" -h 30 -bgc 1 0.5 0.6 -cc "int $Export_sth = 2"; //okk
+                        setParent ..;
+                        setParent ..;
+                    text -w 10 -h 18 -l " ";
+
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                button -l "选择模型和灯光" -bgc 0.539 0.873 0.928 -w 350 -h 30 -c "sel_obj"; //ok
+                        setParent ..;
+     
+                text -w 10  -h 30 -l "Creat ID";
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "1_创建红色ID" -bgc 0.32 0 0 -w 110 -h 30 -ann "选择物体创建为红色ID" -c "Cs_Red_ID" ; //ok
+                        button -l "1_创建绿色ID" -bgc 0 0.32 0 -w 110 -h 30 -ann "选择物体创建为绿色ID" -c "Cs_Green_ID" ; //ok
+                        button -l "1_创建蓝色ID" -bgc 0 0 0.32 -w 110 -h 30 -ann "选择物体创建为蓝色ID"  -c "Cs_Blue_ID" ; //ok
+                        setParent ..;   
+
+                text -w 10  -h 30 -l "DO_POSE 4K";
+                rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
+                        button -l "2_角色打组" -bgc 1 0.65 0.13 -w 100 -h 30 -ann "角色打组 Character_Group" -c "Creat_Char_Group"; //ok
+                        button -l "3_一键起飞 2017 4K" -bgc 0 1 1 -w 120 -h 30 -c "Do_pose_2_to_do_sth_2017_4K" 
+                        -ann "选择char Group创建Creat smooth+RS pose AOVs CS IDAovs ISOmaya2017+4K+Import cha lig" ;  //ok
+                        button -l "3_一键起飞 2019 4K" -bgc 0 1 1 -w 120 -h 30 -c "Do_pose_2_to_do_sth_2019_4K" 
+                        -ann "选择char Group创建Creat smooth+RS pose AOVs CS IDAovs ISOmaya2019+4K+Import cha lig" ;  //ok
+                        setParent ..;   
+                        setParent ..; 
+
+
+
+
+                text -w 10 -h 10 -l " "; 
+                button -l "返回SYXZ" -command ("delete_UI_DO_POSE_window_SYXZWINDOW") -w 350 -h 30 -bgc 0.087 0.872 0.548;
+
+                window -e  -w 300 -h 280 DO_POSE_window;
+                showWindow DO_POSE_window;
+        }
+        
+        ///删除DO_POSE_window 再打开 SYXZ Window//
+            global proc delete_UI_DO_POSE_window_SYXZWINDOW(){
+                deleteUI -window DO_POSE_window;
+                SYXZ;
+            } 
