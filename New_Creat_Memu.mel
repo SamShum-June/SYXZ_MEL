@@ -161,37 +161,37 @@
                         text -w 10 -h 10 -l "All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" 
                         -ann "手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs" ;
                         rowColumnLayout  -nr 1 -cs 1 5 -rowHeight 1 30;
-                        button -l "1_角色打组" -bgc 1 0.65 0.13 -w 180 -h 30 -ann "角色打组" -c "Creat_Char_Group"; //ok
-                        button -l "2_自动创建AOVs 和 ID" -bgc 0.5 0.547 1 -w 250 -h 30 -ann "自动创建AOVs 和 ID" -c "Auto_Aovs_ID"; //ok
+                        button -l "1_角色打组" -bgc 1 0.65 0.13 -w 180 -h 30 -ann "角色打组" -c "Creat_Char_Group"; //okk
+                        button -l "2_自动创建AOVs 和 ID" -bgc 0.5 0.547 1 -w 250 -h 30 -ann "自动创建AOVs 和 ID" -c "Auto_Aovs_ID_Export_sth"; //okk
                         setParent ..;
 
                         text -w 10  -h 10 -l "Auto Char ID 创建角色组后 手动选择角色创建ID" -ann "创建角色组后 手动选择角色创建ID"; 
                         rowColumnLayout  -nr 1  -cs 1 5 -rowHeight 1 30;                        
-                        button -l "1_选择角色自动创建ID" -bgc 0.572 0.394 1 -w 180 -h 30 -ann "选择角色自动创建ID" -c "SL_Char_Creat_ID";    //ok          
-                        button -l "2_自动创建AOVs" -bgc 0.5 0.547 1 -w 250 -h 30 -ann "自动创建AOVs" -c "Auto_Creat_AOVs";    //ok
+                        button -l "1_选择角色自动创建ID" -bgc 0.572 0.394 1 -w 180 -h 30 -ann "选择角色自动创建ID" -c "SL_Char_Creat_ID";    //okk          
+                        button -l "2_自动创建AOVs" -bgc 0.5 0.547 1 -w 250 -h 30 -ann "自动创建AOVs" -c "Auto_Creat_AOVs";    //okk
                         setParent ..;
                         setParent ..;  
 
                 frameLayout -w 150 -h 80 -bgc 0 0 0.134 -cll 0 -mh 5 -l "选择面单个模型上色可以用下面这个" ;
                         text -w 10  -h 10 -l "Custom SET ID 自定义设置ID" -ann "自定义设置ID";
                         rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
-                        button -l "1_创建ID的Aovs"  -bgc 0.5 0.547 1 -w 180 -h 30 -ann "创建ID的Aovs" -c "Cs_Char_IDAovs"; //ok
-                        button -l "2_选择物体创建为红色ID" -bgc 0.32 0 0 -w 150 -h 30 -ann "选择物体创建为红色ID" -c "Cs_Red_ID" ; //ok
-                        button -l "2_选择物体创建为绿色ID" -bgc 0 0.32 0 -w 150 -h 30 -ann "选择物体创建为绿色ID" -c "Cs_Green_ID" ; //ok
-                        button -l "2_选择物体创建为蓝色ID" -bgc 0 0 0.32 -w 150 -h 30 -ann "选择物体创建为蓝色ID"  -c "Cs_Blue_ID" ; //ok
+                        button -l "1_创建ID的Aovs"  -bgc 0.5 0.547 1 -w 180 -h 30 -ann "创建ID的Aovs" -c "Cs_Char_IDAovs"; //okk
+                        button -l "2_选择物体创建为红色ID" -bgc 0.32 0 0 -w 150 -h 30 -ann "选择物体创建为红色ID" -c "Cs_Red_ID" ; //okk
+                        button -l "2_选择物体创建为绿色ID" -bgc 0 0.32 0 -w 150 -h 30 -ann "选择物体创建为绿色ID" -c "Cs_Green_ID" ; //okk
+                        button -l "2_选择物体创建为蓝色ID" -bgc 0 0 0.32 -w 150 -h 30 -ann "选择物体创建为蓝色ID"  -c "Cs_Blue_ID" ; //okk
                         setParent ..;
                         setParent ..;
 
                 frameLayout -w 150 -h 120 -bgc 0 0 0.134  -cll 0 -mh 5 -l "手动创建场景 Aovs ID" ;
                         text -w 10 -h 10 -l "Cs Group Aovs ID 手动创建场景组 设置 Aovs" -ann "手动创建场景组 设置 Aovs"; 
                         rowColumnLayout -numberOfColumns 3 -columnWidth 1 200 -columnWidth 2 200 -columnWidth 3 200 -cs 1 5 -cs 3 5 -cs 2 5 ;
-                        button -l "1_场景打组" -bgc 1 0.65 0.13 -w 150 -h 30 -c "Creat_sen_Group"; //ok
-                        button -l "2_设置场景ID" -bgc 0.5 0.547 1 -w 150 -h 30 -ann "设置Aovs" -c "Sen_Aovs"; //ok
+                        button -l "1_场景打组" -bgc 1 0.65 0.13 -w 150 -h 30 -c "Creat_sen_Group"; //okk
+                        button -l "2_设置场景ID" -bgc 0.5 0.547 1 -w 150 -h 30 -ann "设置Aovs" -c "Sen_ID_Aovs"; //okk
                         setParent ..;
                         rowColumnLayout -numberOfColumns 3 -columnWidth 1 200 -columnWidth 2 200 -columnWidth 3 200 -cs 1 5 -cs 3 5 -cs 2 5 ;
-                        button -l "3_选择物体创建为红色ID" -bgc 0.32 0 0 -w 150 -h 30 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //ok
-                        button -l "3_选择物体创建为绿色ID" -bgc 0 0.32 0  -w 150 -h 30 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //ok
-                        button -l "3_选择物体创建为蓝色ID" -bgc 0 0 0.32 -w 150 -h 30 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //ok
+                        button -l "3_选择物体创建为红色ID" -bgc 0.32 0 0 -w 150 -h 30 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //okk
+                        button -l "3_选择物体创建为绿色ID" -bgc 0 0.32 0  -w 150 -h 30 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //okk
+                        button -l "3_选择物体创建为蓝色ID" -bgc 0 0 0.32 -w 150 -h 30 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //okk
                         setParent ..;
                         setParent ..;
 
@@ -231,22 +231,22 @@
                 frameLayout  -l "做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   
                 -w 500 -h 450 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
-                        button -l "0_SEL OBJ" -bgc 0.539 0.873 0.928 -w 500 -h 20 -c "sel_obj"; //ok
+                        button -l "0_选择模型和灯光" -bgc 0.539 0.873 0.928 -w 500 -h 20 -c "sel_obj"; //okk
                         setParent ..;   
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
                         text -w 80 -l "Creat Group:";
-                        button -l "1_Creat_Char_Group" -bgc 1 0.65 0.13 -w 160 -h 30 -ann "角色打组" -c "Creat_Char_Group";
-                        button -l "1_Sen_Group" -bgc 0 1 1 -w 160 -h 30 -c "Creat_sen_Group";  //ok
+                        button -l "1_角色打组" -bgc 1 0.65 0.13 -w 160 -h 30 -ann "角色打组" -c "Creat_Char_Group"; //okk
+                        button -l "1_Sen_Group" -bgc 0 1 1 -w 160 -h 30 -c "Creat_sen_Group";  //okk
                         setParent ..;
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;                 
                         text -w 60 -l "CS SEN ID:";
-                        button -l "2_SEN Red ID" -bgc 0.32 0 0 -w 130 -h 30 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //ok
-                        button -l "2_SEN Green ID" -bgc 0 0.32 0  -w 130 -h 30 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //ok
-                        button -l "2_SEN Blue ID" -bgc 0 0 0.32 -w 130 -h 30 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //ok
+                        button -l "2_SEN Red ID" -bgc 0.32 0 0 -w 130 -h 30 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //okk
+                        button -l "2_SEN Green ID" -bgc 0 0.32 0  -w 130 -h 30 -ann "选择物体创建为绿色ID"  -c "SEN_Green_ID"; //okk
+                        button -l "2_SEN Blue ID" -bgc 0 0 0.32 -w 130 -h 30 -ann "选择物体创建为蓝色ID"  -c "SEN_Blue_ID"; //okk
                         setParent ..;
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
                         text -w 150 -l "Set_Sen_CHA_AOVsID:";
-                        button -l "3_Set_Sen_CHA_AOVsID" -bgc 0.442 1 0 -w 140 -h 30 -c "Set_Sen_CHA_ID";   //ok
+                        button -l "3_Set_Sen_CHA_AOVsID" -bgc 0.442 1 0 -w 140 -h 30 -c "Set_Sen_CHA_AOVsID";   //okk
 
                         setParent ..;
 
@@ -323,7 +323,7 @@
                     text -w 10 -h 18 -l " ";
 
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
-                button -l "选择模型和灯光" -bgc 0.539 0.873 0.928 -w 350 -h 30 -c "sel_obj"; //ok
+                button -l "选择模型和灯光" -bgc 0.539 0.873 0.928 -w 350 -h 30 -c "sel_obj"; //okk
                         setParent ..;
      
                 text -w 10  -h 30 -l "Creat ID";
@@ -335,7 +335,7 @@
 
                 text -w 10  -h 30 -l "DO_POSE 4K";
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
-                        button -l "2_角色打组" -bgc 1 0.65 0.13 -w 100 -h 30 -ann "角色打组 Character_Group" -c "Creat_Char_Group"; //ok
+                        button -l "2_角色打组" -bgc 1 0.65 0.13 -w 100 -h 30 -ann "角色打组 Character_Group" -c "Creat_Char_Group"; //okk
                         button -l "3_一键起飞 2017 4K" -bgc 0 1 1 -w 120 -h 30 -c "Do_pose_2_to_do_sth_2017_4K" 
                         -ann "选择char Group创建Creat smooth+RS pose AOVs CS IDAovs ISOmaya2017+4K+Import cha lig" ;  //ok
                         button -l "3_一键起飞 2019 4K" -bgc 0 1 1 -w 120 -h 30 -c "Do_pose_2_to_do_sth_2019_4K" 

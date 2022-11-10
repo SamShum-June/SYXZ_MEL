@@ -711,889 +711,1397 @@
                 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////////// All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs /////////////////////////////////
-    // 1_Creat_Char_Group ////////
-        global proc Creat_Char_Group(){
-            $LsSelectionrenderlayer = `editRenderLayerGlobals -q  -currentRenderLayer`;
-            if ($LsSelectionrenderlayer!="defaultRenderLayer")
-            {
-            editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
-            }
-
-            string $char_1[] =`ls -sl`;
-
-            if(!`objExists "Character_Group"`){
-                select -cl; 
-                CreateLocator;
-                rename (`ls -sl`) "Character_Group";
-                select -cl;
-                CreateLocator;
-                rename (`ls -sl`) "Transparent_Group"; 
-                select -cl;
-                CreateLocator;
-                rename (`ls -sl`) "Cha_nor_Group";
-                select -r Transparent_Group Cha_nor_Group;
-                select -add Character_Group ;
-                parent;    
-            }
-
-            select -cl;
-            CreateLocator ;
-            rename (`ls -sl`) "Char_G_yiyi";
-            select -r Char_G_yiyi ;
-            select -add Cha_nor_Group ;
-            parent;
-            select -r $char_1;
-            select -add Char_G_yiyi ;
-            parent;
-
-            select -r Char_G_yiyi ;
-            addAttr -ln "CharId"  -at double  -min 0 -max 100 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
-            setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharId;
-            addAttr -ln "CharIdCheck"  -at double  -min 0 -max 1 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
-            setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharIdCheck;
-            rename "Char_G_yiyi" "Char_G1";
-        }
-
-
-
-
-    // 2_Auto Aovs ID Export_sth ///////////
-        //创建AOV_RGB层
-
-            global proc Auto_Aovs_ID_Export_sth(){
-
-                //自动根据新增属性给角色建id (只修改属性为0的)
-                createChaId_id();
-
-                //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
-                checkchaID_and_create_id();
-
-                deleteRGBDisplayLayer();
-
-                //改id名字和数值
-                RS_changeObjidName();
-
-                //放在rgb建ID后，给角色打组一个属性编号，重复多次，防止有些更改了id数值，角色组的名字编号跟不回
-                give_ChaId_id_num();
-                give_ChaId_id_num();
-                give_ChaId_id_num();
-                give_ChaId_id_num();
-                give_ChaId_id_num();
-                give_ChaId_id_num();
-
-                //AOV中创建RGB层，并删除没用的RGB
-                RS_AOV_RGB_createAndDelete_Export_sth();
-
-                createRGBDisplayLayer();
-
-                //CharIdCheck全部归0
-                checkchaID000();
-
-                //选择物体增加圆滑节点
-                smoothNode_auto_pro();
-
-            }
-
-
-        //AOV中创建RGB层，并删除没用的RGB   Export_sth
-            global proc RS_AOV_RGB_createAndDelete_Export_sth(){
-                string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
-                string $OBJnumin2 ;
-                for($OBJnumin2 in $OBJnum)
+/////////// Optimize and Creat ID Aovs SET 整理和创建ID Aovs /////////////////
+    //////////// All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs /////////////////////////////////
+        // 1_Creat_Char_Group ////////
+            global proc Creat_Char_Group(){
+                $LsSelectionrenderlayer = `editRenderLayerGlobals -q  -currentRenderLayer`;
+                if ($LsSelectionrenderlayer!="defaultRenderLayer")
                 {
-                    int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`;   
-                    if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1(); }
-                    if ( ($objIDnumID > 3) && ($objIDnumID <= 6)){ RS_ConditionCreateAOV_RGB2(); }
-                    if ( ($objIDnumID > 6) && ($objIDnumID <= 9)){ RS_ConditionCreateAOV_RGB3(); }
-                    if ( ($objIDnumID > 9) && ($objIDnumID <= 12)){ RS_ConditionCreateAOV_RGB4(); }
-                    if ( ($objIDnumID > 12) && ($objIDnumID <= 15)){ RS_ConditionCreateAOV_RGB5(); }
-                    if ( ($objIDnumID > 15) && ($objIDnumID <= 18)){ RS_ConditionCreateAOV_RGB6(); }
-                    if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7(); }
+                editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+                }
+
+                string $char_1[] =`ls -sl`;
+
+                if(!`objExists "Character_Group"`){
+                    select -cl; 
+                    CreateLocator;
+                    rename (`ls -sl`) "Character_Group";
+                    select -cl;
+                    CreateLocator;
+                    rename (`ls -sl`) "Transparent_Group"; 
+                    select -cl;
+                    CreateLocator;
+                    rename (`ls -sl`) "Cha_nor_Group";
+                    select -r Transparent_Group Cha_nor_Group;
+                    select -add Character_Group ;
+                    parent;    
+                }
+
+                select -cl;
+                CreateLocator ;
+                rename (`ls -sl`) "Char_G_yiyi";
+                select -r Char_G_yiyi ;
+                select -add Cha_nor_Group ;
+                parent;
+                select -r $char_1;
+                select -add Char_G_yiyi ;
+                parent;
+
+                select -r Char_G_yiyi ;
+                addAttr -ln "CharId"  -at double  -min 0 -max 100 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+                setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharId;
+                addAttr -ln "CharIdCheck"  -at double  -min 0 -max 1 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+                setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharIdCheck;
+                rename "Char_G_yiyi" "Char_G1";
+            }
+
+
+
+
+        // 2_Auto Aovs ID Export_sth ///////////
+            //创建AOV_RGB层
+
+                global proc Auto_Aovs_ID_Export_sth(){
+
+                    //自动根据新增属性给角色建id (只修改属性为0的)
+                    createChaId_id();
+
+                    //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
+                    checkchaID_and_create_id();
+
+                    deleteRGBDisplayLayer();
+
+                    //改id名字和数值
+                    RS_changeObjidName();
+
+                    //放在rgb建ID后，给角色打组一个属性编号，重复多次，防止有些更改了id数值，角色组的名字编号跟不回
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+
+                    //AOV中创建RGB层，并删除没用的RGB
+                    RS_AOV_RGB_createAndDelete_Export_sth();
+
+                    createRGBDisplayLayer();
+
+                    //CharIdCheck全部归0
+                    checkchaID000();
+
+                    //选择物体增加圆滑节点
+                    smoothNode_auto_pro();
+
+                }
+
+
+            //AOV中创建RGB层，并删除没用的RGB   Export_sth
+                global proc RS_AOV_RGB_createAndDelete_Export_sth(){
+                    string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
+                    string $OBJnumin2 ;
+                    for($OBJnumin2 in $OBJnum)
+                    {
+                        int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`;   
+                        if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1(); }
+                        if ( ($objIDnumID > 3) && ($objIDnumID <= 6)){ RS_ConditionCreateAOV_RGB2(); }
+                        if ( ($objIDnumID > 6) && ($objIDnumID <= 9)){ RS_ConditionCreateAOV_RGB3(); }
+                        if ( ($objIDnumID > 9) && ($objIDnumID <= 12)){ RS_ConditionCreateAOV_RGB4(); }
+                        if ( ($objIDnumID > 12) && ($objIDnumID <= 15)){ RS_ConditionCreateAOV_RGB5(); }
+                        if ( ($objIDnumID > 15) && ($objIDnumID <= 18)){ RS_ConditionCreateAOV_RGB6(); }
+                        if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7(); }
+                    }
+                    
+                    if (`objExists RGB1`){
+                        if (!`objExists RGB1_R1`){
+                            if (!`objExists RGB1_G2`){
+                                if (!`objExists RGB1_B3`){
+                                    delete RGB1;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB2`){
+                        if (!`objExists RGB2_R4`){
+                            if (!`objExists RGB2_G5`){
+                                if (!`objExists RGB2_B6`){
+                                    delete RGB2;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB3`){
+                        if (!`objExists RGB3_R7`){
+                            if (!`objExists RGB3_G8`){
+                                if (!`objExists RGB3_B9`){
+                                    delete RGB3;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB4`){
+                        if (!`objExists RGB4_R10`){
+                            if (!`objExists RGB4_G11`){
+                                if (!`objExists RGB4_B12`){
+                                    delete RGB4;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB5`){
+                        if (!`objExists RGB5_R13`){
+                            if (!`objExists RGB5_G14`){
+                                if (!`objExists RGB5_B15`){
+                                    delete RGB5;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB6`){
+                        if (!`objExists RGB6_R16`){
+                            if (!`objExists RGB6_G17`){
+                                if (!`objExists RGB6_B18`){
+                                    delete RGB6;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB7`){
+                        if (!`objExists RGB7_R19`){
+                            if (!`objExists RGB7_G20`){
+                                if (!`objExists RGB7_B21`){
+                                    delete RGB7;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            //不存在的情况下创建RGB1
+                global proc RS_ConditionCreateAOV_RGB1(){
+                    string $AOVall1[] = `ls -typ "RedshiftAOV"`;
+                    int $B1 = 0;
+                    for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
+                    { 
+                    if ($AOVall1[$q1] == "RGB1"){
+                        setAttr ($AOVall1[$q1]+".enabled") 0;
+                        $B1 = $B1+1;
+                    }
+                    }
+                    if($B1 == 0)
+                    {
+                        RS_createAOV_RGB1();
+                    }
+                }
+
+            //不存在的情况下创建RGB2
+                global proc RS_ConditionCreateAOV_RGB2(){
+                    string $AOVall2[] = `ls -typ "RedshiftAOV"`;
+                    int $B2 = 0;
+                    for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
+                    { 
+                    if ($AOVall2[$q2] == "RGB2"){
+                        setAttr ($AOVall2[$q2]+".enabled") 0;
+                        $B2 = $B2+1;
+                    }
+                    }
+                    if($B2 == 0)
+                    {
+                        RS_createAOV_RGB2();
+                    }
+                }
+
+            //不存在的情况下创建RGB3
+                global proc RS_ConditionCreateAOV_RGB3(){
+                    string $AOVall3[] = `ls -typ "RedshiftAOV"`;
+                    int $B3 = 0;
+                    for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
+                    { 
+                    if ($AOVall3[$q3] == "RGB3"){
+                        setAttr ($AOVall3[$q3]+".enabled") 0;
+                        $B3 = $B3+1;
+                    }
+                    }
+                    if($B3 == 0)
+                    {
+                        RS_createAOV_RGB3();
+                    }
+                }
+
+            //不存在的情况下创建RGB4
+                global proc RS_ConditionCreateAOV_RGB4(){
+                    string $AOVall4[] = `ls -typ "RedshiftAOV"`;
+                    int $B4 = 0;
+                    for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
+                    { 
+                    if ($AOVall4[$q4] == "RGB4"){
+                        setAttr ($AOVall4[$q4]+".enabled") 0;
+                        $B4 = $B4+1;
+                    }
+                    }
+                    if($B4 == 0)
+                    {
+                        RS_createAOV_RGB4();
+                    }
+                }
+
+            //不存在的情况下创建RGB5
+                global proc RS_ConditionCreateAOV_RGB5(){
+                    string $AOVall5[] = `ls -typ "RedshiftAOV"`;
+                    int $B5 = 0;
+                    for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
+                    { 
+                    if ($AOVall5[$q5] == "RGB5"){
+                        setAttr ($AOVall5[$q5]+".enabled") 0;
+                        $B5 = $B5+1;
+                    }
+                    }
+                    if($B5 == 0)
+                    {
+                        RS_createAOV_RGB5();
+                    }
+                }
+
+            //不存在的情况下创建RGB6
+                global proc RS_ConditionCreateAOV_RGB6(){
+                    string $AOVall6[] = `ls -typ "RedshiftAOV"`;
+                    int $B6 = 0;
+                    for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
+                    { 
+                    if ($AOVall6[$q6] == "RGB6"){
+                        setAttr ($AOVall6[$q6]+".enabled") 0;
+                        $B6 = $B6+1;
+                    }
+                    }
+                    if($B6 == 0)
+                    {
+                        RS_createAOV_RGB6();
+                    }
+                }
+
+            //不存在的情况下创建RGB7
+                global proc RS_ConditionCreateAOV_RGB7(){
+                    string $AOVall7[] = `ls -typ "RedshiftAOV"`;
+                    int $B7 = 0;
+                    for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
+                    { 
+                    if ($AOVall7[$q7] == "RGB7"){
+                        setAttr ($AOVall7[$q7]+".enabled") 0;
+                        $B7 = $B7+1;
+                    }
+                    }
+                    if($B7 == 0)
+                    {
+                        RS_createAOV_RGB7();
+                    }
+                }
+
+            //创建AOV_RGB1
+                global proc RS_createAOV_RGB1(){
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB1.name "RGB1";
+                    setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB1.dataType" 2;
+                    setAttr "RGB1.fileFormat" $Export_sth;
+                    setAttr "RGB1.exrBits" 32;
+                    setAttr "RGB1.mode" 1;
+                    setAttr "RGB1.redId" 1;
+                    setAttr "RGB1.greenId" 2;
+                    setAttr "RGB1.blueId" 3;
+                    setAttr "RGB1.enabled" 0;
+                    print ("RGB1"+"\n");
+                }
+
+            //创建AOV_RGB2
+                global proc RS_createAOV_RGB2(){
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB2.name "RGB2";
+                    setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB2.dataType" 2;
+                    setAttr "RGB2.fileFormat" $Export_sth;
+                    setAttr "RGB2.exrBits" 32;
+                    setAttr "RGB2.mode" 1;
+                    setAttr "RGB2.redId" 4;
+                    setAttr "RGB2.greenId" 5;
+                    setAttr "RGB2.blueId" 6;
+                    setAttr "RGB2.enabled" 0;
+                    print ("RGB2"+"\n");
+                }
+
+            //创建AOV_RGB3
+                global proc RS_createAOV_RGB3(){
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB3.name "RGB3";
+                    setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB3.dataType" 2;
+                    setAttr "RGB3.fileFormat" $Export_sth;
+                    setAttr "RGB3.exrBits" 32;
+                    setAttr "RGB3.mode" 1;
+                    setAttr "RGB3.redId" 7;
+                    setAttr "RGB3.greenId" 8;
+                    setAttr "RGB3.blueId" 9;
+                    setAttr "RGB3.enabled" 0;
+                    print ("RGB3"+"\n");
+                }
+
+            //创建AOV_RGB4
+                global proc RS_createAOV_RGB4(){
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB4.name "RGB4";
+                    setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB4.dataType" 2;
+                    setAttr "RGB4.fileFormat" $Export_sth;
+                    setAttr "RGB4.exrBits" 32;
+                    setAttr "RGB4.mode" 1;
+                    setAttr "RGB4.redId" 10;
+                    setAttr "RGB4.greenId" 11;
+                    setAttr "RGB4.blueId" 12;
+                    setAttr "RGB4.enabled" 0;
+                    print ("RGB4"+"\n");
+                }
+
+
+            //创建AOV_RGB5
+                global proc RS_createAOV_RGB5(){
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB5.name "RGB5";
+                    setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB5.dataType" 2;
+                    setAttr "RGB5.fileFormat" $Export_sth;
+                    setAttr "RGB5.exrBits" 32;
+                    setAttr "RGB5.mode" 1;
+                    setAttr "RGB5.redId" 13;
+                    setAttr "RGB5.greenId" 14;
+                    setAttr "RGB5.blueId" 15;
+                    setAttr "RGB5.enabled" 0;
+                    print ("RGB5"+"\n");
+                }
+
+
+            //创建AOV_RGB6
+                global proc RS_createAOV_RGB6(){
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB6.name "RGB6";
+                    setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB6.dataType" 2;
+                    setAttr "RGB6.fileFormat" $Export_sth;
+                    setAttr "RGB6.exrBits" 32;
+                    setAttr "RGB6.mode" 1;
+                    setAttr "RGB6.redId" 16;
+                    setAttr "RGB6.greenId" 17;
+                    setAttr "RGB6.blueId" 18;
+                    setAttr "RGB6.enabled" 0;
+                    print ("RGB6"+"\n");
+                }
+
+
+            //创建AOV_RGB7
+                global proc RS_createAOV_RGB7(){
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB7.name "RGB7";
+                    setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB7.dataType" 2;
+                    setAttr "RGB7.fileFormat" $Export_sth;
+                    setAttr "RGB7.exrBits" 32;
+                    setAttr "RGB7.mode" 1;
+                    setAttr "RGB7.redId" 19;
+                    setAttr "RGB7.greenId" 20;
+                    setAttr "RGB7.blueId" 21;
+                    setAttr "RGB7.enabled" 0;
+                    print ("RGB7"+"\n");
+                }
+
+        //////////////////////////////////////////////////////////
+
+        //共用
+        //创建ID
+            //自动根据新增属性给角色建id (只修改属性为0的)
+                global proc createChaId_id(){
+                    string $transf_all[] = `ls -typ "transform"`;
+                    string $transf_allin ;
+                    for ($transf_allin in $transf_all){
+                        if (`objExists ($transf_allin +".CharId")`){
+                            int $cha_G_id_num =`getAttr ($transf_allin +".CharId")`;
+                            if ($cha_G_id_num == 0){
+                                    select -r $transf_allin;
+                                    redshiftCreateObjectIdNode();
+                                }
+                            }
+                    }
+                }
+
+            //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
+                global proc checkchaID_and_create_id(){
+                    string $id_all[] = `ls -typ "RedshiftObjectId"`;
+                    string $id_allin;
+                    for ($id_allin in $id_all){
+                        int $id_numin1 = `getAttr ($id_allin+".objectId")`;
+                        if ($id_numin1 > 0){
+                            if ($id_numin1 <= 21){
+                                select -r -ne $id_allin ;
+                                pickWalk -d up;
+                                string $cha_G_locator[] =`ls -sl`;
+                                string $cha_G_locatorin;
+                                for ($cha_G_locatorin in $cha_G_locator){
+                                if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
+                                        setAttr ($cha_G_locatorin+".CharIdCheck") 1;                    
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    string $transf_alla[] = `ls -typ "transform"`;
+                    string $transf_allain ;
+                    for ($transf_allain in $transf_alla){
+                        if (`objExists ($transf_allain +".CharIdCheck")`){
+                            int $cha_G_CharIdCheck_num =`getAttr ($transf_allain +".CharIdCheck")`;
+                            if ($cha_G_CharIdCheck_num == 0){
+                                    select -r $transf_allain;
+                                    redshiftCreateObjectIdNode();
+                                }
+                            }
+                    }
+                }
+
+
+            //删掉RGB display分组 
+                global proc deleteRGBDisplayLayer(){ 
+                    string $RGBdisplaylayer[]=`ls -type displayLayer`;
+                    for($i=0;$i<`size($RGBdisplaylayer)`;$i+=1)
+                    {
+                        string $colorornot = `getAttr ($RGBdisplaylayer[$i]+".overrideRGBColors")`;
+                        if($colorornot != 0){
+                            if(`match "RGB" $RGBdisplaylayer[$i]` == "RGB"){
+                                layerEditorDeleteLayer $RGBdisplaylayer[$i];
+                    } 
+                    }  
+                    }
+                }
+
+            //改id名字和数值
+                global proc RS_changeObjidName(){
+                    string $OBJIDallG[] = `ls -typ "RedshiftObjectId"`;
+                    select -r -ne $OBJIDallG ;
+                    string $OBJIDall_G[] =`ls -sl`;
+                    string $OBJIDall_Gin;
+                    for ($OBJIDall_Gin in $OBJIDall_G){
+                        int $OBJIDall_Gin_ID =`getAttr ($OBJIDall_Gin+".objectId")`;
+                        if ($OBJIDall_Gin_ID >= 22){
+                            select -d -ne $OBJIDall_Gin ;
+                        }
+                        }
+                    string $OBJnum[] =`ls -sl`;
+                    select -r -ne $OBJnum ;
+                    string $rsobjIDall1[] =`ls -sl`;
+                    string $OBJnumin;
+                    for ($OBJnumin in $rsobjIDall1){
+                        int $idnum11 =`getAttr ($OBJnumin+".objectId")`;
+                        if ($idnum11 != 0){
+                            select -d -ne $OBJnumin ;
+                        }
+                        if ($idnum11 == 1){ rename $OBJnumin "chatool_id1";}
+                        if ($idnum11 == 2){ rename $OBJnumin "chatool_id2"; }
+                        if ($idnum11 == 3){ rename $OBJnumin "chatool_id3";}
+                        if ($idnum11 == 4){ rename $OBJnumin "chatool_id4"; }
+                        if ($idnum11 == 5){ rename $OBJnumin "chatool_id5";}
+                        if ($idnum11 == 6){ rename $OBJnumin "chatool_id6";}
+                        if ($idnum11 == 7){ rename $OBJnumin "chatool_id7";}
+                        if ($idnum11 == 8){ rename $OBJnumin "chatool_id8";}
+                        if ($idnum11 == 9){ rename $OBJnumin "chatool_id9";}
+                        if ($idnum11 == 10){ rename $OBJnumin "chatool_id10";}
+                        if ($idnum11 == 11){ rename $OBJnumin "chatool_id11";}
+                        if ($idnum11 == 12){ rename $OBJnumin "chatool_id12";}
+                        if ($idnum11 == 13){ rename $OBJnumin "chatool_id13";}
+                        if ($idnum11 == 14){ rename $OBJnumin "chatool_id14";}
+                        if ($idnum11 == 15){ rename $OBJnumin "chatool_id15";}
+                        if ($idnum11 == 16){ rename $OBJnumin "chatool_id16";}
+                        if ($idnum11 == 17){ rename $OBJnumin "chatool_id17";}
+                        if ($idnum11 == 18){ rename $OBJnumin "chatool_id18";}
+                        if ($idnum11 == 19){ rename $OBJnumin "chatool_id19";} 
+                        if ($idnum11 == 20){ rename $OBJnumin "chatool_id20";} 
+                        if ($idnum11 == 21){ rename $OBJnumin "chatool_id21";} 
+                    }
+
+                    string $rsobjIDnoID[]=`ls -sl`;
+                    int $rsobjIDnoIDGS = `size $rsobjIDnoID`;
+                    for($i=0;$i<`size($rsobjIDnoID)`;$i+=1)
+                    { 
+                        if(!`objExists ("chatool_id"+($i+1))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+1);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+1));    
+                        }
+                        else if(!`objExists ("chatool_id"+($i+2))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+2);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+2));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+3))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+3);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+3));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+4))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+4);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+4));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+5))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+5);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+5));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+6))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+6);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+6));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+7))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+7);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+7));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+8))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+8);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+8));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+9))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+9);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+9));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+10))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+10);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+10));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+11))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+11);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+11));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+12))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+12);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+12));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+13))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+13);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+13));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+14))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+14);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+14));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+15))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+15);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+15));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+16))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+16);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+16));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+17))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+17);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+17));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+18))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+18);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+18));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+19))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+19);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+19));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+20))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+20);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+20));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+21))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+21);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+21));
+                        }
+                        }
+                        
+                        
+                            
+                        string $OBJnum1[] = `ls -typ "RedshiftObjectId"`;
+                        string $rsobjIDnoID11;
+                        for ($rsobjIDnoID11 in $OBJnum1) { 
+                        int $objidnum =`getAttr ($rsobjIDnoID11+".objectId")`;
+                        if ($objidnum == 1){ rename $rsobjIDnoID11 "RGB1_R1"; }
+                        if ($objidnum == 2){ rename $rsobjIDnoID11 "RGB1_G2"; }
+                        if ($objidnum == 3){ rename $rsobjIDnoID11 "RGB1_B3"; }
+                        if ($objidnum == 4){ rename $rsobjIDnoID11 "RGB2_R4"; }
+                        if ($objidnum == 5){ rename $rsobjIDnoID11 "RGB2_G5"; }
+                        if ($objidnum == 6){ rename $rsobjIDnoID11 "RGB2_B6"; }
+                        if ($objidnum == 7){ rename $rsobjIDnoID11 "RGB3_R7"; }
+                        if ($objidnum == 8){ rename $rsobjIDnoID11 "RGB3_G8"; }
+                        if ($objidnum == 9){ rename $rsobjIDnoID11 "RGB3_B9"; }
+                        if ($objidnum == 10){ rename $rsobjIDnoID11 "RGB4_R10"; }
+                        if ($objidnum == 11){ rename $rsobjIDnoID11 "RGB4_G11"; }
+                        if ($objidnum == 12){ rename $rsobjIDnoID11 "RGB4_B12"; }
+                        if ($objidnum == 13){ rename $rsobjIDnoID11 "RGB5_R13"; }
+                        if ($objidnum == 14){ rename $rsobjIDnoID11 "RGB5_G14"; }
+                        if ($objidnum == 15){ rename $rsobjIDnoID11 "RGB5_B15"; }
+                        if ($objidnum == 16){ rename $rsobjIDnoID11 "RGB6_R16"; }
+                        if ($objidnum == 17){ rename $rsobjIDnoID11 "RGB6_G17"; }
+                        if ($objidnum == 18){ rename $rsobjIDnoID11 "RGB6_B18"; }
+                        if ($objidnum == 19){ rename $rsobjIDnoID11 "RGB7_R19"; }
+                        if ($objidnum == 20){ rename $rsobjIDnoID11 "RGB7_G20"; }
+                        if ($objidnum == 21){ rename $rsobjIDnoID11 "RGB7_B21"; }
+                        
+                    }
+                }
+
+            //放在rgb建ID后，给角色打组一个属性编号
+                global proc give_ChaId_id_num(){
+                    string $id_all[] = `ls -typ "RedshiftObjectId"`;
+                    string $id_allin;
+                    for ($id_allin in $id_all){
+                        int $id_numin1 = `getAttr ($id_allin+".objectId")`;
+                        if ($id_numin1 > 0){
+                            if ($id_numin1 <= 21){
+                                select -r -ne $id_allin ;
+                                pickWalk -d up;
+                                string $cha_G_locator[] =`ls -sl`;
+                                string $cha_G_locatorin;
+                                for ($cha_G_locatorin in $cha_G_locator){
+                                if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
+                                        setAttr ($cha_G_locatorin+".CharId") $id_numin1;
+                                        rename ($cha_G_locatorin) ("Char_G"+$id_numin1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+            //创建RGBdisplaylayer
+                global proc createRGBDisplayLayer(){ 
+
+                    string $RGB_RSobjid[]=`ls -type RedshiftObjectId`;
+                    string $RGB_RSobjidin;
+                    for ($RGB_RSobjidin in $RGB_RSobjid){
+                        if($RGB_RSobjidin =="RGB1_R1"){
+                            select -r -ne RGB1_R1 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB1_R1_g" -number 1 -nr;
+                            setAttr RGB1_R1_g.displayType 0; setAttr RGB1_R1_g.color 0; setAttr RGB1_R1_g.overrideColorRGB 1 0 0; setAttr RGB1_R1_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB1_G2"){
+                            select -r -ne RGB1_G2 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB1_G2_g" -number 1 -nr;
+                            setAttr RGB1_G2_g.displayType 0; setAttr RGB1_G2_g.color 0; setAttr RGB1_G2_g.overrideColorRGB 0 1 0; setAttr RGB1_G2_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB1_B3"){
+                            select -r -ne RGB1_B3 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB1_B3_g" -number 1 -nr;
+                            setAttr RGB1_B3_g.displayType 0; setAttr RGB1_B3_g.color 0; setAttr RGB1_B3_g.overrideColorRGB 0 0 1; setAttr RGB1_B3_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB2_R4"){
+                            select -r -ne RGB2_R4 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB2_R4_g" -number 1 -nr;
+                            setAttr RGB2_R4_g.displayType 0; setAttr RGB2_R4_g.color 0; setAttr RGB2_R4_g.overrideColorRGB 0.5 0 0; setAttr RGB2_R4_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB2_G5"){
+                            select -r -ne RGB2_G5 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB2_G5_g" -number 1 -nr;
+                            setAttr RGB2_G5_g.displayType 0; setAttr RGB2_G5_g.color 0; setAttr RGB2_G5_g.overrideColorRGB 0 0.5 0; setAttr RGB2_G5_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB2_B6"){
+                            select -r -ne RGB2_B6 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB2_B6_g" -number 1 -nr;
+                            setAttr RGB2_B6_g.displayType 0; setAttr RGB2_B6_g.color 0; setAttr RGB2_B6_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB2_B6_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB3_R7"){
+                            select -r -ne RGB3_R7 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB3_R7_g" -number 1 -nr;
+                            setAttr RGB3_R7_g.displayType 0; setAttr RGB3_R7_g.color 0; setAttr RGB3_R7_g.overrideColorRGB 1 0.5 0.5; setAttr RGB3_R7_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB3_G8"){
+                            select -r -ne RGB3_G8 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB3_G8_g" -number 1 -nr;
+                            setAttr RGB3_G8_g.displayType 0; setAttr RGB3_G8_g.color 0; setAttr RGB3_G8_g.overrideColorRGB 0.5 1 0.5; setAttr RGB3_G8_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB3_B9"){
+                            select -r -ne RGB3_B9 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB3_B9_g" -number 1 -nr;
+                            setAttr RGB3_B9_g.displayType 0; setAttr RGB3_B9_g.color 0; setAttr RGB3_B9_g.overrideColorRGB 0.2049999833 0.74644804 1; setAttr RGB3_B9_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB4_R10"){
+                            select -r -ne RGB4_R10 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB4_R10_g" -number 1 -nr;
+                            setAttr RGB4_R10_g.displayType 0; setAttr RGB4_R10_g.color 0; setAttr RGB4_R10_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB4_R10_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB4_G11"){
+                            select -r -ne RGB4_G11 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB4_G11_g" -number 1 -nr;
+                            setAttr RGB4_G11_g.displayType 0; setAttr RGB4_G11_g.color 0; setAttr RGB4_G11_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB4_G11_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB4_B12"){
+                            select -r -ne RGB4_B12 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB4_B12_g" -number 1 -nr;
+                            setAttr RGB4_B12_g.displayType 0; setAttr RGB4_B12_g.color 0; setAttr RGB4_B12_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB4_B12_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB5_R13"){
+                            select -r -ne RGB5_R13 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB5_R13_g" -number 1 -nr;
+                            setAttr RGB5_R13_g.displayType 0; setAttr RGB5_R13_g.color 0; setAttr RGB5_R13_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB5_R13_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB5_G14"){
+                            select -r -ne RGB5_G14 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB5_G14_g" -number 1 -nr;
+                            setAttr RGB5_G14_g.displayType 0; setAttr RGB5_G14_g.color 0; setAttr RGB5_G14_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB5_G14_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB5_B15"){
+                            select -r -ne RGB5_B15 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB5_B15_g" -number 1 -nr;
+                            setAttr RGB5_B15_g.displayType 0; setAttr RGB5_B15_g.color 0; setAttr RGB5_B15_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB5_B15_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB6_R16"){
+                            select -r -ne RGB6_R16 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB6_R16_g" -number 1 -nr;
+                            setAttr RGB6_R16_g.displayType 0; setAttr RGB6_R16_g.color 0; setAttr RGB6_R16_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB6_R16_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB6_G17"){
+                            select -r -ne RGB6_G17 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB6_G17_g" -number 1 -nr;
+                            setAttr RGB6_G17_g.displayType 0; setAttr RGB6_G17_g.color 0; setAttr RGB6_G17_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB6_G17_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB6_B18"){
+                            select -r -ne RGB6_B18 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB6_B18_g" -number 1 -nr;
+                            setAttr RGB6_B18_g.displayType 0; setAttr RGB6_B18_g.color 0; setAttr RGB6_B18_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB6_B18_g.overrideRGBColors 1; 
+                    }
+                    }
+                        if($RGB_RSobjidin =="RGB7_R19"){
+                            select -r -ne RGB7_R19 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB7_R19_g" -number 1 -nr;
+                            setAttr RGB7_R19_g.displayType 0; setAttr RGB7_R19_g.color 0; setAttr RGB7_R19_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB7_R19_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB7_G20"){
+                            select -r -ne RGB7_G20 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB7_G20_g" -number 1 -nr;
+                            setAttr RGB7_G20_g.displayType 0; setAttr RGB7_G20_g.color 0; setAttr RGB7_G20_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB7_G20_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB7_B21"){
+                            select -r -ne RGB7_B21 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB7_B21_g" -number 1 -nr;
+                            setAttr RGB7_B21_g.displayType 0; setAttr RGB7_B21_g.color 0; setAttr RGB7_B21_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB7_B21_g.overrideRGBColors 1; 
+                    }
                 }
                 
-                if (`objExists RGB1`){
-                    if (!`objExists RGB1_R1`){
-                        if (!`objExists RGB1_G2`){
-                            if (!`objExists RGB1_B3`){
-                                delete RGB1;
+
+            //CharIdCheck全部归0
+                    global proc checkchaID000(){
+                        string $transf_allb[] = `ls -typ "transform"`;
+                        string $transf_allbin ;
+                        for ($transf_allbin in $transf_allb){
+                        if (`objExists ($transf_allbin +".CharIdCheck")`){
+                            setAttr ($transf_allbin +".CharIdCheck") 0 ;         
                             }
                         }
                     }
-                }
-                if (`objExists RGB2`){
-                    if (!`objExists RGB2_R4`){
-                        if (!`objExists RGB2_G5`){
-                            if (!`objExists RGB2_B6`){
-                                delete RGB2;
-                            }
-                        }
+
+            //建圆滑节点
+                global proc smoothNode_auto_pro()
+                {
+                    if (`objExists "Character_Group"`){
+                        if (!`objExists "Cha_smooth"`){
+                            select -cl  ;
+                            select -r Character_Group ;
+                            string $MeshNode_G = `redshiftCreateMeshParametersNode`;
+                            rename $MeshNode_G "Cha_smooth";            
+                        }     
+                        else {
+                            sets -edit -forceElement  Cha_smooth Character_Group ;
+                    }   
                     }
                 }
-                if (`objExists RGB3`){
-                    if (!`objExists RGB3_R7`){
-                        if (!`objExists RGB3_G8`){
-                            if (!`objExists RGB3_B9`){
-                                delete RGB3;
-                            }
-                        }
+
+
+    ///// Auto Char ID 创建角色组后 手动选择角色创建ID /////
+        //1_SL Char Creat ID////
+            global proc SL_Char_Creat_ID(){
+                    string $CharAndProp1[] = `ls -sl`;
+
+                if(`objExists "chaorprop20"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop21";
+                        sets -edit -forceElement chaorprop21 $CharAndProp1 ;
+                        setAttr "chaorprop21.objectId" 21;
                     }
-                }
-                if (`objExists RGB4`){
-                    if (!`objExists RGB4_R10`){
-                        if (!`objExists RGB4_G11`){
-                            if (!`objExists RGB4_B12`){
-                                delete RGB4;
-                            }
-                        }
+                    else if(`objExists "chaorprop19"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop20";
+                        sets -edit -forceElement chaorprop20 $CharAndProp1 ;
+                        setAttr "chaorprop20.objectId" 20;
                     }
-                }
-                if (`objExists RGB5`){
-                    if (!`objExists RGB5_R13`){
-                        if (!`objExists RGB5_G14`){
-                            if (!`objExists RGB5_B15`){
-                                delete RGB5;
-                            }
-                        }
+                    else if(`objExists "chaorprop18"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop19";
+                        sets -edit -forceElement chaorprop19 $CharAndProp1 ;
+                        setAttr "chaorprop19.objectId" 19;
                     }
-                }
-                if (`objExists RGB6`){
-                    if (!`objExists RGB6_R16`){
-                        if (!`objExists RGB6_G17`){
-                            if (!`objExists RGB6_B18`){
-                                delete RGB6;
-                            }
-                        }
+                    else if(`objExists "chaorprop17"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop18";
+                        sets -edit -forceElement chaorprop18 $CharAndProp1 ;
+                        setAttr "chaorprop18.objectId" 18;
                     }
-                }
-                if (`objExists RGB7`){
-                    if (!`objExists RGB7_R19`){
-                        if (!`objExists RGB7_G20`){
-                            if (!`objExists RGB7_B21`){
-                                delete RGB7;
-                            }
-                        }
+                    else if(`objExists "chaorprop16"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop17";
+                        sets -edit -forceElement chaorprop17 $CharAndProp1 ;
+                        setAttr "chaorprop17.objectId" 17;
                     }
+                    else if(`objExists "chaorprop15"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop16";
+                        sets -edit -forceElement chaorprop16 $CharAndProp1 ;
+                        setAttr "chaorprop16.objectId" 16;
+                    }
+                    else if(`objExists "chaorprop14"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop15";
+                        sets -edit -forceElement chaorprop15 $CharAndProp1 ;
+                        setAttr "chaorprop15.objectId"15;
+                    }
+                    else if(`objExists "chaorprop13"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop14";
+                        sets -edit -forceElement chaorprop14 $CharAndProp1 ;
+                        setAttr "chaorprop14.objectId" 14;
+                    }
+                    else if(`objExists "chaorprop12"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop13";
+                        sets -edit -forceElement chaorprop13 $CharAndProp1 ;
+                        setAttr "chaorprop13.objectId" 13;
+                    }
+                    else if(`objExists "chaorprop11"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop12";
+                        sets -edit -forceElement chaorprop12 $CharAndProp1 ;
+                        setAttr "chaorprop12.objectId" 12;
+                    }
+                    else if(`objExists "chaorprop10"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop11";
+                        sets -edit -forceElement chaorprop11 $CharAndProp1 ;
+                        setAttr "chaorprop11.objectId" 11;
+                    }
+                    else if(`objExists "chaorprop9"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop10";
+                        sets -edit -forceElement chaorprop10 $CharAndProp1 ;
+                        setAttr "chaorprop10.objectId" 10;
+                    }
+                    else if(`objExists "chaorprop8"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop9";
+                        sets -edit -forceElement chaorprop9 $CharAndProp1 ;
+                        setAttr "chaorprop9.objectId" 9;
+                    }
+                    else if(`objExists "chaorprop7"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop8";
+                        sets -edit -forceElement chaorprop8 $CharAndProp1 ;
+                        setAttr "chaorprop8.objectId" 8;
+                    }
+                    else if(`objExists "chaorprop6"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop7";
+                        sets -edit -forceElement chaorprop7 $CharAndProp1 ;
+                        setAttr "chaorprop7.objectId" 7;
+                    }
+                    else if(`objExists "chaorprop5"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop6";
+                        sets -edit -forceElement chaorprop6 $CharAndProp1 ;
+                        setAttr "chaorprop6.objectId" 6;
+                    }
+                    else if(`objExists "chaorprop4"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop5";
+                        sets -edit -forceElement chaorprop5 $CharAndProp1 ;
+                        setAttr "chaorprop5.objectId" 5;
+                    }
+                    else if(`objExists "chaorprop3"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop4";
+                        sets -edit -forceElement chaorprop4 $CharAndProp1 ;
+                        setAttr "chaorprop4.objectId" 4;
+                    }
+                    else if(`objExists "chaorprop2"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop3";
+                        sets -edit -forceElement chaorprop3 $CharAndProp1 ;
+                        setAttr "chaorprop3.objectId" 3;
+                    }
+                    else if(`objExists "chaorprop1"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop2";
+                        sets -edit -forceElement chaorprop2 $CharAndProp1 ;
+                        setAttr "chaorprop2.objectId" 2;
+                    }
+                    else if(!`objExists "chaorprop1"`){
+                    rename `redshiftCreateObjectIdNode` "chaorprop1";
+                    sets -edit -forceElement chaorprop1 $CharAndProp1 ;
+                    setAttr "chaorprop1.objectId" 1;}
+                    
+
                 }
+
+        //2_Auto Creat AOVs
+            global proc Auto_Creat_AOVs(){
+            
+                if (`objExists "chaorprop1"`){
+                createRGB1();}
+                if (`objExists "chaorprop4"`){
+                createRGB2();}
+                if (`objExists "chaorprop7"`){
+                createRGB3();}
+                if (`objExists "chaorprop10"`){
+                createRGB4();}
+                if (`objExists "chaorprop13"`){
+                createRGB5();}
+                if (`objExists "chaorprop16"`){
+                createRGB6();}
+                if (`objExists "chaorprop19"`){
+                createRGB7();}
+                select -r -ne "chaorprop*";
+                pickWalk -d down;
+                rename `redshiftCreateMeshParametersNode` "smooth";
+
             }
 
-        //不存在的情况下创建RGB1
-            global proc RS_ConditionCreateAOV_RGB1(){
-                string $AOVall1[] = `ls -typ "RedshiftAOV"`;
-                int $B1 = 0;
-                for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
-                { 
-                if ($AOVall1[$q1] == "RGB1"){
-                    setAttr ($AOVall1[$q1]+".enabled") 0;
-                    $B1 = $B1+1;
-                }
-                }
-                if($B1 == 0)
-                {
-                    RS_createAOV_RGB1();
-                }
-            }
-
-        //不存在的情况下创建RGB2
-            global proc RS_ConditionCreateAOV_RGB2(){
-                string $AOVall2[] = `ls -typ "RedshiftAOV"`;
-                int $B2 = 0;
-                for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
-                { 
-                if ($AOVall2[$q2] == "RGB2"){
-                    setAttr ($AOVall2[$q2]+".enabled") 0;
-                    $B2 = $B2+1;
-                }
-                }
-                if($B2 == 0)
-                {
-                    RS_createAOV_RGB2();
-                }
-            }
-
-        //不存在的情况下创建RGB3
-            global proc RS_ConditionCreateAOV_RGB3(){
-                string $AOVall3[] = `ls -typ "RedshiftAOV"`;
-                int $B3 = 0;
-                for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
-                { 
-                if ($AOVall3[$q3] == "RGB3"){
-                    setAttr ($AOVall3[$q3]+".enabled") 0;
-                    $B3 = $B3+1;
-                }
-                }
-                if($B3 == 0)
-                {
-                    RS_createAOV_RGB3();
-                }
-            }
-
-        //不存在的情况下创建RGB4
-            global proc RS_ConditionCreateAOV_RGB4(){
-                string $AOVall4[] = `ls -typ "RedshiftAOV"`;
-                int $B4 = 0;
-                for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
-                { 
-                if ($AOVall4[$q4] == "RGB4"){
-                    setAttr ($AOVall4[$q4]+".enabled") 0;
-                    $B4 = $B4+1;
-                }
-                }
-                if($B4 == 0)
-                {
-                    RS_createAOV_RGB4();
-                }
-            }
-
-        //不存在的情况下创建RGB5
-            global proc RS_ConditionCreateAOV_RGB5(){
-                string $AOVall5[] = `ls -typ "RedshiftAOV"`;
-                int $B5 = 0;
-                for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
-                { 
-                if ($AOVall5[$q5] == "RGB5"){
-                    setAttr ($AOVall5[$q5]+".enabled") 0;
-                    $B5 = $B5+1;
-                }
-                }
-                if($B5 == 0)
-                {
-                    RS_createAOV_RGB5();
-                }
-            }
-
-        //不存在的情况下创建RGB6
-            global proc RS_ConditionCreateAOV_RGB6(){
-                string $AOVall6[] = `ls -typ "RedshiftAOV"`;
-                int $B6 = 0;
-                for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
-                { 
-                if ($AOVall6[$q6] == "RGB6"){
-                    setAttr ($AOVall6[$q6]+".enabled") 0;
-                    $B6 = $B6+1;
-                }
-                }
-                if($B6 == 0)
-                {
-                    RS_createAOV_RGB6();
-                }
-            }
-
-        //不存在的情况下创建RGB7
-            global proc RS_ConditionCreateAOV_RGB7(){
-                string $AOVall7[] = `ls -typ "RedshiftAOV"`;
-                int $B7 = 0;
-                for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
-                { 
-                if ($AOVall7[$q7] == "RGB7"){
-                    setAttr ($AOVall7[$q7]+".enabled") 0;
-                    $B7 = $B7+1;
-                }
-                }
-                if($B7 == 0)
-                {
-                    RS_createAOV_RGB7();
-                }
-            }
-
-        //创建AOV_RGB1
-            global proc RS_createAOV_RGB1(){
+            global proc createRGB1(){
+                if(!`objExists RGB1`){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
-                redshiftUpdateActiveAovList();
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB1;
                 setAttr -type "string" RGB1.name "RGB1";
-                setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB1.dataType" 2;
                 setAttr "RGB1.fileFormat" $Export_sth;
-                setAttr "RGB1.exrBits" 32;
                 setAttr "RGB1.mode" 1;
                 setAttr "RGB1.redId" 1;
                 setAttr "RGB1.greenId" 2;
                 setAttr "RGB1.blueId" 3;
                 setAttr "RGB1.enabled" 0;
-                print ("RGB1"+"\n");
+                setAttr "RGB1.exrBits" 32;
+                setAttr "RGB1.dataType" 2;
+                } 
             }
-
-        //创建AOV_RGB2
-            global proc RS_createAOV_RGB2(){
+        
+            global proc createRGB2(){
+                if(!`objExists RGB2`){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
-                redshiftUpdateActiveAovList();
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB2;
                 setAttr -type "string" RGB2.name "RGB2";
-                setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB2.dataType" 2;
                 setAttr "RGB2.fileFormat" $Export_sth;
-                setAttr "RGB2.exrBits" 32;
                 setAttr "RGB2.mode" 1;
                 setAttr "RGB2.redId" 4;
                 setAttr "RGB2.greenId" 5;
                 setAttr "RGB2.blueId" 6;
                 setAttr "RGB2.enabled" 0;
-                print ("RGB2"+"\n");
+                setAttr "RGB2.exrBits" 32;
+                setAttr "RGB2.dataType" 2;
+                }
             }
-
-        //创建AOV_RGB3
-            global proc RS_createAOV_RGB3(){
+        
+            global proc createRGB3(){
+                if(!`objExists RGB3`){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
-                redshiftUpdateActiveAovList();
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB3;
                 setAttr -type "string" RGB3.name "RGB3";
-                setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB3.dataType" 2;
                 setAttr "RGB3.fileFormat" $Export_sth;
-                setAttr "RGB3.exrBits" 32;
                 setAttr "RGB3.mode" 1;
                 setAttr "RGB3.redId" 7;
                 setAttr "RGB3.greenId" 8;
                 setAttr "RGB3.blueId" 9;
                 setAttr "RGB3.enabled" 0;
-                print ("RGB3"+"\n");
+                setAttr "RGB3.exrBits" 32;
+                setAttr "RGB3.dataType" 2;    
+                }
             }
 
-        //创建AOV_RGB4
-            global proc RS_createAOV_RGB4(){
+            global proc createRGB4(){
+                if(!`objExists RGB4`){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
-                redshiftUpdateActiveAovList();
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB4;
                 setAttr -type "string" RGB4.name "RGB4";
-                setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB4.dataType" 2;
                 setAttr "RGB4.fileFormat" $Export_sth;
-                setAttr "RGB4.exrBits" 32;
                 setAttr "RGB4.mode" 1;
                 setAttr "RGB4.redId" 10;
                 setAttr "RGB4.greenId" 11;
                 setAttr "RGB4.blueId" 12;
                 setAttr "RGB4.enabled" 0;
-                print ("RGB4"+"\n");
+                setAttr "RGB4.exrBits" 32;
+                setAttr "RGB4.dataType" 2;    
+                }
             }
 
-
-        //创建AOV_RGB5
-            global proc RS_createAOV_RGB5(){
+            global proc createRGB5(){
+                if(!`objExists RGB5`){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
-                redshiftUpdateActiveAovList();
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB5;
                 setAttr -type "string" RGB5.name "RGB5";
-                setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB5.dataType" 2;
                 setAttr "RGB5.fileFormat" $Export_sth;
-                setAttr "RGB5.exrBits" 32;
                 setAttr "RGB5.mode" 1;
                 setAttr "RGB5.redId" 13;
                 setAttr "RGB5.greenId" 14;
                 setAttr "RGB5.blueId" 15;
                 setAttr "RGB5.enabled" 0;
-                print ("RGB5"+"\n");
+                setAttr "RGB5.exrBits" 32;
+                setAttr "RGB5.dataType" 2;    
+                }
             }
-
-
-        //创建AOV_RGB6
-            global proc RS_createAOV_RGB6(){
+        
+            global proc createRGB6(){
+                if(!`objExists RGB6`){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
-                redshiftUpdateActiveAovList();
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB6;
                 setAttr -type "string" RGB6.name "RGB6";
-                setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB6.dataType" 2;
                 setAttr "RGB6.fileFormat" $Export_sth;
-                setAttr "RGB6.exrBits" 32;
                 setAttr "RGB6.mode" 1;
                 setAttr "RGB6.redId" 16;
                 setAttr "RGB6.greenId" 17;
                 setAttr "RGB6.blueId" 18;
                 setAttr "RGB6.enabled" 0;
-                print ("RGB6"+"\n");
+                setAttr "RGB6.exrBits" 32;
+                setAttr "RGB6.dataType" 2;	    
+                }
             }
 
-
-        //创建AOV_RGB7
-            global proc RS_createAOV_RGB7(){
+            global proc createRGB7(){
+                if(!`objExists RGB7`){
                 source redshiftCreateAovTab;
-                rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
-                redshiftUpdateActiveAovList();
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB7;
                 setAttr -type "string" RGB7.name "RGB7";
-                setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                setAttr "RGB7.dataType" 2;
                 setAttr "RGB7.fileFormat" $Export_sth;
-                setAttr "RGB7.exrBits" 32;
                 setAttr "RGB7.mode" 1;
                 setAttr "RGB7.redId" 19;
                 setAttr "RGB7.greenId" 20;
                 setAttr "RGB7.blueId" 21;
                 setAttr "RGB7.enabled" 0;
-                print ("RGB7"+"\n");
-            }
-
-    //////////////////////////////////////////////////////////
-
-    //共用
-    //创建ID
-        //自动根据新增属性给角色建id (只修改属性为0的)
-            global proc createChaId_id(){
-                string $transf_all[] = `ls -typ "transform"`;
-                string $transf_allin ;
-                for ($transf_allin in $transf_all){
-                    if (`objExists ($transf_allin +".CharId")`){
-                        int $cha_G_id_num =`getAttr ($transf_allin +".CharId")`;
-                        if ($cha_G_id_num == 0){
-                                select -r $transf_allin;
-                                redshiftCreateObjectIdNode();
-                            }
-                        }
-                }
-            }
-
-        //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
-            global proc checkchaID_and_create_id(){
-                string $id_all[] = `ls -typ "RedshiftObjectId"`;
-                string $id_allin;
-                for ($id_allin in $id_all){
-                    int $id_numin1 = `getAttr ($id_allin+".objectId")`;
-                    if ($id_numin1 > 0){
-                        if ($id_numin1 <= 21){
-                            select -r -ne $id_allin ;
-                            pickWalk -d up;
-                            string $cha_G_locator[] =`ls -sl`;
-                            string $cha_G_locatorin;
-                            for ($cha_G_locatorin in $cha_G_locator){
-                            if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
-                                    setAttr ($cha_G_locatorin+".CharIdCheck") 1;                    
-                                }
-                            }
-                        }
-                    }
-                }
-
-                string $transf_alla[] = `ls -typ "transform"`;
-                string $transf_allain ;
-                for ($transf_allain in $transf_alla){
-                    if (`objExists ($transf_allain +".CharIdCheck")`){
-                        int $cha_G_CharIdCheck_num =`getAttr ($transf_allain +".CharIdCheck")`;
-                        if ($cha_G_CharIdCheck_num == 0){
-                                select -r $transf_allain;
-                                redshiftCreateObjectIdNode();
-                            }
-                        }
-                }
-            }
-
-
-        //删掉RGB display分组 
-            global proc deleteRGBDisplayLayer(){ 
-                string $RGBdisplaylayer[]=`ls -type displayLayer`;
-                for($i=0;$i<`size($RGBdisplaylayer)`;$i+=1)
-                {
-                    string $colorornot = `getAttr ($RGBdisplaylayer[$i]+".overrideRGBColors")`;
-                    if($colorornot != 0){
-                        if(`match "RGB" $RGBdisplaylayer[$i]` == "RGB"){
-                            layerEditorDeleteLayer $RGBdisplaylayer[$i];
-                } 
-                }  
-                }
-            }
-
-        //改id名字和数值
-            global proc RS_changeObjidName(){
-                string $OBJIDallG[] = `ls -typ "RedshiftObjectId"`;
-                select -r -ne $OBJIDallG ;
-                string $OBJIDall_G[] =`ls -sl`;
-                string $OBJIDall_Gin;
-                for ($OBJIDall_Gin in $OBJIDall_G){
-                    int $OBJIDall_Gin_ID =`getAttr ($OBJIDall_Gin+".objectId")`;
-                    if ($OBJIDall_Gin_ID >= 22){
-                        select -d -ne $OBJIDall_Gin ;
-                    }
-                    }
-                string $OBJnum[] =`ls -sl`;
-                select -r -ne $OBJnum ;
-                string $rsobjIDall1[] =`ls -sl`;
-                string $OBJnumin;
-                for ($OBJnumin in $rsobjIDall1){
-                    int $idnum11 =`getAttr ($OBJnumin+".objectId")`;
-                    if ($idnum11 != 0){
-                        select -d -ne $OBJnumin ;
-                    }
-                    if ($idnum11 == 1){ rename $OBJnumin "chatool_id1";}
-                    if ($idnum11 == 2){ rename $OBJnumin "chatool_id2"; }
-                    if ($idnum11 == 3){ rename $OBJnumin "chatool_id3";}
-                    if ($idnum11 == 4){ rename $OBJnumin "chatool_id4"; }
-                    if ($idnum11 == 5){ rename $OBJnumin "chatool_id5";}
-                    if ($idnum11 == 6){ rename $OBJnumin "chatool_id6";}
-                    if ($idnum11 == 7){ rename $OBJnumin "chatool_id7";}
-                    if ($idnum11 == 8){ rename $OBJnumin "chatool_id8";}
-                    if ($idnum11 == 9){ rename $OBJnumin "chatool_id9";}
-                    if ($idnum11 == 10){ rename $OBJnumin "chatool_id10";}
-                    if ($idnum11 == 11){ rename $OBJnumin "chatool_id11";}
-                    if ($idnum11 == 12){ rename $OBJnumin "chatool_id12";}
-                    if ($idnum11 == 13){ rename $OBJnumin "chatool_id13";}
-                    if ($idnum11 == 14){ rename $OBJnumin "chatool_id14";}
-                    if ($idnum11 == 15){ rename $OBJnumin "chatool_id15";}
-                    if ($idnum11 == 16){ rename $OBJnumin "chatool_id16";}
-                    if ($idnum11 == 17){ rename $OBJnumin "chatool_id17";}
-                    if ($idnum11 == 18){ rename $OBJnumin "chatool_id18";}
-                    if ($idnum11 == 19){ rename $OBJnumin "chatool_id19";} 
-                    if ($idnum11 == 20){ rename $OBJnumin "chatool_id20";} 
-                    if ($idnum11 == 21){ rename $OBJnumin "chatool_id21";} 
-                }
-
-                string $rsobjIDnoID[]=`ls -sl`;
-                int $rsobjIDnoIDGS = `size $rsobjIDnoID`;
-                for($i=0;$i<`size($rsobjIDnoID)`;$i+=1)
-                { 
-                    if(!`objExists ("chatool_id"+($i+1))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+1);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+1));    
-                    }
-                    else if(!`objExists ("chatool_id"+($i+2))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+2);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+2));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+3))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+3);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+3));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+4))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+4);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+4));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+5))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+5);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+5));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+6))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+6);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+6));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+7))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+7);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+7));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+8))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+8);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+8));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+9))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+9);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+9));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+10))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+10);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+10));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+11))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+11);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+11));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+12))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+12);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+12));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+13))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+13);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+13));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+14))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+14);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+14));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+15))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+15);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+15));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+16))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+16);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+16));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+17))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+17);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+17));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+18))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+18);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+18));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+19))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+19);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+19));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+20))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+20);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+20));
-                    }
-                    else if(!`objExists ("chatool_id"+($i+21))`){
-                    setAttr ($rsobjIDnoID[$i]+".objectId") ($i+21);
-                    select -d -ne $rsobjIDnoID[$i] ;
-                    rename $rsobjIDnoID[$i] ("chatool_id"+($i+21));
-                    }
-                    }
-                    
-                    
-                        
-                    string $OBJnum1[] = `ls -typ "RedshiftObjectId"`;
-                    string $rsobjIDnoID11;
-                    for ($rsobjIDnoID11 in $OBJnum1) { 
-                    int $objidnum =`getAttr ($rsobjIDnoID11+".objectId")`;
-                    if ($objidnum == 1){ rename $rsobjIDnoID11 "RGB1_R1"; }
-                    if ($objidnum == 2){ rename $rsobjIDnoID11 "RGB1_G2"; }
-                    if ($objidnum == 3){ rename $rsobjIDnoID11 "RGB1_B3"; }
-                    if ($objidnum == 4){ rename $rsobjIDnoID11 "RGB2_R4"; }
-                    if ($objidnum == 5){ rename $rsobjIDnoID11 "RGB2_G5"; }
-                    if ($objidnum == 6){ rename $rsobjIDnoID11 "RGB2_B6"; }
-                    if ($objidnum == 7){ rename $rsobjIDnoID11 "RGB3_R7"; }
-                    if ($objidnum == 8){ rename $rsobjIDnoID11 "RGB3_G8"; }
-                    if ($objidnum == 9){ rename $rsobjIDnoID11 "RGB3_B9"; }
-                    if ($objidnum == 10){ rename $rsobjIDnoID11 "RGB4_R10"; }
-                    if ($objidnum == 11){ rename $rsobjIDnoID11 "RGB4_G11"; }
-                    if ($objidnum == 12){ rename $rsobjIDnoID11 "RGB4_B12"; }
-                    if ($objidnum == 13){ rename $rsobjIDnoID11 "RGB5_R13"; }
-                    if ($objidnum == 14){ rename $rsobjIDnoID11 "RGB5_G14"; }
-                    if ($objidnum == 15){ rename $rsobjIDnoID11 "RGB5_B15"; }
-                    if ($objidnum == 16){ rename $rsobjIDnoID11 "RGB6_R16"; }
-                    if ($objidnum == 17){ rename $rsobjIDnoID11 "RGB6_G17"; }
-                    if ($objidnum == 18){ rename $rsobjIDnoID11 "RGB6_B18"; }
-                    if ($objidnum == 19){ rename $rsobjIDnoID11 "RGB7_R19"; }
-                    if ($objidnum == 20){ rename $rsobjIDnoID11 "RGB7_G20"; }
-                    if ($objidnum == 21){ rename $rsobjIDnoID11 "RGB7_B21"; }
-                    
-                }
-            }
-
-        //放在rgb建ID后，给角色打组一个属性编号
-            global proc give_ChaId_id_num(){
-                string $id_all[] = `ls -typ "RedshiftObjectId"`;
-                string $id_allin;
-                for ($id_allin in $id_all){
-                    int $id_numin1 = `getAttr ($id_allin+".objectId")`;
-                    if ($id_numin1 > 0){
-                        if ($id_numin1 <= 21){
-                            select -r -ne $id_allin ;
-                            pickWalk -d up;
-                            string $cha_G_locator[] =`ls -sl`;
-                            string $cha_G_locatorin;
-                            for ($cha_G_locatorin in $cha_G_locator){
-                            if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
-                                    setAttr ($cha_G_locatorin+".CharId") $id_numin1;
-                                    rename ($cha_G_locatorin) ("Char_G"+$id_numin1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-
-        //创建RGBdisplaylayer
-            global proc createRGBDisplayLayer(){ 
-
-                string $RGB_RSobjid[]=`ls -type RedshiftObjectId`;
-                string $RGB_RSobjidin;
-                for ($RGB_RSobjidin in $RGB_RSobjid){
-                    if($RGB_RSobjidin =="RGB1_R1"){
-                        select -r -ne RGB1_R1 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB1_R1_g" -number 1 -nr;
-                        setAttr RGB1_R1_g.displayType 0; setAttr RGB1_R1_g.color 0; setAttr RGB1_R1_g.overrideColorRGB 1 0 0; setAttr RGB1_R1_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB1_G2"){
-                        select -r -ne RGB1_G2 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB1_G2_g" -number 1 -nr;
-                        setAttr RGB1_G2_g.displayType 0; setAttr RGB1_G2_g.color 0; setAttr RGB1_G2_g.overrideColorRGB 0 1 0; setAttr RGB1_G2_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB1_B3"){
-                        select -r -ne RGB1_B3 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB1_B3_g" -number 1 -nr;
-                        setAttr RGB1_B3_g.displayType 0; setAttr RGB1_B3_g.color 0; setAttr RGB1_B3_g.overrideColorRGB 0 0 1; setAttr RGB1_B3_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB2_R4"){
-                        select -r -ne RGB2_R4 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB2_R4_g" -number 1 -nr;
-                        setAttr RGB2_R4_g.displayType 0; setAttr RGB2_R4_g.color 0; setAttr RGB2_R4_g.overrideColorRGB 0.5 0 0; setAttr RGB2_R4_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB2_G5"){
-                        select -r -ne RGB2_G5 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB2_G5_g" -number 1 -nr;
-                        setAttr RGB2_G5_g.displayType 0; setAttr RGB2_G5_g.color 0; setAttr RGB2_G5_g.overrideColorRGB 0 0.5 0; setAttr RGB2_G5_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB2_B6"){
-                        select -r -ne RGB2_B6 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB2_B6_g" -number 1 -nr;
-                        setAttr RGB2_B6_g.displayType 0; setAttr RGB2_B6_g.color 0; setAttr RGB2_B6_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB2_B6_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB3_R7"){
-                        select -r -ne RGB3_R7 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB3_R7_g" -number 1 -nr;
-                        setAttr RGB3_R7_g.displayType 0; setAttr RGB3_R7_g.color 0; setAttr RGB3_R7_g.overrideColorRGB 1 0.5 0.5; setAttr RGB3_R7_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB3_G8"){
-                        select -r -ne RGB3_G8 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB3_G8_g" -number 1 -nr;
-                        setAttr RGB3_G8_g.displayType 0; setAttr RGB3_G8_g.color 0; setAttr RGB3_G8_g.overrideColorRGB 0.5 1 0.5; setAttr RGB3_G8_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB3_B9"){
-                        select -r -ne RGB3_B9 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB3_B9_g" -number 1 -nr;
-                        setAttr RGB3_B9_g.displayType 0; setAttr RGB3_B9_g.color 0; setAttr RGB3_B9_g.overrideColorRGB 0.2049999833 0.74644804 1; setAttr RGB3_B9_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB4_R10"){
-                        select -r -ne RGB4_R10 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB4_R10_g" -number 1 -nr;
-                        setAttr RGB4_R10_g.displayType 0; setAttr RGB4_R10_g.color 0; setAttr RGB4_R10_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB4_R10_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB4_G11"){
-                        select -r -ne RGB4_G11 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB4_G11_g" -number 1 -nr;
-                        setAttr RGB4_G11_g.displayType 0; setAttr RGB4_G11_g.color 0; setAttr RGB4_G11_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB4_G11_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB4_B12"){
-                        select -r -ne RGB4_B12 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB4_B12_g" -number 1 -nr;
-                        setAttr RGB4_B12_g.displayType 0; setAttr RGB4_B12_g.color 0; setAttr RGB4_B12_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB4_B12_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB5_R13"){
-                        select -r -ne RGB5_R13 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB5_R13_g" -number 1 -nr;
-                        setAttr RGB5_R13_g.displayType 0; setAttr RGB5_R13_g.color 0; setAttr RGB5_R13_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB5_R13_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB5_G14"){
-                        select -r -ne RGB5_G14 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB5_G14_g" -number 1 -nr;
-                        setAttr RGB5_G14_g.displayType 0; setAttr RGB5_G14_g.color 0; setAttr RGB5_G14_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB5_G14_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB5_B15"){
-                        select -r -ne RGB5_B15 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB5_B15_g" -number 1 -nr;
-                        setAttr RGB5_B15_g.displayType 0; setAttr RGB5_B15_g.color 0; setAttr RGB5_B15_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB5_B15_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB6_R16"){
-                        select -r -ne RGB6_R16 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB6_R16_g" -number 1 -nr;
-                        setAttr RGB6_R16_g.displayType 0; setAttr RGB6_R16_g.color 0; setAttr RGB6_R16_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB6_R16_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB6_G17"){
-                        select -r -ne RGB6_G17 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB6_G17_g" -number 1 -nr;
-                        setAttr RGB6_G17_g.displayType 0; setAttr RGB6_G17_g.color 0; setAttr RGB6_G17_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB6_G17_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB6_B18"){
-                        select -r -ne RGB6_B18 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB6_B18_g" -number 1 -nr;
-                        setAttr RGB6_B18_g.displayType 0; setAttr RGB6_B18_g.color 0; setAttr RGB6_B18_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB6_B18_g.overrideRGBColors 1; 
-                }
-                }
-                    if($RGB_RSobjidin =="RGB7_R19"){
-                        select -r -ne RGB7_R19 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB7_R19_g" -number 1 -nr;
-                        setAttr RGB7_R19_g.displayType 0; setAttr RGB7_R19_g.color 0; setAttr RGB7_R19_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB7_R19_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB7_G20"){
-                        select -r -ne RGB7_G20 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB7_G20_g" -number 1 -nr;
-                        setAttr RGB7_G20_g.displayType 0; setAttr RGB7_G20_g.color 0; setAttr RGB7_G20_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB7_G20_g.overrideRGBColors 1; 
-                }
-                    if($RGB_RSobjidin =="RGB7_B21"){
-                        select -r -ne RGB7_B21 ;
-                        pickWalk -d up;
-                        createDisplayLayer -name "RGB7_B21_g" -number 1 -nr;
-                        setAttr RGB7_B21_g.displayType 0; setAttr RGB7_B21_g.color 0; setAttr RGB7_B21_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB7_B21_g.overrideRGBColors 1; 
-                }
-            }
-            
-
-        //CharIdCheck全部归0
-                global proc checkchaID000(){
-                    string $transf_allb[] = `ls -typ "transform"`;
-                    string $transf_allbin ;
-                    for ($transf_allbin in $transf_allb){
-                    if (`objExists ($transf_allbin +".CharIdCheck")`){
-                        setAttr ($transf_allbin +".CharIdCheck") 0 ;         
-                        }
-                    }
-                }
-
-        //建圆滑节点
-            global proc smoothNode_auto_pro()
-            {
-                if (`objExists "Character_Group"`){
-                    if (!`objExists "Cha_smooth"`){
-                        select -cl  ;
-                        select -r Character_Group ;
-                        string $MeshNode_G = `redshiftCreateMeshParametersNode`;
-                        rename $MeshNode_G "Cha_smooth";            
-                    }     
-                    else {
-                        sets -edit -forceElement  Cha_smooth Character_Group ;
-                }   
+                setAttr "RGB7.exrBits" 32;
+                setAttr "RGB7.dataType" 2;    
                 }
             }
 
 
 
 
+    //////Custom SET ID 自定义设置ID///////
+        //1_Custom ID AOVs PNG
+            global proc Cs_Char_IDAovs(){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Cs_Char_ID;
+                setAttr -type "string" RGB_Cs_Char_ID.name "RGB_Cs_Char_ID";
+                setAttr "RGB_Cs_Char_ID.dataType" 2;    
+                setAttr "RGB_Cs_Char_ID.fileFormat" $Export_sth;
+                setAttr "RGB_Cs_Char_ID.mode" 1;
+                setAttr "RGB_Cs_Char_ID.redId" 111;
+                setAttr "RGB_Cs_Char_ID.greenId" 222;
+                setAttr "RGB_Cs_Char_ID.blueId" 333;
+                setAttr "RGB_Cs_Char_ID.enabled" 0;
+                setAttr "RGB_Cs_Char_ID.exrBits" 32;
+                selectMode -object; 
+                selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 1 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;
+                selectType -byName gpuCache 1;
+            }
+        
+            //2_Cs Red ID
+                global proc Cs_Red_ID(){
+                    ls -sl ;
+                    rename(redshiftCreateObjectIdNode()) Cs_Char_ID_R;
+                    setAttr "Cs_Char_ID_R.objectId" 111;
+                }
+
+            //2_Cs Green ID
+                global proc Cs_Green_ID(){
+                    ls -sl;
+                    rename(redshiftCreateObjectIdNode()) Cs_Char_ID_G;
+                    setAttr "Cs_Char_ID_G.objectId" 222;
+                }
+
+            //2_Cs Blue ID
+                global proc Cs_Blue_ID(){
+                    ls -sl;
+                    rename(redshiftCreateObjectIdNode()) Cs_Char_ID_B;
+                    setAttr "Cs_Char_ID_B.objectId" 333;
+                }
 
 
+
+
+    /////Cs Group Aovs ID 手动创建场景组 设置 Aovs
+    //1_Creat_SEN_Group"
+        global proc Creat_sen_Group(){
+            string $Sen_all_1[] =`ls -sl`;
+            if(!`objExists "Sen_Group"`){
+                select -cl; 
+                CreateLocator;
+                rename (`ls -sl`) "Sen_Group";   
+            }
+            select -r $Sen_all_1;
+            select -add Sen_Group ;
+            parent;
+        }
+
+    //2_SEN ID
+        global proc Sen_ID_Aovs(){
+            source redshiftCreateAovTab;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen;
+            redshiftUpdateActiveAovList();
+            setAttr -type "string" RGB_Sen.name "RGB_Sen";
+            setAttr "RGB_Sen.dataType" 2;    
+            setAttr "RGB_Sen.fileFormat" $Export_sth;
+            setAttr "RGB_Sen.mode" 1;
+            setAttr "RGB_Sen.redId" 9999;
+            setAttr "RGB_Sen.greenId" 9998;
+            setAttr "RGB_Sen.blueId" 9997;
+            setAttr "RGB_Sen.enabled" 0;
+            setAttr "RGB_Sen.exrBits" 32;
+        }
+
+    //3_SEN Red ID
+        global proc SEN_Red_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_R;
+            setAttr "Sen_ID_R.objectId" 9999;
+        }
+    //3_SEN Green ID
+        global proc SEN_Green_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_G;
+            setAttr "Sen_ID_G.objectId" 9998;
+        }
+    //3_SEN Blue ID
+        global proc SEN_Blue_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_B;
+            setAttr "Sen_ID_B.objectId" 9997;
+        }
+
+
+
+
+//////// DO CAM  ////////////////////             
+    /////////做镜头 EXR     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口/////////////
+        ////////// sel obj
+            global proc sel_obj(){
+                selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 1 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 1;
+            }
+
+    /////////做镜头////////
+
+        ///3_Set_Sen_CHA_AOVsID
+            global proc Set_Sen_CHA_AOVsID(){
+                Auto_Aovs_ID_Export_sth();
+                Sen_ID_Aovs();
+            }
+
+    ////2017横屏
+        ///Aovs+ISO+HD720   
+            global proc Aovs_iso2017_HD720(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_HD720();
+                ISO_maya2017();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+                
+
+            }
+        ///Aovs+ISO+HD1080
+            global proc Aovs_iso2017_HD1080_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_HD1080();
+                ISO_maya2017();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+            }
+        ///Aovs+ISO+4K
+            global proc Aovs_iso2017_4K_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_4096_2305();
+                ISO_maya2017();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();            
+            }
+
+    ////2019横屏
+        ///Aovs+ISO+HD720
+            global proc Aovs_iso2019_HD720_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_HD720();
+                ISO_maya2019();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+            }
+        ///Aovs+ISO+HD1080
+            global proc Aovs_iso2019_HD1080_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_HD1080();
+                ISO_maya2019();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+            }
+        ///Aovs+ISO+4K
+            global proc Aovs_iso2019_4K_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_4096_2305();
+                ISO_maya2019();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+            }
+
+    ////2017竖屏
+        ///Aovs_iso+720*1280
+            global proc Aovs_iso2017_720_1280_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_720_1280();
+                ISO_maya2017();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+            }
+        ///Aovs_iso+1080*1920
+            global proc Aovs_iso2017_1080_1920_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_1080_1920();
+                ISO_maya2017();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+                
+            }
+        ///Aovs_iso+SP4K
+            global proc Aovs_iso2017_SP4K_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_2305_4096();
+                ISO_maya2017();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+                
+            }
+
+    ////2019竖屏
+        ///Aovs_iso+720*1280
+            global proc Aovs_iso2019_720_1280_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_720_1280();
+                ISO_maya2019();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+                
+                
+            }
+        ///Aovs_iso+1080*1920
+            global proc Aovs_iso2019_1080_1920_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_1080_1920();
+                ISO_maya2019();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+                
+            }
+        ///Aovs_iso+SP4K
+            global proc Aovs_iso2019_SP4K_exr(){
+                camset_render_set();
+                camset_export_EXR();
+                XRSZ_2305_4096();
+                ISO_maya2019();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+                
+            }
+
+
+    ////////AOVs+iso 2017 2019 +自定义分辨率 /////////
+        ///最终调用////
+            global proc A0vs2017_CS_imagesize(){
+                camset_render_set();
+                camset_export_EXR();
+                custom_camset_CS_17_EXR();
+                ISO_maya2017();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+            }
+            global proc A0vs2019_CS_imagesize(){
+                camset_render_set();
+                camset_export_EXR();
+                custom_camset_CS_19_EXR();
+                ISO_maya2019();
+                RS_Full_Aovs_exr();
+                creat_SHAlig();
+                importCHAlig();
+            }
+
+        
+        /// 自定义镜头分辨率///
+
+            global proc custom_camset_CS_17_EXR(){
+                int $widthcs_CS_17_EXR =`textField -q -text Width_CS_17`;
+                int $Hightcs_CS_17_EXR =`textField -q -text Hight_CS_17`;
+                setAttr "defaultResolution.width" $widthcs_CS_17_EXR;
+                setAttr "defaultResolution.height" $Hightcs_CS_17_EXR;
+            }
+
+            global proc custom_camset_CS_19_EXR(){
+                int $widthcs_CS_19_EXR =`textField -q -text Width_CS_19`;
+                int $Hightcs_CS_19_EXR =`textField -q -text Hight_CS_19`;
+                setAttr "defaultResolution.width" $widthcs_CS_19_EXR;
+                setAttr "defaultResolution.height" $Hightcs_CS_19_EXR;
+            }
 
