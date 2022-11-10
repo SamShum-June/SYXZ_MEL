@@ -186,7 +186,7 @@
                         text -w 10 -h 10 -l "Cs Group Aovs ID 手动创建场景组 设置 Aovs" -ann "手动创建场景组 设置 Aovs"; 
                         rowColumnLayout -numberOfColumns 3 -columnWidth 1 200 -columnWidth 2 200 -columnWidth 3 200 -cs 1 5 -cs 3 5 -cs 2 5 ;
                         button -l "1_场景打组" -bgc 1 0.65 0.13 -w 150 -h 30 -c "Creat_sen_Group"; //ok
-                        button -l "2_设置场景ID" -bgc 0.5 0.547 1 -w 150 -h 30 -ann "设置Aovs" -c "Sen_Aovs_EXR"; //ok
+                        button -l "2_设置场景ID" -bgc 0.5 0.547 1 -w 150 -h 30 -ann "设置Aovs" -c "Sen_Aovs"; //ok
                         setParent ..;
                         rowColumnLayout -numberOfColumns 3 -columnWidth 1 200 -columnWidth 2 200 -columnWidth 3 200 -cs 1 5 -cs 3 5 -cs 2 5 ;
                         button -l "3_选择物体创建为红色ID" -bgc 0.32 0 0 -w 150 -h 30 -ann "选择物体创建为红色ID" -c "SEN_Red_ID"; //ok
