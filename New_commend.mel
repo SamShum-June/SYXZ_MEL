@@ -1941,7 +1941,6 @@
                 creat_SHAlig();
                 importCHAlig();
                 
-
             }
         ///Aovs+ISO+HD1080
             global proc Aovs_iso2017_HD1080_exr(){
