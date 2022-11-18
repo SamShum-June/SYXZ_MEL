@@ -1,8 +1,7 @@
 
+//////////////////////调用数据内容/////////////////////////////////////
 
-//////////////////////??????/////////////////////////////////////
-
-    ////////////??mb??
+    ////////////导入mb文件
         global proc import_STH(){ 
             string $import_now =`textField -q -text data_line`;
             file -import  $import_now ;
@@ -13,16 +12,16 @@
             rename `redshiftCreateMeshParametersNode`"smooth";
             setAttr "smooth.minTessellationLength" 6;
             setAttr "smooth.maxTessellationSubdivs" 8;
-            headsUpMessage -time 5 ("?? smooth"+"\n");
+            headsUpMessage -time 5 ("设置 smooth"+"\n");
         }
 
-    /////////??????////////////////////////
+    /////////导入人物灯光////////////////////////
         global proc importCHAlig(){
             file -r -type "mayaBinary"  -ignoreVersion -gl -loadReferenceDepth "all" -shd "renderLayersByName" -mergeNamespacesOnClash false -namespace "cha_lig" -options "v=0;" "//192.168.23.65/ab$/Light_Library/_SYXZ/cha_lig.mb";
-            headsUpMessage -time 5 ("?? ??????"+"\n");
+            headsUpMessage -time 5 ("设置 导入人物灯光"+"\n");
         }
 
-    ////////??????/////////////////////////
+    ////////导入阴影灯光/////////////////////////
         global proc creat_SHAlig(){
             redshiftCreateLight "RedshiftPhysicalLight";
             rename "rsPhysicalLight1" "sha_light";
@@ -32,12 +31,12 @@
             setAttr "sha_lightShape.on" 0;
             setAttr "sha_lightShape.SAMPLINGOVERRIDES_shadowSamplesScale" 8;
             setAttr "sha_lightShape.SAMPLINGOVERRIDES_numShadowSamples" 128;
-            headsUpMessage -time 5 ("?? ????"+"\n");
+            headsUpMessage -time 5 ("创建 阴影灯光"+"\n");
         }
 
 
-////////////// Creat AOVs & ISO ????????Aovs ? ISO???maya?? /////////////////////////////
-    /////////////???? AOVs ???//////
+////////////// Creat AOVs & ISO 选择你需要创建的Aovs 和 ISO使用的maya版本 /////////////////////////////
+    /////////////选择创建 AOVs 的种类//////
         ///////////Creat Full AOVs
             global proc RS_Full_Aovs(){
                 RScustom_AO_Aov();
@@ -61,7 +60,7 @@
                 RS_SSSRaw_Aov();
                 RS_SSS_Aov();
                 RS_GIRaw_Aov();
-                headsUpMessage -time 5 ("?? Full Aovs"+"\n");
+                headsUpMessage -time 5 ("设置 Full Aovs"+"\n");
             }
         ///////////Creat POSE AOVs
             global proc RS_Pose_Aovs(){
@@ -73,7 +72,7 @@
                 RS_SpecularLighting_Aov();
                 RS_SSSRaw_Aov();
                 RS_SSS_Aov();
-                headsUpMessage -time 5 ("?? Pose Aovs"+"\n");
+                headsUpMessage -time 5 ("设置 Pose Aovs"+"\n");
             }
         ///////////Creat SEN AOVs
             global proc RS_Sen_Aovs(){
@@ -91,7 +90,7 @@
                 RS_VolumeFogEmission_Aov();
                 RS_TransGIRaw_Aov();
                 RS_TransLightingRaw_Aov();
-                headsUpMessage -time 5 ("?? Sen Aovs"+"\n");
+                headsUpMessage -time 5 ("设置 Sen Aovs"+"\n");
             }
         ///////////// AOVs prs ///////////////////////////////////////////////////////////////////
             //Creat AOV AO
@@ -505,7 +504,7 @@
                 autoUpdateAttrEd;
                 */
                 print ("Creat_ISO_maya2017"+"\n");
-                headsUpMessage -time 5 ("?? ISO_maya2017"+"\n");
+                headsUpMessage -time 5 ("创建 ISO_maya2017"+"\n");
             }
         //Creat 2019 postEffects
             global proc ISO_maya2019(){
@@ -515,15 +514,15 @@
                 redshiftChangeGlobalShader ISO_maya2019 "postEffects";
                 
                 print ("Creat_ISO_maya2019"+"\n");
-                headsUpMessage -time 5 ("?? ISO_maya2019"+"\n");
+                headsUpMessage -time 5 ("创建 ISO_maya2019"+"\n");
             }
 
 
 
 
 ///////////// CAM Prs SET ///////////////////////////////////////////////////////////////////
-    //////??????
-        ////?????
+    //////镜头预设条件
+        ////镜头分辨率
             /// 1K ///
                 global proc SET_1K_CAM(){
                     setAttr "defaultResolution.width" 1024;
@@ -595,7 +594,7 @@
                     setAttr "defaultResolution.pixelAspect" 1.000;
                 }
 
-        ///??????///
+        ///渲染参数预设///
             global proc SET_RenderSet(){
                 global int $Export_sth ;
                 setAttr "defaultRenderGlobals.currentRenderer" -type "string" "redshift";
@@ -636,95 +635,95 @@
                 setAttr "redshiftOptions.samplingGammaMode" 2;
             }
 
-    //////??????
+    //////镜头设置合并
         //1K set//
             global proc Render_Cam_1K(){
                 SET_RenderSet();
                 SET_1K_CAM();          
-                print("??????? 1K"+"\n");
-                headsUpMessage -time 5 ("??????? 1K"+"\n");
+                print("设置镜头大小为 1K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 1K"+"\n");
             }    
 
         //2K set//
             global proc Render_Cam_2K(){
                 SET_RenderSet();
                 SET_2K_CAM();          
-                print("??????? 2K"+"\n");
-                headsUpMessage -time 5 ("??????? 2K"+"\n");
+                print("设置镜头大小为 2K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 2K"+"\n");
             } 
 
         //3K set//
             global proc Render_Cam_3K(){
                 SET_RenderSet();
                 SET_3K_CAM();          
-                print("??????? 3K"+"\n");
-                headsUpMessage -time 5 ("??????? 3K"+"\n");
+                print("设置镜头大小为 3K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 3K"+"\n");
             } 
 
         //4K set//
             global proc Render_Cam_4K(){
                 SET_RenderSet();
                 SET_4K_CAM();          
-                print("??????? 4K"+"\n");
-                headsUpMessage -time 5 ("??????? 4K"+"\n");
+                print("设置镜头大小为 4K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 4K"+"\n");
             } 
 
         //HD720 set//
             global proc Render_Cam_HD720(){
                 SET_RenderSet();
                 SET_HD720_CAM();          
-                print("??????? HD720"+"\n");
-                headsUpMessage -time 5 ("??????? HD720"+"\n");
+                print("设置镜头大小为 HD720"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 HD720"+"\n");
             } 
 
         //HD1080 set//
             global proc Render_Cam_HD1080(){
                 SET_RenderSet();
                 SET_HD1080_CAM();          
-                print("??????? HD1080"+"\n");
-                headsUpMessage -time 5 ("??????? HD1080"+"\n");
+                print("设置镜头大小为 HD1080"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 HD1080"+"\n");
             } 
 
         //4096_2305 set//
             global proc Render_Cam_4096_2305(){
                 SET_RenderSet();
                 SET_4096_2305_CAM();          
-                print("??????? 4096_2305"+"\n");
-                headsUpMessage -time 5 ("??????? 4096_2305"+"\n");
+                print("设置镜头大小为 4096_2305"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 4096_2305"+"\n");
             } 
 
         //720_1280 set//
             global proc Render_Cam_720_1280(){
                 SET_RenderSet();
                 SET_720_1280_CAM();          
-                print("??????? 720_1280"+"\n");
-                headsUpMessage -time 5 ("??????? 720_1280"+"\n");
+                print("设置镜头大小为 720_1280"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 720_1280"+"\n");
             } 
 
         //1080_1920 set//
             global proc Render_Cam_1080_1920(){
                 SET_RenderSet();
                 SET_1080_1920_CAM();          
-                print("??????? 1080_1920"+"\n");
-                headsUpMessage -time 5 ("??????? 1080_1920"+"\n");
+                print("设置镜头大小为 1080_1920"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 1080_1920"+"\n");
             } 
 
         //2305_4096 set//
             global proc Render_Cam_2305_4096(){
                 SET_RenderSet();
                 SET_2305_4096_CAM();          
-                print("??????? 2305_4096"+"\n");
-                headsUpMessage -time 5 ("??????? 2305_4096"+"\n");
+                print("设置镜头大小为 2305_4096"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 2305_4096"+"\n");
             } 
 
-        ////////prs SET EXR ?????? /////////
-            ///????////
+        ////////prs SET EXR 自定义分辨率 /////////
+            ///最终调用////
                 global proc Custom_CAM_imagesize(){
                     SET_RenderSet();
                     SET_Custom_CAM();
                 }
 
-            /// ????????///
+            /// 自定义镜头分辨率///
                 global proc SET_Custom_CAM(){
                     int $widthcs =`textField -q -text cs_width`;
                     int $Hightcs =`textField -q -text cs_Hight`;
@@ -733,8 +732,8 @@
                 }
 
 
-/////////// Optimize and Creat ID Aovs SET ?????ID Aovs /////////////////
-    //////////// All Auto Creat ID ???????? ?Auto Aovs??????ID ? ????Aovs /////////////////////////////////
+/////////// Optimize and Creat ID Aovs SET 整理和创建ID Aovs /////////////////
+    //////////// All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs /////////////////////////////////
         // 1_Creat_Char_Group ////////
             global proc Creat_Char_Group(){
                 $LsSelectionrenderlayer = `editRenderLayerGlobals -q  -currentRenderLayer`;
@@ -782,22 +781,22 @@
 
 
         // 2_Auto Aovs ID Export_sth ///////////
-            //??AOV_RGB?
+            //创建AOV_RGB层
 
                 global proc Auto_Aovs_ID_Export_sth(){
 
-                    //????????????id (??????0?)
+                    //自动根据新增属性给角色建id (只修改属性为0的)
                     createChaId_id();
 
-                    //???CharID?0??????????CharID?????????????id????ID
+                    //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
                     checkchaID_and_create_id();
 
                     deleteRGBDisplayLayer();
 
-                    //?id?????
+                    //改id名字和数值
                     RS_changeObjidName();
 
-                    //??rgb?ID??????????????????????????id??????????????
+                    //放在rgb建ID后，给角色打组一个属性编号，重复多次，防止有些更改了id数值，角色组的名字编号跟不回
                     give_ChaId_id_num();
                     give_ChaId_id_num();
                     give_ChaId_id_num();
@@ -805,21 +804,21 @@
                     give_ChaId_id_num();
                     give_ChaId_id_num();
 
-                    //AOV???RGB????????RGB
+                    //AOV中创建RGB层，并删除没用的RGB
                     RS_AOV_RGB_createAndDelete_Export_sth();
 
                     createRGBDisplayLayer();
 
-                    //CharIdCheck???0
+                    //CharIdCheck全部归0
                     checkchaID000();
 
-                    //??????????
+                    //选择物体增加圆滑节点
                     smoothNode_auto_pro();
 
                 }
 
 
-            //AOV???RGB????????RGB   Export_sth
+            //AOV中创建RGB层，并删除没用的RGB   Export_sth
                 global proc RS_AOV_RGB_createAndDelete_Export_sth(){
                     string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
                     string $OBJnumin2 ;
@@ -900,7 +899,7 @@
                     }
                 }
 
-            //?????????RGB1
+            //不存在的情况下创建RGB1
                 global proc RS_ConditionCreateAOV_RGB1(){
                     string $AOVall1[] = `ls -typ "RedshiftAOV"`;
                     int $B1 = 0;
@@ -917,7 +916,7 @@
                     }
                 }
 
-            //?????????RGB2
+            //不存在的情况下创建RGB2
                 global proc RS_ConditionCreateAOV_RGB2(){
                     string $AOVall2[] = `ls -typ "RedshiftAOV"`;
                     int $B2 = 0;
@@ -934,7 +933,7 @@
                     }
                 }
 
-            //?????????RGB3
+            //不存在的情况下创建RGB3
                 global proc RS_ConditionCreateAOV_RGB3(){
                     string $AOVall3[] = `ls -typ "RedshiftAOV"`;
                     int $B3 = 0;
@@ -951,7 +950,7 @@
                     }
                 }
 
-            //?????????RGB4
+            //不存在的情况下创建RGB4
                 global proc RS_ConditionCreateAOV_RGB4(){
                     string $AOVall4[] = `ls -typ "RedshiftAOV"`;
                     int $B4 = 0;
@@ -968,7 +967,7 @@
                     }
                 }
 
-            //?????????RGB5
+            //不存在的情况下创建RGB5
                 global proc RS_ConditionCreateAOV_RGB5(){
                     string $AOVall5[] = `ls -typ "RedshiftAOV"`;
                     int $B5 = 0;
@@ -985,7 +984,7 @@
                     }
                 }
 
-            //?????????RGB6
+            //不存在的情况下创建RGB6
                 global proc RS_ConditionCreateAOV_RGB6(){
                     string $AOVall6[] = `ls -typ "RedshiftAOV"`;
                     int $B6 = 0;
@@ -1002,7 +1001,7 @@
                     }
                 }
 
-            //?????????RGB7
+            //不存在的情况下创建RGB7
                 global proc RS_ConditionCreateAOV_RGB7(){
                     string $AOVall7[] = `ls -typ "RedshiftAOV"`;
                     int $B7 = 0;
@@ -1019,7 +1018,7 @@
                     }
                 }
 
-            //??AOV_RGB1
+            //创建AOV_RGB1
                 global proc RS_createAOV_RGB1(){
                     global int $Export_sth ;
                     source redshiftCreateAovTab;
@@ -1038,7 +1037,7 @@
                     print ("RGB1"+"\n");
                 }
 
-            //??AOV_RGB2
+            //创建AOV_RGB2
                 global proc RS_createAOV_RGB2(){
                     global int $Export_sth ;
                     source redshiftCreateAovTab;
@@ -1057,7 +1056,7 @@
                     print ("RGB2"+"\n");
                 }
 
-            //??AOV_RGB3
+            //创建AOV_RGB3
                 global proc RS_createAOV_RGB3(){
                     global int $Export_sth ;
                     source redshiftCreateAovTab;
@@ -1076,7 +1075,7 @@
                     print ("RGB3"+"\n");
                 }
 
-            //??AOV_RGB4
+            //创建AOV_RGB4
                 global proc RS_createAOV_RGB4(){
                     global int $Export_sth ;
                     source redshiftCreateAovTab;
@@ -1096,7 +1095,7 @@
                 }
 
 
-            //??AOV_RGB5
+            //创建AOV_RGB5
                 global proc RS_createAOV_RGB5(){
                     global int $Export_sth ;
                     source redshiftCreateAovTab;
@@ -1116,7 +1115,7 @@
                 }
 
 
-            //??AOV_RGB6
+            //创建AOV_RGB6
                 global proc RS_createAOV_RGB6(){
                     global int $Export_sth ;
                     source redshiftCreateAovTab;
@@ -1136,7 +1135,7 @@
                 }
 
 
-            //??AOV_RGB7
+            //创建AOV_RGB7
                 global proc RS_createAOV_RGB7(){
                     global int $Export_sth ;
                     source redshiftCreateAovTab;
@@ -1157,9 +1156,9 @@
 
         //////////////////////////////////////////////////////////
 
-        //??
-        //??ID
-            //????????????id (??????0?)
+        //共用
+        //创建ID
+            //自动根据新增属性给角色建id (只修改属性为0的)
                 global proc createChaId_id(){
                     string $transf_all[] = `ls -typ "transform"`;
                     string $transf_allin ;
@@ -1174,7 +1173,7 @@
                     }
                 }
 
-            //???CharID?0??????????CharID?????????????id????ID
+            //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
                 global proc checkchaID_and_create_id(){
                     string $id_all[] = `ls -typ "RedshiftObjectId"`;
                     string $id_allin;
@@ -1209,7 +1208,7 @@
                 }
 
 
-            //??RGB display?? 
+            //删掉RGB display分组 
                 global proc deleteRGBDisplayLayer(){ 
                     string $RGBdisplaylayer[]=`ls -type displayLayer`;
                     for($i=0;$i<`size($RGBdisplaylayer)`;$i+=1)
@@ -1223,7 +1222,7 @@
                     }
                 }
 
-            //?id?????
+            //改id名字和数值
                 global proc RS_changeObjidName(){
                     string $OBJIDallG[] = `ls -typ "RedshiftObjectId"`;
                     select -r -ne $OBJIDallG ;
@@ -1409,7 +1408,7 @@
                     }
                 }
 
-            //??rgb?ID?????????????
+            //放在rgb建ID后，给角色打组一个属性编号
                 global proc give_ChaId_id_num(){
                     string $id_all[] = `ls -typ "RedshiftObjectId"`;
                     string $id_allin;
@@ -1434,7 +1433,7 @@
 
 
 
-            //??RGBdisplaylayer
+            //创建RGBdisplaylayer
                 global proc createRGBDisplayLayer(){ 
 
                     string $RGB_RSobjid[]=`ls -type RedshiftObjectId`;
@@ -1570,7 +1569,7 @@
                 }
                 
 
-            //CharIdCheck???0
+            //CharIdCheck全部归0
                     global proc checkchaID000(){
                         string $transf_allb[] = `ls -typ "transform"`;
                         string $transf_allbin ;
@@ -1581,7 +1580,7 @@
                         }
                     }
 
-            //?????
+            //建圆滑节点
                 global proc smoothNode_auto_pro()
                 {
                     if (`objExists "Character_Group"`){
@@ -1598,7 +1597,7 @@
                 }
 
 
-    ///// Auto Char ID ?????? ????????ID /////
+    ///// Auto Char ID 创建角色组后 手动选择角色创建ID /////
         //1_SL Char Creat ID////
             global proc SL_Char_Creat_ID(){
                     string $CharAndProp1[] = `ls -sl`;
@@ -1856,7 +1855,7 @@
 
 
 
-    //////Custom SET ID ?????ID///////
+    //////Custom SET ID 自定义设置ID///////
         //1_Custom ID AOVs PNG
             global proc Cs_Char_IDAovs(){
                 global int $Export_sth ;
@@ -1900,7 +1899,7 @@
 
 
 
-    /////Cs Group Aovs ID ??????? ?? Aovs
+    /////Cs Group Aovs ID 手动创建场景组 设置 Aovs
     //1_Creat_SEN_Group"
         global proc Creat_sen_Group(){
             string $Sen_all_1[] =`ls -sl`;
@@ -1954,13 +1953,13 @@
 
 
 //////// DO CAM  ////////////////////             
-    /////////???     ????Group ? ????Group ? ???????Aovs ??/////////////
+    /////////做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口/////////////
         ////////// sel obj
             global proc sel_obj(){
                 selectMode -object; selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 1 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;selectType -byName gpuCache 1;
             }
 
-    /////////???////////
+    /////////做镜头////////
 
         ///3_Set_Sen_CHA_AOVsID
             global proc Set_Sen_CHA_AOVsID(){
@@ -1968,7 +1967,7 @@
                 Sen_ID_Aovs();
             }
 
-    ////2017??
+    ////2017横屏
         ///Aovs+ISO+HD720   
             global proc Aovs_iso2017_HD720(){
                 Render_Cam_HD720();
@@ -1994,7 +1993,7 @@
                 importCHAlig();
             }
 
-    ////2019??
+    ////2019横屏
         ///Aovs+ISO+HD720
             global proc Aovs_iso2019_HD720(){
                 Render_Cam_HD720();
@@ -2020,7 +2019,7 @@
                 importCHAlig();
             }
 
-    ////2017??
+    ////2017竖屏
         ///Aovs_iso+720*1280
             global proc Aovs_iso2017_720_1280(){
                 Render_Cam_720_1280();
@@ -2048,7 +2047,7 @@
                 
             }
 
-    ////2019??
+    ////2019竖屏
         ///Aovs_iso+720*1280
             global proc Aovs_iso2019_720_1280(){
                 Render_Cam_720_1280();
@@ -2079,8 +2078,8 @@
             }
 
 
-    ////////AOVs+iso 2017 2019 +?????? /////////
-        ///????////
+    ////////AOVs+iso 2017 2019 +自定义分辨率 /////////
+        ///最终调用////
             global proc A0vs2017_CS_imagesize(){
                 custom_camset_CS_17();
                 SET_RenderSet();
@@ -2099,7 +2098,7 @@
             }
 
         
-        /// ????????///
+        /// 自定义镜头分辨率///
 
             global proc custom_camset_CS_17(){
                 int $widthcs_CS_17 =`textField -q -text Width_CS_17`;
@@ -2117,7 +2116,7 @@
 
 
 
-////////// Do POSE ???4K 
+////////// Do POSE 正方形4K 
     //2_Do_pose_2_to_do_sth_2017_4K
         global proc Do_pose_2_to_do_sth_2017_4K(){
             smoothNode_auto_pro();
@@ -2126,8 +2125,8 @@
             Cs_Char_IDAovs();
             importCHAlig();
             ISO_maya2017();
-            print("???? 2017??4K");
-            headsUpMessage -time 5 ("???? 2017??4K");
+            print("一键起飞 2017方形4K");
+            headsUpMessage -time 5 ("一键起飞 2017方形4K");
         }
 
     //2_Do_pose_2_to_do_sth_2019_4K
@@ -2138,8 +2137,8 @@
             Cs_Char_IDAovs();
             importCHAlig();
             ISO_maya2019();
-            print("???? 2019??4K");
-            headsUpMessage -time 5 ("???? 2019??4K");
+            print("一键起飞 2019方形4K");
+            headsUpMessage -time 5 ("一键起飞 2019方形4K");
         }
 
 
