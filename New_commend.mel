@@ -88,7 +88,6 @@
                 RS_Z_Aov();
                 RS_N_Aov();
                 RS_VolumeFogEmission_Aov();
-                RS_TransGIRaw_Aov();
                 RS_TransLightingRaw_Aov();
                 headsUpMessage -time 5 ("设置 Sen Aovs"+"\n");
             }
