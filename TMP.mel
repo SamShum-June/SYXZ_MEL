@@ -136,7 +136,7 @@ proc int	OneC12() //备份到Z盘
 	$exportSysCmd2 = 0;
     }
     else if($exportSysCmd1 == 2)
-    {
+    { 
 	$exportSysCmd2 = 1;
     }
     else 
