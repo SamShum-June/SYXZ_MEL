@@ -99,7 +99,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "rs_AO"`){
                     rename (`redshiftCreateAov ("Custom")`) "rs_AO";
-                    setAttr -type "string" rs_AO.name "rs_AO";
+                    setAttr -type "string" rs_AO.name "AO";
                     }
                     if(!`objExists  "RS_aovAO_set_shader"`){
                     shadingNode -n "RS_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
@@ -124,7 +124,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "rs_OC"`){
                     rename (`redshiftCreateAov ("Custom")`) "rs_OC";
-                    setAttr -type "string" rs_OC.name "rs_OC";
+                    setAttr -type "string" rs_OC.name "OC";
                     }
                     if(!`objExists  "RS_aovOC_set_shader"`){
                     shadingNode -n "RS_aovOC_set_shader" -asUtility ramp;
@@ -157,7 +157,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "Emission"`){
                     rename (`redshiftCreateAov ("Emission")`) "rs_Emission";
-                    setAttr -type "string" rs_Emission.name "rs_Emission";
+                    setAttr -type "string" rs_Emission.name "Emission";
                     }
                     setAttr "rs_Emission.enabled" 0;
                     setAttr "rs_Emission.exrBits" 32;
@@ -174,7 +174,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "DiffuseFilter"`){
                     rename (`redshiftCreateAov ("Diffuse Filter")`) "rs_DiffuseFilter";
-                    setAttr -type "string" rs_DiffuseFilter.name "rs_DiffuseFilter";
+                    setAttr -type "string" rs_DiffuseFilter.name "DiffuseFilter";
                     }
                     setAttr "rs_DiffuseFilter.enabled" 0;
                     setAttr "rs_DiffuseFilter.exrBits" 32;
@@ -191,7 +191,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "DiffuseLightingRaw"`){
                     rename (`redshiftCreateAov ("Diffuse Lighting Raw")`) "rs_DiffuseLightingRaw";
-                    setAttr -type "string" rs_DiffuseLightingRaw.name "rs_DiffuseLightingRaw";
+                    setAttr -type "string" rs_DiffuseLightingRaw.name "DiffuseLightingRaw";
                     }
                     setAttr "rs_DiffuseLightingRaw.enabled" 0;
                     setAttr "rs_DiffuseLightingRaw.exrBits" 32;
@@ -208,7 +208,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "MotionVectors"`){
                     rename (`redshiftCreateAov ("Motion Vectors")`) "rs_MotionVectors";
-                    setAttr -type "string" rs_MotionVectors.name "rs_MotionVectors";
+                    setAttr -type "string" rs_MotionVectors.name "MotionVectors";
                     }
                     setAttr "rs_MotionVectors.enabled" 0;
                     setAttr "rs_MotionVectors.exrBits" 32;
@@ -226,7 +226,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "N"`){
                     rename (`redshiftCreateAov ("Normals")`) "rs_N";
-                    setAttr -type "string" rs_N.name "rs_N";
+                    setAttr -type "string" rs_N.name "N";
                     }
                     setAttr "rs_N.enabled" 0;
                     setAttr "rs_N.exrBits" 32;
@@ -243,7 +243,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "ReflectionsFilter"`){
                     rename (`redshiftCreateAov ("Reflections Filter")`) "rs_ReflectionsFilter";
-                    setAttr -type "string" rs_ReflectionsFilter.name "rs_ReflectionsFilter";
+                    setAttr -type "string" rs_ReflectionsFilter.name "ReflectionsFilter";
                     }
                     setAttr "rs_ReflectionsFilter.enabled" 0;
                     setAttr "rs_ReflectionsFilter.exrBits" 32;
@@ -260,7 +260,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "ReflectionsRaw"`){
                     rename (`redshiftCreateAov ("Reflections Raw")`) "rs_ReflectionsRaw";
-                    setAttr -type "string" rs_ReflectionsRaw.name "rs_ReflectionsRaw";
+                    setAttr -type "string" rs_ReflectionsRaw.name "ReflectionsRaw";
                     }
                     setAttr "rs_ReflectionsRaw.enabled" 0;
                     setAttr "rs_ReflectionsRaw.exrBits" 32;
@@ -277,7 +277,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "RefractionsFilter"`){
                     rename (`redshiftCreateAov ("Refractions Filter")`) "rs_RefractionsFilter";
-                    setAttr -type "string" rs_RefractionsFilter.name "rs_RefractionsFilter";
+                    setAttr -type "string" rs_RefractionsFilter.name "RefractionsFilter";
                     }
                     setAttr "rs_RefractionsFilter.enabled" 0;
                     setAttr "rs_RefractionsFilter.exrBits" 32;
@@ -294,7 +294,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "RefractionsRaw"`){
                     rename (`redshiftCreateAov ("Refractions Raw")`) "rs_RefractionsRaw";
-                    setAttr -type "string" rs_RefractionsRaw.name "rs_RefractionsRaw";
+                    setAttr -type "string" rs_RefractionsRaw.name "RefractionsRaw";
                     }
                     setAttr "rs_RefractionsRaw.enabled" 0;
                     setAttr "rs_RefractionsRaw.exrBits" 32;
@@ -311,7 +311,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "SpecularLighting"`){
                     rename (`redshiftCreateAov ("Specular Lighting")`) "rs_SpecularLighting";
-                    setAttr -type "string" rs_SpecularLighting.name "rs_SpecularLighting";
+                    setAttr -type "string" rs_SpecularLighting.name "SpecularLighting";
                     }
                     setAttr "rs_SpecularLighting.enabled" 0;
                     setAttr "rs_SpecularLighting.exrBits" 32;
@@ -328,7 +328,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "SSSRaw"`){
                     rename (`redshiftCreateAov ("Sub Surface Scatter Raw")`) "rs_SSSRaw";
-                    setAttr -type "string" rs_SSSRaw.name "rs_SSSRaw";
+                    setAttr -type "string" rs_SSSRaw.name "SSSRaw";
                     }
                     setAttr "rs_SSSRaw.enabled" 0;
                     setAttr "rs_SSSRaw.exrBits" 32;
@@ -345,7 +345,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "SSS"`){
                     rename (`redshiftCreateAov ("Sub Surface Scatter")`) "rs_SSS";
-                    setAttr -type "string" rs_SSS.name "rs_SSS";
+                    setAttr -type "string" rs_SSS.name "SSS";
                     }
                     setAttr "rs_SSS.enabled" 0;
                     setAttr "rs_SSS.exrBits" 32;
@@ -362,7 +362,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "TransLightingRaw"`){
                     rename (`redshiftCreateAov ("Translucency Lighting Raw")`) "rs_TransLightingRaw";
-                    setAttr -type "string" rs_TransLightingRaw.name "rs_TransLightingRaw";
+                    setAttr -type "string" rs_TransLightingRaw.name "TransLightingRaw";
                     }
                     setAttr "rs_TransLightingRaw.enabled" 0;
                     setAttr "rs_TransLightingRaw.exrBits" 32;
@@ -379,7 +379,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "P"`){
                     rename (`redshiftCreateAov ("World Position")`) "rs_P";
-                    setAttr -type "string" rs_P.name "rs_P";
+                    setAttr -type "string" rs_P.name "P";
                     }
                     setAttr "rs_P.enabled" 0;
                     setAttr "rs_P.exrBits" 32;
@@ -395,7 +395,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "Z"`){
                     rename (`redshiftCreateAov ("Depth")`) "rs_Z";
-                    setAttr -type "string" rs_Z.name "rs_Z";
+                    setAttr -type "string" rs_Z.name "Z";
                     }
                     setAttr "rs_Z.enabled" 0;
                     setAttr "rs_Z.exrBits" 32;
@@ -417,7 +417,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "VolumeFogEmission"`){
                     rename (`redshiftCreateAov ("Volume Fog Emission")`) "rs_VolumeFogEmission";
-                    setAttr -type "string" rs_VolumeFogEmission.name "rs_VolumeFogEmission";
+                    setAttr -type "string" rs_VolumeFogEmission.name "VolumeFogEmission";
                     }
                     setAttr "rs_VolumeFogEmission.enabled" 0;
                     setAttr "rs_VolumeFogEmission.exrBits" 32;
@@ -434,7 +434,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "Shadows"`){
                     rename (`redshiftCreateAov ("Shadows")`) "rs_Shadows";
-                    setAttr -type "string" rs_Shadows.name "rs_Shadows";
+                    setAttr -type "string" rs_Shadows.name "Shadows";
                     }
                     setAttr "rs_Shadows.enabled" 0;
                     setAttr "rs_Shadows.exrBits" 32;
@@ -451,7 +451,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "GIRaw"`){
                     rename (`redshiftCreateAov ("Global Illumination Raw")`) "rs_GIRaw";
-                    setAttr -type "string" rs_GIRaw.name "rs_GIRaw";
+                    setAttr -type "string" rs_GIRaw.name "GIRaw";
                     }
                     setAttr "rs_GIRaw.enabled" 0;
                     setAttr "rs_GIRaw.exrBits" 32;
@@ -469,7 +469,7 @@
                     setAttr "defaultRenderGlobals.enableDefaultLight" 0;
                     if(!`objExists "TransGIRaw"`){
                     rename (`redshiftCreateAov ("Translucency GI Raw")`) "rs_TransGIRaw";
-                    setAttr -type "string" rs_TransGIRaw.name "rs_TransGIRaw";
+                    setAttr -type "string" rs_TransGIRaw.name "TransGIRaw";
                     }
                     setAttr "rs_TransGIRaw.enabled" 0;
                     setAttr "rs_TransGIRaw.exrBits" 32;
