@@ -404,6 +404,7 @@
                     setAttr "rs_Z.fileFormat" $Export_sth;
                     setAttr "rs_Z.filterMode" 3;
                     setAttr "rs_Z.depthMode" 1;
+                    setAttr "rs_Z.useCameraNearFar" 0;
                     setAttr "rs_Z.minDepth" 0;
                     setAttr "rs_Z.maxDepth" 100000;
                     redshiftUpdateActiveAovList();
