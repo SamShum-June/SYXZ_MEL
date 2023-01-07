@@ -92,7 +92,7 @@
                 setAttr "cha_lig_nuanShape.glossyRayContributionScale" 0.5;
                 setAttr "cha_lig_nuanShape.areaBidirectional" 1;
                 setAttr "cha_lig_nuanShape.areaVisibleInRender" 0;
-                setAttr "cha_lig_nuanShape.shadow" 1;
+                setAttr "cha_lig_nuanShape.shadow" 0;
                 setAttr "cha_lig_nuanShape.shadowTransparency" 0;
                 setAttr "cha_lig_nuanShape.emitCausticPhotons" 1;
                 setAttr "cha_lig_nuanShape.emitGiPhotons" 1;
