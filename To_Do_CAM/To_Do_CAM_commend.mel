@@ -1822,5 +1822,5 @@
                 //ISO_maya2017();
                 RS_Full_Aovs();
                 creat_SHAlig();
-                importCHAlig();
+                //importCHAlig();
             }

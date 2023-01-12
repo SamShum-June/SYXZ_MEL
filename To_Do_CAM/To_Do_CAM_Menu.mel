@@ -1,11 +1,11 @@
 /////////////////// 运行时显示窗口 //////////////////////////////
     ///选择最终输出格式 EXR or PNG//
         global int $Export_sth=1;
-        global proc TO_Do_CAM_Master_Window(){
-            if(`window -exists TO_Do_CAM_Master_Window`){deleteUI -window TO_Do_CAM_Master_Window;}
+        global proc To_Do_CAM_Master_Window(){
+            if(`window -exists To_Do_CAM_Master_Window`){deleteUI -window To_Do_CAM_Master_Window;}
             if(`window -exists import_STH_window`){deleteUI -window import_STH_window;}
 
-                window -t "DO_CAM_做镜头"  -s 0 -mxb 0  -bgc 0.377 0.386 0.361 DO_CAM_window;columnLayout -adj 1;
+                window -t "DO_CAM_做镜头"  -s 0 -mxb 0  -bgc 0.377 0.386 0.361 To_Do_CAM_Master_Window;columnLayout -adj 1;
                 rowColumnLayout -adjustableColumn true -w 500 -ca;
 
 
@@ -32,7 +32,7 @@
                         setParent ..; 
 
                 frameLayout  -l "做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs"   
-                -w 500 -h 480 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
+                -w 500 -h 180 -cll 0 -cl 0 -mh 5 -bgc 0.025 0.244 0.767;
                 rowColumnLayout  -nr 1  -cs 1 3 -rowHeight 1 30;
                         button -l "0_选择模型" -bgc 0.539 0.873 0.928 -w 200 -h 30 -c "sel_obj"; //okk
                         button -l "0_选择模型和灯光" -bgc 1.539 2 1.928 -w 200 -h 30 -c "sel_obj_lig"; //okk
@@ -61,27 +61,23 @@
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 10;
                         text -w 150 -l "3_自动创建角色ID和场景ID";
                         button -l "3_creat_Sen_CHA_AOVsID" -bgc 0.442 1 0 -w 200 -h 30 -c "Set_Sen_CHA_AOVsID";   //okk
-
-                text -w 500 -h 23 -l "选择屏幕方向";
+                        setParent ..;                        
                 rowColumnLayout -numberOfRows 1 -ca  -cs 1 3;   
-                        text -w 60 -bgc 0.539 0.873 0.928 -l "2018横屏:";
-                         button -l "Aovs+ISO+HD1080" -bgc 0.539 0.873 0.928 -w 140 -h 30 -c "Aovs_iso2018_HD1080"; //okk                       
-
-
+                        button -l "4_Aovs+ISO+HD1080" -bgc 0.539 0.873 0.928 -w 500 -h 40 -c "Aovs_iso2018_HD1080"; //okk                       
                         setParent ..;
 
-            window -e  -w 360 -h 80 TO_Do_CAM_Master_Window;
-            showWindow TO_Do_CAM_Master_Window;
+            window -e  -w 360 -h 80 To_Do_CAM_Master_Window;
+            showWindow To_Do_CAM_Master_Window;
         }
         
-        TO_Do_CAM_Master_Window;
+        To_Do_CAM_Master_Window;
 
 
 
-        ///删除TO_Do_CAM_Master_Window 再打开 TO_Do_CAM Window//
-            global proc delete_UI_TO_Do_CAM_Master_Window_TO_Do_CAMWINDOW(){
-                deleteUI -window TO_Do_CAM_Master_Window;
-                TO_Do_CAM;
+        ///删除To_Do_CAM_Master_Window 再打开 To_Do_CAM Window//
+            global proc delete_UI_To_Do_CAM_Master_Window_To_Do_CAMWINDOW(){
+                deleteUI -window To_Do_CAM_Master_Window;
+                To_Do_CAM;
             } 
 
 
