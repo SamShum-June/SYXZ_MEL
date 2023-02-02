@@ -16,7 +16,7 @@
 
     /////////导入人物灯光////////////////////////
         global proc importCHAlig(){
-            file -import -type "mayaBinary"  "Z:/Business_Template/2022/NBJY_20220046/Render/lig.mb"
+            file -import -type "mayaBinary"  "N:/TSG/06_light/CJ/LIG.mb";
             headsUpMessage -time 5 ("设置 导入人物灯光"+"\n");
         }
 
@@ -25,323 +25,19 @@
             fixRenderLayerOutAdjustmentErrors;
         }
 
-    /////////创建人物灯光////////////////////////
-        global proc CreatCHAlig(){
-            cha_lig_zhu();
-            cha_lig_nuan();
-            cha_lig_leng();
-            cha_lig_bian();
-            cha_lig_gao_1();
-            cha_lig_gao_2();
-            cha_lig_rsDomelig();
-            Creat_Group();      
-            headsUpMessage -time 5 ("创建人物灯光"+"\n");
-        }
-
-        //cha_lig_zhu
-            global proc cha_lig_zhu(){
-                redshiftCreateLight "RedshiftPhysicalLight";
-                rename "rsPhysicalLight1" "cha_lig_zhu";
-                setAttr "cha_lig_zhuShape.on" 1;
-                setAttr "cha_lig_zhuShape.lightType" 3;
-                setAttr "cha_lig_zhuShape.colorMode" 0;
-                setAttr "cha_lig_zhuShape.color" -type double3 0.8 0.87 1 ;
-                setAttr "cha_lig_zhuShape.unitsType" 0;
-                setAttr "cha_lig_zhuShape.intensity" 1.5;
-                setAttr "cha_lig_zhuShape.affectsDiffuse" 1;
-                setAttr "cha_lig_zhuShape.affectsSpecular" 1;
-                setAttr "cha_lig_zhuShape.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_zhuShape.glossyRayContributionScale" 0.2;
-                setAttr "cha_lig_zhuShape.areaBidirectional" 1;
-                setAttr "cha_lig_zhuShape.shadow" 1;
-                setAttr "cha_lig_zhuShape.shadowTransparency" 0.3;
-                setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_shadowSamplesScale" 3;
-                setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_numShadowSamples" 256;
-                setAttr "cha_lig_zhuShape.emitCausticPhotons" 1;
-                setAttr "cha_lig_zhuShape.emitGiPhotons" 1;
-                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_zhu.translateX" 0;
-                setAttr "cha_lig_zhu.translateY" 0;
-                setAttr "cha_lig_zhu.translateZ" 0;
-                setAttr "cha_lig_zhu.rotateX" -33.94;
-                setAttr "cha_lig_zhu.rotateY" -16.565;
-                setAttr "cha_lig_zhu.rotateZ" 3.764;
-                setAttr "cha_lig_zhu.scaleX" 124.084;
-                setAttr "cha_lig_zhu.scaleY" 124.084;
-                setAttr "cha_lig_zhu.scaleZ" 124.084;
-                setAttr "cha_lig_zhu.visibility" 1;
-                setAttr -lock true "cha_lig_zhu.sx";
-                setAttr -lock true "cha_lig_zhu.sy";
-                setAttr -lock true "cha_lig_zhu.sz";
-            }
-
-        //cha_lig_nuan
-            global proc cha_lig_nuan(){
-                redshiftCreateLight "RedshiftPhysicalLight";
-                rename "rsPhysicalLight1" "cha_lig_nuan";
-                setAttr "cha_lig_nuanShape.on" 1;
-                setAttr "cha_lig_nuanShape.lightType" 0;
-                setAttr "cha_lig_nuanShape.colorMode" 0;
-                setAttr "cha_lig_nuanShape.color" -type double3 0.916 0.877 0.685 ;
-                setAttr "cha_lig_nuanShape.unitsType" 0;
-                setAttr "cha_lig_nuanShape.intensity" 0.5;
-                setAttr "cha_lig_nuanShape.affectsDiffuse" 1;
-                setAttr "cha_lig_nuanShape.affectsSpecular" 1;
-                setAttr "cha_lig_nuanShape.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_nuanShape.glossyRayContributionScale" 0.5;
-                setAttr "cha_lig_nuanShape.areaBidirectional" 1;
-                setAttr "cha_lig_nuanShape.areaVisibleInRender" 0;
-                setAttr "cha_lig_nuanShape.shadow" 0;
-                setAttr "cha_lig_nuanShape.shadowTransparency" 0;
-                setAttr "cha_lig_nuanShape.emitCausticPhotons" 1;
-                setAttr "cha_lig_nuanShape.emitGiPhotons" 1;
-                setAttr "cha_lig_nuanShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_nuanShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_nuanShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_nuanShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_nuanShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_nuanShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_nuan.translateX" 0.565;
-                setAttr "cha_lig_nuan.translateY" 3.23;
-                setAttr "cha_lig_nuan.translateZ" 4.878;
-                setAttr "cha_lig_nuan.rotateX" 9.157;
-                setAttr "cha_lig_nuan.rotateY" -9.29;
-                setAttr "cha_lig_nuan.rotateZ" 80.261;
-                setAttr "cha_lig_nuan.scaleX" 30;
-                setAttr "cha_lig_nuan.scaleY" 30;
-                setAttr "cha_lig_nuan.scaleZ" 30;
-                setAttr "cha_lig_nuan.visibility" 1;
-                setAttr -lock true "cha_lig_nuan.sx";
-                setAttr -lock true "cha_lig_nuan.sy";
-                setAttr -lock true "cha_lig_nuan.sz";
-            }
-        //cha_lig_leng
-            global proc cha_lig_leng(){
-                redshiftCreateLight "RedshiftPhysicalLight";
-                rename "rsPhysicalLight1" "cha_lig_leng";
-                setAttr "cha_lig_lengShape.on" 1;
-                setAttr "cha_lig_lengShape.lightType" 3;
-                setAttr "cha_lig_lengShape.colorMode" 0;
-                setAttr "cha_lig_lengShape.color" -type double3 0.423 0.808 1 ;
-                setAttr "cha_lig_lengShape.unitsType" 0;
-                setAttr "cha_lig_lengShape.intensity" 0.4;
-                setAttr "cha_lig_lengShape.affectsDiffuse" 1;
-                setAttr "cha_lig_lengShape.affectsSpecular" 1;
-                setAttr "cha_lig_lengShape.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_lengShape.glossyRayContributionScale" 1;
-                setAttr "cha_lig_lengShape.areaBidirectional" 1;
-                setAttr "cha_lig_lengShape.shadow" 1;
-                setAttr "cha_lig_lengShape.shadowTransparency" 0;
-                setAttr "cha_lig_lengShape.SAMPLINGOVERRIDES_shadowSamplesScale" 40.828;
-                setAttr "cha_lig_lengShape.SAMPLINGOVERRIDES_numShadowSamples" 8;
-                setAttr "cha_lig_lengShape.emitCausticPhotons" 1;
-                setAttr "cha_lig_lengShape.emitGiPhotons" 1;
-                setAttr "cha_lig_lengShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_lengShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_lengShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_lengShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_lengShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_lengShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_leng.translateX" 0;
-                setAttr "cha_lig_leng.translateY" 0;
-                setAttr "cha_lig_leng.translateZ" 0;
-                setAttr "cha_lig_leng.rotateX" 120.013;
-                setAttr "cha_lig_leng.rotateY" 128.734;
-                setAttr "cha_lig_leng.rotateZ" 0.698;
-                setAttr "cha_lig_leng.scaleX" 40;
-                setAttr "cha_lig_leng.scaleY" 40;
-                setAttr "cha_lig_leng.scaleZ" 40;
-                setAttr "cha_lig_leng.visibility" 1;
-                setAttr -lock true "cha_lig_leng.sx";
-                setAttr -lock true "cha_lig_leng.sy";
-                setAttr -lock true "cha_lig_leng.sz";
-            }
-        //cha_lig_bian
-            global proc cha_lig_bian(){
-                redshiftCreateLight "RedshiftPhysicalLight";
-                rename "rsPhysicalLight1" "cha_lig_bian";
-                setAttr "cha_lig_bianShape.on" 1;
-                setAttr "cha_lig_bianShape.lightType" 3;
-                setAttr "cha_lig_bianShape.colorMode" 0;
-                setAttr "cha_lig_bianShape.color" -type double3 0.528 0.7799 1 ;
-                setAttr "cha_lig_bianShape.unitsType" 0;
-                setAttr "cha_lig_bianShape.intensity" 2;
-                setAttr "cha_lig_bianShape.affectsDiffuse" 1;
-                setAttr "cha_lig_bianShape.affectsSpecular" 1;
-                setAttr "cha_lig_bianShape.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_bianShape.glossyRayContributionScale" 0.5;
-                setAttr "cha_lig_bianShape.areaBidirectional" 1;
-                setAttr "cha_lig_bianShape.shadow" 1;
-                setAttr "cha_lig_bianShape.shadowTransparency" 0;
-                setAttr "cha_lig_bianShape.SAMPLINGOVERRIDES_shadowSamplesScale" 40.828;
-                setAttr "cha_lig_bianShape.SAMPLINGOVERRIDES_numShadowSamples" 8;
-                setAttr "cha_lig_bianShape.emitCausticPhotons" 1;
-                setAttr "cha_lig_bianShape.emitGiPhotons" 1;
-                setAttr "cha_lig_bianShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_bianShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_bianShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_bianShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_bianShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_bianShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_bian.translateX" 0;
-                setAttr "cha_lig_bian.translateY" 0;
-                setAttr "cha_lig_bian.translateZ" 0;
-                setAttr "cha_lig_bian.rotateX" -175.502;
-                setAttr "cha_lig_bian.rotateY" 1.186;
-                setAttr "cha_lig_bian.rotateZ" -91.273;
-                setAttr "cha_lig_bian.scaleX" 40;
-                setAttr "cha_lig_bian.scaleY" 40;
-                setAttr "cha_lig_bian.scaleZ" 40;
-                setAttr "cha_lig_bian.visibility" 1;
-                setAttr -lock true "cha_lig_bian.sx";
-                setAttr -lock true "cha_lig_bian.sy";
-                setAttr -lock true "cha_lig_bian.sz";
-            }
-        //cha_lig_gao_1
-            global proc cha_lig_gao_1(){
-                redshiftCreateLight "RedshiftPhysicalLight";
-                rename "rsPhysicalLight1" "cha_lig_gao_1";
-                setAttr "cha_lig_gao_Shape1.on" 1;
-                setAttr "cha_lig_gao_Shape1.lightType" 3;
-                setAttr "cha_lig_gao_Shape1.colorMode" 0;
-                setAttr "cha_lig_gao_Shape1.color" -type double3 1 0.99 0.949 ;
-                setAttr "cha_lig_gao_Shape1.unitsType" 0;
-                setAttr "cha_lig_gao_Shape1.intensity" 0.5;
-                setAttr "cha_lig_gao_Shape1.affectsDiffuse" 0;
-                setAttr "cha_lig_gao_Shape1.affectsSpecular" 1;
-                setAttr "cha_lig_gao_Shape1.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_gao_Shape1.glossyRayContributionScale" 1;
-                setAttr "cha_lig_gao_Shape1.areaBidirectional" 1;
-                setAttr "cha_lig_gao_Shape1.shadow" 0;
-                setAttr "cha_lig_gao_Shape1.emitCausticPhotons" 1;
-                setAttr "cha_lig_gao_Shape1.emitGiPhotons" 1;
-                setAttr "cha_lig_gao_Shape1.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_gao_Shape1.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_gao_Shape1.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_gao_Shape1.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_gao_Shape1.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_gao_Shape1.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_gao_1.translateX" 0;
-                setAttr "cha_lig_gao_1.translateY" 0;
-                setAttr "cha_lig_gao_1.translateZ" 0;
-                setAttr "cha_lig_gao_1.rotateX" -23.252;
-                setAttr "cha_lig_gao_1.rotateY" -67.243;
-                setAttr "cha_lig_gao_1.rotateZ" -25.430;
-                setAttr "cha_lig_gao_1.scaleX" 40;
-                setAttr "cha_lig_gao_1.scaleY" 40;
-                setAttr "cha_lig_gao_1.scaleZ" 40;
-                setAttr "cha_lig_gao_1.visibility" 1;
-                setAttr -lock true "cha_lig_gao_1.sx";
-                setAttr -lock true "cha_lig_gao_1.sy";
-                setAttr -lock true "cha_lig_gao_1.sz";
-            }
-        //cha_lig_gao_2
-            global proc cha_lig_gao_2(){
-                redshiftCreateLight "RedshiftPhysicalLight";
-                rename "rsPhysicalLight1" "cha_lig_gao_2";
-                setAttr "cha_lig_gao_Shape2.on" 1;
-                setAttr "cha_lig_gao_Shape2.lightType" 3;
-                setAttr "cha_lig_gao_Shape2.colorMode" 0;
-                setAttr "cha_lig_gao_Shape2.color" -type double3 1 0.99 0.949 ;
-                setAttr "cha_lig_gao_Shape2.unitsType" 0;
-                setAttr "cha_lig_gao_Shape2.intensity" 0.5;
-                setAttr "cha_lig_gao_Shape2.affectsDiffuse" 0;
-                setAttr "cha_lig_gao_Shape2.affectsSpecular" 1;
-                setAttr "cha_lig_gao_Shape2.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_gao_Shape2.glossyRayContributionScale" 1;
-                setAttr "cha_lig_gao_Shape2.areaBidirectional" 1;
-                setAttr "cha_lig_gao_Shape2.shadow" 0;
-                setAttr "cha_lig_gao_Shape2.emitCausticPhotons" 1;
-                setAttr "cha_lig_gao_Shape2.emitGiPhotons" 1;
-                setAttr "cha_lig_gao_Shape2.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_gao_Shape2.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_gao_Shape2.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_gao_Shape2.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_gao_Shape2.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_gao_Shape2.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_gao_2.translateX" 0;
-                setAttr "cha_lig_gao_2.translateY" 0;
-                setAttr "cha_lig_gao_2.translateZ" 0;
-                setAttr "cha_lig_gao_2.rotateX" -63.393;
-                setAttr "cha_lig_gao_2.rotateY" -10.551;
-                setAttr "cha_lig_gao_2.rotateZ" 7.976;
-                setAttr "cha_lig_gao_2.scaleX" 40;
-                setAttr "cha_lig_gao_2.scaleY" 40;
-                setAttr "cha_lig_gao_2.scaleZ" 40;
-                setAttr "cha_lig_gao_2.visibility" 1;
-                setAttr -lock true "cha_lig_gao_2.sx";
-                setAttr -lock true "cha_lig_gao_2.sy";
-                setAttr -lock true "cha_lig_gao_2.sz";
-            }
-        //cha_lig_rsDomelig
-            global proc cha_lig_rsDomelig(){
-                redshiftCreateLight "RedshiftDomeLight";
-                rename "rsDomeLight1" "cha_lig_rsDomelig";
-                setAttr "cha_lig_rsDomeligShape.on" 1;
-                setAttr -type "string" cha_lig_rsDomeligShape.tex0 "//192.168.23.65/ab$/Light_Library/HDR/hdr.hdr";
-                setAttr "cha_lig_rsDomeligShape.envType" 0;
-                setAttr "cha_lig_rsDomeligShape.samples" 128;
-                setAttr "cha_lig_rsDomeligShape.glossyRayContributionScale" 0.348;
-                setAttr "cha_lig_rsDomeligShape.affectsDiffuse" 1;
-                setAttr "cha_lig_rsDomeligShape.affectsSpecular" 1;
-                setAttr "cha_lig_rsDomeligShape.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_rsDomeligShape.glossyRayContributionScale" 0.348;
-                setAttr "cha_lig_rsDomeligShape.shadow" 1;
-                setAttr "cha_lig_rsDomeligShape.shadowTransparency" 0;
-                setAttr "cha_lig_rsDomeligShape.background_enable" 0;
-                setAttr "cha_lig_rsDomeligShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_rsDomeligShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_rsDomeligShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_rsDomeligShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_rsDomeligShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_rsDomeligShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_rsDomelig.translateX" 0;
-                setAttr "cha_lig_rsDomelig.translateY" 0;
-                setAttr "cha_lig_rsDomelig.translateZ" 0;
-                setAttr "cha_lig_rsDomelig.rotateX" -22.439;
-                setAttr "cha_lig_rsDomelig.rotateY" -13.567;
-                setAttr "cha_lig_rsDomelig.rotateZ" 8.248;
-                setAttr "cha_lig_rsDomelig.scaleX" 0.1;
-                setAttr "cha_lig_rsDomelig.scaleY" 0.1;
-                setAttr "cha_lig_rsDomelig.scaleZ" 0.1;
-                setAttr "cha_lig_rsDomelig.visibility" 1;
-                setAttr -lock true "cha_lig_rsDomelig.sx";
-                setAttr -lock true "cha_lig_rsDomelig.sy";
-                setAttr -lock true "cha_lig_rsDomelig.sz";
-            }
-        //Group
-            global proc Creat_Group(){
-                select -r cha_lig_zhu ;
-                select -add cha_lig_nuan ;
-                select -add cha_lig_leng ;
-                select -add cha_lig_bian ;
-                select -add cha_lig_gao_1 ;
-                select -add cha_lig_gao_2 ;
-                doGroup 0 1 1;
-                select -r group1 ;
-                rename "group1" "cha_lig_G";
-                select -r cha_lig_G ;
-                select -add cha_lig_rsDomelig ;
-                doGroup 0 1 1;
-                select -r group1 ;
-                rename "group1" "cha_lig_Grp";
-            }
-
     ////////导入阴影灯光/////////////////////////
         global proc creat_SHAlig(){
             redshiftCreateLight "RedshiftPhysicalLight";
             rename "rsPhysicalLight1" "sha_light";
             setAttr "sha_lightShape.lightType" 3;
+            setAttr "sha_lightShape.intensity" 1;
             setAttr "sha_lightShape.affectsSpecular" 0;
-            setAttr "sha_light.rotateX" -90;
             setAttr "sha_lightShape.on" 0;
-            setAttr "sha_lightShape.SAMPLINGOVERRIDES_shadowSamplesScale" 8;
+            setAttr "sha_lightShape.SAMPLINGOVERRIDES_shadowSamplesScale" 60;
             setAttr "sha_lightShape.SAMPLINGOVERRIDES_numShadowSamples" 128;
+            setAttr "sha_light.rotateX" -50.651;
+            setAttr "sha_light.rotateY" 9.724;
+            setAttr "sha_light.rotateZ" -51.38;
             headsUpMessage -time 5 ("创建 阴影灯光"+"\n");
         }
 
@@ -354,16 +50,22 @@
                 RScustom_OC_Aov();
                 RS_Emission_Aov();
                 RS_DiffuseFilter_Aov();
+                RS_DiffuseLighting_Aov();
                 RS_DiffuseLightingRaw_Aov();
                 RS_MotionVectors_Aov();
                 RS_ReflectionsFilter_Aov();
                 RS_ReflectionsRaw_Aov();
                 RS_RefractionsFilter_Aov();
                 RS_RefractionsRaw_Aov();
+                RS_Reflections_Aov();
+                RS_Refractions_Aov();
                 RS_SpecularLighting_Aov();
+                RS_TransTint_Aov();
                 RS_TransGIRaw_Aov();
+                RS_GI_Aov();
                 RS_TransLightingRaw_Aov();
                 RS_VolumeFogEmission_Aov();
+                RS_VolumeLighting_Aov();
                 RS_Shadows_Aov();
                 RS_P_Aov();
                 RS_Z_Aov();
@@ -375,6 +77,29 @@
             }
 
         ///////////// AOVs prs ///////////////////////////////////////////////////////////////////
+            //Creat AOV OC
+                global proc RScustom_OC_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "rs_OC"`){
+                    rename (`redshiftCreateAov ("Custom")`) "rs_OC";
+                    setAttr -type "string" rs_OC.name "OC";
+                    }
+                    if(!`objExists  "RS_aovOC_set_shader"`){
+                    shadingNode -n "RS_aovOC_set_shader" -asUtility RedshiftFresnel;
+                    connectAttr -force RS_aovOC_set_shader.outColor rs_OC.defaultShader;
+                    }
+                    setAttr "RS_aovOC_set_shader.fresnel_useior" 0;
+                    setAttr "RS_aovOC_set_shader.user_curve" 3;
+                    setAttr "rs_OC.enabled" 0;
+                    setAttr "rs_OC.exrBits" 32;
+                    setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_OC.dataType" 2;
+                    setAttr "rs_OC.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_OC"+"\n");
+                }
             //Creat AOV AO
                 global proc RScustom_AO_Aov(){
                     global int $Export_sth ;
@@ -388,10 +113,9 @@
                     shadingNode -n "RS_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
                     connectAttr -force RS_aovAO_set_shader.outColor rs_AO.defaultShader;
                     }
-                    setAttr "RS_aovAO_set_shader.numSamples" 2048;
+                    setAttr "RS_aovAO_set_shader.numSamples" 512;
                     setAttr "RS_aovAO_set_shader.spread" 0.8;
-                    setAttr "RS_aovAO_set_shader.fallOff" 3;
-                    setAttr "RS_aovAO_set_shader.maxDistance" 10;
+                    setAttr "RS_aovAO_set_shader.maxDistance" 50;
                     setAttr "rs_AO.enabled" 0;
                     setAttr "rs_AO.exrBits" 32;
                     setAttr -type "string" rs_AO.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
@@ -399,39 +123,6 @@
                     setAttr "rs_AO.fileFormat" $Export_sth;
                     redshiftUpdateActiveAovList();
                     print ("rs_AO"+"\n");
-                }
-            //Creat AOV OC
-                global proc RScustom_OC_Aov(){
-                    global int $Export_sth ;
-                    source redshiftCreateAovTab;
-                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
-                    if(!`objExists "rs_OC"`){
-                    rename (`redshiftCreateAov ("Custom")`) "rs_OC";
-                    setAttr -type "string" rs_OC.name "OC";
-                    }
-                    if(!`objExists  "RS_aovOC_set_shader"`){
-                    shadingNode -n "RS_aovOC_set_shader" -asUtility ramp;
-                    shadingNode -n "RS_aovOC_set_sampleshader" -asUtility samplerInfo;
-                    connectAttr -force RS_aovOC_set_shader.outColor rs_OC.defaultShader;
-                    }
-                    setAttr RS_aovOC_set_shader.colorEntryList[2].color -type double3 0.547278 0.547278 0.547278;
-                    setAttr RS_aovOC_set_shader.colorEntryList[2].position 0.547278;
-                    setAttr "RS_aovOC_set_shader.colorEntryList[0].color" -type double3 1 1 1 ;
-                    setAttr "RS_aovOC_set_shader.colorEntryList[1].color" -type double3 0 0 0 ;
-                    setAttr "RS_aovOC_set_shader.colorEntryList[2].position" 0.344;
-                    setAttr "RS_aovOC_set_shader.colorEntryList[2].color" -type double3 0 0 0 ;
-                    setAttr "RS_aovOC_set_shader.colorEntryList[1].position" 1;
-                    setAttr "RS_aovOC_set_shader.colorEntryList[0].position" 0;
-                    connectAttr -f RS_aovOC_set_sampleshader.facingRatio RS_aovOC_set_shader.vCoord;
-                    setAttr "RS_aovOC_set_shader.type" 0;
-                    setAttr "RS_aovOC_set_shader.interpolation" 4;
-                    setAttr "rs_OC.enabled" 0;
-                    setAttr "rs_OC.exrBits" 32;
-                    setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
-                    setAttr "rs_OC.dataType" 2;
-                    setAttr "rs_OC.fileFormat" $Export_sth;
-                    redshiftUpdateActiveAovList();
-                    print ("rs_OC"+"\n");
                 }
             //Creat AOV Emission
                 global proc RS_Emission_Aov(){
@@ -450,6 +141,24 @@
                     redshiftUpdateActiveAovList();
                     print ("rs_Emission"+"\n");
                 }
+            //Creat AOV TransTint
+                global proc RS_TransTint_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "TransTint"`){
+                    rename (`redshiftCreateAov ("Translucency Filter")`) "rs_TransTint";
+                    setAttr -type "string" rs_TransTint.name "TransTint";
+                    }
+                    setAttr "rs_TransTint.enabled" 0;
+                    setAttr "rs_TransTint.exrBits" 32;
+                    setAttr -type "string" rs_TransTint.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_TransTint.dataType" 2;
+                    setAttr "rs_TransTint.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_TransTint"+"\n");
+                }
+
             //Creat AOV DiffuseFilter
                 global proc RS_DiffuseFilter_Aov(){
                     global int $Export_sth ;
@@ -467,6 +176,25 @@
                     redshiftUpdateActiveAovList();
                     print ("rs_DiffuseFilter"+"\n");
                 }
+
+            //Creat AOV DiffuseLighting
+                global proc RS_DiffuseLighting_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "DiffuseLighting"`){
+                    rename (`redshiftCreateAov ("Diffuse Lighting")`) "rs_DiffuseLighting";
+                    setAttr -type "string" rs_DiffuseLighting.name "DiffuseLighting";
+                    }
+                    setAttr "rs_DiffuseLighting.enabled" 0;
+                    setAttr "rs_DiffuseLighting.exrBits" 32;
+                    setAttr -type "string" rs_DiffuseLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_DiffuseLighting.dataType" 2;
+                    setAttr "rs_DiffuseLighting.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_DiffuseLighting"+"\n");
+                }
+
             //Creat AOV Diffuse Lighting Raw
                 global proc RS_DiffuseLightingRaw_Aov(){
                     global int $Export_sth ;
@@ -553,6 +281,44 @@
                     redshiftUpdateActiveAovList();
                     print ("rs_Reflections Raw"+"\n");
                 }
+            //Creat AOV Reflections
+                global proc RS_Reflections_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "Reflections"`){
+                    rename (`redshiftCreateAov ("Reflections")`) "rs_Reflections";
+                    setAttr -type "string" rs_Reflections.name "Reflections";
+                    }
+                    setAttr "rs_Reflections.enabled" 0;
+                    setAttr "rs_Reflections.exrBits" 32;
+                    setAttr -type "string" rs_Reflections.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_Reflections.dataType" 2;
+                    setAttr "rs_Reflections.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Reflections"+"\n");
+                }
+
+            //Creat AOV Refractions
+                global proc RS_Refractions_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "Refractions"`){
+                    rename (`redshiftCreateAov ("Refractions")`) "rs_Refractions";
+                    setAttr -type "string" rs_Refractions.name "Refractions";
+                    }
+                    setAttr "rs_Refractions.enabled" 0;
+                    setAttr "rs_Refractions.exrBits" 32;
+                    setAttr -type "string" rs_Refractions.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_Refractions.dataType" 2;
+                    setAttr "rs_Refractions.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Refractions"+"\n");
+                }
+
+
+
             //Creat AOV Refractions Filter
                 global proc RS_RefractionsFilter_Aov(){
                     global int $Export_sth ;
@@ -685,7 +451,7 @@
                     setAttr -type "string" rs_Z.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
                     //setAttr "rs_Z.dataType" 2;
                     setAttr "rs_Z.fileFormat" $Export_sth;
-                    setAttr "rs_Z.filterMode" 3;
+                    setAttr "rs_Z.filterMode" 0;
                     setAttr "rs_Z.depthMode" 1;
                     setAttr "rs_Z.useCameraNearFar" 0;
                     setAttr "rs_Z.minDepth" 0;
@@ -710,6 +476,25 @@
                     redshiftUpdateActiveAovList();
                     print ("rs_Volume Fog Emission"+"\n");
                 }
+
+            //Creat AOV VolumeLighting
+                global proc RS_VolumeLighting_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "VolumeLighting"`){
+                    rename (`redshiftCreateAov ("Volume Fog Emission")`) "rs_VolumeLighting";
+                    setAttr -type "string" rs_VolumeLighting.name "VolumeLighting";
+                    }
+                    setAttr "rs_VolumeLighting.enabled" 0;
+                    setAttr "rs_VolumeLighting.exrBits" 32;
+                    setAttr -type "string" rs_VolumeLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_VolumeLighting.dataType" 2;
+                    setAttr "rs_VolumeLighting.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Volume Fog Emission"+"\n");
+                }
+
             //Creat AOV Shadows
                 global proc RS_Shadows_Aov(){
                     global int $Export_sth ;
@@ -741,6 +526,24 @@
                     setAttr -type "string" rs_GIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
                     setAttr "rs_GIRaw.dataType" 2;
                     setAttr "rs_GIRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Global Illumination Raw"+"\n");
+                }
+
+            //Creat AOV Global Illumination
+                global proc RS_GI_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "GI"`){
+                    rename (`redshiftCreateAov ("Global Illumination")`) "rs_GI";
+                    setAttr -type "string" rs_GI.name "GI";
+                    }
+                    setAttr "rs_GI.enabled" 0;
+                    setAttr "rs_GI.exrBits" 32;
+                    setAttr -type "string" rs_GI.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_GI.dataType" 2;
+                    setAttr "rs_GI.fileFormat" $Export_sth;
                     redshiftUpdateActiveAovList();
                     print ("rs_Global Illumination Raw"+"\n");
                 }
@@ -898,6 +701,18 @@
             select -add Sen_Group ;
             parent;
         }
+        
+        global proc Creat_prop_Group(){
+            string $prop_all_1[] =`ls -sl`;
+            if(!`objExists "prop_Group"`){
+                select -cl; 
+                CreateLocator;
+                rename (`ls -sl`) "prop_Group";   
+            }
+            select -r $prop_all_1;
+            select -add prop_Group ;
+            parent;
+        }
 
         // 2_Auto Aovs ID Export_sth ///////////
             //创建AOV_RGB层
@@ -932,8 +747,8 @@
                     checkchaID000();
 
                     //选择物体增加圆滑节点
-                    smoothNode_auto_pro();
-
+                    cha_smoothNode_auto_pro();
+                    prop_smoothNode_auto_pro();
                 }
 
 
@@ -1700,7 +1515,7 @@
                     }
 
             //建圆滑节点
-                global proc smoothNode_auto_pro()
+                global proc cha_smoothNode_auto_pro()
                 {
                     if (`objExists "Character_Group"`){
                         if (!`objExists "Cha_smooth"`){
@@ -1715,112 +1530,178 @@
                     }
                 }
 
+                global proc prop_smoothNode_auto_pro()
+                {
+                    if (`objExists "prop_Group"`){
+                        if (!`objExists "prop_smooth"`){
+                            select -cl  ;
+                            select -r prop_Group ;
+                            string $MeshNode_G = `redshiftCreateMeshParametersNode`;
+                            rename $MeshNode_G "prop_smooth";            
+                        }     
+                        else {
+                            sets -edit -forceElement  prop_smooth prop_Group ;
+                    }   
+                    }
+                }
+
 
     //2_SEN ID No1
         global proc Sen_ID_Aovs_1(){
             global int $Export_sth ;
             source redshiftCreateAovTab;
-            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen_1;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen1;
             redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB_Sen_1.name "RGB_Sen_1";
-            setAttr "RGB_Sen_1.dataType" 2;    
-            setAttr "RGB_Sen_1.fileFormat" $Export_sth;
-            setAttr "RGB_Sen_1.mode" 1;
-            setAttr "RGB_Sen_1.redId" 9999;
-            setAttr "RGB_Sen_1.greenId" 9998;
-            setAttr "RGB_Sen_1.blueId" 9997;
-            setAttr "RGB_Sen_1.enabled" 0;
-            setAttr "RGB_Sen_1.exrBits" 32;
+            setAttr -type "string" RGB_Sen1.name "RGB_Sen1";
+            setAttr "RGB_Sen1.dataType" 2;    
+            setAttr "RGB_Sen1.fileFormat" $Export_sth;
+            setAttr "RGB_Sen1.mode" 1;
+            setAttr "RGB_Sen1.redId" 3001;
+            setAttr "RGB_Sen1.greenId" 3002;
+            setAttr "RGB_Sen1.blueId" 3003;
+            setAttr "RGB_Sen1.enabled" 0;
+            setAttr "RGB_Sen1.exrBits" 32;
         }
 
     //3_SEN Red ID
         global proc SEN_Red_ID_R1(){
-            layerEditorLayerButtonSelect 0 sen_R1;
-            layerEditorSelectObjects sen_R1;
             ls -sl;
             rename(redshiftCreateObjectIdNode()) Sen_ID_R1;
-            setAttr "Sen_ID_R1.objectId" 9999;
+            setAttr "Sen_ID_R1.objectId" 3001;
         }
     //3_SEN Green ID
         global proc SEN_Green_ID_G2(){
-            layerEditorLayerButtonSelect 0 sen_G2;
-            layerEditorSelectObjects sen_G2;
             ls -sl;
             rename(redshiftCreateObjectIdNode()) Sen_ID_G2;
-            setAttr "Sen_ID_G2.objectId" 9998;
+            setAttr "Sen_ID_G2.objectId" 3002;
         }
     //3_SEN Blue ID
         global proc SEN_Blue_ID_B3(){
-            layerEditorLayerButtonSelect 0 sen_B3;
-            layerEditorSelectObjects sen_B3;
             ls -sl;
             rename(redshiftCreateObjectIdNode()) Sen_ID_B3;
-            setAttr "Sen_ID_B3.objectId" 9997;
+            setAttr "Sen_ID_B3.objectId" 3003;
         }
 
-
-    //2_SEN ID No1
+    //2_SEN ID No2
         global proc Sen_ID_Aovs_2(){
             global int $Export_sth ;
             source redshiftCreateAovTab;
-            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen_2;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen2;
             redshiftUpdateActiveAovList();
-            setAttr -type "string" RGB_Sen_2.name "RGB_Sen_2";
-            setAttr "RGB_Sen_2.dataType" 2;    
-            setAttr "RGB_Sen_2.fileFormat" $Export_sth;
-            setAttr "RGB_Sen_2.mode" 1;
-            setAttr "RGB_Sen_2.redId" 9996;
-            setAttr "RGB_Sen_2.greenId" 9995;
-            setAttr "RGB_Sen_2.blueId" 9994;
-            setAttr "RGB_Sen_2.enabled" 0;
-            setAttr "RGB_Sen_2.exrBits" 32;
+            setAttr -type "string" RGB_Sen2.name "RGB_Sen2";
+            setAttr "RGB_Sen2.dataType" 2;    
+            setAttr "RGB_Sen2.fileFormat" $Export_sth;
+            setAttr "RGB_Sen2.mode" 1;
+            setAttr "RGB_Sen2.redId" 3004;
+            setAttr "RGB_Sen2.greenId" 3005;
+            setAttr "RGB_Sen2.blueId" 3006;
+            setAttr "RGB_Sen2.enabled" 0;
+            setAttr "RGB_Sen2.exrBits" 32;
         }
 
     //3_SEN Red ID
         global proc SEN_Red_ID_R4(){
-            layerEditorLayerButtonSelect 0 sen_R4;
-            layerEditorSelectObjects sen_R4;
             ls -sl;
             rename(redshiftCreateObjectIdNode()) Sen_ID_R4;
-            setAttr "Sen_ID_R4.objectId" 9996;
+            setAttr "Sen_ID_R4.objectId" 3004;
         }
     //3_SEN Green ID
         global proc SEN_Green_ID_G5(){
-            layerEditorLayerButtonSelect 0 sen_G5;
-            layerEditorSelectObjects sen_G5;
             ls -sl;
             rename(redshiftCreateObjectIdNode()) Sen_ID_G5;
-            setAttr "Sen_ID_G5.objectId" 9995;
+            setAttr "Sen_ID_G5.objectId" 3005;
         }
     //3_SEN Blue ID
         global proc SEN_Blue_ID_B6(){
-            layerEditorLayerButtonSelect 0 sen_B6;
-            layerEditorSelectObjects sen_B6;
             ls -sl;
             rename(redshiftCreateObjectIdNode()) Sen_ID_B6;
-            setAttr "Sen_ID_B6.objectId" 9994;
+            setAttr "Sen_ID_B6.objectId" 3006;
         }
 
 
-        ///3_Set_Sen_CHA_AOVsID
-            global proc Set_Sen_CHA_AOVsID(){
-                Auto_Aovs_ID_Export_sth();
-                SEN_Red_ID_R1();
-                SEN_Green_ID_G2();
-                SEN_Blue_ID_B3();
-                SEN_Red_ID_R4();
-                SEN_Green_ID_G5();
-                SEN_Blue_ID_B6();                
-                Sen_ID_Aovs_1();
-                Sen_ID_Aovs_2();
-            }
+
+    //2_prop ID 
+        global proc prop_ID_Aovs(){
+            global int $Export_sth ;
+            source redshiftCreateAovTab;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_prop_ID;
+            redshiftUpdateActiveAovList();
+            setAttr -type "string" RGB_prop_ID.name "RGB_prop_ID";
+            setAttr "RGB_prop_ID.dataType" 2;    
+            setAttr "RGB_prop_ID.fileFormat" $Export_sth;
+            setAttr "RGB_prop_ID.mode" 1;
+            setAttr "RGB_prop_ID.redId" 8001;
+            setAttr "RGB_prop_ID.greenId" 8002;
+            setAttr "RGB_prop_ID.blueId" 8003;
+            setAttr "RGB_prop_ID.enabled" 0;
+            setAttr "RGB_prop_ID.exrBits" 32;
+        }
+
+    //3_SEN Red ID
+        global proc prop_Red_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) prop_ID_Red;
+            setAttr "prop_ID_Red.objectId" 8001;
+        }
+    //3_SEN Green ID
+        global proc prop_Green_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) prop_ID_Green;
+            setAttr "prop_ID_Green.objectId" 8002;
+        }
+    //3_SEN Blue ID
+        global proc prop_Blue_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) prop_ID_Blue;
+            setAttr "prop_ID_Blue.objectId" 8003;
+        }
+
+    //2_renwu ID 1
+        global proc renwu_ID_Aovs_1(){
+            global int $Export_sth ;
+            source redshiftCreateAovTab;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_renwu_ID_1;
+            redshiftUpdateActiveAovList();
+            setAttr -type "string" RGB_renwu_ID_1.name "RGB_renwu_ID_1";
+            setAttr "RGB_renwu_ID_1.dataType" 2;    
+            setAttr "RGB_renwu_ID_1.fileFormat" $Export_sth;
+            setAttr "RGB_renwu_ID_1.mode" 0;
+            setAttr "RGB_renwu_ID_1.redId" 6001;
+            setAttr "RGB_renwu_ID_1.greenId" 6002;
+            setAttr "RGB_renwu_ID_1.blueId" 6003;
+            setAttr "RGB_renwu_ID_1.enabled" 0;
+            setAttr "RGB_renwu_ID_1.exrBits" 32;
+        }
+    //2_renwu ID 2
+        global proc renwu_ID_Aovs_2(){
+            global int $Export_sth ;
+            source redshiftCreateAovTab;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_renwu_ID_2;
+            redshiftUpdateActiveAovList();
+            setAttr -type "string" RGB_renwu_ID_2.name "RGB_renwu_ID_2";
+            setAttr "RGB_renwu_ID_2.dataType" 2;    
+            setAttr "RGB_renwu_ID_2.fileFormat" $Export_sth;
+            setAttr "RGB_renwu_ID_2.mode" 0;
+            setAttr "RGB_renwu_ID_2.redId" 6004;
+            setAttr "RGB_renwu_ID_2.greenId" 6005;
+            setAttr "RGB_renwu_ID_2.blueId" 6006;
+            setAttr "RGB_renwu_ID_2.enabled" 0;
+            setAttr "RGB_renwu_ID_2.exrBits" 32;
+        }
+
 
 
         ///Aovs+ISO+HD1080
             global proc Aovs_iso2018_HD1080(){
+                Auto_Aovs_ID_Export_sth();              
+                Sen_ID_Aovs_1();
+                Sen_ID_Aovs_2();
+                prop_ID_Aovs();
+                renwu_ID_Aovs_1();
+                renwu_ID_Aovs_2();
                 Render_Cam_HD1080();
-                //ISO_maya2017();
                 RS_Full_Aovs();
                 creat_SHAlig();
-                //importCHAlig();
+                importCHAlig();
+                redshiftRvShow;
             }
