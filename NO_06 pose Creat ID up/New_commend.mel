@@ -86,7 +86,7 @@
                 redshiftCreateLight "RedshiftPhysicalLight";
                 rename "rsPhysicalLight1" "cha_lig_nuan";
                 setAttr "cha_lig_nuanShape.on" 1;
-                setAttr "cha_lig_nuanShape.lightType" 0;
+                setAttr "cha_lig_nuanShape.lightType" 3;
                 setAttr "cha_lig_nuanShape.colorMode" 0;
                 setAttr "cha_lig_nuanShape.color" -type double3 0.916 0.877 0.685 ;
                 setAttr "cha_lig_nuanShape.unitsType" 0;
@@ -2190,24 +2190,51 @@
         
             //2_Cs Red ID
                 global proc Cs_Red_ID(){
-                    ls -sl ;
-                    rename(redshiftCreateObjectIdNode()) Cs_Char_ID_R;
-                    setAttr "Cs_Char_ID_R.objectId" 111;
-                }
+                    if(!`objExists "DP_Char_ID_R"`){
+                        createDisplayLayer -name "DP_Char_ID_R" -number 1 -nr;
+                        setAttr DP_Char_ID_R.displayType 0; 
+                        setAttr DP_Char_ID_R.color 0; 
+                        setAttr DP_Char_ID_R.overrideColorRGB 1 0 0; 
+                        setAttr DP_Char_ID_R.overrideRGBColors 1; 
+                        ls -sl ;
+                        rename(redshiftCreateObjectIdNode()) Cs_Char_ID_R;
+                        setAttr "Cs_Char_ID_R.objectId" 111;
+                    }
+                        editDisplayLayerMembers -noRecurse "DP_Char_ID_R" `ls -sl`;
+                        sets -edit -forceElement Cs_Char_ID_R;
+                    }
 
             //2_Cs Green ID
                 global proc Cs_Green_ID(){
-                    ls -sl;
-                    rename(redshiftCreateObjectIdNode()) Cs_Char_ID_G;
-                    setAttr "Cs_Char_ID_G.objectId" 222;
-                }
+                    if(!`objExists "DP_Char_ID_G"`){
+                        createDisplayLayer -name "DP_Char_ID_G" -number 1 -nr;
+                        setAttr DP_Char_ID_G.displayType 0; 
+                        setAttr DP_Char_ID_G.color 0; 
+                        setAttr DP_Char_ID_G.overrideColorRGB 0 1 0; 
+                        setAttr DP_Char_ID_G.overrideRGBColors 1; 
+                        ls -sl ;
+                        rename(redshiftCreateObjectIdNode()) Cs_Char_ID_G;
+                        setAttr "Cs_Char_ID_G.objectId" 222;;
+                    }
+                        editDisplayLayerMembers -noRecurse "DP_Char_ID_G" `ls -sl`;
+                        sets -edit -forceElement Cs_Char_ID_G;
+                    }
 
             //2_Cs Blue ID
                 global proc Cs_Blue_ID(){
-                    ls -sl;
-                    rename(redshiftCreateObjectIdNode()) Cs_Char_ID_B;
-                    setAttr "Cs_Char_ID_B.objectId" 333;
-                }
+                    if(!`objExists "DP_Char_ID_B"`){
+                        createDisplayLayer -name "DP_Char_ID_B" -number 1 -nr;
+                        setAttr DP_Char_ID_B.displayType 0; 
+                        setAttr DP_Char_ID_B.color 0; 
+                        setAttr DP_Char_ID_B.overrideColorRGB 0 0 1; 
+                        setAttr DP_Char_ID_B.overrideRGBColors 1; 
+                        ls -sl ;
+                        rename(redshiftCreateObjectIdNode()) Cs_Char_ID_B;
+                        setAttr "Cs_Char_ID_B.objectId" 333;
+                    }
+                        editDisplayLayerMembers -noRecurse "DP_Char_ID_B" `ls -sl`;
+                        sets -edit -forceElement Cs_Char_ID_B;
+                    }
 
 
 
