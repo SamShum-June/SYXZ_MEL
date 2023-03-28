@@ -1,0 +1,122 @@
+
+    ///////单独创建灯光窗口 ////////////////////////
+        global proc CSCreatCHAlig_Window(){
+            window -t "单独创建角色灯光 选择以下需要创建得灯光" -s 0 -mxb 0 -mnb 0 -bgc 0.377 0.386 0.361 CSCreatCHAlig_Window;
+            columnLayout ColumnLayout;
+            rowColumnLayout -adjustableColumn true -ca ;
+            frameLayout -labelVisible false -marginWidth 5 -marginHeight 5;
+            columnLayout;
+            frameLayout  -l "cha_lig_G" -cll 0 -mh 5 -w 500 -h 60;
+                    rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 3 ;
+                    button -l"Creat_Zhu" -c "redo_creat_cha_lig_zhu" -w 80 -h 30 -bgc 0.8 0.87 1 -ann "创建主光";
+                    button -l"Creat_Nuan" -c "redo_creat_cha_lig_nuan" -w 80 -h 30 -bgc 0.916 0.877 0.685 -ann "创建暖光";
+                    button -l"Creat_Leng" -c "redo_creat_cha_lig_leng" -w 80 -h 30 -bgc 0.423 0.808 1 -ann "创建冷光";
+                    button -l"Creat_Bian" -c "redo_creat_cha_lig_bian" -w 80 -h 30 -bgc 0.528 0.780 1 -ann "创建边光";
+                    button -l"Creat_Gao_1" -c "redo_creat_cha_lig_gao_1" -w 80 -h 30 -bgc 1 0.99 0.949 -ann "创建高光1";
+                    button -l"Creat_Gao_2" -c "redo_creat_cha_lig_gao_2" -w 80 -h 30 -bgc 1 0.99 0.949 -ann "创建高光2"; 
+                    setParent ..;
+                    setParent ..;      
+            frameLayout  -l "cha_lig_Grp" -cll 0 -mh 5 -w 500 -h 60;
+                    rowColumnLayout -numberOfRows 1  -rowHeight 1 25 -cs 1 3 ;
+                    button -l"Creat_rsDomelig" -c "redo_creat_cha_lig_rsDomelig" -w 100 -h 30 -bgc 1 1 1 -ann "创建环境光";   
+                    setParent ..;
+            
+            window -e  -w 360 -h 80 CSCreatCHAlig_Window;
+            showWindow CSCreatCHAlig_Window;
+        }
+        
+
+
+
+
+
+
+
+// redo creat lig
+    //redo creat cha_lig_zhu
+        global proc redo_creat_cha_lig_zhu(){
+            ls;
+            if(`objExists cha_lig_zhu`){
+            select cha_lig_zhu;
+            Delete cha_lig_zhu;
+        }
+            cha_lig_zhu();
+            parent cha_lig_zhu cha_lig_G ;
+            reorder -relative -5 cha_lig_zhu ;
+            
+    }
+    //redo creat cha_lig_nuan
+        global proc redo_creat_cha_lig_nuan(){
+            ls;
+            if(`objExists cha_lig_nuan`){
+            select cha_lig_nuan;
+            Delete cha_lig_nuan;
+        }
+            cha_lig_nuan();
+            parent cha_lig_nuan cha_lig_G ;
+            reorder -relative -4 cha_lig_nuan ;
+            
+    }
+    //redo creat cha_lig_leng
+        global proc redo_creat_cha_lig_leng(){
+            ls;
+            if(`objExists cha_lig_leng`){
+            select cha_lig_leng;
+            Delete cha_lig_leng;
+        }
+            cha_lig_leng();
+            parent cha_lig_leng cha_lig_G ;
+            reorder -relative -3 cha_lig_leng ;
+            
+    }
+    //redo creat cha_lig_bian
+        global proc redo_creat_cha_lig_bian(){
+            ls;
+            if(`objExists cha_lig_bian`){
+            select cha_lig_bian;
+            Delete cha_lig_bian;
+        }
+            cha_lig_bian();
+            parent cha_lig_bian cha_lig_G ;
+            reorder -relative -2 cha_lig_bian ;
+            
+    }
+    //redo creat cha_lig_gao_1
+        global proc redo_creat_cha_lig_gao_1(){
+            ls;
+            if(`objExists cha_lig_gao_1`){
+            select cha_lig_gao_1;
+            Delete cha_lig_gao_1;
+        }
+            cha_lig_gao_1();
+            parent cha_lig_gao_1 cha_lig_G ;
+            reorder -relative -1 cha_lig_gao_1 ;
+            
+    }
+    //redo creat cha_lig_gao_2
+        global proc redo_creat_cha_lig_gao_2(){
+            ls;
+            if(`objExists cha_lig_gao_2`){
+            select cha_lig_gao_2;
+            Delete cha_lig_gao_2;
+        }
+            cha_lig_gao_2();
+            parent cha_lig_gao_2 cha_lig_G ;
+            reorder -relative 0 cha_lig_gao_2 ;
+            
+    }
+    //redo creat cha_lig_rsDomelig
+        global proc redo_creat_cha_lig_rsDomelig(){
+            ls;
+            if(`objExists cha_lig_rsDomelig`){
+            select cha_lig_rsDomelig;
+            Delete cha_lig_rsDomelig;
+        }
+            cha_lig_rsDomelig();
+            parent cha_lig_rsDomelig cha_lig_Grp;
+    
+            
+    }
+
+
+
