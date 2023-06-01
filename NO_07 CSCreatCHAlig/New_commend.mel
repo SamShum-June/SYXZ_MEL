@@ -317,20 +317,25 @@
             }
         //Group
             global proc Creat_Group(){
+                group -em -name "cha_lig_G";
                 select -r cha_lig_zhu ;
+                parent cha_lig_zhu cha_lig_G ;
                 select -add cha_lig_nuan ;
+                parent cha_lig_nuan cha_lig_G ;
                 select -add cha_lig_leng ;
+                parent cha_lig_leng cha_lig_G ;
                 select -add cha_lig_bian ;
+                parent cha_lig_bian cha_lig_G ;
                 select -add cha_lig_gao_1 ;
+                parent cha_lig_gao_1 cha_lig_G ;
                 select -add cha_lig_gao_2 ;
-                doGroup 0 1 1;
-                select -r group1 ;
-                rename "group1" "cha_lig_G";
+                parent cha_lig_gao_2 cha_lig_G ;
+                group -em -name "cha_lig_Grp";
                 select -r cha_lig_G ;
+                parent cha_lig_G cha_lig_Grp ;                
                 select -add cha_lig_rsDomelig ;
-                doGroup 0 1 1;
-                select -r group1 ;
-                rename "group1" "cha_lig_Grp";
+                parent cha_lig_rsDomelig cha_lig_Grp  ;
+
             }
 
 
