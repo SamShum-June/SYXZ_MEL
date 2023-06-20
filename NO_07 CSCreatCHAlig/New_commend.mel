@@ -1020,9 +1020,9 @@
                 setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
                 setAttr "perspShape.farClipPlane" 10000000;
                 setAttr "perspShape.renderable" 0;
-                setAttr "redshiftOptions.unifiedMinSamples" 512;
-                setAttr "redshiftOptions.unifiedMaxSamples" 512;
-                setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.005;
+                setAttr "redshiftOptions.unifiedMinSamples" 128;
+                setAttr "redshiftOptions.unifiedMaxSamples" 128;
+                setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.01;
                 setAttr "redshiftOptions.unifiedRandomizePattern" 0;
                 setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
                 setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
@@ -2577,7 +2577,7 @@
             Render_Cam_4K();
             RS_Pose_Aovs();
             Cs_Char_IDAovs();
-            persp_Set();
+            //persp_Set();
             CreatCHAlig();
             ISO_maya2017();
             print("一键起飞 2017方形4K");
@@ -2590,7 +2590,7 @@
             Render_Cam_4K();
             RS_Pose_Aovs();
             Cs_Char_IDAovs();
-            persp_Set();
+            //persp_Set();
             CreatCHAlig();
             ISO_maya2019();
             print("一键起飞 2019方形4K");
