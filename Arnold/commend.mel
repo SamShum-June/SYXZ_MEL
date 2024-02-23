@@ -1,0 +1,59 @@
+        ///渲染参数预设///
+            global proc SET_RenderSet(){
+                
+                setAttr "defaultRenderGlobals.currentRenderer" -type "string" "arnold";
+                setAttr "defaultRenderGlobals.imageFilePrefix" -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+                
+                setAttr "defaultArnoldDriver.exrCompression" 3;
+                setAttr "defaultArnoldDriver.halfPrecision" 1;
+                setAttr "defaultArnoldDriver.exrTiled" 1;
+                setAttr "defaultArnoldDriver.mergeAOVs" 1;
+                setAttr "defaultArnoldDriver.colorManagement" 2;
+                setMayaSoftwareFrameExt("3", 0);
+                setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+                setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+                string $Cam[] =`ls -ca`;
+                setAttr ($Cam[0]+".renderable") 1;
+                setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+                setAttr "perspShape.farClipPlane" 10000000;
+                setAttr "perspShape.renderable" 0;
+                setAttr "defaultResolution.aspectLock" 0;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+
+                setAttr "defaultResolution.width" 1920;
+                setAttr "defaultResolution.height" 1080;
+                setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                setAttr "defaultResolution.pixelAspect" 1.000;
+
+                setAttr "defaultArnoldRenderOptions.AASamples" 4;
+                setAttr "defaultArnoldRenderOptions.GIDiffuseSamples" 4;
+                setAttr "defaultArnoldRenderOptions.GISpecularSamples" 3;
+                setAttr "defaultArnoldRenderOptions.GITransmissionSamples" 2;
+                setAttr "defaultArnoldRenderOptions.GISssSamples" 0;
+                setAttr "defaultArnoldRenderOptions.GIVolumeSamples" 0;
+
+                setAttr "defaultArnoldRenderOptions.renderDevice" 0;
+                setAttr "defaultArnoldRenderOptions.aovMode" 1;
+
+            }
+
+
+
+                global proc AI_P_Aov(){
+                    source buildDisplayMenu;
+                    setAttr "aiAOV_P.enabled" 0;
+
+
+                  
+                    if(!`objExists "aiAOV_N"`){
+                    rename (`redshiftCreateAov ("Diffuse Filter")`) "rs_DiffuseFilter";
+                    setAttr -type "string" rs_DiffuseFilter.name "DiffuseFilter";
+                    }
+                    setAttr "rs_DiffuseFilter.enabled" 0;
+                    setAttr "rs_DiffuseFilter.exrBits" 32;
+                    setAttr -type "string" rs_DiffuseFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_DiffuseFilter.dataType" 2;
+                    setAttr "rs_DiffuseFilter.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_DiffuseFilter"+"\n");
+}

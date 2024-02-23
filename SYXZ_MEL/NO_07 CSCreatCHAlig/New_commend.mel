@@ -48,7 +48,7 @@
                 setAttr "cha_lig_zhuShape.colorMode" 0;
                 setAttr "cha_lig_zhuShape.color" -type double3 0.8 0.87 1 ;
                 setAttr "cha_lig_zhuShape.unitsType" 0;
-                setAttr "cha_lig_zhuShape.intensity" 1.5;
+                setAttr "cha_lig_zhuShape.intensity" 1.2;
                 setAttr "cha_lig_zhuShape.affectsDiffuse" 1;
                 setAttr "cha_lig_zhuShape.affectsSpecular" 1;
                 setAttr "cha_lig_zhuShape.diffuseRayContributionScale" 1;
@@ -171,7 +171,7 @@
                 setAttr "cha_lig_bianShape.colorMode" 0;
                 setAttr "cha_lig_bianShape.color" -type double3 0.528 0.7799 1 ;
                 setAttr "cha_lig_bianShape.unitsType" 0;
-                setAttr "cha_lig_bianShape.intensity" 2;
+                setAttr "cha_lig_bianShape.intensity" 0.5;
                 setAttr "cha_lig_bianShape.affectsDiffuse" 1;
                 setAttr "cha_lig_bianShape.affectsSpecular" 1;
                 setAttr "cha_lig_bianShape.diffuseRayContributionScale" 1;
@@ -212,7 +212,7 @@
                 setAttr "cha_lig_gao_Shape1.colorMode" 0;
                 setAttr "cha_lig_gao_Shape1.color" -type double3 1 0.99 0.949 ;
                 setAttr "cha_lig_gao_Shape1.unitsType" 0;
-                setAttr "cha_lig_gao_Shape1.intensity" 0.5;
+                setAttr "cha_lig_gao_Shape1.intensity" 0.1;
                 setAttr "cha_lig_gao_Shape1.affectsDiffuse" 0;
                 setAttr "cha_lig_gao_Shape1.affectsSpecular" 1;
                 setAttr "cha_lig_gao_Shape1.diffuseRayContributionScale" 1;
@@ -250,7 +250,7 @@
                 setAttr "cha_lig_gao_Shape2.colorMode" 0;
                 setAttr "cha_lig_gao_Shape2.color" -type double3 1 0.99 0.949 ;
                 setAttr "cha_lig_gao_Shape2.unitsType" 0;
-                setAttr "cha_lig_gao_Shape2.intensity" 0.5;
+                setAttr "cha_lig_gao_Shape2.intensity" 0.1;
                 setAttr "cha_lig_gao_Shape2.affectsDiffuse" 0;
                 setAttr "cha_lig_gao_Shape2.affectsSpecular" 1;
                 setAttr "cha_lig_gao_Shape2.diffuseRayContributionScale" 1;
@@ -1020,9 +1020,9 @@
                 setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
                 setAttr "perspShape.farClipPlane" 10000000;
                 setAttr "perspShape.renderable" 0;
-                setAttr "redshiftOptions.unifiedMinSamples" 128;
-                setAttr "redshiftOptions.unifiedMaxSamples" 128;
-                setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.01;
+                setAttr "redshiftOptions.unifiedMinSamples" 64;
+                setAttr "redshiftOptions.unifiedMaxSamples" 64;
+                setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.1;
                 setAttr "redshiftOptions.unifiedRandomizePattern" 0;
                 setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
                 setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
