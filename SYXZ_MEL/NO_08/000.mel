@@ -1,0 +1,20 @@
+
+if(`window -exists SYXZ_Master_Window`){deleteUI SYXZ_Master_Window;}
+if(`window -exists import_STH_window`){deleteUI -window import_STH_window;}
+if(`window -exists Optimize_and_Creat_ID_Aovs_SET_window`){deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;}
+if(`window -exists DO_CAM_window`){deleteUI -window DO_CAM_window;}
+if(`window -exists DO_POSE_window`){deleteUI -window DO_POSE_window;}
+
+else
+{
+	string $pugPath = "//samshum-syxz/ab$/Light_Library/Maya/maya/plug-ins/";
+	global string $syxztoolsPath;
+	$syxzPath=($pugPath+"000/");
+	eval ("source \""+$syxzPath+"001.mel\"");
+	eval ("source \""+$syxzPath+"002.mel\"");
+	SYXZ_Master_Window;
+}
+
+
+
+

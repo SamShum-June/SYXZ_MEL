@@ -1,0 +1,2602 @@
+
+//////////////////////调用数据内容/////////////////////////////////////
+
+    ////////////导入mb文件
+        global proc import_STH(){ 
+            string $import_now =`textField -q -text data_line`;
+            file -import  $import_now ;
+        }
+
+    ////////Smooth////////////////////////////
+        global proc smooth(){
+            rename `redshiftCreateMeshParametersNode`"smooth";
+            setAttr "smooth.minTessellationLength" 6;
+            setAttr "smooth.maxTessellationSubdivs" 8;
+            headsUpMessage -time 5 ("设置 smooth"+"\n");
+        }
+
+    /////////导入人物灯光////////////////////////
+    //    global proc importCHAlig(){
+    //        file -r -type "mayaBinary"  -ignoreVersion -gl -loadReferenceDepth "all" -shd "renderLayersByName" -mergeNamespacesOnClash false -namespace "cha_lig" -options "v=0;" "//192.168.23.65/ab$/Light_Library/_SYXZ/cha_lig.mb";
+    //        headsUpMessage -time 5 ("设置 导入人物灯光"+"\n");
+    //    }
+
+    //////renderlayer切层错误修复/////
+        global proc renderlayer_redo(){
+            fixRenderLayerOutAdjustmentErrors;
+        }
+
+    /////////创建人物灯光////////////////////////
+        global proc CreatCHAlig(){
+            cha_lig_zhu();
+            cha_lig_nuan();
+            cha_lig_leng();
+            cha_lig_bian();
+            cha_lig_gao_1();
+            cha_lig_gao_2();
+            cha_lig_rsDomelig();
+            Creat_Group();      
+            headsUpMessage -time 5 ("创建人物灯光"+"\n");
+        }
+
+        //cha_lig_zhu
+            global proc cha_lig_zhu(){
+                redshiftCreateLight "RedshiftPhysicalLight";
+                rename "rsPhysicalLight1" "cha_lig_zhu";
+                setAttr "cha_lig_zhuShape.on" 1;
+                setAttr "cha_lig_zhuShape.lightType" 3;
+                setAttr "cha_lig_zhuShape.colorMode" 0;
+                setAttr "cha_lig_zhuShape.color" -type double3 0.8 0.87 1 ;
+                setAttr "cha_lig_zhuShape.unitsType" 0;
+                setAttr "cha_lig_zhuShape.intensity" 1.2;
+                setAttr "cha_lig_zhuShape.affectsDiffuse" 1;
+                setAttr "cha_lig_zhuShape.affectsSpecular" 1;
+                setAttr "cha_lig_zhuShape.diffuseRayContributionScale" 1;
+                setAttr "cha_lig_zhuShape.glossyRayContributionScale" 0.2;
+                setAttr "cha_lig_zhuShape.areaBidirectional" 1;
+                setAttr "cha_lig_zhuShape.shadow" 1;
+                setAttr "cha_lig_zhuShape.shadowTransparency" 0.3;
+                setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_shadowSamplesScale" 3;
+                setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_numShadowSamples" 256;
+                setAttr "cha_lig_zhuShape.emitCausticPhotons" 1;
+                setAttr "cha_lig_zhuShape.emitGiPhotons" 1;
+                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_zhu.translateX" 0;
+                setAttr "cha_lig_zhu.translateY" 0;
+                setAttr "cha_lig_zhu.translateZ" 0;
+                setAttr "cha_lig_zhu.rotateX" -33.94;
+                setAttr "cha_lig_zhu.rotateY" -16.565;
+                setAttr "cha_lig_zhu.rotateZ" 3.764;
+                setAttr "cha_lig_zhu.scaleX" 124.084;
+                setAttr "cha_lig_zhu.scaleY" 124.084;
+                setAttr "cha_lig_zhu.scaleZ" 124.084;
+                setAttr "cha_lig_zhu.visibility" 1;
+                setAttr -lock true "cha_lig_zhu.sx";
+                setAttr -lock true "cha_lig_zhu.sy";
+                setAttr -lock true "cha_lig_zhu.sz";
+            }
+
+        //cha_lig_nuan
+            global proc cha_lig_nuan(){
+                redshiftCreateLight "RedshiftPhysicalLight";
+                rename "rsPhysicalLight1" "cha_lig_nuan";
+                setAttr "cha_lig_nuanShape.on" 1;
+                setAttr "cha_lig_nuanShape.lightType" 3;
+                setAttr "cha_lig_nuanShape.colorMode" 0;
+                setAttr "cha_lig_nuanShape.color" -type double3 0.916 0.877 0.685 ;
+                setAttr "cha_lig_nuanShape.unitsType" 0;
+                setAttr "cha_lig_nuanShape.intensity" 0.5;
+                setAttr "cha_lig_nuanShape.affectsDiffuse" 1;
+                setAttr "cha_lig_nuanShape.affectsSpecular" 1;
+                setAttr "cha_lig_nuanShape.diffuseRayContributionScale" 1;
+                setAttr "cha_lig_nuanShape.glossyRayContributionScale" 0.5;
+                setAttr "cha_lig_nuanShape.areaBidirectional" 1;
+                setAttr "cha_lig_nuanShape.areaVisibleInRender" 0;
+                setAttr "cha_lig_nuanShape.shadow" 0;
+                setAttr "cha_lig_nuanShape.shadowTransparency" 0;
+                setAttr "cha_lig_nuanShape.emitCausticPhotons" 1;
+                setAttr "cha_lig_nuanShape.emitGiPhotons" 1;
+                setAttr "cha_lig_nuanShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_nuanShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_nuanShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_nuanShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_nuanShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_nuanShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_nuan.translateX" 0.565;
+                setAttr "cha_lig_nuan.translateY" 3.23;
+                setAttr "cha_lig_nuan.translateZ" 4.878;
+                setAttr "cha_lig_nuan.rotateX" 9.157;
+                setAttr "cha_lig_nuan.rotateY" -9.29;
+                setAttr "cha_lig_nuan.rotateZ" 80.261;
+                setAttr "cha_lig_nuan.scaleX" 30;
+                setAttr "cha_lig_nuan.scaleY" 30;
+                setAttr "cha_lig_nuan.scaleZ" 30;
+                setAttr "cha_lig_nuan.visibility" 1;
+                setAttr -lock true "cha_lig_nuan.sx";
+                setAttr -lock true "cha_lig_nuan.sy";
+                setAttr -lock true "cha_lig_nuan.sz";
+            }
+        //cha_lig_leng
+            global proc cha_lig_leng(){
+                redshiftCreateLight "RedshiftPhysicalLight";
+                rename "rsPhysicalLight1" "cha_lig_leng";
+                setAttr "cha_lig_lengShape.on" 1;
+                setAttr "cha_lig_lengShape.lightType" 3;
+                setAttr "cha_lig_lengShape.colorMode" 0;
+                setAttr "cha_lig_lengShape.color" -type double3 0.423 0.808 1 ;
+                setAttr "cha_lig_lengShape.unitsType" 0;
+                setAttr "cha_lig_lengShape.intensity" 0.4;
+                setAttr "cha_lig_lengShape.affectsDiffuse" 1;
+                setAttr "cha_lig_lengShape.affectsSpecular" 1;
+                setAttr "cha_lig_lengShape.diffuseRayContributionScale" 1;
+                setAttr "cha_lig_lengShape.glossyRayContributionScale" 1;
+                setAttr "cha_lig_lengShape.areaBidirectional" 1;
+                setAttr "cha_lig_lengShape.shadow" 1;
+                setAttr "cha_lig_lengShape.shadowTransparency" 0;
+                setAttr "cha_lig_lengShape.SAMPLINGOVERRIDES_shadowSamplesScale" 40.828;
+                setAttr "cha_lig_lengShape.SAMPLINGOVERRIDES_numShadowSamples" 8;
+                setAttr "cha_lig_lengShape.emitCausticPhotons" 1;
+                setAttr "cha_lig_lengShape.emitGiPhotons" 1;
+                setAttr "cha_lig_lengShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_lengShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_lengShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_lengShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_lengShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_lengShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_leng.translateX" 0;
+                setAttr "cha_lig_leng.translateY" 0;
+                setAttr "cha_lig_leng.translateZ" 0;
+                setAttr "cha_lig_leng.rotateX" 120.013;
+                setAttr "cha_lig_leng.rotateY" 128.734;
+                setAttr "cha_lig_leng.rotateZ" 0.698;
+                setAttr "cha_lig_leng.scaleX" 40;
+                setAttr "cha_lig_leng.scaleY" 40;
+                setAttr "cha_lig_leng.scaleZ" 40;
+                setAttr "cha_lig_leng.visibility" 1;
+                setAttr -lock true "cha_lig_leng.sx";
+                setAttr -lock true "cha_lig_leng.sy";
+                setAttr -lock true "cha_lig_leng.sz";
+            }
+        //cha_lig_bian
+            global proc cha_lig_bian(){
+                redshiftCreateLight "RedshiftPhysicalLight";
+                rename "rsPhysicalLight1" "cha_lig_bian";
+                setAttr "cha_lig_bianShape.on" 1;
+                setAttr "cha_lig_bianShape.lightType" 3;
+                setAttr "cha_lig_bianShape.colorMode" 0;
+                setAttr "cha_lig_bianShape.color" -type double3 0.528 0.7799 1 ;
+                setAttr "cha_lig_bianShape.unitsType" 0;
+                setAttr "cha_lig_bianShape.intensity" 0.5;
+                setAttr "cha_lig_bianShape.affectsDiffuse" 1;
+                setAttr "cha_lig_bianShape.affectsSpecular" 1;
+                setAttr "cha_lig_bianShape.diffuseRayContributionScale" 1;
+                setAttr "cha_lig_bianShape.glossyRayContributionScale" 0.5;
+                setAttr "cha_lig_bianShape.areaBidirectional" 1;
+                setAttr "cha_lig_bianShape.shadow" 1;
+                setAttr "cha_lig_bianShape.shadowTransparency" 0;
+                setAttr "cha_lig_bianShape.SAMPLINGOVERRIDES_shadowSamplesScale" 40.828;
+                setAttr "cha_lig_bianShape.SAMPLINGOVERRIDES_numShadowSamples" 8;
+                setAttr "cha_lig_bianShape.emitCausticPhotons" 1;
+                setAttr "cha_lig_bianShape.emitGiPhotons" 1;
+                setAttr "cha_lig_bianShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_bianShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_bianShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_bianShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_bianShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_bianShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_bian.translateX" 0;
+                setAttr "cha_lig_bian.translateY" 0;
+                setAttr "cha_lig_bian.translateZ" 0;
+                setAttr "cha_lig_bian.rotateX" -175.502;
+                setAttr "cha_lig_bian.rotateY" 1.186;
+                setAttr "cha_lig_bian.rotateZ" -91.273;
+                setAttr "cha_lig_bian.scaleX" 40;
+                setAttr "cha_lig_bian.scaleY" 40;
+                setAttr "cha_lig_bian.scaleZ" 40;
+                setAttr "cha_lig_bian.visibility" 1;
+                setAttr -lock true "cha_lig_bian.sx";
+                setAttr -lock true "cha_lig_bian.sy";
+                setAttr -lock true "cha_lig_bian.sz";
+            }
+        //cha_lig_gao_1
+            global proc cha_lig_gao_1(){
+                redshiftCreateLight "RedshiftPhysicalLight";
+                rename "rsPhysicalLight1" "cha_lig_gao_1";
+                setAttr "cha_lig_gao_Shape1.on" 1;
+                setAttr "cha_lig_gao_Shape1.lightType" 3;
+                setAttr "cha_lig_gao_Shape1.colorMode" 0;
+                setAttr "cha_lig_gao_Shape1.color" -type double3 1 0.99 0.949 ;
+                setAttr "cha_lig_gao_Shape1.unitsType" 0;
+                setAttr "cha_lig_gao_Shape1.intensity" 0.1;
+                setAttr "cha_lig_gao_Shape1.affectsDiffuse" 0;
+                setAttr "cha_lig_gao_Shape1.affectsSpecular" 1;
+                setAttr "cha_lig_gao_Shape1.diffuseRayContributionScale" 1;
+                setAttr "cha_lig_gao_Shape1.glossyRayContributionScale" 1;
+                setAttr "cha_lig_gao_Shape1.areaBidirectional" 1;
+                setAttr "cha_lig_gao_Shape1.shadow" 0;
+                setAttr "cha_lig_gao_Shape1.emitCausticPhotons" 1;
+                setAttr "cha_lig_gao_Shape1.emitGiPhotons" 1;
+                setAttr "cha_lig_gao_Shape1.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_gao_Shape1.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_gao_Shape1.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_gao_Shape1.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_gao_Shape1.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_gao_Shape1.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_gao_1.translateX" 0;
+                setAttr "cha_lig_gao_1.translateY" 0;
+                setAttr "cha_lig_gao_1.translateZ" 0;
+                setAttr "cha_lig_gao_1.rotateX" -23.252;
+                setAttr "cha_lig_gao_1.rotateY" -67.243;
+                setAttr "cha_lig_gao_1.rotateZ" -25.430;
+                setAttr "cha_lig_gao_1.scaleX" 40;
+                setAttr "cha_lig_gao_1.scaleY" 40;
+                setAttr "cha_lig_gao_1.scaleZ" 40;
+                setAttr "cha_lig_gao_1.visibility" 1;
+                setAttr -lock true "cha_lig_gao_1.sx";
+                setAttr -lock true "cha_lig_gao_1.sy";
+                setAttr -lock true "cha_lig_gao_1.sz";
+            }
+        //cha_lig_gao_2
+            global proc cha_lig_gao_2(){
+                redshiftCreateLight "RedshiftPhysicalLight";
+                rename "rsPhysicalLight1" "cha_lig_gao_2";
+                setAttr "cha_lig_gao_Shape2.on" 1;
+                setAttr "cha_lig_gao_Shape2.lightType" 3;
+                setAttr "cha_lig_gao_Shape2.colorMode" 0;
+                setAttr "cha_lig_gao_Shape2.color" -type double3 1 0.99 0.949 ;
+                setAttr "cha_lig_gao_Shape2.unitsType" 0;
+                setAttr "cha_lig_gao_Shape2.intensity" 0.1;
+                setAttr "cha_lig_gao_Shape2.affectsDiffuse" 0;
+                setAttr "cha_lig_gao_Shape2.affectsSpecular" 1;
+                setAttr "cha_lig_gao_Shape2.diffuseRayContributionScale" 1;
+                setAttr "cha_lig_gao_Shape2.glossyRayContributionScale" 1;
+                setAttr "cha_lig_gao_Shape2.areaBidirectional" 1;
+                setAttr "cha_lig_gao_Shape2.shadow" 0;
+                setAttr "cha_lig_gao_Shape2.emitCausticPhotons" 1;
+                setAttr "cha_lig_gao_Shape2.emitGiPhotons" 1;
+                setAttr "cha_lig_gao_Shape2.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_gao_Shape2.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_gao_Shape2.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_gao_Shape2.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_gao_Shape2.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_gao_Shape2.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_gao_2.translateX" 0;
+                setAttr "cha_lig_gao_2.translateY" 0;
+                setAttr "cha_lig_gao_2.translateZ" 0;
+                setAttr "cha_lig_gao_2.rotateX" -63.393;
+                setAttr "cha_lig_gao_2.rotateY" -10.551;
+                setAttr "cha_lig_gao_2.rotateZ" 7.976;
+                setAttr "cha_lig_gao_2.scaleX" 40;
+                setAttr "cha_lig_gao_2.scaleY" 40;
+                setAttr "cha_lig_gao_2.scaleZ" 40;
+                setAttr "cha_lig_gao_2.visibility" 1;
+                setAttr -lock true "cha_lig_gao_2.sx";
+                setAttr -lock true "cha_lig_gao_2.sy";
+                setAttr -lock true "cha_lig_gao_2.sz";
+            }
+        //cha_lig_rsDomelig
+            global proc cha_lig_rsDomelig(){
+                redshiftCreateLight "RedshiftDomeLight";
+                rename "rsDomeLight1" "cha_lig_rsDomelig";
+                setAttr "cha_lig_rsDomeligShape.on" 1;
+                setAttr -type "string" cha_lig_rsDomeligShape.tex0 "//192.168.23.65/ab$/Light_Library/HDR/hdr.hdr";
+                setAttr "cha_lig_rsDomeligShape.envType" 0;
+                setAttr "cha_lig_rsDomeligShape.samples" 128;
+                setAttr "cha_lig_rsDomeligShape.glossyRayContributionScale" 0.348;
+                setAttr "cha_lig_rsDomeligShape.affectsDiffuse" 1;
+                setAttr "cha_lig_rsDomeligShape.affectsSpecular" 1;
+                setAttr "cha_lig_rsDomeligShape.diffuseRayContributionScale" 1;
+                setAttr "cha_lig_rsDomeligShape.glossyRayContributionScale" 0.348;
+                setAttr "cha_lig_rsDomeligShape.shadow" 1;
+                setAttr "cha_lig_rsDomeligShape.shadowTransparency" 0;
+                setAttr "cha_lig_rsDomeligShape.background_enable" 0;
+                setAttr "cha_lig_rsDomeligShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_rsDomeligShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_rsDomeligShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_rsDomeligShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                setAttr "cha_lig_rsDomeligShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                setAttr "cha_lig_rsDomeligShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                setAttr "cha_lig_rsDomelig.translateX" 0;
+                setAttr "cha_lig_rsDomelig.translateY" 0;
+                setAttr "cha_lig_rsDomelig.translateZ" 0;
+                setAttr "cha_lig_rsDomelig.rotateX" -22.439;
+                setAttr "cha_lig_rsDomelig.rotateY" -13.567;
+                setAttr "cha_lig_rsDomelig.rotateZ" 8.248;
+                setAttr "cha_lig_rsDomelig.scaleX" 0.1;
+                setAttr "cha_lig_rsDomelig.scaleY" 0.1;
+                setAttr "cha_lig_rsDomelig.scaleZ" 0.1;
+                setAttr "cha_lig_rsDomelig.visibility" 1;
+                setAttr -lock true "cha_lig_rsDomelig.sx";
+                setAttr -lock true "cha_lig_rsDomelig.sy";
+                setAttr -lock true "cha_lig_rsDomelig.sz";
+            }
+        //Group
+            global proc Creat_Group(){
+                group -em -name "cha_lig_G";
+                select -r cha_lig_zhu ;
+                parent cha_lig_zhu cha_lig_G ;
+                select -add cha_lig_nuan ;
+                parent cha_lig_nuan cha_lig_G ;
+                select -add cha_lig_leng ;
+                parent cha_lig_leng cha_lig_G ;
+                select -add cha_lig_bian ;
+                parent cha_lig_bian cha_lig_G ;
+                select -add cha_lig_gao_1 ;
+                parent cha_lig_gao_1 cha_lig_G ;
+                select -add cha_lig_gao_2 ;
+                parent cha_lig_gao_2 cha_lig_G ;
+                group -em -name "cha_lig_Grp";
+                select -r cha_lig_G ;
+                parent cha_lig_G cha_lig_Grp ;                
+                select -add cha_lig_rsDomelig ;
+                parent cha_lig_rsDomelig cha_lig_Grp  ;
+
+            }
+
+
+
+// redo creat lig
+    //redo creat cha_lig_zhu
+        global proc redo_creat_cha_lig_zhu(){
+            ls;
+            if(`objExists cha_lig_zhu`){
+            select cha_lig_zhu;
+            Delete cha_lig_zhu;
+        }
+            cha_lig_zhu();
+            parent cha_lig_zhu cha_lig_G ;
+            reorder -relative -5 cha_lig_zhu ;
+
+            headsUpMessage -time 5 ("创建 主 光"+"\n");        
+    }
+    //redo creat cha_lig_nuan
+        global proc redo_creat_cha_lig_nuan(){
+            ls;
+            if(`objExists cha_lig_nuan`){
+            select cha_lig_nuan;
+            Delete cha_lig_nuan;
+        }
+            cha_lig_nuan();
+            parent cha_lig_nuan cha_lig_G ;
+            reorder -relative -4 cha_lig_nuan ;
+
+            headsUpMessage -time 5 ("创建 暖 光"+"\n");     
+    }
+    //redo creat cha_lig_leng
+        global proc redo_creat_cha_lig_leng(){
+            ls;
+            if(`objExists cha_lig_leng`){
+            select cha_lig_leng;
+            Delete cha_lig_leng;
+        }
+            cha_lig_leng();
+            parent cha_lig_leng cha_lig_G ;
+            reorder -relative -3 cha_lig_leng ;
+
+            headsUpMessage -time 5 ("创建 冷 光"+"\n");        
+    }
+    //redo creat cha_lig_bian
+        global proc redo_creat_cha_lig_bian(){
+            ls;
+            if(`objExists cha_lig_bian`){
+            select cha_lig_bian;
+            Delete cha_lig_bian;
+        }
+            cha_lig_bian();
+            parent cha_lig_bian cha_lig_G ;
+            reorder -relative -2 cha_lig_bian ;
+
+            headsUpMessage -time 5 ("创建 边 光"+"\n");            
+    }
+    //redo creat cha_lig_gao_1
+        global proc redo_creat_cha_lig_gao_1(){
+            ls;
+            if(`objExists cha_lig_gao_1`){
+            select cha_lig_gao_1;
+            Delete cha_lig_gao_1;
+        }
+            cha_lig_gao_1();
+            parent cha_lig_gao_1 cha_lig_G ;
+            reorder -relative -1 cha_lig_gao_1 ;
+
+            headsUpMessage -time 5 ("创建 高1 光"+"\n");      
+    }
+    //redo creat cha_lig_gao_2
+        global proc redo_creat_cha_lig_gao_2(){
+            ls;
+            if(`objExists cha_lig_gao_2`){
+            select cha_lig_gao_2;
+            Delete cha_lig_gao_2;
+        }
+            cha_lig_gao_2();
+            parent cha_lig_gao_2 cha_lig_G ;
+            reorder -relative 0 cha_lig_gao_2 ;
+
+            headsUpMessage -time 5 ("创建 高2 光"+"\n");     
+    }
+    //redo creat cha_lig_rsDomelig
+        global proc redo_creat_cha_lig_rsDomelig(){
+            ls;
+            if(`objExists cha_lig_rsDomelig`){
+            select cha_lig_rsDomelig;
+            Delete cha_lig_rsDomelig;
+        }
+            cha_lig_rsDomelig();
+            parent cha_lig_rsDomelig cha_lig_Grp;
+
+            headsUpMessage -time 5 ("创建 环境 光"+"\n");       
+    }
+
+    ////////导入阴影灯光/////////////////////////
+        global proc creat_SHAlig(){
+            redshiftCreateLight "RedshiftPhysicalLight";
+            rename "rsPhysicalLight1" "sha_light";
+            setAttr "sha_lightShape.lightType" 3;
+            setAttr "sha_lightShape.affectsSpecular" 0;
+            setAttr "sha_light.rotateX" -90;
+            setAttr "sha_lightShape.on" 0;
+            setAttr "sha_lightShape.SAMPLINGOVERRIDES_shadowSamplesScale" 8;
+            setAttr "sha_lightShape.SAMPLINGOVERRIDES_numShadowSamples" 128;
+            headsUpMessage -time 5 ("创建 阴影灯光"+"\n");
+        }
+
+
+////////////// Creat AOVs & ISO 选择你需要创建的Aovs 和 ISO使用的maya版本 /////////////////////////////
+    /////////////选择创建 AOVs 的种类//////
+        ///////////Creat Full AOVs
+            global proc RS_Full_Aovs(){
+                RScustom_AO_Aov();
+                RScustom_OC_Aov();
+                RS_Emission_Aov();
+                RS_DiffuseFilter_Aov();
+                RS_DiffuseLightingRaw_Aov();
+                RS_MotionVectors_Aov();
+                RS_ReflectionsFilter_Aov();
+                RS_ReflectionsRaw_Aov();
+                RS_RefractionsFilter_Aov();
+                RS_RefractionsRaw_Aov();
+                RS_SpecularLighting_Aov();
+                RS_TransGIRaw_Aov();
+                RS_TransLightingRaw_Aov();
+                RS_VolumeFogEmission_Aov();
+                RS_Shadows_Aov();
+                RS_P_Aov();
+                RS_Z_Aov();
+                RS_N_Aov();
+                RS_SSSRaw_Aov();
+                RS_SSS_Aov();
+                RS_GIRaw_Aov();
+                headsUpMessage -time 5 ("设置 Full Aovs"+"\n");
+            }
+        ///////////Creat POSE AOVs
+            global proc RS_Pose_Aovs(){
+                RScustom_AO_Aov();
+                RScustom_OC_Aov();
+                RS_DiffuseFilter_Aov();
+                RS_Emission_Aov();
+                RS_ReflectionsRaw_Aov();
+                RS_SpecularLighting_Aov();
+                RS_SSSRaw_Aov();
+                RS_SSS_Aov();
+                headsUpMessage -time 5 ("设置 Pose Aovs"+"\n");
+            }
+        ///////////Creat SEN AOVs
+            global proc RS_Sen_Aovs(){
+                RScustom_AO_Aov();
+                RS_Emission_Aov();
+                RS_DiffuseFilter_Aov();
+                RS_ReflectionsRaw_Aov();
+                RS_Shadows_Aov();
+                RS_TransGIRaw_Aov();
+                RS_GIRaw_Aov();
+                RS_SpecularLighting_Aov();
+                RS_P_Aov();
+                RS_Z_Aov();
+                RS_N_Aov();
+                RS_VolumeFogEmission_Aov();
+                RS_TransLightingRaw_Aov();
+                headsUpMessage -time 5 ("设置 Sen Aovs"+"\n");
+            }
+        ///////////// AOVs prs ///////////////////////////////////////////////////////////////////
+            //Creat AOV AO
+                global proc RScustom_AO_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "rs_AO"`){
+                    rename (`redshiftCreateAov ("Custom")`) "rs_AO";
+                    setAttr -type "string" rs_AO.name "AO";
+                    }
+                    if(!`objExists  "RS_aovAO_set_shader"`){
+                    shadingNode -n "RS_aovAO_set_shader" -asUtility RedshiftAmbientOcclusion;
+                    connectAttr -force RS_aovAO_set_shader.outColor rs_AO.defaultShader;
+                    }
+                    setAttr "RS_aovAO_set_shader.numSamples" 2048;
+                    setAttr "RS_aovAO_set_shader.spread" 0.8;
+                    setAttr "RS_aovAO_set_shader.fallOff" 3;
+                    setAttr "RS_aovAO_set_shader.maxDistance" 10;
+                    setAttr "rs_AO.enabled" 0;
+                    setAttr "rs_AO.exrBits" 32;
+                    setAttr -type "string" rs_AO.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_AO.dataType" 2;
+                    setAttr "rs_AO.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_AO"+"\n");
+                }
+            //Creat AOV OC
+                global proc RScustom_OC_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "rs_OC"`){
+                    rename (`redshiftCreateAov ("Custom")`) "rs_OC";
+                    setAttr -type "string" rs_OC.name "OC";
+                    }
+                    if(!`objExists  "RS_aovOC_set_shader"`){
+                    shadingNode -n "RS_aovOC_set_shader" -asUtility ramp;
+                    shadingNode -n "RS_aovOC_set_sampleshader" -asUtility samplerInfo;
+                    connectAttr -force RS_aovOC_set_shader.outColor rs_OC.defaultShader;
+                    }
+                    setAttr RS_aovOC_set_shader.colorEntryList[2].color -type double3 0.547278 0.547278 0.547278;
+                    setAttr RS_aovOC_set_shader.colorEntryList[2].position 0.547278;
+                    setAttr "RS_aovOC_set_shader.colorEntryList[0].color" -type double3 1 1 1 ;
+                    setAttr "RS_aovOC_set_shader.colorEntryList[1].color" -type double3 0 0 0 ;
+                    setAttr "RS_aovOC_set_shader.colorEntryList[2].position" 0.344;
+                    setAttr "RS_aovOC_set_shader.colorEntryList[2].color" -type double3 0 0 0 ;
+                    setAttr "RS_aovOC_set_shader.colorEntryList[1].position" 1;
+                    setAttr "RS_aovOC_set_shader.colorEntryList[0].position" 0;
+                    connectAttr -f RS_aovOC_set_sampleshader.facingRatio RS_aovOC_set_shader.vCoord;
+                    setAttr "RS_aovOC_set_shader.type" 0;
+                    setAttr "RS_aovOC_set_shader.interpolation" 4;
+                    setAttr "rs_OC.enabled" 0;
+                    setAttr "rs_OC.exrBits" 32;
+                    setAttr -type "string" rs_OC.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_OC.dataType" 2;
+                    setAttr "rs_OC.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_OC"+"\n");
+                }
+            //Creat AOV Emission
+                global proc RS_Emission_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "Emission"`){
+                    rename (`redshiftCreateAov ("Emission")`) "rs_Emission";
+                    setAttr -type "string" rs_Emission.name "Emission";
+                    }
+                    setAttr "rs_Emission.enabled" 0;
+                    setAttr "rs_Emission.exrBits" 32;
+                    setAttr -type "string" rs_Emission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_Emission.dataType" 2;
+                    setAttr "rs_Emission.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Emission"+"\n");
+                }
+            //Creat AOV DiffuseFilter
+                global proc RS_DiffuseFilter_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "DiffuseFilter"`){
+                    rename (`redshiftCreateAov ("Diffuse Filter")`) "rs_DiffuseFilter";
+                    setAttr -type "string" rs_DiffuseFilter.name "DiffuseFilter";
+                    }
+                    setAttr "rs_DiffuseFilter.enabled" 0;
+                    setAttr "rs_DiffuseFilter.exrBits" 32;
+                    setAttr -type "string" rs_DiffuseFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_DiffuseFilter.dataType" 2;
+                    setAttr "rs_DiffuseFilter.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_DiffuseFilter"+"\n");
+                }
+            //Creat AOV Diffuse Lighting Raw
+                global proc RS_DiffuseLightingRaw_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "DiffuseLightingRaw"`){
+                    rename (`redshiftCreateAov ("Diffuse Lighting Raw")`) "rs_DiffuseLightingRaw";
+                    setAttr -type "string" rs_DiffuseLightingRaw.name "DiffuseLightingRaw";
+                    }
+                    setAttr "rs_DiffuseLightingRaw.enabled" 0;
+                    setAttr "rs_DiffuseLightingRaw.exrBits" 32;
+                    setAttr -type "string" rs_DiffuseLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_DiffuseLightingRaw.dataType" 2;
+                    setAttr "rs_DiffuseLightingRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Diffuse Lighting Raw"+"\n");
+                }
+            //Creat AOV Motion Vectors
+                global proc RS_MotionVectors_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "MotionVectors"`){
+                    rename (`redshiftCreateAov ("Motion Vectors")`) "rs_MotionVectors";
+                    setAttr -type "string" rs_MotionVectors.name "MotionVectors";
+                    }
+                    setAttr "rs_MotionVectors.enabled" 0;
+                    setAttr "rs_MotionVectors.exrBits" 32;
+                    setAttr -type "string" rs_MotionVectors.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_MotionVectors.dataType" 2;
+                    setAttr "rs_MotionVectors.fileFormat" $Export_sth;
+                    setAttr "rs_MotionVectors.outputRawVectors" 1;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Motion Vectors"+"\n");
+                }
+            //Creat AOV Normals
+                global proc RS_N_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "N"`){
+                    rename (`redshiftCreateAov ("Normals")`) "rs_N";
+                    setAttr -type "string" rs_N.name "N";
+                    }
+                    setAttr "rs_N.enabled" 0;
+                    setAttr "rs_N.exrBits" 32;
+                    setAttr -type "string" rs_N.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_N.dataType" 2;
+                    setAttr "rs_N.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Normals"+"\n");
+                }
+            //Creat AOV Reflections Filter
+                global proc RS_ReflectionsFilter_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "ReflectionsFilter"`){
+                    rename (`redshiftCreateAov ("Reflections Filter")`) "rs_ReflectionsFilter";
+                    setAttr -type "string" rs_ReflectionsFilter.name "ReflectionsFilter";
+                    }
+                    setAttr "rs_ReflectionsFilter.enabled" 0;
+                    setAttr "rs_ReflectionsFilter.exrBits" 32;
+                    setAttr -type "string" rs_ReflectionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_ReflectionsFilter.dataType" 2;
+                    setAttr "rs_ReflectionsFilter.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Reflections Filter"+"\n");
+                }
+            //Creat AOV Reflections Raw
+                global proc RS_ReflectionsRaw_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "ReflectionsRaw"`){
+                    rename (`redshiftCreateAov ("Reflections Raw")`) "rs_ReflectionsRaw";
+                    setAttr -type "string" rs_ReflectionsRaw.name "ReflectionsRaw";
+                    }
+                    setAttr "rs_ReflectionsRaw.enabled" 0;
+                    setAttr "rs_ReflectionsRaw.exrBits" 32;
+                    setAttr -type "string" rs_ReflectionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_ReflectionsRaw.dataType" 2;
+                    setAttr "rs_ReflectionsRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Reflections Raw"+"\n");
+                }
+            //Creat AOV Refractions Filter
+                global proc RS_RefractionsFilter_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "RefractionsFilter"`){
+                    rename (`redshiftCreateAov ("Refractions Filter")`) "rs_RefractionsFilter";
+                    setAttr -type "string" rs_RefractionsFilter.name "RefractionsFilter";
+                    }
+                    setAttr "rs_RefractionsFilter.enabled" 0;
+                    setAttr "rs_RefractionsFilter.exrBits" 32;
+                    setAttr -type "string" rs_RefractionsFilter.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_RefractionsFilter.dataType" 2;
+                    setAttr "rs_RefractionsFilter.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Refractions Filter"+"\n");
+                }
+            //Creat AOV Refractions Raw
+                global proc RS_RefractionsRaw_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "RefractionsRaw"`){
+                    rename (`redshiftCreateAov ("Refractions Raw")`) "rs_RefractionsRaw";
+                    setAttr -type "string" rs_RefractionsRaw.name "RefractionsRaw";
+                    }
+                    setAttr "rs_RefractionsRaw.enabled" 0;
+                    setAttr "rs_RefractionsRaw.exrBits" 32;
+                    setAttr -type "string" rs_RefractionsRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_RefractionsRaw.dataType" 2;
+                    setAttr "rs_RefractionsRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Refractions Raw"+"\n");
+                }
+            //Creat AOV Specular Lighting
+                global proc RS_SpecularLighting_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "SpecularLighting"`){
+                    rename (`redshiftCreateAov ("Specular Lighting")`) "rs_SpecularLighting";
+                    setAttr -type "string" rs_SpecularLighting.name "SpecularLighting";
+                    }
+                    setAttr "rs_SpecularLighting.enabled" 0;
+                    setAttr "rs_SpecularLighting.exrBits" 32;
+                    setAttr -type "string" rs_SpecularLighting.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_SpecularLighting.dataType" 2;
+                    setAttr "rs_SpecularLighting.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Specular Lighting"+"\n");
+                }
+            //Creat AOV Sub Surface Scatter Raw
+                global proc RS_SSSRaw_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "SSSRaw"`){
+                    rename (`redshiftCreateAov ("Sub Surface Scatter Raw")`) "rs_SSSRaw";
+                    setAttr -type "string" rs_SSSRaw.name "SSSRaw";
+                    }
+                    setAttr "rs_SSSRaw.enabled" 0;
+                    setAttr "rs_SSSRaw.exrBits" 32;
+                    setAttr -type "string" rs_SSSRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_SSSRaw.dataType" 2;
+                    setAttr "rs_SSSRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Sub Surface Scatter Raw"+"\n");
+                }
+            //Creat AOV Sub Surface Scatter
+                global proc RS_SSS_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "SSS"`){
+                    rename (`redshiftCreateAov ("Sub Surface Scatter")`) "rs_SSS";
+                    setAttr -type "string" rs_SSS.name "SSS";
+                    }
+                    setAttr "rs_SSS.enabled" 0;
+                    setAttr "rs_SSS.exrBits" 32;
+                    setAttr -type "string" rs_SSS.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_SSS.dataType" 2;
+                    setAttr "rs_SSS.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Sub Surface Scatter"+"\n");
+                }
+            //Creat AOV Translucency Lighting Raw
+                global proc RS_TransLightingRaw_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "TransLightingRaw"`){
+                    rename (`redshiftCreateAov ("Translucency Lighting Raw")`) "rs_TransLightingRaw";
+                    setAttr -type "string" rs_TransLightingRaw.name "TransLightingRaw";
+                    }
+                    setAttr "rs_TransLightingRaw.enabled" 0;
+                    setAttr "rs_TransLightingRaw.exrBits" 32;
+                    setAttr -type "string" rs_TransLightingRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_TransLightingRaw.dataType" 2;
+                    setAttr "rs_TransLightingRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Translucency Lighting Raw"+"\n");
+                }
+            //Creat AOV World Position
+                global proc RS_P_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "P"`){
+                    rename (`redshiftCreateAov ("World Position")`) "rs_P";
+                    setAttr -type "string" rs_P.name "P";
+                    }
+                    setAttr "rs_P.enabled" 0;
+                    setAttr "rs_P.exrBits" 32;
+                    setAttr -type "string" rs_P.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_P.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_World Position"+"\n");
+                }
+            //Creat AOV Depth
+                global proc RS_Z_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "Z"`){
+                    rename (`redshiftCreateAov ("Depth")`) "rs_Z";
+                    setAttr -type "string" rs_Z.name "Z";
+                    }
+                    setAttr "rs_Z.enabled" 0;
+                    setAttr "rs_Z.exrBits" 32;
+                    setAttr -type "string" rs_Z.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    //setAttr "rs_Z.dataType" 2;
+                    setAttr "rs_Z.fileFormat" $Export_sth;
+                    setAttr "rs_Z.filterMode" 3;
+                    setAttr "rs_Z.depthMode" 1;
+                    setAttr "rs_Z.useCameraNearFar" 0;
+                    setAttr "rs_Z.minDepth" 0;
+                    setAttr "rs_Z.maxDepth" 100000;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Depth"+"\n");
+                }
+            //Creat AOV Volume Fog Emission
+                global proc RS_VolumeFogEmission_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "VolumeFogEmission"`){
+                    rename (`redshiftCreateAov ("Volume Fog Emission")`) "rs_VolumeFogEmission";
+                    setAttr -type "string" rs_VolumeFogEmission.name "VolumeFogEmission";
+                    }
+                    setAttr "rs_VolumeFogEmission.enabled" 0;
+                    setAttr "rs_VolumeFogEmission.exrBits" 32;
+                    setAttr -type "string" rs_VolumeFogEmission.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_VolumeFogEmission.dataType" 2;
+                    setAttr "rs_VolumeFogEmission.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Volume Fog Emission"+"\n");
+                }
+            //Creat AOV Shadows
+                global proc RS_Shadows_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "Shadows"`){
+                    rename (`redshiftCreateAov ("Shadows")`) "rs_Shadows";
+                    setAttr -type "string" rs_Shadows.name "Shadows";
+                    }
+                    setAttr "rs_Shadows.enabled" 0;
+                    setAttr "rs_Shadows.exrBits" 32;
+                    setAttr -type "string" rs_Shadows.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_Shadows.dataType" 2;
+                    setAttr "rs_Shadows.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Shadows"+"\n");
+                }
+            //Creat AOV Global Illumination Raw
+                global proc RS_GIRaw_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "GIRaw"`){
+                    rename (`redshiftCreateAov ("Global Illumination Raw")`) "rs_GIRaw";
+                    setAttr -type "string" rs_GIRaw.name "GIRaw";
+                    }
+                    setAttr "rs_GIRaw.enabled" 0;
+                    setAttr "rs_GIRaw.exrBits" 32;
+                    setAttr -type "string" rs_GIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_GIRaw.dataType" 2;
+                    setAttr "rs_GIRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Global Illumination Raw"+"\n");
+                }
+
+            //Creat AOV Translucency GI Raw
+                global proc RS_TransGIRaw_Aov(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                    if(!`objExists "TransGIRaw"`){
+                    rename (`redshiftCreateAov ("Translucency GI Raw")`) "rs_TransGIRaw";
+                    setAttr -type "string" rs_TransGIRaw.name "TransGIRaw";
+                    }
+                    setAttr "rs_TransGIRaw.enabled" 0;
+                    setAttr "rs_TransGIRaw.exrBits" 32;
+                    setAttr -type "string" rs_TransGIRaw.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "rs_TransGIRaw.dataType" 2;
+                    setAttr "rs_TransGIRaw.fileFormat" $Export_sth;
+                    redshiftUpdateActiveAovList();
+                    print ("rs_Translucency GI Raw"+"\n");
+                }
+
+    /////////// Creat ISO //////////////////////////////////////
+        //Creat 2017 RedshiftPhotographicExposure
+            global proc ISO_maya2017(){
+                file -import -type "mayaBinary""//192.168.23.65/ab$/Light_Library/_SYXZ/ISO_maya2017.mb";
+                /*
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                fillSelectedTabForCurrentRenderer;
+                fillSelectedTabForCurrentRenderer;
+                shadingNode -asUtility RedshiftPhotographicExposure -n "ISO_maya2017";
+                
+                redshiftChangeGlobalShader ISO_maya2017 "exposure";
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                fillSelectedTabForCurrentRenderer;
+                fillSelectedTabForCurrentRenderer;
+                redshiftChangeGlobalShader ISO_maya2017 "exposure";
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                fillSelectedTabForCurrentRenderer;
+                fillSelectedTabForCurrentRenderer;
+                redshiftChangeGlobalShader ISO_maya2017 "exposure";
+                // Result: 0 //
+                setAttr "ISO_maya2017.enable" 0;
+                autoUpdateAttrEd;
+                */
+                print ("Creat_ISO_maya2017"+"\n");
+                headsUpMessage -time 5 ("创建 ISO_maya2017"+"\n");
+            }
+        //Creat 2019 postEffects
+            global proc ISO_maya2019(){
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                shadingNode -asUtility RedshiftPostEffects;
+                rename rsPostEffects1 "ISO_maya2019" ;
+                redshiftChangeGlobalShader ISO_maya2019 "postEffects";
+                
+                print ("Creat_ISO_maya2019"+"\n");
+                headsUpMessage -time 5 ("创建 ISO_maya2019"+"\n");
+            }
+
+
+
+
+///////////// CAM Prs SET ///////////////////////////////////////////////////////////////////
+    //////镜头预设条件
+        ////镜头分辨率
+            /// 1K ///
+                global proc SET_1K_CAM(){
+                    setAttr "defaultResolution.width" 1024;
+                    setAttr "defaultResolution.height" 1024;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// 2K ///
+                global proc SET_2K_CAM(){
+                    setAttr "defaultResolution.width" 2048;
+                    setAttr "defaultResolution.height" 2048;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// 3K ///
+                global proc SET_3K_CAM(){
+                    setAttr "defaultResolution.width" 3072;
+                    setAttr "defaultResolution.height" 3072;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// 4K ///
+                global proc SET_4K_CAM(){
+                    setAttr "defaultResolution.width" 4096;
+                    setAttr "defaultResolution.height" 4096;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// HD720 ///
+                global proc SET_HD720_CAM(){
+                    setAttr "defaultResolution.width" 1280;
+                    setAttr "defaultResolution.height" 720;
+                    setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// HD1080 ///
+                global proc SET_HD1080_CAM(){
+                    setAttr "defaultResolution.width" 1920;
+                    setAttr "defaultResolution.height" 1080;
+                    setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 4096_2305 ///
+                global proc SET_4096_2305_CAM(){
+                    setAttr "defaultResolution.width" 4096;
+                    setAttr "defaultResolution.height" 2305;
+                    setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 720*1280 ///
+                global proc SET_720_1280_CAM(){
+                    setAttr "defaultResolution.width" 720;
+                    setAttr "defaultResolution.height" 1280;
+                    setAttr "defaultResolution.deviceAspectRatio" 0.562;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 1080*1920 ///
+                global proc SET_1080_1920_CAM(){
+                    setAttr "defaultResolution.width" 1080;
+                    setAttr "defaultResolution.height" 1920;
+                    setAttr "defaultResolution.deviceAspectRatio" 0.562;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 2305*4096 ///
+                global proc SET_2305_4096_CAM(){
+                    setAttr "defaultResolution.width" 2305;
+                    setAttr "defaultResolution.height" 4096;
+                    setAttr "defaultResolution.deviceAspectRatio" 0.563;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+
+        ///渲染参数预设///
+            global proc SET_RenderSet(){
+                global int $Export_sth ;
+                setAttr "defaultRenderGlobals.currentRenderer" -type "string" "redshift";
+                setAttr "defaultRenderGlobals.imageFilePrefix" -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+                setAttr "defaultRenderGlobals.animation" 1;
+                setAttr "redshiftOptions.exrForceMultilayer" 1;
+                setAttr "redshiftOptions.exrMultipart" 1;
+                setAttr "defaultResolution.aspectLock" 0;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                string $Cam[] =`ls -ca`;
+                setAttr ($Cam[0]+".renderable") 1;
+                setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+                setAttr "perspShape.farClipPlane" 10000000;
+                setAttr "perspShape.renderable" 0;
+                setAttr "redshiftOptions.unifiedMinSamples" 64;
+                setAttr "redshiftOptions.unifiedMaxSamples" 64;
+                setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.1;
+                setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+                setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+                setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+                setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+                setAttr "redshiftOptions.enableDebugCapture" 0;
+                setAttr "redshiftOptions.fileGammaMode" 4;
+                setAttr "redshiftOptions.imageFormat" $Export_sth;
+                string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+                if( `objExists $RS_Volume[0]` ){
+                setAttr ($RS_Volume[0]+".enable") 0;}
+                string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+                if( `objExists $RS_Photographic[0]` ){
+                setAttr ($RS_Photographic[0]+".enable") 0;}
+                string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+                if( `objExists $RS_PhysicalSky[0]` ){
+                setAttr ($RS_PhysicalSky[0]+".on") 0;}
+                setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+                setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+                setAttr "redshiftOptions.primaryGIEngine" 4;
+                setAttr "redshiftOptions.secondaryGIEngine" 0;
+                setAttr "redshiftOptions.samplingGammaMode" 2;
+            }
+
+    //////镜头设置合并
+        //1K set//
+            global proc Render_Cam_1K(){
+                SET_RenderSet();
+                SET_1K_CAM();          
+                print("设置镜头大小为 1K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 1K"+"\n");
+            }    
+
+        //2K set//
+            global proc Render_Cam_2K(){
+                SET_RenderSet();
+                SET_2K_CAM();          
+                print("设置镜头大小为 2K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 2K"+"\n");
+            } 
+
+        //3K set//
+            global proc Render_Cam_3K(){
+                SET_RenderSet();
+                SET_3K_CAM();          
+                print("设置镜头大小为 3K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 3K"+"\n");
+            } 
+
+        //4K set//
+            global proc Render_Cam_4K(){
+                SET_RenderSet();
+                SET_4K_CAM();          
+                print("设置镜头大小为 4K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 4K"+"\n");
+            } 
+
+        //HD720 set//
+            global proc Render_Cam_HD720(){
+                SET_RenderSet();
+                SET_HD720_CAM();          
+                print("设置镜头大小为 HD720"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 HD720"+"\n");
+            } 
+
+        //HD1080 set//
+            global proc Render_Cam_HD1080(){
+                SET_RenderSet();
+                SET_HD1080_CAM();          
+                print("设置镜头大小为 HD1080"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 HD1080"+"\n");
+            } 
+
+        //4096_2305 set//
+            global proc Render_Cam_4096_2305(){
+                SET_RenderSet();
+                SET_4096_2305_CAM();          
+                print("设置镜头大小为 4096_2305"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 4096_2305"+"\n");
+            } 
+
+        //720_1280 set//
+            global proc Render_Cam_720_1280(){
+                SET_RenderSet();
+                SET_720_1280_CAM();          
+                print("设置镜头大小为 720_1280"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 720_1280"+"\n");
+            } 
+
+        //1080_1920 set//
+            global proc Render_Cam_1080_1920(){
+                SET_RenderSet();
+                SET_1080_1920_CAM();          
+                print("设置镜头大小为 1080_1920"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 1080_1920"+"\n");
+            } 
+
+        //2305_4096 set//
+            global proc Render_Cam_2305_4096(){
+                SET_RenderSet();
+                SET_2305_4096_CAM();          
+                print("设置镜头大小为 2305_4096"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 2305_4096"+"\n");
+            } 
+
+        ////////prs SET EXR 自定义分辨率 /////////
+            ///最终调用////
+                global proc Custom_CAM_imagesize(){
+                    SET_RenderSet();
+                    SET_Custom_CAM();
+                }
+
+            /// 自定义镜头分辨率///
+                global proc SET_Custom_CAM(){
+                    int $widthcs =`textField -q -text cs_width`;
+                    int $Hightcs =`textField -q -text cs_Hight`;
+                    setAttr "defaultResolution.width" $widthcs ;
+                    setAttr "defaultResolution.height" $Hightcs ;
+                }
+
+
+/////////// Optimize and Creat ID Aovs SET 整理和创建ID Aovs /////////////////
+    //////////// All Auto Creat ID 手动创建角色组后 按Auto Aovs自动创建角色ID 和 自动创建Aovs /////////////////////////////////
+        // 1_Creat_Char_Group ////////
+            global proc Creat_Char_Group(){
+                $LsSelectionrenderlayer = `editRenderLayerGlobals -q  -currentRenderLayer`;
+                if ($LsSelectionrenderlayer!="defaultRenderLayer")
+                {
+                editRenderLayerGlobals -currentRenderLayer defaultRenderLayer;
+                }
+
+                string $char_1[] =`ls -sl`;
+
+                if(!`objExists "Character_Group"`){
+                    select -cl; 
+                    CreateLocator;
+                    rename (`ls -sl`) "Character_Group";
+                    select -cl;
+                    CreateLocator;
+                    rename (`ls -sl`) "Transparent_Group"; 
+                    select -cl;
+                    CreateLocator;
+                    rename (`ls -sl`) "Cha_nor_Group";
+                    select -r Transparent_Group Cha_nor_Group;
+                    select -add Character_Group ;
+                    parent;    
+                }
+
+                select -cl;
+                CreateLocator ;
+                rename (`ls -sl`) "Char_G_yiyi";
+                select -r Char_G_yiyi ;
+                select -add Cha_nor_Group ;
+                parent;
+                select -r $char_1;
+                select -add Char_G_yiyi ;
+                parent;
+
+                select -r Char_G_yiyi ;
+                addAttr -ln "CharId"  -at double  -min 0 -max 100 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+                setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharId;
+                addAttr -ln "CharIdCheck"  -at double  -min 0 -max 1 -dv 0 |Character_Group|Cha_nor_Group|Char_G_yiyi;
+                setAttr -e-keyable true |Character_Group|Cha_nor_Group|Char_G_yiyi.CharIdCheck;
+                rename "Char_G_yiyi" "Char_G1";
+            }
+
+
+
+
+        // 2_Auto Aovs ID Export_sth ///////////
+            //创建AOV_RGB层
+
+                global proc Auto_Aovs_ID_Export_sth(){
+
+                    //自动根据新增属性给角色建id (只修改属性为0的)
+                    createChaId_id();
+
+                    //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
+                    checkchaID_and_create_id();
+
+                    deleteRGBDisplayLayer();
+
+                    //改id名字和数值
+                    RS_changeObjidName();
+
+                    //放在rgb建ID后，给角色打组一个属性编号，重复多次，防止有些更改了id数值，角色组的名字编号跟不回
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+                    give_ChaId_id_num();
+
+                    //AOV中创建RGB层，并删除没用的RGB
+                    RS_AOV_RGB_createAndDelete_Export_sth();
+
+                    createRGBDisplayLayer();
+
+                    //CharIdCheck全部归0
+                    checkchaID000();
+
+                    //选择物体增加圆滑节点
+                    smoothNode_auto_pro();
+
+                }
+
+
+            //AOV中创建RGB层，并删除没用的RGB   Export_sth
+                global proc RS_AOV_RGB_createAndDelete_Export_sth(){
+                    string $OBJnum[] = `ls -typ "RedshiftObjectId"`;
+                    string $OBJnumin2 ;
+                    for($OBJnumin2 in $OBJnum)
+                    {
+                        int $objIDnumID = `getAttr ($OBJnumin2+".objectId")`;   
+                        if ( $objIDnumID <= 3){ RS_ConditionCreateAOV_RGB1(); }
+                        if ( ($objIDnumID > 3) && ($objIDnumID <= 6)){ RS_ConditionCreateAOV_RGB2(); }
+                        if ( ($objIDnumID > 6) && ($objIDnumID <= 9)){ RS_ConditionCreateAOV_RGB3(); }
+                        if ( ($objIDnumID > 9) && ($objIDnumID <= 12)){ RS_ConditionCreateAOV_RGB4(); }
+                        if ( ($objIDnumID > 12) && ($objIDnumID <= 15)){ RS_ConditionCreateAOV_RGB5(); }
+                        if ( ($objIDnumID > 15) && ($objIDnumID <= 18)){ RS_ConditionCreateAOV_RGB6(); }
+                        if ( ($objIDnumID > 18) && ($objIDnumID <= 21)){ RS_ConditionCreateAOV_RGB7(); }
+                    }
+                    
+                    if (`objExists RGB1`){
+                        if (!`objExists RGB1_R1`){
+                            if (!`objExists RGB1_G2`){
+                                if (!`objExists RGB1_B3`){
+                                    delete RGB1;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB2`){
+                        if (!`objExists RGB2_R4`){
+                            if (!`objExists RGB2_G5`){
+                                if (!`objExists RGB2_B6`){
+                                    delete RGB2;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB3`){
+                        if (!`objExists RGB3_R7`){
+                            if (!`objExists RGB3_G8`){
+                                if (!`objExists RGB3_B9`){
+                                    delete RGB3;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB4`){
+                        if (!`objExists RGB4_R10`){
+                            if (!`objExists RGB4_G11`){
+                                if (!`objExists RGB4_B12`){
+                                    delete RGB4;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB5`){
+                        if (!`objExists RGB5_R13`){
+                            if (!`objExists RGB5_G14`){
+                                if (!`objExists RGB5_B15`){
+                                    delete RGB5;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB6`){
+                        if (!`objExists RGB6_R16`){
+                            if (!`objExists RGB6_G17`){
+                                if (!`objExists RGB6_B18`){
+                                    delete RGB6;
+                                }
+                            }
+                        }
+                    }
+                    if (`objExists RGB7`){
+                        if (!`objExists RGB7_R19`){
+                            if (!`objExists RGB7_G20`){
+                                if (!`objExists RGB7_B21`){
+                                    delete RGB7;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            //不存在的情况下创建RGB1
+                global proc RS_ConditionCreateAOV_RGB1(){
+                    string $AOVall1[] = `ls -typ "RedshiftAOV"`;
+                    int $B1 = 0;
+                    for($q1=0;$q1<`size($AOVall1)`;$q1+=1)
+                    { 
+                    if ($AOVall1[$q1] == "RGB1"){
+                        setAttr ($AOVall1[$q1]+".enabled") 0;
+                        $B1 = $B1+1;
+                    }
+                    }
+                    if($B1 == 0)
+                    {
+                        RS_createAOV_RGB1();
+                    }
+                }
+
+            //不存在的情况下创建RGB2
+                global proc RS_ConditionCreateAOV_RGB2(){
+                    string $AOVall2[] = `ls -typ "RedshiftAOV"`;
+                    int $B2 = 0;
+                    for($q2=0;$q2<`size($AOVall2)`;$q2+=1)
+                    { 
+                    if ($AOVall2[$q2] == "RGB2"){
+                        setAttr ($AOVall2[$q2]+".enabled") 0;
+                        $B2 = $B2+1;
+                    }
+                    }
+                    if($B2 == 0)
+                    {
+                        RS_createAOV_RGB2();
+                    }
+                }
+
+            //不存在的情况下创建RGB3
+                global proc RS_ConditionCreateAOV_RGB3(){
+                    string $AOVall3[] = `ls -typ "RedshiftAOV"`;
+                    int $B3 = 0;
+                    for($q3=0;$q3<`size($AOVall3)`;$q3+=1)
+                    { 
+                    if ($AOVall3[$q3] == "RGB3"){
+                        setAttr ($AOVall3[$q3]+".enabled") 0;
+                        $B3 = $B3+1;
+                    }
+                    }
+                    if($B3 == 0)
+                    {
+                        RS_createAOV_RGB3();
+                    }
+                }
+
+            //不存在的情况下创建RGB4
+                global proc RS_ConditionCreateAOV_RGB4(){
+                    string $AOVall4[] = `ls -typ "RedshiftAOV"`;
+                    int $B4 = 0;
+                    for($q4=0;$q4<`size($AOVall4)`;$q4+=1)
+                    { 
+                    if ($AOVall4[$q4] == "RGB4"){
+                        setAttr ($AOVall4[$q4]+".enabled") 0;
+                        $B4 = $B4+1;
+                    }
+                    }
+                    if($B4 == 0)
+                    {
+                        RS_createAOV_RGB4();
+                    }
+                }
+
+            //不存在的情况下创建RGB5
+                global proc RS_ConditionCreateAOV_RGB5(){
+                    string $AOVall5[] = `ls -typ "RedshiftAOV"`;
+                    int $B5 = 0;
+                    for($q5=0;$q5<`size($AOVall5)`;$q5+=1)
+                    { 
+                    if ($AOVall5[$q5] == "RGB5"){
+                        setAttr ($AOVall5[$q5]+".enabled") 0;
+                        $B5 = $B5+1;
+                    }
+                    }
+                    if($B5 == 0)
+                    {
+                        RS_createAOV_RGB5();
+                    }
+                }
+
+            //不存在的情况下创建RGB6
+                global proc RS_ConditionCreateAOV_RGB6(){
+                    string $AOVall6[] = `ls -typ "RedshiftAOV"`;
+                    int $B6 = 0;
+                    for($q6=0;$q6<`size($AOVall6)`;$q6+=1)
+                    { 
+                    if ($AOVall6[$q6] == "RGB6"){
+                        setAttr ($AOVall6[$q6]+".enabled") 0;
+                        $B6 = $B6+1;
+                    }
+                    }
+                    if($B6 == 0)
+                    {
+                        RS_createAOV_RGB6();
+                    }
+                }
+
+            //不存在的情况下创建RGB7
+                global proc RS_ConditionCreateAOV_RGB7(){
+                    string $AOVall7[] = `ls -typ "RedshiftAOV"`;
+                    int $B7 = 0;
+                    for($q7=0;$q7<`size($AOVall7)`;$q7+=1)
+                    { 
+                    if ($AOVall7[$q7] == "RGB7"){
+                        setAttr ($AOVall7[$q7]+".enabled") 0;
+                        $B7 = $B7+1;
+                    }
+                    }
+                    if($B7 == 0)
+                    {
+                        RS_createAOV_RGB7();
+                    }
+                }
+
+            //创建AOV_RGB1
+                global proc RS_createAOV_RGB1(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB1";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB1.name "RGB1";
+                    setAttr -type "string" RGB1.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB1.dataType" 2;
+                    setAttr "RGB1.fileFormat" $Export_sth;
+                    setAttr "RGB1.exrBits" 32;
+                    setAttr "RGB1.mode" 1;
+                    setAttr "RGB1.redId" 1;
+                    setAttr "RGB1.greenId" 2;
+                    setAttr "RGB1.blueId" 3;
+                    setAttr "RGB1.enabled" 0;
+                    print ("RGB1"+"\n");
+                }
+
+            //创建AOV_RGB2
+                global proc RS_createAOV_RGB2(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB2";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB2.name "RGB2";
+                    setAttr -type "string" RGB2.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB2.dataType" 2;
+                    setAttr "RGB2.fileFormat" $Export_sth;
+                    setAttr "RGB2.exrBits" 32;
+                    setAttr "RGB2.mode" 1;
+                    setAttr "RGB2.redId" 4;
+                    setAttr "RGB2.greenId" 5;
+                    setAttr "RGB2.blueId" 6;
+                    setAttr "RGB2.enabled" 0;
+                    print ("RGB2"+"\n");
+                }
+
+            //创建AOV_RGB3
+                global proc RS_createAOV_RGB3(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB3";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB3.name "RGB3";
+                    setAttr -type "string" RGB3.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB3.dataType" 2;
+                    setAttr "RGB3.fileFormat" $Export_sth;
+                    setAttr "RGB3.exrBits" 32;
+                    setAttr "RGB3.mode" 1;
+                    setAttr "RGB3.redId" 7;
+                    setAttr "RGB3.greenId" 8;
+                    setAttr "RGB3.blueId" 9;
+                    setAttr "RGB3.enabled" 0;
+                    print ("RGB3"+"\n");
+                }
+
+            //创建AOV_RGB4
+                global proc RS_createAOV_RGB4(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB4";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB4.name "RGB4";
+                    setAttr -type "string" RGB4.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB4.dataType" 2;
+                    setAttr "RGB4.fileFormat" $Export_sth;
+                    setAttr "RGB4.exrBits" 32;
+                    setAttr "RGB4.mode" 1;
+                    setAttr "RGB4.redId" 10;
+                    setAttr "RGB4.greenId" 11;
+                    setAttr "RGB4.blueId" 12;
+                    setAttr "RGB4.enabled" 0;
+                    print ("RGB4"+"\n");
+                }
+
+
+            //创建AOV_RGB5
+                global proc RS_createAOV_RGB5(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB5";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB5.name "RGB5";
+                    setAttr -type "string" RGB5.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB5.dataType" 2;
+                    setAttr "RGB5.fileFormat" $Export_sth;
+                    setAttr "RGB5.exrBits" 32;
+                    setAttr "RGB5.mode" 1;
+                    setAttr "RGB5.redId" 13;
+                    setAttr "RGB5.greenId" 14;
+                    setAttr "RGB5.blueId" 15;
+                    setAttr "RGB5.enabled" 0;
+                    print ("RGB5"+"\n");
+                }
+
+
+            //创建AOV_RGB6
+                global proc RS_createAOV_RGB6(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB6";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB6.name "RGB6";
+                    setAttr -type "string" RGB6.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB6.dataType" 2;
+                    setAttr "RGB6.fileFormat" $Export_sth;
+                    setAttr "RGB6.exrBits" 32;
+                    setAttr "RGB6.mode" 1;
+                    setAttr "RGB6.redId" 16;
+                    setAttr "RGB6.greenId" 17;
+                    setAttr "RGB6.blueId" 18;
+                    setAttr "RGB6.enabled" 0;
+                    print ("RGB6"+"\n");
+                }
+
+
+            //创建AOV_RGB7
+                global proc RS_createAOV_RGB7(){
+                    global int $Export_sth ;
+                    source redshiftCreateAovTab;
+                    rename (`redshiftCreateAov ("Puzzle Matte")`) "RGB7";
+                    redshiftUpdateActiveAovList();
+                    setAttr -type "string" RGB7.name "RGB7";
+                    setAttr -type "string" RGB7.filePrefix "<BeautyPath>/<BeautyFile>.<RenderPass>";
+                    setAttr "RGB7.dataType" 2;
+                    setAttr "RGB7.fileFormat" $Export_sth;
+                    setAttr "RGB7.exrBits" 32;
+                    setAttr "RGB7.mode" 1;
+                    setAttr "RGB7.redId" 19;
+                    setAttr "RGB7.greenId" 20;
+                    setAttr "RGB7.blueId" 21;
+                    setAttr "RGB7.enabled" 0;
+                    print ("RGB7"+"\n");
+                }
+
+        //////////////////////////////////////////////////////////
+
+        //共用
+        //创建ID
+            //自动根据新增属性给角色建id (只修改属性为0的)
+                global proc createChaId_id(){
+                    string $transf_all[] = `ls -typ "transform"`;
+                    string $transf_allin ;
+                    for ($transf_allin in $transf_all){
+                        if (`objExists ($transf_allin +".CharId")`){
+                            int $cha_G_id_num =`getAttr ($transf_allin +".CharId")`;
+                            if ($cha_G_id_num == 0){
+                                    select -r $transf_allin;
+                                    redshiftCreateObjectIdNode();
+                                }
+                            }
+                    }
+                }
+
+            //创建完CharID是0的之后再检查是否存在CharID有数值，给实际上已经删掉了id的组创建ID
+                global proc checkchaID_and_create_id(){
+                    string $id_all[] = `ls -typ "RedshiftObjectId"`;
+                    string $id_allin;
+                    for ($id_allin in $id_all){
+                        int $id_numin1 = `getAttr ($id_allin+".objectId")`;
+                        if ($id_numin1 > 0){
+                            if ($id_numin1 <= 21){
+                                select -r -ne $id_allin ;
+                                pickWalk -d up;
+                                string $cha_G_locator[] =`ls -sl`;
+                                string $cha_G_locatorin;
+                                for ($cha_G_locatorin in $cha_G_locator){
+                                if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
+                                        setAttr ($cha_G_locatorin+".CharIdCheck") 1;                    
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    string $transf_alla[] = `ls -typ "transform"`;
+                    string $transf_allain ;
+                    for ($transf_allain in $transf_alla){
+                        if (`objExists ($transf_allain +".CharIdCheck")`){
+                            int $cha_G_CharIdCheck_num =`getAttr ($transf_allain +".CharIdCheck")`;
+                            if ($cha_G_CharIdCheck_num == 0){
+                                    select -r $transf_allain;
+                                    redshiftCreateObjectIdNode();
+                                }
+                            }
+                    }
+                }
+
+
+            //删掉RGB display分组 
+                global proc deleteRGBDisplayLayer(){ 
+                    string $RGBdisplaylayer[]=`ls -type displayLayer`;
+                    for($i=0;$i<`size($RGBdisplaylayer)`;$i+=1)
+                    {
+                        string $colorornot = `getAttr ($RGBdisplaylayer[$i]+".overrideRGBColors")`;
+                        if($colorornot != 0){
+                            if(`match "RGB" $RGBdisplaylayer[$i]` == "RGB"){
+                                layerEditorDeleteLayer $RGBdisplaylayer[$i];
+                    } 
+                    }  
+                    }
+                }
+
+            //改id名字和数值
+                global proc RS_changeObjidName(){
+                    string $OBJIDallG[] = `ls -typ "RedshiftObjectId"`;
+                    select -r -ne $OBJIDallG ;
+                    string $OBJIDall_G[] =`ls -sl`;
+                    string $OBJIDall_Gin;
+                    for ($OBJIDall_Gin in $OBJIDall_G){
+                        int $OBJIDall_Gin_ID =`getAttr ($OBJIDall_Gin+".objectId")`;
+                        if ($OBJIDall_Gin_ID >= 22){
+                            select -d -ne $OBJIDall_Gin ;
+                        }
+                        }
+                    string $OBJnum[] =`ls -sl`;
+                    select -r -ne $OBJnum ;
+                    string $rsobjIDall1[] =`ls -sl`;
+                    string $OBJnumin;
+                    for ($OBJnumin in $rsobjIDall1){
+                        int $idnum11 =`getAttr ($OBJnumin+".objectId")`;
+                        if ($idnum11 != 0){
+                            select -d -ne $OBJnumin ;
+                        }
+                        if ($idnum11 == 1){ rename $OBJnumin "chatool_id1";}
+                        if ($idnum11 == 2){ rename $OBJnumin "chatool_id2"; }
+                        if ($idnum11 == 3){ rename $OBJnumin "chatool_id3";}
+                        if ($idnum11 == 4){ rename $OBJnumin "chatool_id4"; }
+                        if ($idnum11 == 5){ rename $OBJnumin "chatool_id5";}
+                        if ($idnum11 == 6){ rename $OBJnumin "chatool_id6";}
+                        if ($idnum11 == 7){ rename $OBJnumin "chatool_id7";}
+                        if ($idnum11 == 8){ rename $OBJnumin "chatool_id8";}
+                        if ($idnum11 == 9){ rename $OBJnumin "chatool_id9";}
+                        if ($idnum11 == 10){ rename $OBJnumin "chatool_id10";}
+                        if ($idnum11 == 11){ rename $OBJnumin "chatool_id11";}
+                        if ($idnum11 == 12){ rename $OBJnumin "chatool_id12";}
+                        if ($idnum11 == 13){ rename $OBJnumin "chatool_id13";}
+                        if ($idnum11 == 14){ rename $OBJnumin "chatool_id14";}
+                        if ($idnum11 == 15){ rename $OBJnumin "chatool_id15";}
+                        if ($idnum11 == 16){ rename $OBJnumin "chatool_id16";}
+                        if ($idnum11 == 17){ rename $OBJnumin "chatool_id17";}
+                        if ($idnum11 == 18){ rename $OBJnumin "chatool_id18";}
+                        if ($idnum11 == 19){ rename $OBJnumin "chatool_id19";} 
+                        if ($idnum11 == 20){ rename $OBJnumin "chatool_id20";} 
+                        if ($idnum11 == 21){ rename $OBJnumin "chatool_id21";} 
+                    }
+
+                    string $rsobjIDnoID[]=`ls -sl`;
+                    int $rsobjIDnoIDGS = `size $rsobjIDnoID`;
+                    for($i=0;$i<`size($rsobjIDnoID)`;$i+=1)
+                    { 
+                        if(!`objExists ("chatool_id"+($i+1))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+1);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+1));    
+                        }
+                        else if(!`objExists ("chatool_id"+($i+2))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+2);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+2));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+3))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+3);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+3));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+4))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+4);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+4));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+5))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+5);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+5));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+6))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+6);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+6));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+7))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+7);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+7));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+8))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+8);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+8));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+9))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+9);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+9));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+10))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+10);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+10));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+11))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+11);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+11));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+12))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+12);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+12));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+13))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+13);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+13));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+14))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+14);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+14));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+15))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+15);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+15));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+16))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+16);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+16));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+17))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+17);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+17));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+18))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+18);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+18));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+19))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+19);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+19));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+20))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+20);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+20));
+                        }
+                        else if(!`objExists ("chatool_id"+($i+21))`){
+                        setAttr ($rsobjIDnoID[$i]+".objectId") ($i+21);
+                        select -d -ne $rsobjIDnoID[$i] ;
+                        rename $rsobjIDnoID[$i] ("chatool_id"+($i+21));
+                        }
+                        }
+                        
+                        
+                            
+                        string $OBJnum1[] = `ls -typ "RedshiftObjectId"`;
+                        string $rsobjIDnoID11;
+                        for ($rsobjIDnoID11 in $OBJnum1) { 
+                        int $objidnum =`getAttr ($rsobjIDnoID11+".objectId")`;
+                        if ($objidnum == 1){ rename $rsobjIDnoID11 "RGB1_R1"; }
+                        if ($objidnum == 2){ rename $rsobjIDnoID11 "RGB1_G2"; }
+                        if ($objidnum == 3){ rename $rsobjIDnoID11 "RGB1_B3"; }
+                        if ($objidnum == 4){ rename $rsobjIDnoID11 "RGB2_R4"; }
+                        if ($objidnum == 5){ rename $rsobjIDnoID11 "RGB2_G5"; }
+                        if ($objidnum == 6){ rename $rsobjIDnoID11 "RGB2_B6"; }
+                        if ($objidnum == 7){ rename $rsobjIDnoID11 "RGB3_R7"; }
+                        if ($objidnum == 8){ rename $rsobjIDnoID11 "RGB3_G8"; }
+                        if ($objidnum == 9){ rename $rsobjIDnoID11 "RGB3_B9"; }
+                        if ($objidnum == 10){ rename $rsobjIDnoID11 "RGB4_R10"; }
+                        if ($objidnum == 11){ rename $rsobjIDnoID11 "RGB4_G11"; }
+                        if ($objidnum == 12){ rename $rsobjIDnoID11 "RGB4_B12"; }
+                        if ($objidnum == 13){ rename $rsobjIDnoID11 "RGB5_R13"; }
+                        if ($objidnum == 14){ rename $rsobjIDnoID11 "RGB5_G14"; }
+                        if ($objidnum == 15){ rename $rsobjIDnoID11 "RGB5_B15"; }
+                        if ($objidnum == 16){ rename $rsobjIDnoID11 "RGB6_R16"; }
+                        if ($objidnum == 17){ rename $rsobjIDnoID11 "RGB6_G17"; }
+                        if ($objidnum == 18){ rename $rsobjIDnoID11 "RGB6_B18"; }
+                        if ($objidnum == 19){ rename $rsobjIDnoID11 "RGB7_R19"; }
+                        if ($objidnum == 20){ rename $rsobjIDnoID11 "RGB7_G20"; }
+                        if ($objidnum == 21){ rename $rsobjIDnoID11 "RGB7_B21"; }
+                        
+                    }
+                }
+
+            //放在rgb建ID后，给角色打组一个属性编号
+                global proc give_ChaId_id_num(){
+                    string $id_all[] = `ls -typ "RedshiftObjectId"`;
+                    string $id_allin;
+                    for ($id_allin in $id_all){
+                        int $id_numin1 = `getAttr ($id_allin+".objectId")`;
+                        if ($id_numin1 > 0){
+                            if ($id_numin1 <= 21){
+                                select -r -ne $id_allin ;
+                                pickWalk -d up;
+                                string $cha_G_locator[] =`ls -sl`;
+                                string $cha_G_locatorin;
+                                for ($cha_G_locatorin in $cha_G_locator){
+                                if(`match "Char_G" $cha_G_locatorin` == "Char_G"){
+                                        setAttr ($cha_G_locatorin+".CharId") $id_numin1;
+                                        rename ($cha_G_locatorin) ("Char_G"+$id_numin1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+            //创建RGBdisplaylayer
+                global proc createRGBDisplayLayer(){ 
+
+                    string $RGB_RSobjid[]=`ls -type RedshiftObjectId`;
+                    string $RGB_RSobjidin;
+                    for ($RGB_RSobjidin in $RGB_RSobjid){
+                        if($RGB_RSobjidin =="RGB1_R1"){
+                            select -r -ne RGB1_R1 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB1_R1_g" -number 1 -nr;
+                            setAttr RGB1_R1_g.displayType 0; setAttr RGB1_R1_g.color 0; setAttr RGB1_R1_g.overrideColorRGB 1 0 0; setAttr RGB1_R1_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB1_G2"){
+                            select -r -ne RGB1_G2 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB1_G2_g" -number 1 -nr;
+                            setAttr RGB1_G2_g.displayType 0; setAttr RGB1_G2_g.color 0; setAttr RGB1_G2_g.overrideColorRGB 0 1 0; setAttr RGB1_G2_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB1_B3"){
+                            select -r -ne RGB1_B3 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB1_B3_g" -number 1 -nr;
+                            setAttr RGB1_B3_g.displayType 0; setAttr RGB1_B3_g.color 0; setAttr RGB1_B3_g.overrideColorRGB 0 0 1; setAttr RGB1_B3_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB2_R4"){
+                            select -r -ne RGB2_R4 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB2_R4_g" -number 1 -nr;
+                            setAttr RGB2_R4_g.displayType 0; setAttr RGB2_R4_g.color 0; setAttr RGB2_R4_g.overrideColorRGB 0.5 0 0; setAttr RGB2_R4_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB2_G5"){
+                            select -r -ne RGB2_G5 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB2_G5_g" -number 1 -nr;
+                            setAttr RGB2_G5_g.displayType 0; setAttr RGB2_G5_g.color 0; setAttr RGB2_G5_g.overrideColorRGB 0 0.5 0; setAttr RGB2_G5_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB2_B6"){
+                            select -r -ne RGB2_B6 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB2_B6_g" -number 1 -nr;
+                            setAttr RGB2_B6_g.displayType 0; setAttr RGB2_B6_g.color 0; setAttr RGB2_B6_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB2_B6_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB3_R7"){
+                            select -r -ne RGB3_R7 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB3_R7_g" -number 1 -nr;
+                            setAttr RGB3_R7_g.displayType 0; setAttr RGB3_R7_g.color 0; setAttr RGB3_R7_g.overrideColorRGB 1 0.5 0.5; setAttr RGB3_R7_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB3_G8"){
+                            select -r -ne RGB3_G8 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB3_G8_g" -number 1 -nr;
+                            setAttr RGB3_G8_g.displayType 0; setAttr RGB3_G8_g.color 0; setAttr RGB3_G8_g.overrideColorRGB 0.5 1 0.5; setAttr RGB3_G8_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB3_B9"){
+                            select -r -ne RGB3_B9 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB3_B9_g" -number 1 -nr;
+                            setAttr RGB3_B9_g.displayType 0; setAttr RGB3_B9_g.color 0; setAttr RGB3_B9_g.overrideColorRGB 0.2049999833 0.74644804 1; setAttr RGB3_B9_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB4_R10"){
+                            select -r -ne RGB4_R10 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB4_R10_g" -number 1 -nr;
+                            setAttr RGB4_R10_g.displayType 0; setAttr RGB4_R10_g.color 0; setAttr RGB4_R10_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB4_R10_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB4_G11"){
+                            select -r -ne RGB4_G11 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB4_G11_g" -number 1 -nr;
+                            setAttr RGB4_G11_g.displayType 0; setAttr RGB4_G11_g.color 0; setAttr RGB4_G11_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB4_G11_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB4_B12"){
+                            select -r -ne RGB4_B12 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB4_B12_g" -number 1 -nr;
+                            setAttr RGB4_B12_g.displayType 0; setAttr RGB4_B12_g.color 0; setAttr RGB4_B12_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB4_B12_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB5_R13"){
+                            select -r -ne RGB5_R13 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB5_R13_g" -number 1 -nr;
+                            setAttr RGB5_R13_g.displayType 0; setAttr RGB5_R13_g.color 0; setAttr RGB5_R13_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB5_R13_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB5_G14"){
+                            select -r -ne RGB5_G14 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB5_G14_g" -number 1 -nr;
+                            setAttr RGB5_G14_g.displayType 0; setAttr RGB5_G14_g.color 0; setAttr RGB5_G14_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB5_G14_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB5_B15"){
+                            select -r -ne RGB5_B15 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB5_B15_g" -number 1 -nr;
+                            setAttr RGB5_B15_g.displayType 0; setAttr RGB5_B15_g.color 0; setAttr RGB5_B15_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB5_B15_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB6_R16"){
+                            select -r -ne RGB6_R16 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB6_R16_g" -number 1 -nr;
+                            setAttr RGB6_R16_g.displayType 0; setAttr RGB6_R16_g.color 0; setAttr RGB6_R16_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB6_R16_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB6_G17"){
+                            select -r -ne RGB6_G17 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB6_G17_g" -number 1 -nr;
+                            setAttr RGB6_G17_g.displayType 0; setAttr RGB6_G17_g.color 0; setAttr RGB6_G17_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB6_G17_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB6_B18"){
+                            select -r -ne RGB6_B18 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB6_B18_g" -number 1 -nr;
+                            setAttr RGB6_B18_g.displayType 0; setAttr RGB6_B18_g.color 0; setAttr RGB6_B18_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB6_B18_g.overrideRGBColors 1; 
+                    }
+                    }
+                        if($RGB_RSobjidin =="RGB7_R19"){
+                            select -r -ne RGB7_R19 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB7_R19_g" -number 1 -nr;
+                            setAttr RGB7_R19_g.displayType 0; setAttr RGB7_R19_g.color 0; setAttr RGB7_R19_g.overrideColorRGB 0.5149999857 0.1848850399 0.2737629414; setAttr RGB7_R19_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB7_G20"){
+                            select -r -ne RGB7_G20 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB7_G20_g" -number 1 -nr;
+                            setAttr RGB7_G20_g.displayType 0; setAttr RGB7_G20_g.color 0; setAttr RGB7_G20_g.overrideColorRGB 0.6354166269 1 0; setAttr RGB7_G20_g.overrideRGBColors 1; 
+                    }
+                        if($RGB_RSobjidin =="RGB7_B21"){
+                            select -r -ne RGB7_B21 ;
+                            pickWalk -d up;
+                            createDisplayLayer -name "RGB7_B21_g" -number 1 -nr;
+                            setAttr RGB7_B21_g.displayType 0; setAttr RGB7_B21_g.color 0; setAttr RGB7_B21_g.overrideColorRGB 0 0.5041999817 1; setAttr RGB7_B21_g.overrideRGBColors 1; 
+                    }
+                }
+                
+
+            //CharIdCheck全部归0
+                    global proc checkchaID000(){
+                        string $transf_allb[] = `ls -typ "transform"`;
+                        string $transf_allbin ;
+                        for ($transf_allbin in $transf_allb){
+                        if (`objExists ($transf_allbin +".CharIdCheck")`){
+                            setAttr ($transf_allbin +".CharIdCheck") 0 ;         
+                            }
+                        }
+                    }
+
+            //建圆滑节点
+                global proc smoothNode_auto_pro()
+                {
+                    if (`objExists "Character_Group"`){
+                        if (!`objExists "Cha_smooth"`){
+                            select -cl  ;
+                            select -r Character_Group ;
+                            string $MeshNode_G = `redshiftCreateMeshParametersNode`;
+                            rename $MeshNode_G "Cha_smooth";            
+                        }     
+                        else {
+                            sets -edit -forceElement  Cha_smooth Character_Group ;
+                    }   
+                    }
+                }
+
+
+    ///// Auto Char ID 创建角色组后 手动选择角色创建ID /////
+        //1_SL Char Creat ID////
+            global proc SL_Char_Creat_ID(){
+                    string $CharAndProp1[] = `ls -sl`;
+
+                if(`objExists "chaorprop20"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop21";
+                        sets -edit -forceElement chaorprop21 $CharAndProp1 ;
+                        setAttr "chaorprop21.objectId" 21;
+                    }
+                    else if(`objExists "chaorprop19"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop20";
+                        sets -edit -forceElement chaorprop20 $CharAndProp1 ;
+                        setAttr "chaorprop20.objectId" 20;
+                    }
+                    else if(`objExists "chaorprop18"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop19";
+                        sets -edit -forceElement chaorprop19 $CharAndProp1 ;
+                        setAttr "chaorprop19.objectId" 19;
+                    }
+                    else if(`objExists "chaorprop17"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop18";
+                        sets -edit -forceElement chaorprop18 $CharAndProp1 ;
+                        setAttr "chaorprop18.objectId" 18;
+                    }
+                    else if(`objExists "chaorprop16"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop17";
+                        sets -edit -forceElement chaorprop17 $CharAndProp1 ;
+                        setAttr "chaorprop17.objectId" 17;
+                    }
+                    else if(`objExists "chaorprop15"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop16";
+                        sets -edit -forceElement chaorprop16 $CharAndProp1 ;
+                        setAttr "chaorprop16.objectId" 16;
+                    }
+                    else if(`objExists "chaorprop14"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop15";
+                        sets -edit -forceElement chaorprop15 $CharAndProp1 ;
+                        setAttr "chaorprop15.objectId"15;
+                    }
+                    else if(`objExists "chaorprop13"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop14";
+                        sets -edit -forceElement chaorprop14 $CharAndProp1 ;
+                        setAttr "chaorprop14.objectId" 14;
+                    }
+                    else if(`objExists "chaorprop12"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop13";
+                        sets -edit -forceElement chaorprop13 $CharAndProp1 ;
+                        setAttr "chaorprop13.objectId" 13;
+                    }
+                    else if(`objExists "chaorprop11"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop12";
+                        sets -edit -forceElement chaorprop12 $CharAndProp1 ;
+                        setAttr "chaorprop12.objectId" 12;
+                    }
+                    else if(`objExists "chaorprop10"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop11";
+                        sets -edit -forceElement chaorprop11 $CharAndProp1 ;
+                        setAttr "chaorprop11.objectId" 11;
+                    }
+                    else if(`objExists "chaorprop9"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop10";
+                        sets -edit -forceElement chaorprop10 $CharAndProp1 ;
+                        setAttr "chaorprop10.objectId" 10;
+                    }
+                    else if(`objExists "chaorprop8"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop9";
+                        sets -edit -forceElement chaorprop9 $CharAndProp1 ;
+                        setAttr "chaorprop9.objectId" 9;
+                    }
+                    else if(`objExists "chaorprop7"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop8";
+                        sets -edit -forceElement chaorprop8 $CharAndProp1 ;
+                        setAttr "chaorprop8.objectId" 8;
+                    }
+                    else if(`objExists "chaorprop6"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop7";
+                        sets -edit -forceElement chaorprop7 $CharAndProp1 ;
+                        setAttr "chaorprop7.objectId" 7;
+                    }
+                    else if(`objExists "chaorprop5"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop6";
+                        sets -edit -forceElement chaorprop6 $CharAndProp1 ;
+                        setAttr "chaorprop6.objectId" 6;
+                    }
+                    else if(`objExists "chaorprop4"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop5";
+                        sets -edit -forceElement chaorprop5 $CharAndProp1 ;
+                        setAttr "chaorprop5.objectId" 5;
+                    }
+                    else if(`objExists "chaorprop3"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop4";
+                        sets -edit -forceElement chaorprop4 $CharAndProp1 ;
+                        setAttr "chaorprop4.objectId" 4;
+                    }
+                    else if(`objExists "chaorprop2"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop3";
+                        sets -edit -forceElement chaorprop3 $CharAndProp1 ;
+                        setAttr "chaorprop3.objectId" 3;
+                    }
+                    else if(`objExists "chaorprop1"`){
+                        rename `redshiftCreateObjectIdNode` "chaorprop2";
+                        sets -edit -forceElement chaorprop2 $CharAndProp1 ;
+                        setAttr "chaorprop2.objectId" 2;
+                    }
+                    else if(!`objExists "chaorprop1"`){
+                    rename `redshiftCreateObjectIdNode` "chaorprop1";
+                    sets -edit -forceElement chaorprop1 $CharAndProp1 ;
+                    setAttr "chaorprop1.objectId" 1;}
+                    
+
+                }
+
+        //2_Auto Creat AOVs
+            global proc Auto_Creat_AOVs(){
+            
+                if (`objExists "chaorprop1"`){
+                createRGB1();}
+                if (`objExists "chaorprop4"`){
+                createRGB2();}
+                if (`objExists "chaorprop7"`){
+                createRGB3();}
+                if (`objExists "chaorprop10"`){
+                createRGB4();}
+                if (`objExists "chaorprop13"`){
+                createRGB5();}
+                if (`objExists "chaorprop16"`){
+                createRGB6();}
+                if (`objExists "chaorprop19"`){
+                createRGB7();}
+                select -r -ne "chaorprop*";
+                pickWalk -d down;
+                rename `redshiftCreateMeshParametersNode` "smooth";
+
+            }
+
+            global proc createRGB1(){
+                global int $Export_sth ;
+                if(!`objExists RGB1`){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB1;
+                setAttr -type "string" RGB1.name "RGB1";
+                setAttr "RGB1.fileFormat" $Export_sth;
+                setAttr "RGB1.mode" 1;
+                setAttr "RGB1.redId" 1;
+                setAttr "RGB1.greenId" 2;
+                setAttr "RGB1.blueId" 3;
+                setAttr "RGB1.enabled" 0;
+                setAttr "RGB1.exrBits" 32;
+                setAttr "RGB1.dataType" 2;
+                } 
+            }
+        
+            global proc createRGB2(){
+                global int $Export_sth ;
+                if(!`objExists RGB2`){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB2;
+                setAttr -type "string" RGB2.name "RGB2";
+                setAttr "RGB2.fileFormat" $Export_sth;
+                setAttr "RGB2.mode" 1;
+                setAttr "RGB2.redId" 4;
+                setAttr "RGB2.greenId" 5;
+                setAttr "RGB2.blueId" 6;
+                setAttr "RGB2.enabled" 0;
+                setAttr "RGB2.exrBits" 32;
+                setAttr "RGB2.dataType" 2;
+                }
+            }
+        
+            global proc createRGB3(){
+                global int $Export_sth ;
+                if(!`objExists RGB3`){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB3;
+                setAttr -type "string" RGB3.name "RGB3";
+                setAttr "RGB3.fileFormat" $Export_sth;
+                setAttr "RGB3.mode" 1;
+                setAttr "RGB3.redId" 7;
+                setAttr "RGB3.greenId" 8;
+                setAttr "RGB3.blueId" 9;
+                setAttr "RGB3.enabled" 0;
+                setAttr "RGB3.exrBits" 32;
+                setAttr "RGB3.dataType" 2;    
+                }
+            }
+
+            global proc createRGB4(){
+                global int $Export_sth ;
+                if(!`objExists RGB4`){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB4;
+                setAttr -type "string" RGB4.name "RGB4";
+                setAttr "RGB4.fileFormat" $Export_sth;
+                setAttr "RGB4.mode" 1;
+                setAttr "RGB4.redId" 10;
+                setAttr "RGB4.greenId" 11;
+                setAttr "RGB4.blueId" 12;
+                setAttr "RGB4.enabled" 0;
+                setAttr "RGB4.exrBits" 32;
+                setAttr "RGB4.dataType" 2;    
+                }
+            }
+
+            global proc createRGB5(){
+                global int $Export_sth ;
+                if(!`objExists RGB5`){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB5;
+                setAttr -type "string" RGB5.name "RGB5";
+                setAttr "RGB5.fileFormat" $Export_sth;
+                setAttr "RGB5.mode" 1;
+                setAttr "RGB5.redId" 13;
+                setAttr "RGB5.greenId" 14;
+                setAttr "RGB5.blueId" 15;
+                setAttr "RGB5.enabled" 0;
+                setAttr "RGB5.exrBits" 32;
+                setAttr "RGB5.dataType" 2;    
+                }
+            }
+        
+            global proc createRGB6(){
+                global int $Export_sth ;
+                if(!`objExists RGB6`){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB6;
+                setAttr -type "string" RGB6.name "RGB6";
+                setAttr "RGB6.fileFormat" $Export_sth;
+                setAttr "RGB6.mode" 1;
+                setAttr "RGB6.redId" 16;
+                setAttr "RGB6.greenId" 17;
+                setAttr "RGB6.blueId" 18;
+                setAttr "RGB6.enabled" 0;
+                setAttr "RGB6.exrBits" 32;
+                setAttr "RGB6.dataType" 2;	    
+                }
+            }
+
+            global proc createRGB7(){
+                global int $Export_sth ;
+                if(!`objExists RGB7`){
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB7;
+                setAttr -type "string" RGB7.name "RGB7";
+                setAttr "RGB7.fileFormat" $Export_sth;
+                setAttr "RGB7.mode" 1;
+                setAttr "RGB7.redId" 19;
+                setAttr "RGB7.greenId" 20;
+                setAttr "RGB7.blueId" 21;
+                setAttr "RGB7.enabled" 0;
+                setAttr "RGB7.exrBits" 32;
+                setAttr "RGB7.dataType" 2;    
+                }
+            }
+
+
+
+
+    //////Custom SET ID 自定义设置ID///////
+        //1_Custom ID AOVs PNG
+            global proc Cs_Char_IDAovs(){
+                global int $Export_sth ;
+                source redshiftCreateAovTab;
+                rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Cs_Char_ID;
+                setAttr -type "string" RGB_Cs_Char_ID.name "RGB_Cs_Char_ID";
+                setAttr "RGB_Cs_Char_ID.dataType" 2;    
+                setAttr "RGB_Cs_Char_ID.fileFormat" $Export_sth;
+                setAttr "RGB_Cs_Char_ID.mode" 1;
+                setAttr "RGB_Cs_Char_ID.redId" 111;
+                setAttr "RGB_Cs_Char_ID.greenId" 222;
+                setAttr "RGB_Cs_Char_ID.blueId" 333;
+                setAttr "RGB_Cs_Char_ID.enabled" 0;
+                setAttr "RGB_Cs_Char_ID.exrBits" 32;
+                redshiftUpdateActiveAovList();
+                selectMode -object; 
+                selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 0 -camera 0 -texture 0 -ikEndEffector 0 -locator 0 -dimension 0;
+                selectType -byName gpuCache 1;
+            }
+        
+            //2_Cs Red ID
+                global proc Cs_Red_ID(){
+                    if(!`objExists "DP_Char_ID_R"`){
+                        createDisplayLayer -name "DP_Char_ID_R" -number 1 -nr;
+                        setAttr DP_Char_ID_R.displayType 0; 
+                        setAttr DP_Char_ID_R.color 0; 
+                        setAttr DP_Char_ID_R.overrideColorRGB 1 0 0; 
+                        setAttr DP_Char_ID_R.overrideRGBColors 1; 
+                        ls -sl ;
+                        rename(redshiftCreateObjectIdNode()) Cs_Char_ID_R;
+                        setAttr "Cs_Char_ID_R.objectId" 111;
+                    }
+                        editDisplayLayerMembers -noRecurse "DP_Char_ID_R" `ls -sl`;
+                        sets -edit -forceElement Cs_Char_ID_R;
+                    }
+
+            //2_Cs Green ID
+                global proc Cs_Green_ID(){
+                    if(!`objExists "DP_Char_ID_G"`){
+                        createDisplayLayer -name "DP_Char_ID_G" -number 1 -nr;
+                        setAttr DP_Char_ID_G.displayType 0; 
+                        setAttr DP_Char_ID_G.color 0; 
+                        setAttr DP_Char_ID_G.overrideColorRGB 0 1 0; 
+                        setAttr DP_Char_ID_G.overrideRGBColors 1; 
+                        ls -sl ;
+                        rename(redshiftCreateObjectIdNode()) Cs_Char_ID_G;
+                        setAttr "Cs_Char_ID_G.objectId" 222;;
+                    }
+                        editDisplayLayerMembers -noRecurse "DP_Char_ID_G" `ls -sl`;
+                        sets -edit -forceElement Cs_Char_ID_G;
+                    }
+
+            //2_Cs Blue ID
+                global proc Cs_Blue_ID(){
+                    if(!`objExists "DP_Char_ID_B"`){
+                        createDisplayLayer -name "DP_Char_ID_B" -number 1 -nr;
+                        setAttr DP_Char_ID_B.displayType 0; 
+                        setAttr DP_Char_ID_B.color 0; 
+                        setAttr DP_Char_ID_B.overrideColorRGB 0 0 1; 
+                        setAttr DP_Char_ID_B.overrideRGBColors 1; 
+                        ls -sl ;
+                        rename(redshiftCreateObjectIdNode()) Cs_Char_ID_B;
+                        setAttr "Cs_Char_ID_B.objectId" 333;
+                    }
+                        editDisplayLayerMembers -noRecurse "DP_Char_ID_B" `ls -sl`;
+                        sets -edit -forceElement Cs_Char_ID_B;
+                    }
+
+
+
+
+    /////Cs Group Aovs ID 手动创建场景组 设置 Aovs
+    //1_Creat_SEN_Group"
+        global proc Creat_sen_Group(){
+            string $Sen_all_1[] =`ls -sl`;
+            if(!`objExists "Sen_Group"`){
+                select -cl; 
+                CreateLocator;
+                rename (`ls -sl`) "Sen_Group";   
+            }
+            select -r $Sen_all_1;
+            select -add Sen_Group ;
+            parent;
+        }
+
+    //2_SEN ID
+        global proc Sen_ID_Aovs(){
+            global int $Export_sth ;
+            source redshiftCreateAovTab;
+            rename (`redshiftCreateAov "Puzzle Matte"`) RGB_Sen;
+            redshiftUpdateActiveAovList();
+            setAttr -type "string" RGB_Sen.name "RGB_Sen";
+            setAttr "RGB_Sen.dataType" 2;    
+            setAttr "RGB_Sen.fileFormat" $Export_sth;
+            setAttr "RGB_Sen.mode" 1;
+            setAttr "RGB_Sen.redId" 9999;
+            setAttr "RGB_Sen.greenId" 9998;
+            setAttr "RGB_Sen.blueId" 9997;
+            setAttr "RGB_Sen.enabled" 0;
+            setAttr "RGB_Sen.exrBits" 32;
+        }
+
+    //3_SEN Red ID
+        global proc SEN_Red_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_R;
+            setAttr "Sen_ID_R.objectId" 9999;
+        }
+    //3_SEN Green ID
+        global proc SEN_Green_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_G;
+            setAttr "Sen_ID_G.objectId" 9998;
+        }
+    //3_SEN Blue ID
+        global proc SEN_Blue_ID(){
+            ls -sl;
+            rename(redshiftCreateObjectIdNode()) Sen_ID_B;
+            setAttr "Sen_ID_B.objectId" 9997;
+        }
+
+
+
+
+//////// DO CAM  ////////////////////             
+    /////////做镜头     创建角色Group 和 创建场景Group 并 设置角色和场景Aovs 窗口/////////////
+        ////////// sel obj
+            global proc sel_obj(){
+                selectMode -object; 
+                selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 1 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 0 -camera 0 -texture 0 -ikEndEffector 0 -locator 0 -dimension 0;
+            }
+        ////////// sel obj lig
+            global proc sel_obj_lig(){
+                selectMode -object; 
+                selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 0 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;
+            }
+
+
+    /////////做镜头////////
+
+        ///3_Set_Sen_CHA_AOVsID
+            global proc Set_Sen_CHA_AOVsID(){
+                Auto_Aovs_ID_Export_sth();
+                Sen_ID_Aovs();
+            }
+
+    ////2017横屏
+        ///Aovs+ISO+HD720   
+            global proc Aovs_iso2017_HD720(){
+                Render_Cam_HD720();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+HD1080
+            global proc Aovs_iso2017_HD1080(){
+                Render_Cam_HD1080();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+4K
+            global proc Aovs_iso2017_4K(){
+                Render_Cam_4096_2305();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+
+    ////2019横屏
+        ///Aovs+ISO+HD720
+            global proc Aovs_iso2019_HD720(){
+                Render_Cam_HD720();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+HD1080
+            global proc Aovs_iso2019_HD1080(){
+                Render_Cam_HD1080();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+4K
+            global proc Aovs_iso2019_4K(){
+                Render_Cam_4096_2305();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+
+    ////2017竖屏
+        ///Aovs_iso+720*1280
+            global proc Aovs_iso2017_720_1280(){
+                Render_Cam_720_1280();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs_iso+1080*1920
+            global proc Aovs_iso2017_1080_1920(){
+                Render_Cam_1080_1920();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+        ///Aovs_iso+SP4K
+            global proc Aovs_iso2017_SP4K(){
+                Render_Cam_2305_4096();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+
+    ////2019竖屏
+        ///Aovs_iso+720*1280
+            global proc Aovs_iso2019_720_1280(){
+                Render_Cam_720_1280();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+                
+            }
+        ///Aovs_iso+1080*1920
+            global proc Aovs_iso2019_1080_1920(){
+                Render_Cam_1080_1920();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+        ///Aovs_iso+SP4K
+            global proc Aovs_iso2019_SP4K(){
+                Render_Cam_2305_4096();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+
+
+    ////////AOVs+iso 2017 2019 +自定义分辨率 /////////
+        ///最终调用////
+            global proc A0vs2017_CS_imagesize(){
+                custom_camset_CS_17();
+                SET_RenderSet();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+            global proc A0vs2019_CS_imagesize(){
+                custom_camset_CS_19();
+                SET_RenderSet();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+
+        
+        /// 自定义镜头分辨率///
+
+            global proc custom_camset_CS_17(){
+                int $widthcs_CS_17 =`textField -q -text Width_CS_17`;
+                int $Hightcs_CS_17 =`textField -q -text Hight_CS_17`;
+                setAttr "defaultResolution.width" $widthcs_CS_17;
+                setAttr "defaultResolution.height" $Hightcs_CS_17;
+            }
+
+            global proc custom_camset_CS_19(){
+                int $widthcs_CS_19 =`textField -q -text Width_CS_19`;
+                int $Hightcs_CS_19 =`textField -q -text Hight_CS_19`;
+                setAttr "defaultResolution.width" $widthcs_CS_19;
+                setAttr "defaultResolution.height" $Hightcs_CS_19;
+            }
+
+////////调整persp 参数 
+    global proc persp_Set(){
+        setAttr "persp.translateX" -3955.891;
+        setAttr "persp.translateY" 3585.805;
+        setAttr "persp.translateZ" -8993.259;
+        setAttr "persp.rotateX" -19.538;
+        setAttr "persp.rotateY" 563;
+        setAttr "persp.rotateZ" 0;
+    }
+
+////////// Do POSE 正方形4K 
+    //2_Do_pose_2_to_do_sth_2017_4K
+        global proc Do_pose_2_to_do_sth_2017_4K(){
+            smoothNode_auto_pro();
+            Render_Cam_4K();
+            RS_Pose_Aovs();
+            Cs_Char_IDAovs();
+            //persp_Set();
+            CreatCHAlig();
+            ISO_maya2017();
+            print("一键起飞 2017方形4K");
+            headsUpMessage -time 5 ("一键起飞 2017方形4K");
+        }
+
+    //2_Do_pose_2_to_do_sth_2019_4K
+        global proc Do_pose_2_to_do_sth_2019_4K(){
+            smoothNode_auto_pro();
+            Render_Cam_4K();
+            RS_Pose_Aovs();
+            Cs_Char_IDAovs();
+            //persp_Set();
+            CreatCHAlig();
+            ISO_maya2019();
+            print("一键起飞 2019方形4K");
+            headsUpMessage -time 5 ("一键起飞 2019方形4K");
+        }
+
+
+
+
