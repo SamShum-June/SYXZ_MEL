@@ -14,6 +14,19 @@
 
         //cha_lig_zhu
             global proc cha_lig_zhu(){
+                ls;
+                if(`objExists cha_lig_zhu`){
+                    
+        }
+
+            // select cha_lig_zhu;
+            // Delete cha_lig_zhu;
+            // cha_lig_zhu();
+            // parent cha_lig_zhu cha_lig_G ;
+            // reorder -relative -5 cha_lig_zhu ;
+
+            // headsUpMessage -time 5 ("Creat 主 光"+"\n");        
+    }
                 redshiftCreateLight "RedshiftPhysicalLight";
                 rename "rsPhysicalLight1" "cha_lig_zhu";
                 setAttr "cha_lig_zhuShape.on" 1;
