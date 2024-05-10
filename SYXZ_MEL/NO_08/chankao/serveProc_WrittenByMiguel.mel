@@ -1,0 +1,1037 @@
+//==============================================================//
+//                   MGtools - serve procedures.
+//==============================================================//
+//Author: Miguel (Wenfeng Gao) 
+//website: http://mgland.com
+//Feedback: http://mgland.com/works/mel.asp
+//E-mail: mgtools2@gmail.com 
+//CopyRight Miguel @ mgland animation studio.
+
+
+global int $MGTools_2011_orNot;
+$MGTools_2011_orNot=`MGtools_test2011orNot`;
+global float $MGTools_BGColor_gray[];
+global float $MGTools_2011DarkerBGColor[];
+if($MGTools_2011_orNot)
+{
+	$MGTools_2011DarkerBGColor={0.165,0.165,0.165};
+	$MGTools_BGColor_gray={0.267,0.267,0.267};
+}
+else
+{
+	$MGTools_BGColor_gray={0.831,0.816,0.784};
+}
+global int $testSupportPythonOrNotForMGtools;
+$testSupportPythonOrNotForMGtools =catch (`python "print \"\""`);
+$testSupportPythonOrNotForMGtools=(1-$testSupportPythonOrNotForMGtools);
+print "";
+//global float $MGTools_BGColor_gray[];
+//-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+//==================test if it is chinese system============================
+global proc int chineseSystemOrNot ()
+{
+	string $editon =`system ("ver")`;
+	if(`gmatch $editon "*�汾*"`)
+	{return 1;}
+	else
+	{return 0;}
+}
+//===================use bat system to invoke exterior exe file=====================
+global proc string MG_batSystem (string $command)
+{
+	$command=toNativePath ($command);
+	string $tempFile =`internalVar -userTmpDir`;
+	$tempFile+="MGgetFileDateSize.bat";
+	$fileId=`fopen $tempFile "w"`;
+ 	fprint $fileId $command;
+ 	fclose $fileId;		
+	return $tempFile;
+}
+//===================test 2011 or not=====================
+global proc int MGtools_getMayaVersionInt ()
+{
+		string $v=`about -v`;
+    string $temp [];clear $temp;
+    tokenizeList($v,$temp);
+    string $temp1[];clear $temp1;
+    tokenize $temp[0] "." $temp1;    
+    int $ver=$temp1[0];
+    print "";
+    return $ver;		
+} 
+global proc int MGtools_test2011orNot ()
+{ 
+    int $ver=`MGtools_getMayaVersionInt`;
+    
+    if($ver>=2011)
+     {
+         return 1;
+      }
+     else
+     {
+        return 0;     
+     }
+}
+global proc int MGtools_test2011Sp1orNot ()
+{ 
+		string $ds=`about -date`;
+		string $nums=`substring $ds 6 6`;
+    int $ver=$nums;
+    
+    if($ver>8)
+     {
+         return 1;
+      }
+     else
+     {
+        return 0;     
+     }
+}
+
+//======================================= source UI string codes================================================
+
+global proc markMGtoolsLanguageOption ()
+{
+	global int $MGtoolsLanguageChoice;
+	if(`optionVar -ex MGtoolsDualLeng`)
+	{
+		if(`optionVar -q MGtoolsDualLeng`=="ch")
+		{
+			$MGtoolsLanguageChoice =1;
+		}
+		else
+		{			
+			$MGtoolsLanguageChoice = 0;
+		}
+	}
+	else
+	{
+		if(`chineseSystemOrNot`)
+		{$MGtoolsLanguageChoice = 1;}
+		else
+		{$MGtoolsLanguageChoice = 0;}
+	}
+}
+markMGtoolsLanguageOption;
+
+global proc MG_displayString (string $ID,string $enstring, string $chstring)
+{
+	global int $testSupportPythonOrNotForMGtools;
+	if(!`displayString -ex ($ID+"_en")`)
+	{
+			displayString -v $enstring ($ID+"_en");
+	}
+	else
+	{
+		if($testSupportPythonOrNotForMGtools)
+			{
+				displayString -r -v $enstring ($ID+"_en");
+			}
+	}
+	if(!`displayString -ex ($ID+"_ch")`)
+	{
+		displayString -v $chstring ($ID+"_ch");	
+	}	
+	else
+	{
+			if($testSupportPythonOrNotForMGtools)
+			{
+				displayString -r -v $chstring ($ID+"_ch");	
+			}
+	}
+}
+
+global proc sourceAllUIStringResFile ()
+{
+	string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+	global string $GmgtoolsPath;
+	$GmgtoolsPath=($mayaScriptsPath+"MGtools/");
+	string $resFolder=($GmgtoolsPath+"invoke/Language.Res/");
+	string $melFiles []=`getFileList -fld $resFolder -filespec "*.res.mel" `;
+	for ($each in $melFiles)
+	{
+		$command=("source \""+$resFolder+$each+"\"");
+		eval $command;
+	}
+}
+sourceAllUIStringResFile;
+
+global proc string MG_DualLan (string $ID)
+{
+	global int $MGtoolsLanguageChoice;
+	if($MGtoolsLanguageChoice)
+	{
+		$ID+="_ch";
+	}
+	else
+	{
+		$ID+="_en";
+	}
+	string $result;
+	if(`displayString -ex $ID` )
+	{$result=`displayString -q -value $ID`;}
+	return $result;
+}
+global proc string MG_DualLanFormat_1 (string $ID,string $rep1)
+{
+	global int $MGtoolsLanguageChoice;
+	if($MGtoolsLanguageChoice)
+	{
+		$ID+="_ch";
+	}
+	else
+	{
+		$ID+="_en";
+	}
+	string $result;
+	if(`displayString -ex $ID` )
+	{$result=`displayString -q -value $ID`;}
+	if(size($result))
+	{
+		$array=stringToStringArray ($result ,"#");
+		$result=stringArrayToString ($array,$rep1);
+	}
+	return $result;
+}
+global proc string MG_DualLanFormat_2 (string $ID,string $rep1,string $rep2)
+{
+	global int $MGtoolsLanguageChoice;
+	if($MGtoolsLanguageChoice)
+	{
+		$ID+="_ch";
+	}
+	else
+	{
+		$ID+="_en";
+	}
+	string $result;
+	if(`displayString -ex $ID` )
+	{$result=`displayString -q -value $ID`;}
+	if(size($result))
+	{
+		$array=stringToStringArray ($result ,"#");
+		$result=($array[0]+$rep1+$array[1]+$rep2+$array[2]);
+	}
+	return $result;
+}
+global proc string MG_DualLanFormat_3 (string $ID,string $rep1,string $rep2,string $rep3)
+{
+	global int $MGtoolsLanguageChoice;
+	if($MGtoolsLanguageChoice)
+	{
+		$ID+="_ch";
+	}
+	else
+	{
+		$ID+="_en";
+	}
+	string $result;
+	if(`displayString -ex $ID` )
+	{$result=`displayString -q -value $ID`;}
+	if(size($result))
+	{
+		$array=stringToStringArray ($result ,"#");
+		$result=($array[0]+$rep1+$array[1]+$rep2+$array[2]+$rep3+$array[3]);
+	}
+	return $result;
+}
+global proc string MG_DualLanFormat_4 (string $ID,string $rep1,string $rep2,string $rep3,string $rep4)
+{
+	global int $MGtoolsLanguageChoice;
+	if($MGtoolsLanguageChoice)
+	{
+		$ID+="_ch";
+	}
+	else
+	{
+		$ID+="_en";
+	}
+	string $result;
+	if(`displayString -ex $ID` )
+	{$result=`displayString -q -value $ID`;}
+	if(size($result))
+	{
+		$array=stringToStringArray ($result ,"#");
+		$result=($array[0]+$rep1+$array[1]+$rep2+$array[2]+$rep3+$array[3]+$rep4+$array[4]);
+	}
+	return $result;
+}
+global proc string MG_DualLanFormat_5 (string $ID,string $rep1,string $rep2,string $rep3,string $rep4,string $rep5)
+{
+	global int $MGtoolsLanguageChoice;
+	if($MGtoolsLanguageChoice)
+	{
+		$ID+="_ch";
+	}
+	else
+	{
+		$ID+="_en";
+	}
+	string $result;
+	if(`displayString -ex $ID` )
+	{$result=`displayString -q -value $ID`;}
+	if(size($result))
+	{
+		$array=stringToStringArray ($result ,"#");
+		$result=($array[0]+$rep1+$array[1]+$rep2+$array[2]+$rep3+$array[3]+$rep4+$array[4]+$rep5+$array[5]);
+	}
+	return $result;
+}
+//displayString -v "test#test#test#test" test.test3;
+//MG_DualLan "MGtools.mi.config"
+//MG_DualLanFormat_3 "test.test3" " replace " " haha " " xixi "
+
+//======================================= return active view name================================================
+global proc string returnActiveViewPortName ()
+{
+	string $panel=`getPanel -withFocus`;
+	string $allViews []=`getPanel -type "modelPanel"`;
+	string $activeViewType=`getPanel -typeOf $panel`;
+			if($activeViewType=="scriptedPanel")
+			{
+			//	if($panel=="MG_ChannelBoxMultiSP")
+			//	{
+			//		string $paneChild [];
+			//		$paneChild [0] =`paneLayout -q -p1 MGCBpan`;
+			//		$paneChild [1] =`paneLayout -q -p2 MGCBpan`;
+			//		for ($eachChild in $paneChild)
+			//		{
+			//			if(`gmatch $eachChild "modelPanel*"`)
+			//			{$panel=$eachChild;}
+			//		}
+			//			if($panel=="MG_ChannelBoxMultiSP")
+			//			{
+			//				$panel=$allViews [0];
+			//		
+			//			}
+			//	}
+			//	else {
+						$panel=$allViews [0];
+			//		}
+			
+			}
+		return $panel;
+}
+ //=========================================valid string for writing file=======================================
+global proc string MGvalidStringForWritingFile (string $input)
+{
+	string $result;
+	string $eachChars [];
+	int $size=size ($input);
+	for ($i=0;$i<$size;$i++)
+	{$eachChars[$i]=`substring $input ($i+1) ($i+1)`;}	
+	for ($eqchChar in $eachChars)
+	{
+		if($eqchChar=="/"||$eqchChar=="\\"||$eqchChar=="*"||$eqchChar==":"||$eqchChar=="?"||$eqchChar=="<"||$eqchChar==">"||$eqchChar=="|")
+		{$eqchChar="_";}
+		$result+=$eqchChar;
+	}
+	return $result;
+}
+
+//===================================remember/read style codes==================================================
+
+global proc rememberStyle(string $UIName)
+{
+	int $FormerToolLayoutInfo [] = `window -q -wh  $UIName`;
+	int $FormerToolPosInfo []=`window -q  -topLeftCorner $UIName` ;
+	string $styleInfo= $FormerToolLayoutInfo [0];
+	string $styleInfo1= $FormerToolLayoutInfo [1];
+	string $styleInfo2= $FormerToolPosInfo [0];
+	string $styleInfo3= $FormerToolPosInfo [1];
+	string $styleInfo= ( $styleInfo+";"+$styleInfo1+";"+$styleInfo2+";"+$styleInfo3);
+		if($FormerToolLayoutInfo[0] !=43||$FormerToolLayoutInfo[1] !=58)
+		{writeIntoConfig ($UIName+"style_max.tmp") $styleInfo;}
+}
+
+global proc readStyle(string $UIName,string $gridLayoutName)
+{	string $infos =`readFormConfig ($UIName+"style_max.tmp")`;
+	if(!size($infos)){return;}
+	string $buffer[];
+ 	$numTokens = `tokenize $infos ";" $buffer`;
+	int $num0 =$buffer[0];
+	int $num1 =$buffer[1];
+	int $num2 =$buffer[2];
+	int $num3 =$buffer[3];
+	global int $MGTools_2011_orNot;
+	if($MGTools_2011_orNot)
+	{	
+		int $shelfItemNum=`gridLayout -q -nch $gridLayoutName`;
+		gridLayout -e -numberOfRows $shelfItemNum -nc $shelfItemNum  $gridLayoutName;
+	}
+	window -e -wh $num0  $num1  -topLeftCorner $num2 $num3  $UIName;
+}
+
+//=======================================write/read/test config codes===========================================
+global proc writeIntoConfig (string $configFileName ,string $configContent)
+{		global string $GmgtoolsPath; 
+	string $path =($GmgtoolsPath+"toolConfig/");
+	$conFigFileNameForOpen = ( $path + $configFileName);
+ 	$fileId=`fopen $conFigFileNameForOpen "w"`;
+ 	fwrite $fileId $configContent;
+ 	fclose $fileId;	
+}
+global proc string readFormConfig (string $configFileName)
+{
+	//read every line and put it into a string
+
+	global string $GmgtoolsPath;
+	string $path =($GmgtoolsPath+"toolConfig/");
+	$file = ( $path + $configFileName);
+	if(!`filetest -f $file`){return "";}
+	string $nextLine ,$getDataString;
+	$readFileID=`fopen $file "r"`;
+	while(!`feof $readFileID`)
+	{
+		$nextLine=`fgetline $readFileID`;
+		if (size($nextLine)>0)
+		{			
+			$getDataString=($getDataString+$nextLine);
+		}
+	}
+	fclose $readFileID;
+	return $getDataString;
+}
+//size(`readFormConfig "test"`);
+global proc string configExistorNot (string $configFileName)
+{
+	global string $GmgtoolsPath; 
+	string $path =($GmgtoolsPath+"toolConfig/");
+	string $pathAndFile = ($path + $configFileName);
+ 	if (`filetest -f $pathAndFile`)
+		{return "1";}
+	else {return "0";}
+
+}
+
+//====================================calc UI height/width============================
+global proc int clacHeight (int $rowNum,string $gridLayoutName)
+{
+	global int $MGTools_2011_orNot;
+	int $titleBarHeight=23;int $sideAdd=2;	
+	if($MGTools_2011_orNot){$titleBarHeight=0;	$sideAdd=0;}
+	int $newHeight;
+	//$gridLayoutName="mgConstraintGridLayout";
+	int $shelfItemNum=`gridLayout -q -numberOfChildren $gridLayoutName`;
+	//print ($shelfItemNum+"\n");
+	switch ($rowNum)
+	{
+		case 1:
+			$newHeight=($titleBarHeight+$shelfItemNum*34);		
+		break;
+		case 2:
+			float $temp=($shelfItemNum/2);
+			if ($temp*2<$shelfItemNum){$temp=($temp+1);}
+			$newHeight=($titleBarHeight+(ceil ($temp))*34);
+		break;
+		case 3:
+			//float $temp=($shelfItemNum/4);
+			
+			float $temp=sqrt($shelfItemNum);
+			if($temp-(trunc  ($temp))>=0.5){$temp=ceil ($temp);}
+			else{$temp=trunc  ($temp);}
+			//if ($temp*4<$shelfItemNum){$temp=($temp+1);}
+			$newHeight=($titleBarHeight+$temp*34);
+			//print (ceil($shelfItemNum/4));
+	
+		break;
+		case 4:
+			$newHeight=(34+$titleBarHeight);
+		break;	
+	}
+	if(!$MGTools_2011_orNot)
+	{return ($newHeight+6);	}
+	else{return $newHeight;}
+}
+global proc int clacWidth (int $rowNum,string $gridLayoutName)
+{
+	//calc width when is square style.
+	int $shelfItemNum=`gridLayout -q -numberOfChildren $gridLayoutName`;
+	global int $MGTools_2011_orNot;
+	int $edgeAdd=8;
+	if($MGTools_2011_orNot)$edgeAdd=0;
+	if($rowNum<3)
+	{
+		return (($rowNum*34)+$edgeAdd);	
+	}
+	if($rowNum==4)	
+	{
+		return (($shelfItemNum*34)+$edgeAdd);	
+	}
+	float $temp=sqrt($shelfItemNum);
+	if($temp-(trunc  ($temp))>=0.5){$temp=ceil ($temp);}
+	else{$temp=trunc  ($temp);}
+	int $tempWNum=ceil($shelfItemNum/$temp);
+	int $newW=($edgeAdd+$tempWNum*34);
+	return $newW;
+
+}
+//int $newHeight3 =`clacHeight 3 mgConstraintGridLayout`;MGStyle mgConstraintToolUI($newHeight3-23) $newHeight3 ;
+
+//window -e -h `clacHeight 3 MGtoolsMainGridLayout` mgToolUI;
+//window -e -w `clacHeight 4 MGtoolsMainGridLayout` mgToolUI;
+
+//window -e -h `clacHeight 1 pivotToolTotalGL` PivotToolUI;
+//window -e -w `clacHeight 4 pivotToolTotalGL` PivotToolUI;
+global proc MGStyle (string $UIName, int $width,int $height)
+{
+	//int $titleBar = `window -q -titleBar $UIName`;
+	//if ($titleBar==0){$height=($height-18);}
+	window -e -wh  $width  $height $UIName;
+	rememberStyle $UIName;
+}
+
+global proc int intArrayMemberCheck (int $target,int $array [])
+{
+	int $result=0;
+	for ($each in $array)
+	{
+		if ($each==$target){$result=1;}
+	}
+	return $result;
+}
+global proc MGEditNCNR (int $ncOrnr,int $rowNum,string $gridLayoutName)
+{
+	//$ncOrnr 0 :nr
+	//$ncOrnr 1 :nc
+	int $shelfItemNum=`gridLayout -q -numberOfChildren $gridLayoutName`;			
+	if(!$ncOrnr)//set up row num
+	{
+		if($rowNum==1)
+		{
+				gridLayout -e -numberOfRows $shelfItemNum $gridLayoutName;
+		}
+		else
+		{
+			if($rowNum==2)
+			{gridLayout -e -numberOfRows (ceil($shelfItemNum/2)+1) $gridLayoutName;}
+			else
+			{	
+				if($rowNum==3)
+				{gridLayout -e -numberOfRows (ceil(sqrt($shelfItemNum))) $gridLayoutName;}	
+				else
+				{
+					if($rowNum==4)
+					{gridLayout -e -numberOfRows 1 $gridLayoutName;}
+					else	{gridLayout -e -numberOfRows  $shelfItemNum $gridLayoutName;}
+				}		
+			}		
+		}		
+	}
+	else//set up column num
+	{
+		if($rowNum<3)
+		{
+				gridLayout -e -numberOfColumns $rowNum $gridLayoutName;
+		}
+		else
+		{
+			if($rowNum==3){gridLayout -e -numberOfColumns (ceil(sqrt($shelfItemNum))) $gridLayoutName;}
+			else{gridLayout -e -numberOfColumns $shelfItemNum $gridLayoutName;}			
+		}
+	}
+}
+global proc MGExcuteEmbedStyle(int $rowNum,string $UIName,string $gridLayoutName)
+{	
+	global int $MGTools_2011_orNot;	
+	if($MGTools_2011_orNot)
+	{		
+		MGEditNCNR 1 $rowNum $gridLayoutName;		
+		MGEditNCNR 0 $rowNum $gridLayoutName;		
+	}
+	window -e -w `clacWidth $rowNum $gridLayoutName` $UIName;	
+	window -e -h `clacHeight $rowNum $gridLayoutName`	$UIName;	
+	//if($MGTools_2011_orNot)
+	//{		
+		//MGEditNCNR 0 $rowNum $gridLayoutName;	
+		//MGEditNCNR 1 $rowNum $gridLayoutName;			
+	//}		
+}
+global proc int MGJudgeStyle(int $rowNum,string $UIName,string $gridLayoutName)
+{
+	// $rowNum  1-4:embed style judge
+	//  $rowNum 5:whether custom style or not.
+	if($rowNum==5)
+	{
+		for ($i=0;$i<5;$i++)
+		{
+			int $width=`clacWidth $rowNum $gridLayoutName`;
+			int $height=`clacHeight $rowNum $gridLayoutName`;
+			if (`window -q -w $UIName`==$width && `window -q -h $UIName`==$height){return 0;}			
+		}
+		return 1;
+	}
+	
+		int $width=`clacWidth $rowNum $gridLayoutName`;
+		int $height=`clacHeight $rowNum $gridLayoutName`;
+		if (`window -q -w $UIName`==$width && `window -q -h $UIName`==$height)	{return 1;}
+		else {return 0;}
+}
+global proc MGSytleMenu (string $UIName,string $gridLayoutName,string $radioButtonGrp)
+{
+		//	menuItem  
+		//		-label "Titlebar" 
+		//		-c ("titleBarToggle "+$UIName)
+		//		-checkBox  `window -q -titleBar $UIName`
+		//		-annotation "Show/Hide titlebar."; 
+		//	menuItem -d 1 ;
+			int $widths[]={`clacWidth 1 $gridLayoutName`,
+											`clacWidth 2 $gridLayoutName`,
+											`clacWidth 3 $gridLayoutName`,
+											`clacWidth 4 $gridLayoutName`};
+			int $heights[]={`clacHeight 1 $gridLayoutName`,
+											`clacHeight 2 $gridLayoutName`,
+											`clacHeight 3 $gridLayoutName`,
+											`clacHeight 4 $gridLayoutName`};											
+			menuItem 
+				-label `MG_DualLan "ServeProc.style.remember"`   
+				-c ("rememberStyle  "+$UIName)	
+				-annotation `MG_DualLan "ServeProc.style.remember.anno"` ($UIName+"_rememberStyle_MI");
+			menuItem 
+				-label `MG_DualLan "ServeProc.style.user"` 
+				-c ("readStyle "+$UIName+" "+$gridLayoutName)
+				-collection $radioButtonGrp
+				-radioButton (`MGJudgeStyle 5 $UIName $gridLayoutName`)
+				-annotation `MG_DualLan "ServeProc.style.user.anno"` ($UIName+"_userStyle_MI");
+ 			menuItem 
+				-label `MG_DualLan "ServeProc.style.layer1"` 
+				-c ("MGExcuteEmbedStyle 1 "+$UIName+" "+$gridLayoutName)
+				-collection $radioButtonGrp
+				-radioButton (`MGJudgeStyle 1 $UIName $gridLayoutName`)
+				-annotation `MG_DualLan "ServeProc.style.layer1"`  ($UIName+"_Style1_MI"); 
+
+			menuItem 
+				-label `MG_DualLan "ServeProc.style.layer2"`   
+				-c ("MGExcuteEmbedStyle 2 "+$UIName+" "+$gridLayoutName)
+				-collection $radioButtonGrp
+				-radioButton (`MGJudgeStyle 2 $UIName $gridLayoutName`)
+				-annotation `MG_DualLan "ServeProc.style.layer2"`  ($UIName+"_Style2_MI");
+		 	menuItem 
+				-label `MG_DualLan "ServeProc.style.layer3"`   
+				-c ("MGExcuteEmbedStyle 3 "+$UIName+" "+$gridLayoutName)
+				-collection $radioButtonGrp
+				-radioButton (`MGJudgeStyle 3 $UIName $gridLayoutName`)
+				-annotation `MG_DualLan "ServeProc.style.layer3"`  ($UIName+"_Style3_MI");
+		 	menuItem 
+				-label `MG_DualLan "ServeProc.style.layer4"`   
+				-c ("MGExcuteEmbedStyle 4 "+$UIName+" "+$gridLayoutName)
+				-collection $radioButtonGrp	
+				-radioButton (`MGJudgeStyle 4 $UIName $gridLayoutName`)	
+				-annotation `MG_DualLan "ServeProc.style.layer4"`  ($UIName+"_Style4_MI");
+			menuItem -d 1 ;
+
+}
+	
+//=================================================shelf Icon/command codes==============================================
+global proc string shelfCommand (string $melName,string $commandName)
+{	
+	string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+	global string $GmgtoolsPath;
+	$GmgtoolsPath=($mayaScriptsPath+"MGtools/");
+	string $path = ("source \""+$GmgtoolsPath+$melName+"\";");
+	string $command=$path;
+	if(size($commandName))
+	{	$command=$command+$commandName+";";}
+	
+	return $command;
+}
+//shelfCommand  "MGChannelBox_WrittenByMiguel.mel" "MGChannelBox";
+global proc string shelfIcon (string $iconFileName )
+{	global string $GmgtoolsPath; 
+	global int $MGTools_2011_orNot;
+	//$iconFileName="test.bmp";
+	string $path = ($GmgtoolsPath+"icon/"+ $iconFileName);
+	if($MGTools_2011_orNot)
+	{
+		string $temp=($GmgtoolsPath+"icon/2011/"+ $iconFileName);
+		if(`filetest -f $temp`)
+		{
+				$path=$temp;
+		}
+	}
+	return $path;
+}
+//================================================= Minimize /maximize codes=========================================
+global proc minimize (string $UIName,string $gridLayout,string $BtnName)
+{	
+	if(`gridLayout -q -cellHeight $gridLayout`==22)
+	{
+		return;
+	}
+	global int $MGTools_2011_orNot;
+	int $FormerToolLayoutInfo [] = `window -q -wh  $UIName`;
+	int $FormerToolPosInfo []=`window -q  -topLeftCorner $UIName` ;
+	string $styleInfo= $FormerToolLayoutInfo [0];
+	string $styleInfo1= $FormerToolLayoutInfo [1];
+	string $styleInfo2= $FormerToolPosInfo [0];
+	string $styleInfo3= $FormerToolPosInfo [1];
+	string $styleInfo= ( $styleInfo+";"+$styleInfo1+";"+$styleInfo2+";"+$styleInfo3);
+	//if($FormerToolLayoutInfo[0] !=41||$FormerToolLayoutInfo[1] !=46)
+	//{
+	writeIntoConfig ($UIName+"style_max.tmp") $styleInfo;
+	//}
+
+	int $leftCorner,$topCorner,$minWidth,$minHeight;
+	string $minInfos =`readFormConfig ($UIName+"style_min.tmp")`;
+	if(size($minInfos))
+	{
+		string $buffer[];
+	 	$numTokens = `tokenize $minInfos ";" $buffer`;
+		$topCorner =$buffer[0];
+		$leftCorner =$buffer[1];		
+		$minWidth =$buffer[2];
+		$minHeight =$buffer[3];
+	}
+	else
+	{
+		$topCorner=$FormerToolPosInfo[0];
+		$leftCorner=$FormerToolPosInfo[1];
+		
+		if(!$MGTools_2011_orNot)
+		{$minWidth=41;	$minHeight=46;}
+		else {$minWidth=31;	$minHeight=22;}
+	}	
+	global int $MGTools_2011_orNot;
+	if($MGTools_2011_orNot)
+	{
+		string $ca[];clear $ca;
+			$ca=`gridLayout -q -ca $gridLayout`;
+			for ($c=1;$c<size($ca);$c++)
+			{
+				deleteUI -control $ca[$c];
+				//shelfButton -e -vis 0 $ca[$c];
+				//print $ca[$c];
+			}
+	}		
+	string $himage, $image;
+	if($UIName=="mgToolUI")
+		{
+			$image="MGtoolMinimizedIcon.bmp";
+			$himage="MGtoolMinimizedIcon_h.bmp";
+		}
+	else if ($UIName=="mgConstraintToolUI")
+		{
+			$image="ConstraintToolMinimizedIcon.bmp";
+			$himage="ConstraintToolMinimizedIcon_h.bmp";
+		}
+		
+	else if ($UIName=="mgShelfBarUI")
+		{
+			$image="MGShelfMinimizedIcon.bmp";
+			$himage="MGShelfMinimizedIcon_h.bmp";
+		}
+	else if ($UIName=="PivotToolUI")
+		{
+			$image="pivot_tool_Minimizedicon.bmp";
+			$himage="pivot_tool_Minimizedicon_h.bmp";
+		}		
+	shelfButton  -e
+		-image  `shelfIcon $image` 
+		-highlightImage  `shelfIcon $himage` 
+		-annotation `MG_DualLan "ServeProc.maximize.restore"`
+		-command ("maximize "+$UIName+" "+$gridLayout+" "+$BtnName) $BtnName;	
+	gridLayout -e -cellWidthHeight 31 22 $gridLayout; 
+//	window -e -s 0 $UIName;
+			menuItem -e -en 0 ($UIName+"_rememberStyle_MI");
+			menuItem -e -en 0  ($UIName+"_userStyle_MI");
+ 			menuItem -e -en 0  ($UIName+"_Style1_MI"); 
+			menuItem -e -en 0  ($UIName+"_Style2_MI");
+		 	menuItem -e -en 0 ($UIName+"_Style3_MI");
+		 	menuItem -e -en 0  ($UIName+"_Style4_MI");
+	window -e  -wh $minWidth $minHeight $UIName;
+	window -e  -topLeftCorner (abs($topCorner)) (abs($leftCorner)) $UIName;
+		 	
+}
+
+global proc maximize(string $UIName,string $gridLayout,string $BtnName)
+{	
+	if(`gridLayout -q -cellHeight $gridLayout`==34)
+	{
+		return;
+	}
+	global int $MGTools_2011_orNot;
+	int $minimizedToolPosInfo []=`window -q  -topLeftCorner $UIName` ;
+	int $minimizedToolSizeInfo []=`window -q  -wh $UIName` ;
+	//	int $leftCorner,$topCorner;
+	string $minInfo1=$minimizedToolPosInfo [0];
+	string $minInfo2=$minimizedToolPosInfo [1];
+	string $minInfo3=$minimizedToolSizeInfo [0];
+	string $minInfo4=$minimizedToolSizeInfo [1];	
+	string $minInfo=($minInfo1+";"+$minInfo2+";"+$minInfo3+";"+$minInfo4);
+	writeIntoConfig ($UIName+"style_min.tmp") $minInfo;
+	string $infos =`readFormConfig ($UIName+"style_max.tmp")`;
+	string $buffer[];
+ 	$numTokens = `tokenize $infos ";" $buffer`;
+	int $num0 =$buffer[0];
+	int $num1 =$buffer[1];
+	int $num2 =$buffer[2];
+	int $num3 =$buffer[3];	
+	string $himage, $image;
+	if($UIName=="mgToolUI")
+		{
+			$image="MGtoolIcon.bmp";
+			$himage="MGtoolIcon_h.bmp";
+			if($MGTools_2011_orNot)
+			{
+				createMGtoolsContent;	
+			}
+		}
+	else if ($UIName=="mgConstraintToolUI")
+		{
+			$image="ConstraintToolIcon1.bmp";
+			$himage="ConstraintToolIcon1_h.bmp";
+			if($MGTools_2011_orNot)makeMG_constraintToolContent;
+		}
+		
+	else if ($UIName=="mgShelfBarUI")
+		{
+			$image="MGShelfIcon.bmp";
+			$himage="MGShelfIcon_h.bmp";
+		}
+	else if ($UIName=="PivotToolUI")
+		{
+			$image="pivot_tool_icon00.bmp";
+			$himage="pivot_tool_icon_h.bmp";
+				if($MGTools_2011_orNot)
+			{
+				makePivotToolContent;	
+			}		
+		}	
+	shelfButton  -e
+		-image `shelfIcon $image`
+		-highlightImage  `shelfIcon $himage` 
+		-command ("minimize "+$UIName+" "+$gridLayout+" "+$BtnName) $BtnName;
+	gridLayout -e -cellWidthHeight 34  34 $gridLayout; 
+//	window -e -s 1 $UIName;
+			menuItem -e -en 1 ($UIName+"_rememberStyle_MI");
+			menuItem -e -en 1  ($UIName+"_userStyle_MI");
+ 			menuItem -e -en 1 ($UIName+"_Style1_MI"); 
+			menuItem -e -en 1  ($UIName+"_Style2_MI");
+		 	menuItem -e -en 1 ($UIName+"_Style3_MI");
+		 	menuItem -e -en 1  ($UIName+"_Style4_MI");
+	window -e  -wh $num0  $num1 $UIName;
+	window -e -topLeftCorner (abs($num2)) (abs($num3)) $UIName;
+}
+
+//===================================================Read File codes =====================================================
+global proc string [] mgReadFileArray(string $file)
+{
+	// read every line and put it into a strig array
+	string $nextLine ,$getData[];
+	$readFileID=`fopen $file "r"`;
+	while(!`feof $readFileID`)
+	{
+		$nextLine=`fgetline $readFileID`;
+		if (size($nextLine)>0)
+		{
+			$getData[size($getData)]=$nextLine;
+		}
+	}
+	fclose $readFileID;
+	return $getData;
+}
+
+global proc string  mgReadFileString(string $file)
+{	
+	//read every line and put it into a string
+	string $nextLine ,$getDataString;
+	$readFileID=`fopen $file "r"`;
+	while(!`feof $readFileID`)
+	{
+		$nextLine=`fgetline $readFileID`;
+		if (size($nextLine)>0)
+		{			
+			$getDataString=($getDataString+$nextLine);
+		}
+	}
+	fclose $readFileID;
+	return $getDataString;
+}
+
+global proc string [] mgReadFileSepArray(string $file,string $sep)
+{	
+	//read every line and separate it with $sep,and put every part into a string array.
+	string $nextLine ,$getDataString;
+	$readFileID=`fopen $file "r"`;
+	while(!`feof $readFileID`)
+	{
+		$nextLine=`fgetline $readFileID`;
+		if (size($nextLine)>0)
+		{			
+			$getDataString=($getDataString+$nextLine);
+		}
+	}
+	string $getData[];
+ 	$numTokens = `tokenize  $getDataString $sep $getData`;
+	fclose $readFileID;
+
+	return $getData;
+}
+
+global proc string mgReadFileDosType(string $file)
+{
+	//read file via dos command "type".
+	string $getDataString;
+ 	string $regularExpr = "/";
+	//$file="C:/aw/Maya7.0/scripts/MGtools/invoke/hotkeyEditor.mel";
+	while(`gmatch $file "*/*"`==1)
+	{$file = `substitute $regularExpr $file "\\"`;}
+	$getDataString=`system ("type "+$file)`;
+	return $getDataString;
+}
+
+global proc printArray (string $array [])
+{		
+	for ($each in $array)
+	{print ($each +"\n");}
+}
+global proc testSerProc ()
+{}
+
+//=================================================help codes ========================================================
+global proc MGtoolsHelp(string $helpTopic)
+{
+	//string $helpTopic="index.htm";
+	string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+	string $GmgtoolsHelpPath=($mayaScriptsPath+"MGtools/Help");
+	global int $MGtoolsLanguageChoice;
+	//if(`optionVar -ex MGtoolsDualLeng`)
+	if($MGtoolsLanguageChoice)
+	{
+		$GmgtoolsHelpPath=($GmgtoolsHelpPath+"/CH/"+$helpTopic);
+		
+	}
+	else 
+	{
+		if($helpTopic=="index.html")
+		{
+			$GmgtoolsHelpPath=($GmgtoolsHelpPath+"/EN/"+$helpTopic);
+		}
+		else
+		{
+			string $buffer [];
+			tokenize $helpTopic "." $buffer;
+			$helpTopic=($buffer[0]+"_en."+$buffer[1]);
+			$GmgtoolsHelpPath=($GmgtoolsHelpPath+"/EN/"+$helpTopic);
+		}
+	}
+	//print $GmgtoolsHelpPath;
+	system ("load "+$GmgtoolsHelpPath);
+
+}
+global proc MGtoolsFeedback(int $mode)
+{
+	//mode 0: feedback/buy
+	//mode1: donate
+	global int $MGtoolsLanguageChoice;
+	string $GmgtoolsFeedbackPath;
+	if($MGtoolsLanguageChoice)
+	{
+		if($mode)
+		{
+			$GmgtoolsFeedbackPath="http://mgland.com/works/mgtools/donate_zh.html";
+		}
+		else
+		{
+			$GmgtoolsFeedbackPath="http://mgland.com/works/mgtools/mgtools_zh.html";
+		}
+	}
+	else 
+	{
+		if($mode)
+		{
+			$GmgtoolsFeedbackPath="http://mgland.com/works/mgtools/donate_en.html";
+		}
+		else
+		{
+			$GmgtoolsFeedbackPath="http://mgland.com/works/mgtools/mgtools_en.html";
+		}
+	}
+	showHelp -absolute $GmgtoolsFeedbackPath;
+}
+//========================================waiting panel============================================
+global proc MG_WorkingInProgress_UI (string $title,string $message,int $onOff,int $width,int $height)
+{
+	if (`window -exists MG_WorkingInProgress_UI`)
+	{deleteUI MG_WorkingInProgress_UI;}
+	if($onOff)
+	{
+		window -title $title -in $title -tlb 1 -s 0 MG_WorkingInProgress_UI;
+		string $fl=`formLayout`;
+		string $icon=`shelfIcon wip_icon.bmp`;
+		string $btn=`iconTextStaticLabel 
+			-i $icon 
+			//-w $width 
+			//-h $height 
+			-l $message
+			-st "iconAndTextHorizontal"
+			-lo 72
+			`;
+		string $text=`text -l $message`;
+		formLayout 
+			-e 
+			-af $btn "top" 0
+			-af $btn "left" 0
+			-af $btn "right" 0
+			-af $btn "bottom" 0
+			
+			-af $text "top" 0
+			-af $text "left" 0
+			-af $text "right" 0
+			-af $text "bottom" 0			
+			$fl;
+		showWindow MG_WorkingInProgress_UI;
+		//	window -q -wh MG_WorkingInProgress_UI;
+		window -e  -w $width -h $height MG_WorkingInProgress_UI;
+	}	
+}
+//updateMGtools codes=========================================================
+global proc UpdateMGtools ()
+{
+	if(catch(`python("print \'\'")`))
+	{
+		print "";
+		string $oklabel=`MG_DualLan "up.noPy.ok"`;
+		confirmDialog -title `MG_DualLan "up.noPy.title"` -message `MG_DualLan "up.noPy.mes"`
+ 		-button $oklabel
+ 		-defaultButton $oklabel
+ 		-cancelButton $oklabel
+ 		-dismissString $oklabel;
+		return;
+	}
+	python("import sys");
+	string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+	string $sourceDir=($mayaScriptsPath+"MGtools/invoke");
+	int $error =0;
+	$error=catch (`python ("if (sys.path.count ('"+$sourceDir+"') ==0):sys.path.append('"+$sourceDir+"')")`);	
+	$error=catch (`python("import updaterLoader as up")`);	
+	$error=catch (`python("up.loadMGtoolsUpdater()")`);	
+	if ($error)
+	{
+			int $ver=`MGtools_getMayaVersionInt`;
+			string $version = $ver;
+			string $tempDir = "C:/temp/MGtoolsUpdateTemp";
+			int $alreadyExist =`filetest -d "C:/temp"`;
+			
+			if(!`filetest -d $tempDir`)sysFile -md  $tempDir;
+    	string $loaderTemp=$tempDir+"/updaterLoader.py";
+			
+			string $pycTemp=($tempDir+"/MGtoolsUpdater_"+$version+".pyc");
+			if(!`filetest -f $loaderTemp`)
+			{sysFile -copy $loaderTemp ($sourceDir+"/updaterLoader.py");}
+			if(!`filetest -f $pycTemp`)
+			{sysFile -copy $pycTemp ($sourceDir+"/MGtoolsUpdater_"+$version+".pyc");}
+			catch (`python ("if (sys.path.count ('"+$sourceDir+"') !=0):sys.path.remove('"+$sourceDir+"')")`);
+			python ("if (sys.path.count ('"+$tempDir+"') ==0):sys.path.append('"+$tempDir+"')"); 
+			python("import updaterLoader as up");   
+			python("reload (up)");
+			python("up.loadMGtoolsUpdater()");
+			//sysFile -del $pycTemp;
+			//sysFile -del $loaderTemp;
+			//sysFile -del ($loaderTemp+"c");
+			//sysFile -del "C:/temp/MGtoolsUpdateTemp";
+			//if(!$alreadyExist){sysFile -del "C:/temp";}
+			print ":)";	
+	}	
+		
+}

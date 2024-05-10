@@ -1,0 +1,1076 @@
+//==============================================================//
+//                   MGtools 
+//==============================================================//
+//Author: Miguel (Wenfeng Gao) 
+//website: http://mgland.com
+//Feedback: http://mgland.com/works/mel.asp
+//E-mail: mgtools2@gmail.com 
+//CopyRight Miguel @ mgland animation studio.
+
+//==============source codes if necessary=========================
+	if(!`exists "shelfCommand"`)
+	{
+		string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+		global string $GmgtoolsPath;
+		$GmgtoolsPath=($mayaScriptsPath+"MGtools/");
+		eval ("source \""+$GmgtoolsPath+"serveProc_WrittenByMiguel.mel\"");
+	}
+	if(!`exists "MGshelf_v2"`)
+	{
+		string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+		global string $GmgtoolsPath;
+		$GmgtoolsPath=($mayaScriptsPath+"MGtools/");
+		eval ("source \""+$GmgtoolsPath+"MGshelf_WrittenByMiguel.mel\"");
+	}
+
+global proc makeFolderShortCutLeftMenuItem()
+{
+
+			menuItem  -divider true endSort;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.Folder.mi.failsave"` 
+				-c "openTemp" 
+				-annotation `MG_DualLan "MGtools.Folder.mi.failsave"`;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.Folder.mi.script"` 
+				-c "openScriptDir" 
+				-annotation `MG_DualLan "MGtools.Folder.mi.script"`;
+		 	menuItem 
+				-label  `MG_DualLan "MGtools.Folder.mi.program"` 
+				-c "openMayaInstallFolder" 
+				-annotation `MG_DualLan "MGtools.Folder.mi.program"` ;			
+			menuItem -divider true;
+		 	menuItem 
+				-label  `MG_DualLan "MGtools.Folder.mi.mgtools"` 
+				-c "openMgtoolFolder"
+				-annotation `MG_DualLan "MGtools.Folder.mi.mgtools"`;
+			menuItem -divider true;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.Folder.mi.add" ` 
+				-c `shelfCommand  "OpenDirectory_WrittenByMiguel.mel" "pickPath"`
+				-annotation `MG_DualLan "MGtools.Folder.mi.add" `;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.Folder.mi.edit"` 
+				-c `shelfCommand  "OpenDirectory_WrittenByMiguel.mel" "folderMenuEdit"`
+				-annotation `MG_DualLan "MGtools.Folder.mi.edit"` ;
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"` 
+				-c "MGtoolsHelp \"folder_shortcut.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+
+}
+
+global proc makeExterToolShortCutLeftMenuItem()
+{
+
+			menuItem  -divider true endSort;
+			menuItem 
+				-label `MG_DualLan "MGtools.File.mi.calc"` 
+				-c `shelfCommand  "ExternalTool_WrittenByMiguel.mel" "calc"` 
+				-annotation `MG_DualLan "MGtools.File.mi.calc.anno"` 
+				endCustomMI;
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.File.mi.add"` 
+				-c `shelfCommand  "ExternalTool_WrittenByMiguel.mel" "addExternal"` 
+				-annotation `MG_DualLan "MGtools.File.mi.add"`;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.File.mi.edit"`
+				-c `shelfCommand  "ExternalTool_WrittenByMiguel.mel" "toolMenuEdit ;"`
+				-annotation `MG_DualLan "MGtools.File.mi.edit"`;
+			
+		 	menuItem 
+				-label `MG_DualLan "MGtools.File.mi.removeDefault"`
+				-c `shelfCommand  "ExternalTool_WrittenByMiguel.mel" "removeDefaultExFile;"`
+				-annotation `MG_DualLan "MGtools.File.mi.removeDefault.anno"`;
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"` 
+				-c "MGtoolsHelp \"file_shortcut.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+
+}
+global proc MG_browserDBManagerPathForMGTools ()
+{
+	global string $GmgtoolsPath;
+	$libraryRoot=($GmgtoolsPath+"MGDB");
+	system("load "+("\""+$libraryRoot+"\""));
+}	
+//================================MGTools codes========================================
+global proc createMGtoolsContent ()
+{
+	//read Custom folder shortcut
+	string $customFolderShortCut;	
+	global int $MGTools_2011_orNot;
+	if(`configExistorNot openDirectory.cfg`)
+	{
+		$customFolderShortCut =`readFormConfig openDirectory.cfg`;
+		if (size($customFolderShortCut)<5)
+		{ $customFolderShortCut="//nothing";}
+	}
+	
+	else { $customFolderShortCut="//nothing";}
+	
+	//read Custom external tool shortcut
+	string $customToolShortCut;	
+	if(`configExistorNot externalToolConfig.cfg`)
+	{
+		$customToolShortCut=`readFormConfig externalToolConfig.cfg`;
+		if (size($customToolShortCut)<5)
+		{ $customToolShortCut="//nothing";}
+	}
+	
+	else { $customToolShortCut="//nothing";}
+	string $shelfHicon,$folderHicon,$fileHicon,$channelBoxHicon,$selsetHicon,$ConstraintHicon,$viewSelHicon,$snapHicon,$pivotHicon,$animationBankHicon,$MGDBHicon,$miniHicon,$keyToolHicon;
+	string $cam2dVHicon,$pathStickerHicon;
+	global int $MGtoolsLanguageChoice;
+	if($MGtoolsLanguageChoice)
+	{
+		$shelfHicon="MGshelf_Icon_h.bmp";
+		$folderHicon="FolderIcon_h.bmp";
+		$fileHicon="ExternalFileIcon_h.bmp";
+		$channelBoxHicon="ChannelBoxIcon_h.bmp";
+		$selsetHicon="selectionTool_h.bmp";
+		$ConstraintHicon="ConstraintToolIcon_h.bmp";
+		$viewSelHicon="viewSetToolIcon_h.bmp";
+		$snapHicon="footstickIcon_h.bmp";
+		$pivotHicon="pivot_tool_icon_h1.bmp";
+		$animationBankHicon="AnimationBank_Icon_h.bmp";
+		$miniHicon="miniToolBoxIcon_h.bmp";	
+		$MGDBHicon="MGdbManager_icon_h.bmp";
+		$keyToolHicon="keyframeTool_icon_h.bmp";
+		$cam2dVHicon="cam2dViewer_Icon_h.bmp";
+		$pathStickerHicon="pathTracker_Icon_h.bmp";
+	}
+	else
+	{
+		$shelfHicon="MGshelf_Icon_h_en.bmp";
+		$folderHicon="FolderIcon_h_en.bmp";
+		$fileHicon="ExternalFileIcon_h_en.bmp";
+		$channelBoxHicon="ChannelBoxIcon_h_en.bmp";
+		$selsetHicon="selectionTool_h_en.bmp";
+		$ConstraintHicon="ConstraintToolIcon_h_en.bmp";
+		$viewSelHicon="viewSetToolIcon_h_en.bmp";
+		$snapHicon="footstickIcon_h_en.bmp";
+		$pivotHicon="pivot_tool_icon_h1_en.bmp";
+		$animationBankHicon="AnimationBank_Icon_h_en.bmp";
+		$miniHicon="miniToolBoxIcon_h_en.bmp";	
+		$MGDBHicon="MGdbManager_icon_h_en.bmp";
+		$keyToolHicon="keyframeTool_icon_h_en.bmp";
+		$cam2dVHicon="cam2dViewer_Icon_h_en.bmp";
+		$pathStickerHicon="pathTracker_Icon_h_en.bmp";
+	}
+	setParent MGtoolsMainGridLayout;
+	global float $MGTools_BGColor_gray[];
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-image `shelfIcon MGshelf_Icon.bmp` 
+		-highlightImage  `shelfIcon $shelfHicon`
+		-annotation `MG_DualLan "MGtools.MGshelf.anno"`  
+		-command "MGshelf_v2" 
+		MGshelf_Button;
+		popupMenu 
+			-pmc "reFreshMGtoolsPOPShelfMenu" -pmo 1
+			MGshelfPopUpMenuForMGtools;
+		setParent MGtoolsMainGridLayout;
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon FolderIcon.bmp` 
+		-highlightImage  `shelfIcon $folderHicon` 
+		-annotation `MG_DualLan "MGtools.Folder.anno"`  
+		-doubleClickCommand "openProject 1"
+		-command "openProject 0" Folder_MGtoolsButton;
+		popupMenu folderPM; 
+		 	eval $customFolderShortCut; 
+			makeFolderShortCutLeftMenuItem;
+		//======================find default external file====================
+		string $defaultCMD;	
+		string $defaultANNO;
+		if(`optionVar -ex "defaultMGExeCMD"`)
+			{
+				$defaultCMD=`optionVar -q  "defaultMGExeCMD"`;
+				$defaultANNO=`optionVar -q  "defaultMGExeAnno"`;
+			}
+		else{
+				$defaultCMD= `shelfCommand  "ExternalTool_WrittenByMiguel.mel" "addExternal"`;
+				$defaultANNO=`MG_DualLan "MGtools.File.mi.noDefault.anno"`;
+			}
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon ExternalFileIcon.bmp` 
+		-highlightImage  `shelfIcon $fileHicon` 
+		-annotation $defaultANNO  
+		-command $defaultCMD ExternalTool_MGtoolsButton;
+		popupMenu externalToolPUPM; 
+			eval $customToolShortCut;
+		makeExterToolShortCutLeftMenuItem;
+ 
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon ChannelBoxIcon.bmp` 
+		-highlightImage  `shelfIcon $channelBoxHicon` 
+		-annotation `MG_DualLan "MGtools.channelBox.anno"`
+		-command `shelfCommand  "MGChannelBox_WrittenByMiguel.mel" "MGChannelBox"`
+		MGChannalBox_MGtoolsBtn;
+		popupMenu -mm 1; 
+			menuItem -rp "W"
+				-l `MG_DualLan "MGtools.channelBox.mi.hideshowLayer"` 
+				 -c "int $i;setLayerTo all\".visibility\" $i;$i=1-$i"
+				-annotation `MG_DualLan "MGtools.channelBox.mi.hideshowLayer"`; 
+			menuItem -rp "N"
+				-label `MG_DualLan "MGtools.channelBox.mi.resetC"`  
+				-c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetChannel 0"`
+				-annotation `MG_DualLan "MGtools.channelBox.mi.resetC.anno"` ;
+
+			menuItem -rp "E"
+				-label `MG_DualLan "MGtools.channelBox.mi.putInNewLayer"`
+				-c "createLayerAndHide"
+				-annotation `MG_DualLan "MGtools.channelBox.mi.putInNewLayer"`;
+			if($MGTools_2011_orNot)	
+			{
+				menuItem -rp "S" -l `MG_DualLan "MGtools.channelBox.mi.LE"` 
+							-c "ToggleChannelsLayers";
+			}
+			else
+			{						
+					menuItem -rp "S" -l `MG_DualLan "MGtools.channelBox.mi.LE"` 
+					-c "if(`optionVar -q leInMainWindow`){	optionVar -iv leInMainWindow false;}DisplayLayerEditorWindow;";
+			}
+
+			menuItem -l `MG_DualLan "MGtools.channelBox.mi.setProject"`  -c "SetProject";
+			menuItem -l `MG_DualLan "MGtools.channelBox.mi.newProject"`  -c "NewProject";
+			menuItem -divider 1;
+			menuItem -l `MG_DualLan "MGtools.channelBox.mi.toggleGEPlug"` 
+				-c `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "installGEPlugIN"`
+				-annotation `MG_DualLan "MGtools.channelBox.mi.toggleGEPlug.anno"`;
+			menuItem 
+				-checkBox `optionVar -q "MG_Geplugin_autoloadOrNot"`
+				-l `MG_DualLan "GEplug.autoload.mi"` 
+				-c `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "SetGEPlugINautoloadConfig"`
+				-annotation `MG_DualLan "GEplug.autoload.ann"`;	
+			menuItem -divider 1;
+			menuItem -l `MG_DualLan "MGtools.channelBox.mi.option"` -annotation `MG_DualLan "MGtools.channelBox.mi.option"` 
+				-c `shelfCommand  "MGChannelBox_WrittenByMiguel.mel" "MGchannelBoxOptionBox"`;
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`  
+				-c "MGtoolsHelp \"mg_channelbox.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"` ;
+			
+ 	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon selectionTool.bmp` 
+		-highlightImage  `shelfIcon $selsetHicon`
+		-annotation `MG_DualLan "MGtools.selection.anno"`  
+		-command `shelfCommand  "selectionTool_WrittenByMiguel.mel" "selSetUI"` selectionTool_MGtoolsButton ;
+		popupMenu -mm 1; 
+			menuItem -rp "S"
+				-label `MG_DualLan "MGtools.selection.mi.sManager"` 
+				-c `shelfCommand  "selectionTool_WrittenByMiguel.mel" "selectionTool;"`
+				-annotation `MG_DualLan "MGtools.selection.mi.sManager"`; 
+			menuItem -rp "E"
+				-label `MG_DualLan "MGtools.selection.mi.newSelSet"`
+				-c `shelfCommand  "selectionTool_WrittenByMiguel.mel" "NewOrEditSetUI 1 \"\";"`
+				-annotation `MG_DualLan "MGtools.selection.mi.newSelSet"`; 
+			menuItem -rp "N"
+				-label `MG_DualLan "MGtools.selection.mi.retarget"`
+				-c `shelfCommand  "selectionTool_WrittenByMiguel.mel" "retargetSetUI 0"`
+				-annotation `MG_DualLan "MGtools.selection.mi.retarget.anno"`; 
+			//menuItem -divider 1;
+			menuItem -rp "SW"
+				-label `MG_DualLan "MGtools.selection.mi.backUP"` 
+				-c `shelfCommand  "selectionTool_WrittenByMiguel.mel" "SM_BackUpSel 0"` 
+				-annotation `MG_DualLan "MGtools.selection.mi.backUP.anno"`;
+		 	menuItem -rp "W"
+				-label `MG_DualLan "MGtools.selection.mi.Restore"` 
+				-c `shelfCommand  "selectionTool_WrittenByMiguel.mel" "restoreBackUpedUI"`
+				-annotation `MG_DualLan "MGtools.selection.mi.Restore.anno"`;
+		 	menuItem -rp "NW"
+				-label `MG_DualLan "tpeSelector.title"` 
+				-c `shelfCommand  "typeSelector_WrittenByMiguel.mel" "MG_typeSelector_Option"`
+				-annotation `MG_DualLan "tpeSelector.anno"`;	
+			menuItem -l `MG_DualLan "selSet.updateMM.mi"` -command "convertSelSetToMarkingMenu";			
+			 menuItem 
+			 	-label `MG_DualLan "MGtools.selection.mi.assign"` 
+			 	-c `shelfCommand  "selectionTool_WrittenByMiguel.mel" "AssignMGselsetMM_Hotkey"`
+			 	-annotation `MG_DualLan "MGtools.selection.mi.assign.anno"`; 			
+		 	menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"` 
+				-c "MGtoolsHelp \"mg_selectionset.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+ 	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon ConstraintToolIcon.bmp` 
+		-highlightImage  `shelfIcon $ConstraintHicon` 
+		-annotation `MG_DualLan "MGtools.constraint.anno"`  
+		-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_constraintTool"` constraintToolsSButton ;
+
+		popupMenu -mm 1; 
+		 	menuItem -rp "E"
+				-label  `MG_DualLan "MGtools.constraint.mi.pconParent"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 2"`
+				-annotation  `MG_DualLan "MGtools.constraint.mi.pconParent.anno"` ;
+	
+		 	menuItem -rp "SW" -l `MG_DualLan "ConsTool.selMaster"` 
+					-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "returnListedNodeMaster 0"`	 
+					-annotation  `MG_DualLan "ConsTool.selMaster.anno"` ;
+			
+			menuItem -rp "SE" -l `MG_DualLan "ConsTool.selSlave"` 
+					-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "returnListedNodeMaster 2"`	 
+					-annotation  `MG_DualLan "ConsTool.selSlave.anno"` ;
+		//	menuItem -divider 1;
+
+			//menuItem -d 1;
+			menuItem -rp "N"
+				-label  `MG_DualLan "MGtools.constraint.mi.findJoint"` 
+				-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "findJointViaVertex"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.findJoint.anno"`;
+			menuItem -rp "S"
+				-label  `MG_DualLan "MGtools.constraint.mi.conLister"` 
+				-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_constraintLister"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.conLister"`;  
+	 		
+			menuItem -rp "W"
+				-l `MG_DualLan "MGtools.constraint.mi.pcons"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 1"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.pcons"`;
+			menuItem -l `MG_DualLan "AddCtl.prompt.title"`  -c `shelfCommand  "AddCtrl_WrittenByMiguel.mel" "MG_insertCtrlHierarchy"` -ann `MG_DualLan "AddCtl.anno"`;
+			menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "ConsTool.setRelativeOffset.mi"`   
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "setConstraintRelativePosition"`
+				-annotation `MG_DualLan "ConsTool.setRelativeOffset.anno"`;		
+			menuItem 
+				-label `MG_DualLan "ConsTool.makeRelativeOffsetCtl.mi"`   
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_makeConstraintedObjCtl"`
+				-annotation `MG_DualLan "ConsTool.makeRelativeOffsetCtl.anno"`;						
+			menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "ConsTool.uv.mi"`   
+				-c `shelfCommand  "UVconstraint_WrittenByMiguel.mel" "MG_UVconstraint"`
+				-annotation `MG_DualLan "ConsTool.uv.mi.anno"`;
+			menuItem -d 1;				
+			menuItem 
+				-label `MG_DualLan "ConsTool.vc.mi"`   
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "vertexConstrainter"`
+				-annotation `MG_DualLan "ConsTool.vc.mi.anno"`;
+			menuItem 
+				-label `MG_DualLan "ConsTool.vc.clear.mi"`   
+				-c "clearSelectedVertexConstrainter"
+				-annotation `MG_DualLan "ConsTool.vc.clear.ann"`;
+			menuItem -divider 1;
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.anim"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "animConstraint 0"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.anim.anno"`;	
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.point"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 3"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.point"`;
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.orient"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 5"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.orient"`;
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.aim"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 7"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.aim"`;	
+			
+			menuItem 
+				-l `MG_DualLan "MGtools.constraint.mi.clear"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "clearConstraintMenuCommand"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.clear"`;
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.constraint.mi.consAxis"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "ModifyConstraintAxisOptions"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.consAxis"`;
+ 			menuItem 
+				-label `MG_DualLan "MGtools.constraint.mi.weightName"`
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "CorrectConsWeightNameMenuItemCommand"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.weightName"`;
+			
+			menuItem -divider 1;
+			menuItem -l `MG_DualLan "MGtools.constraint.mi.export"`
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "exportConstraintOffsetForLister 0"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.export.anno"`;		
+			menuItem 
+					-label `MG_DualLan "MGtools.constraint.mi.import"`
+					-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "importConstraintOffsetUI"`
+					-annotation `MG_DualLan "MGtools.constraint.mi.import.anno"`;		
+			menuItem -l `MG_DualLan "MGtools.constraint.mi.clearOffset"` 
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "clearConstraintOffsetFileForLister 0"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.clearOffset.anno"` ;		
+
+			menuItem -divider 1;
+ 			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`  
+				-c "MGtoolsHelp \"constraint_tool.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon viewSetToolIcon.bmp` 
+		-highlightImage  `shelfIcon $viewSelHicon` 
+		-annotation `MG_DualLan "MGtools.viewSwitch.anno"`
+		-command `shelfCommand  "viewSetTool_writtenByMiguel.mel" "readViewSwitchConfigFile 0 \"CurrentViewSwitch.set\""` 
+		viewSet_MGtoolsBtn;
+		popupMenu -mm 1 -aob 1; 
+ 			menuItem -rp "N"
+				-label `MG_DualLan "MGtools.viewSwitch.mi.editV"`
+				-c `shelfCommand  "viewSetTool_writtenByMiguel.mel" "editViewSwitchConfig"`
+				-annotation `MG_DualLan "MGtools.viewSwitch.mi.editV"`; 
+			
+ 			menuItem -rp "E"
+				-label `MG_DualLan "camSwitch.switchCam.mi"`
+				-c `shelfCommand  "cameraSwitch_WrittenByMiguel.mel" "MG_camSwitch"`
+				-annotation `MG_DualLan "camSwitch.switchCam.mi.anno"`; 
+ 			menuItem  -ob 1
+				-c `shelfCommand  "cameraSwitch_WrittenByMiguel.mel" "MG_camSwitch_option"`
+				-annotation `MG_DualLan "camSwitch.switchCam.option.title"`; 
+ 			menuItem -rp "NW"
+				-label `MG_DualLan "keyframeTool.switchAttr.mi"`
+				-c `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "AttrSwitch_withOut_popping"`
+				-annotation `MG_DualLan "keyframeTool.switchAttr.ann"`; 			
+ 		//	menuItem -rp "NW"
+		//		-label "Texture on selection ->" 
+		//		-c `shelfCommand  "displaySetTool_WrittenByMiguel.mel" "toggleTextureDisplayOnSelection"`
+		//		-annotation "Click to display texture on selection only"; 	
+ 		//	menuItem -rp "NE"
+		//		-label "-> Back to normal" 
+		//		-c `shelfCommand  "displaySetTool_WrittenByMiguel.mel" "backToTextureDisplayNomal"`
+		//		-annotation "Click to reset display texture to normal"; 				
+			//menuItem -divider 1;
+ 			menuItem -rp "S"
+				-label `MG_DualLan "MGtools.viewSwitch.mi.disTool"` 
+				-c `shelfCommand  "displaySetTool_WrittenByMiguel.mel" "displaySetTool"`
+				-annotation `MG_DualLan "MGtools.viewSwitch.mi.disTool"` ; 
+ 			menuItem //-rp "NW"
+				-label `MG_DualLan "MGtools.viewSwitch.mi.newdisSet"` 
+				-c `shelfCommand  "displaySetTool_WrittenByMiguel.mel" "newDisplaySetFromSel"`
+				-annotation `MG_DualLan "MGtools.viewSwitch.mi.newdisSet"`; 			
+ 			menuItem //-rp "W"
+				-label `MG_DualLan "MGtools.viewSwitch.mi.evalAllDis"` 
+				-c `shelfCommand  "displaySetTool_WrittenByMiguel.mel" "evalDisplaySet 1"`
+				-annotation `MG_DualLan "MGtools.viewSwitch.mi.evalAllDis.anno"` ; 
+ 			menuItem -rp "W"
+				-label `MG_DualLan "smoothSwitch.title"` 
+				-c `shelfCommand  "smoothSwitch_WrittenByMiguel.mel" "MG_smoothSwitch_Option"`
+				-annotation `MG_DualLan "smoothSwitch.anno"` ; 			
+			//menuItem -divider 1;
+			menuItem 
+				-l  `MG_DualLan "MGtools.channelBox.mi.hideshowLayer"` 
+				 -c "int $i;setLayerTo all\".visibility\" $i;$i=1-$i"
+				-annotation `MG_DualLan "MGtools.channelBox.mi.hideshowLayer"`; 
+			menuItem 
+				-label `MG_DualLan "MGtools.channelBox.mi.putInNewLayer"` 
+				-c "createLayerAndHide"
+				-annotation `MG_DualLan "MGtools.channelBox.mi.putInNewLayer"`;
+			menuItem  -l `MG_DualLan "MGtools.channelBox.mi.LE"`
+				-c "if(`optionVar -q leInMainWindow`){	optionVar -iv leInMainWindow false;}DisplayLayerEditorWindow;";
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`   
+				-c "MGtoolsHelp \"viewset.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+				
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon pathTracker_Icon.bmp` 
+		-highlightImage  `shelfIcon $pathStickerHicon` 
+		//-annotation `MG_DualLan "MGdbManager.ann"`  
+		-command `shelfCommand  "pathTracker_WrittenByMiguel.mel" "MG_pathTracker"`
+		;
+		popupMenu;// -mm 1; 
+		 	menuItem //-rp "W"
+				-label `MG_DualLan "MGtools.miniToolBox.mi.drawKey"` 
+				-c `shelfCommand  "motionPathSticker_WrittenByMiguel.mel" "drawCurveViaKey"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.drawKey.anno"`;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.MPSticker"`  
+				-c `shelfCommand  "motionPathSticker_WrittenByMiguel.mel" "motionPathSticker"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.MPSticker.anno"`;	
+		menuItem -d 1;
+		menuItem -label `MG_DualLan "miniToolB.draw.hp"`
+			-c "MGtoolsHelp \"draw_curve_via_key.htm\""
+			-annotation `MG_DualLan "miniToolB.draw.hp"`; 
+		
+		menuItem -label `MG_DualLan "miniToolB.motionC.hp"`
+			-c "MGtoolsHelp \"motionpath.htm\""
+			-annotation `MG_DualLan "miniToolB.motionC.hp"`;
+		menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`   
+				-c "MGtoolsHelp \"viewset.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;						
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon cam2dViewer_Icon.bmp` 
+		-highlightImage  `shelfIcon $cam2dVHicon` 
+		-annotation `MG_DualLan "cam2dViewer.ann"`
+		-command `shelfCommand  "cam2dViewer_WrittenByMiguel.mel" "MG_cam2dViewer 1"` 
+		;	
+			popupMenu -mm 1;	
+			menuItem -rp "E"
+				-label `MG_DualLan "cam2dViewer.reset.mi"`   
+				-c `shelfCommand  "cam2dViewer_WrittenByMiguel.mel" "MG_cam2dViewer_resetAllTouchedCam"` 
+				-annotation `MG_DualLan "cam2dViewer.reset.ann"`;
+				
+			menuItem -rp "W"
+				-label `MG_DualLan "cam2dViewer.op.mi"`   
+				-c `shelfCommand  "cam2dViewer_WrittenByMiguel.mel" "MG_cam2dViewer_option"` 
+				-annotation `MG_DualLan "cam2dViewer.op.ann"`;								
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`   
+				-c "MGtoolsHelp \"viewset.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+				
+			
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon footstickIcon.bmp` 
+		-highlightImage  `shelfIcon $snapHicon` 
+		-annotation `MG_DualLan "MGtools.snap.anno"`  
+		-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 1"` footSticker_MGtoolsButton ;
+		popupMenu -mm 1;
+ 			menuItem -rp "NE"
+				-label `MG_DualLan "MGtools.snap.mi.pointSnapF"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 2"`
+				-annotation "Click it to make your feet sticky in translation only ,once clicking it ,you can press \"G\" to redo to keep sticking forward.";  
+			menuItem -rp "N"
+				-label `MG_DualLan "MGtools.snap.mi.Marker"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "makeMultiplySnapLoc 0"`
+				-annotation `MG_DualLan "MGtools.snap.mi.Marker.anno"` ; 
+			//menuItem -d 1;
+ 			menuItem -rp "NW"
+				-label `MG_DualLan "MGtools.snap.mi.poSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 4"`
+				-annotation `MG_DualLan "MGtools.snap.mi.poSnapB"`;  
+ 			menuItem -rp "SE"
+				-label `MG_DualLan "MGtools.snap.mi.rSnapF"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 1"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rSnapF"`;  
+ 			menuItem -rp "SW"
+				-label `MG_DualLan "MGtools.snap.mi.rSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 4"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rSnapB"`;  			
+
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.pointSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 5"`
+				-annotation `MG_DualLan "MGtools.snap.mi.pointSnapB"`;  
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.orientSnapF"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 3"`
+				-annotation `MG_DualLan "MGtools.snap.mi.orientSnapF"` ; 
+				menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.orientSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 6"`
+				-annotation `MG_DualLan "MGtools.snap.mi.orientSnapB"`; 
+			menuItem -d 1;
+			menuItem -rp "W"
+				-label `MG_DualLan "MGtools.snap.mi.POsnap"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "POSnap 1"`
+				-annotation `MG_DualLan "MGtools.snap.mi.POsnap"`;
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.PointSnap"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "POSnap 2"`
+				-annotation `MG_DualLan "MGtools.snap.mi.PointSnap"`; 
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.OrientSnap"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "POSnap 3"`
+				-annotation `MG_DualLan "MGtools.snap.mi.OrientSnap"` ;
+			menuItem -d 1;
+ 			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.rpointSnapF"` 
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 2"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rpointSnapF"`;  			
+ 			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.rpointSnapB"` 
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 5"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rpointSnapB"` ;  			
+			menuItem -d 1;
+			menuItem -rp "E"
+				-label `MG_DualLan "MGtools.snap.mi.clearSLoc"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "deleteAllSnaploc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.clearSLoc"`;
+			menuItem -rp "S"
+				-label `MG_DualLan "MGtools.snap.mi.markerM"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "listSnapLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.markerM"`;  
+		//	menuItem -divider 1;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.backUPAnim"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "backUpAnimationLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.backUPAnim.anno"`;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.RestoreAnim"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "restoreAnimationFromLoc"` 
+				-annotation `MG_DualLan "MGtools.snap.mi.RestoreAnim.anno"`;
+			menuItem -divider 1;			
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"` 
+				-c "MGtoolsHelp \"posnap.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+			
+ 	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon pivot_tool_icon.bmp` 
+		-highlightImage  `shelfIcon $pivotHicon` 
+		-annotation `MG_DualLan "MGtools.pivot.anno"` 
+		-command `shelfCommand  "PivotTool_WrittenByMiguel.mel" "PivotTool"`agTools_MGtoolsButton ;
+		popupMenu -mm 1;
+			menuItem -rp "N"
+				-label `MG_DualLan "MGtools.pivot.mi.create"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "createPivotStuff"` 
+				-annotation `MG_DualLan "MGtools.pivot.mi.create"`;
+			
+			menuItem -rp "SW"
+				-label `MG_DualLan "PivotTool.copypivot.mi"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "copyPivotThroughtMaya 0"` 
+				-annotation `MG_DualLan "PivotTool.copypivot.mi.anno"`;
+			menuItem -rp "SE"
+				-label `MG_DualLan "PivotTool.pastepivot.mi"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "copyPivotThroughtMaya 1"` 
+				-annotation `MG_DualLan "PivotTool.pastepivot.mi.anno"`;
+			
+			menuItem 
+				-label `MG_DualLan "MGtools.pivot.mi.delete"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "deletePivotStuff"` 
+				-annotation `MG_DualLan "MGtools.pivot.mi.delete"`;			
+			//menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.pivot.mi.bind"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "pivotStuffBindToSelection"` 
+				-annotation `MG_DualLan "MGtools.pivot.mi.bind.anno"`;
+			menuItem -d 1;
+			menuItem  -rp "S"
+				-label `MG_DualLan "MGtools.pivot.mi.pstuffLister"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "ListPivotStuff"`
+				-annotation `MG_DualLan "MGtools.pivot.mi.pstuffLister"`;	
+			//menuItem -d 1;			
+ 			menuItem -rp "E"
+				-label `MG_DualLan "MGtools.pivot.mi.snapMov"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "snapMGPivotNew 1 "` 
+				-annotation `MG_DualLan "MGtools.pivot.mi.snapMov.anno"`;				
+ 			menuItem 
+				-label `MG_DualLan "MGtools.pivot.mi.snapB"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "snapMGPivotNew 2 "` 
+				-annotation `MG_DualLan "MGtools.pivot.mi.snapB.anno"`;
+			menuItem  
+				-label `MG_DualLan "MGtools.pivot.mi.snapSel"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "snapMGpivotToSelection 1"`
+				-annotation `MG_DualLan "MGtools.pivot.mi.snapSel.anno"`;
+			menuItem  
+				-label `MG_DualLan "MGtools.pivot.mi.BacksnapSel"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "snapMGpivotToSelection 2"`
+				-annotation `MG_DualLan "MGtools.pivot.mi.BacksnapSel.anno"`;
+
+			menuItem -d 1;
+ 			menuItem -rp "W"
+				-label `MG_DualLan "MGtools.pivot.mi.selectAll"`  
+				-c 	`shelfCommand  "PivotTool_WrittenByMiguel.mel" "selectPivotStuff 1"` 
+				-annotation `MG_DualLan "MGtools.pivot.mi.selectAll.anno"`;	
+			menuItem  
+				-label `MG_DualLan "MGtools.pivot.mi.SelectPivotRoll"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "selectPivotStuff 2"`
+				-annotation `MG_DualLan "MGtools.pivot.mi.SelectPivotRoll.anno"`; 
+			menuItem  
+				-label `MG_DualLan "MGtools.pivot.mi.SelectPivotMov"`
+				-c `shelfCommand  "PivotTool_WrittenByMiguel.mel" "selectPivotStuff 3"`
+				-annotation `MG_DualLan "MGtools.pivot.mi.SelectPivotMov"`; 
+			menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`  
+				-c "MGtoolsHelp  \"pivottool.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+			
+ 	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon AnimationBank_Icon.bmp` 
+		-highlightImage  `shelfIcon $animationBankHicon` 
+		-annotation `MG_DualLan "MGtools.animLib.anno"`  
+		-command `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_ExportImportAnimation 3"`
+		animationBank_MGtoolsButton ;
+		popupMenu -mm 1; 
+		
+			menuItem -rp "W"  -label  `MG_DualLan "MGtools.animLib.mi.clearImport"`
+				-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_improtANimationRemoveOldImportedAnimData"` 
+					-annotation `MG_DualLan "MGtools.animLib.mi.clearImport.anno"`;
+			
+			menuItem -rp "E"  -label  `MG_DualLan "MGtools.animLib.mi.import"`
+				-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_ExportImportAnimation 2"` 
+					-annotation `MG_DualLan "MGtools.animLib.mi.import"`;	
+		 	menuItem -rp "N"
+				-label `MG_DualLan "MGtools.snap.mi.backUPAnim"`
+				-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "backUpAnimationLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.backUPAnim.anno"`;
+		 	menuItem -rp "S"
+				-label `MG_DualLan "MGtools.snap.mi.RestoreAnim"`
+				-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "restoreAnimationFromLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.RestoreAnim.anno"`;
+			
+		menuItem  -rp "NW" -l `MG_DualLan "MGtools.animLib.mi.copyV"` 
+			-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_copyValueBetweenMayas 0"`
+			-annotation `MG_DualLan "MGtools.animLib.mi.copyV.anno"`;
+		menuItem  -rp "NE" -l  `MG_DualLan "MGtools.animLib.mi.pasteV"` 
+			-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_PasteValueBetweenMayas 0"`
+			-annotation `MG_DualLan "MGtools.animLib.mi.pasteV"`;		
+		menuItem  -rp "SW" -l `MG_DualLan "MGtools.animLib.mi.clearBackuped"`
+			-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "clearBackUpedAnimData"`
+			-annotation `MG_DualLan "MGtools.animLib.mi.clearBackuped.anno"`;
+		
+		menuItem -rp "SE" -l `MG_DualLan "MGtools.animLib.mi.browseLib"` 
+			-c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_browserLibraryPath"`
+			-annotation `MG_DualLan "MGtools.animLib.mi.browseLib.anno"`;
+		
+		menuItem 
+				-label `MG_DualLan "MGtools.animLib.mi.markAnim"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "makeMultiplySnapLoc 0"` 
+				-annotation `MG_DualLan "MGtools.snap.mi.Marker.anno"`;
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.markerM"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "listSnapLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.markerM"`;	
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`  
+				-c "MGtoolsHelp \"mganimationlib.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+				
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon keyframeTool_icon.bmp` 
+		-highlightImage  `shelfIcon $keyToolHicon` 
+		-annotation `MG_DualLan "keyframeTool.ann"`  
+		-command `shelfCommand  "KeyFrameTool_WrittenByMiguel.mel" "MGKeyframeTool"`
+				;
+		popupMenu -mm 1; 
+			menuItem -rp "S" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.mi"` 
+				-c `shelfCommand  "copyPasteAnimPose_WrittenByMiguel.mel" "MGCopyPasteAnimationPro"`
+				-annotation `MG_DualLan "keyframeTool.copyPasteAnimPose.ann"`;
+			menuItem -rp "W" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.copyAnim"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGCopyAnimationBetweenMaya 0"`;
+			menuItem -rp "SW" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.copyPose"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGCopyAnimationBetweenMaya 1"`;
+			menuItem -rp "NW" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.copyAnimPose"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGCopyAnimationBetweenMaya 2"`;
+			menuItem -rp "E" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.paste"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGPasteAnimationBetweenMaya 0"`;
+			menuItem -rp "SE" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.pasteTemp"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGPasteAnimationBetweenMaya 1"`;
+			menuItem -rp "NE" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.pasteCFrame"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGPasteAnimationBetweenMaya 2"`;
+			menuItem -rp "N" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.pasteInRange"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGPasteAnimationBetweenMaya 3"`;
+			menuItem //-rp "S" 
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.clipBoard"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGcopyPasteAnimClipboard 1"`;	
+			menuItem  
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.selClipBoard"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGSelectedClipboardObjs"`;	
+			menuItem  
+				-l `MG_DualLan "keyframeTool.copyPasteAnimPose.checkSel"`
+				-c `shelfCommand "copyPasteAnimPose_WrittenByMiguel.mel" "MGclipboard_checkSelection"`;
+			menuItem -d 1;	
+			menuItem 
+				-l `MG_DualLan "MGtools.channelBox.mi.toggleGEPlug"` 
+				-c `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "installGEPlugIN"`
+				-annotation `MG_DualLan "MGtools.channelBox.mi.toggleGEPlug.anno"`;	
+			menuItem 
+				-checkBox `optionVar -q "MG_Geplugin_autoloadOrNot"`
+				-l `MG_DualLan "GEplug.autoload.mi"` 
+				-c `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "SetGEPlugINautoloadConfig"`
+				-annotation `MG_DualLan "GEplug.autoload.ann"`;							
+			menuItem -d 1;
+			menuItem -label `MG_DualLan "relocator.mi"`
+				-c  `shelfCommand  "ReLocator_WrittenByMiguel.mel" "MG_ReLocator"`
+				-annotation `MG_DualLan "relocator.anno"`;
+			menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "keyScanner.UITitle"`
+				-c `shelfCommand  "keyframeProbe_WrittenByMiguel.mel" "keyframeProbe"` 
+				-annotation `MG_DualLan "keyScanner.anno"`;	
+			menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "keyframeTool.snapKeyframe.title"`
+				-c `shelfCommand  "KeyFrameTool_WrittenByMiguel.mel" "MG_snapKeyframe 0"` 
+				-annotation `MG_DualLan "keyframeTool.snapKeyframe.ann"`;
+			menuItem -l `MG_DualLan  "keyframeTool.snapKeyframe.snapGESel"`	-c `shelfCommand  "KeyFrameTool_WrittenByMiguel.mel" "MG_snapKeyframe 1"`;
+			menuItem -l `MG_DualLan  "keyframeTool.snapKeyframe.snapSeltimeRange"`	-c `shelfCommand  "KeyFrameTool_WrittenByMiguel.mel" "MG_snapKeyframe 2"`;
+			menuItem -l `MG_DualLan  "keyframeTool.snapKeyframe.snaptimeRange"`	-c `shelfCommand  "KeyFrameTool_WrittenByMiguel.mel" "MG_snapKeyframe 3"`;
+			menuItem -l `MG_DualLan  "keyframeTool.snapKeyframe.snapall"`	-c `shelfCommand  "KeyFrameTool_WrittenByMiguel.mel" "MG_snapKeyframe 4"`;
+			menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "keyframeTool.scaleKeyframe.title"`
+				-c `shelfCommand "keyframeScaleTool_WrittenByMiguel.mel" "MG_animScaler"`
+				-annotation `MG_DualLan "keyframeTool.scaleKeyframe.ann"`;				
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "keyframeTool.correctOvershoot.mi"`
+				-c `shelfCommand "KeyFrameTool_WrittenByMiguel.mel" "MG_avoidOvershoot 0 {}"`
+				-annotation `MG_DualLan "keyframeTool.correctOvershoot.ann"`;
+			menuItem -divider 1;
+			menuItem// -rp "S" 
+				-label `MG_DualLan "MGtools.mi.help"`  
+				-c "MGtoolsHelp \"keyframetool.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;			
+	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon MGdbManager_icon.bmp` 
+		-highlightImage  `shelfIcon $MGDBHicon` 
+		-annotation `MG_DualLan "MGdbManager.ann"`  
+		-command `shelfCommand  "DBManager_WrittenByMiguel.mel" "MG_DB_manager"`
+		mgDB_MGtoolsButton ;
+		popupMenu;// -mm 1; 
+			menuItem -l `MG_DualLan "MGdbManager.browseLib"` -c "MG_browserDBManagerPathForMGTools";
+			menuItem -d 1;
+			menuItem
+				-label `MG_DualLan "MGtools.mi.help"`  
+				-c "MGtoolsHelp \"dbmanager.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;	
+			
+ 	shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon miniToolBoxIcon.bmp` 
+		-highlightImage  `shelfIcon $miniHicon` 
+		-annotation `MG_DualLan "MGtools.miniToolBox.anno"` 
+		-command `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "miniToolBox "` miniToolBox_MGtoolsButton ;
+		popupMenu -allowOptionBoxes 1 -mm 1; 
+
+		menuItem  -label  `MG_DualLan "MGtools.miniToolBox.mi.timer"`
+			-c `shelfCommand  "MGTimer_WrittenByMiguel.mel" "MG_Timer"`
+				-annotation  `MG_DualLan "MGtools.miniToolBox.mi.timer.anno"`;
+		menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.MBMA"`
+				-c `shelfCommand  "Mb2Ma_WrittenByMiguel.mel" "MBMAconvertor"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.MBMA.anno"`;
+		 //	menuItem 
+		//		-label "All maya playBlastable"  
+		//		-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "allMayaPlayBlastable"` 
+		//		-annotation "Make all currently openning Maya playBlastable.";
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "miniToolB.dupRef.label"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "MGduplicateReference"`
+				-annotation `MG_DualLan "miniToolB.dupRef.anno"`;
+			menuItem 
+				-label  `MG_DualLan "MGtools.miniToolBox.mi.exRef"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "exportRefPath"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.exRef.anno"`;
+		 	menuItem 
+				-label  `MG_DualLan "MGtools.miniToolBox.mi.imRef"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "importRefPath"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.imRef.anno"`;
+			menuItem 
+				-label  `MG_DualLan "MGtools.miniToolBox.mi.remRef"`
+				-c `shelfCommand  "nameSpaceCorrector_writtenByMiguel.mel" "correctNameSpace 0"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.remRef.anno"`;			
+			menuItem -divider 1;	
+			menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.repNS"`
+				-c `shelfCommand  "nameSpaceCorrector_writtenByMiguel.mel" "correctNameSpace 1"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.repNS"`;
+			menuItem -divider 1;
+			string $HUDCommand=("readMGHUDConfig 0 \"default.set\"");
+		 	menuItem -rp "E"
+				-label `MG_DualLan "MGtools.miniToolBox.mi.HUD"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" $HUDCommand` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.HUD.anno"`;
+		 	menuItem -optionBox 1
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "createHudCFrameOption"` 
+				-annotation "MGHeadsUpDisplay Option.";	
+			
+			menuItem -rp "W"
+				-label `MG_DualLan "MGtools.miniToolBox.mi.clearHUD"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "clearALLMGHUD"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.clearHUD"`;			
+
+			
+		 	menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.annoFC"` 
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "creatFrameCounter"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.annoFC.anno"`;
+			//menuItem -divider 1;
+		 	menuItem -rp "N"
+				-label `MG_DualLan "MGtools.miniToolBox.mi.stickObj"` 
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "makeSelSticky"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.stickObj.anno"` ;
+		 	menuItem  -ob 1
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "makeSelStickyOption"` 
+				-annotation "Change option of making selection being sticky to current actived viewport.";			
+		 	menuItem -rp "S"
+				-label `MG_DualLan "MGtools.miniToolBox.mi.stickView"` 
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "createCamStickToSel"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.stickView.anno"` ;
+			
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "AddCtl.prompt.title"` 
+				-c `shelfCommand  "AddCtrl_WrittenByMiguel.mel" "MG_insertCtrlHierarchy"` 
+				-ann `MG_DualLan "AddCtl.anno"`;
+			menuItem -divider 1;
+			menuItem -label `MG_DualLan "miniToolB.1.5.efficientUndo"`
+				-c  `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "MG_efficientUndo 0 1"`
+				-annotation `MG_DualLan "miniToolB.1.5.efficientUndo.anno"`;			
+			menuItem -ob 1
+				-c  `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "MG_efficientUndo_Option 1"`
+				-annotation `MG_DualLan "miniToolB.1.5.efficientUndoOption.anno"`;	
+			menuItem -label `MG_DualLan "miniToolB.1.5.efficientRedo"`
+				-c  `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "MG_efficientUndo 0 2"`
+				-annotation `MG_DualLan "miniToolB.1.5.efficientRedo.anno"`;	
+			menuItem -ob 1
+				-c  `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "MG_efficientUndo_Option 2"`
+				-annotation `MG_DualLan "miniToolB.1.5.efficientRedoOption.anno"`;											
+			menuItem -divider 1;			
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"` 
+				-c "MGtoolsHelp \"minitoolbox.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+	
+}
+global proc MGtools ()
+{
+	global float $MGTools_BGColor_gray[];
+	global int $MGTools_2011_orNot;
+
+	if (`window -exists mgToolUI`){deleteUI mgToolUI;}
+	window -toolbox 1 -title " " -in "MGtools"  mgToolUI;
+ 	gridLayout 
+ 				//-aec 1 
+ 				//-ag 0
+ 				-numberOfColumns 34	-numberOfRows 34
+ 				-columnsResizable  1 
+ 				-cellWidthHeight 34 34 
+ 				-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+ 				MGtoolsMainGridLayout;
+		shelfButton -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+		-image `shelfIcon MGtoolIcon.bmp` 
+		-highlightImage  `shelfIcon MGtoolIcon_h.bmp`
+		-annotation `MG_DualLan "MGtools.MGtools.min.anno"` 
+		-command "minimize mgToolUI MGtoolsMainGridLayout minMaxBtn " minMaxBtn;
+		popupMenu; 
+			menuItem 
+				-label `MG_DualLan "MGtools.MGtools.mi.config"`  
+				-c `shelfCommand  "MGtools_config_about_WrittenByMiguel.mel" "mgtoolConfig"`
+				-annotation `MG_DualLan "MGtools.MGtools.mi.config.anno"`;
+			menuItem 
+				-label `MG_DualLan "MGtools.MGtools.mi.shelf"`  
+				-c `shelfCommand  "MGtools_config_about_WrittenByMiguel.mel" "installMGtoolsToShelfManager"`
+				-annotation `MG_DualLan "MGtools.MGtools.mi.shelf.anno"`;
+			menuItem -divider 1;
+			menuItem -l `MG_DualLan "auloadC.MGTools.update.mi"` 
+				-c "UpdateMGtools" -ann `MG_DualLan "auloadC.MGTools.update.ann"`;	
+			menuItem -divider true ;
+		radioMenuItemCollection styleRadio;
+			MGSytleMenu mgToolUI  MGtoolsMainGridLayout styleRadio;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.mi.help"` 
+				-c "MGtoolsHelp \"index.html\""	
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+			menuItem -l `MG_DualLan "MGtools.update.help"` 
+				-c "MGtoolsHelp \"onlineupdatemgtools.htm\"" -ann `MG_DualLan "MGtools.update.help.anno"`;				
+		 	menuItem 
+				-label `MG_DualLan "MGtools.MGtools.mi.about"`  
+				-c `shelfCommand  "MGtools_config_about_WrittenByMiguel.mel" "MGtoolsAbout"`
+				-annotation `MG_DualLan "MGtools.MGtools.mi.about.anno"` ;
+			//menuItem -divider 1;
+	createMGtoolsContent;
+	showWindow mgToolUI;
+	//window -q -wh mgToolUI;
+	global string $GmgtoolsPath;
+	string $styleFile =($GmgtoolsPath+"toolConfig/mgToolUIstyle_max.tmp");
+	if (`filetest -f $styleFile `){readStyle mgToolUI MGtoolsMainGridLayout;}
+	else
+	{
+		//if(!$MGTools_2011_orNot)
+		//{window -e -wh  43 432 mgToolUI;rememberStyle mgToolUI;}
+		//else
+		//{
+			MGExcuteEmbedStyle 1 mgToolUI MGtoolsMainGridLayout;
+		//}
+	}
+			
+}
+
+global proc int shelfExistorNot (string $shelfFileName)
+{	global string $GmgtoolsPath;
+	string $path =($GmgtoolsPath+"MGshelves/");
+	string $pathAndFile = ($path + $shelfFileName);
+ if (`filetest -f $pathAndFile`)
+{return 1;}
+else {return 0;}
+}
+
+global proc openProject (int $mode)
+{
+	string $projectname =`workspace -q -rd`;
+	string $buffer[];
+	$numTokens = `tokenize $projectname "/" $buffer`;
+	//print $buffer;
+	string $path=$buffer[0];
+	for ($i=1; $i<$numTokens;$i++)
+	{
+		$path= $path +"\\"+$buffer[$i];
+	}
+	print $path;
+	string $command;
+	if (`filetest -d ($path+"\\images")`==0 ||$mode==0 )
+	{
+		$command ="start explorer " + $path;
+		system ($command);
+	}
+	else if(`filetest -d ($path+"\\images")`==1 && $mode==1)
+	$command ="start explorer " + $path+"\\images";
+	{
+		system ($command);
+	}
+}
+global proc openTemp ()
+{
+	string $userTempPath =`internalVar -userTmpDir`;
+	system ("load "+$userTempPath );
+}
+global proc openMayaInstallFolder ()
+{
+	string $arr=`whatIs "changeToolIcon"`;
+	string $buffer [];
+	int $size=`tokenize $arr "/" $buffer`;
+	$buffer [0]=`substring $buffer [0] (size($buffer[0])-1) (size($buffer[0]))`;
+	string $address=$buffer [0];
+	for ($i=1;$i<($size-3);$i++)
+	{
+		$address=($address+"/"+$buffer[$i]);	
+	}
+//	print $address;
+	system ("load "+$address);
+}
+
+global proc openScriptDir ()
+{
+	string $userTempPath ="C:/test_3rd_tv/maya/2019/scripts/";
+	system ("load "+$userTempPath );
+}
+global proc openMgtoolFolder()
+{
+	global string $GmgtoolsPath;
+	//print $GmgtoolsPath;
+	system ("load "+$GmgtoolsPath);
+}
+global proc createLayerAndHide ()
+{
+	string $sel []=`ls -sl`;
+	if(!size($sel)){warning `MG_DualLan "MGtools.createNewHideLayer.war"`;return;}
+	string $buffer[];
+	$numTokens = `tokenize $sel[0] ":"  $buffer`;
+	createDisplayLayer -name ($buffer[0]+"_layer") -number 1;
+	layerEditorLayerButtonVisibilityChange ($buffer[0]+"_layer");
+
+}
+
+global proc reloadMGtools ()
+{
+	if (`window -exists mgToolUI`)
+		{	int $FormerToolLayoutInfo [] = `window -q -wh  mgToolUI`;
+		int $FormerToolPosInfo []=`window -q  -topLeftCorner mgToolUI` ;
+		$FormerToolLayoutInfo [2]=	$FormerToolPosInfo [0];
+		$FormerToolLayoutInfo [3]=	$FormerToolPosInfo [1];
+		deleteUI mgToolUI;
+		MGtools;
+		window -e -wh $FormerToolLayoutInfo[0] $FormerToolLayoutInfo[1]  -topLeftCorner  $FormerToolLayoutInfo[2] $FormerToolLayoutInfo[3] mgToolUI;
+	}
+}
+

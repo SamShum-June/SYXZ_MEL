@@ -1,0 +1,3009 @@
+//==============================================================//
+//                   MGtools - MGshelf  v2
+//The mel assembles your own shelves into mgtools.
+//==============================================================//
+//Author: Miguel (Wenfeng Gao) 
+//website: http://mgland.com
+//Feedback: http://mgland.com/works/mel.asp
+//E-mail: mgtools2@gmail.com 
+//CopyRight Miguel @ mgland animation studio.
+
+//==============================Source MGTools codes===================================
+	string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+	global string $GmgtoolsPath;
+	$GmgtoolsPath=($mayaScriptsPath+"MGtools/");
+	
+	global int $testSupportPythonOrNot_ForMGshelf;
+	global int $testSupportPythonOrNotForMGtools;
+	//$testSupportPythonOrNot_ForMGshelf =catch (`python "print \"\""`);
+	$testSupportPythonOrNot_ForMGshelf=$testSupportPythonOrNotForMGtools;
+	if(!$testSupportPythonOrNot_ForMGshelf)print `MG_DualLan "MGShelf.ignorePython.print"`;
+	else{print `MG_DualLan "MGShelf.startPython.print"`;}
+	//	eval ("source \""+$GmgtoolsPath+"serveProc_WrittenByMiguel.mel\"");
+	global int $maya2011Sp1OrNot;
+	$maya2011Sp1OrNot=`MGtools_test2011Sp1orNot`;
+	
+	//source shelf convertor codes.
+	if(!`exists "convertShelfBetweenDifferentMaya"`)
+	{
+		eval `shelfCommand "shelfConverter_WrittenByMiguel.mel" ""`;	
+	}
+//=====================================================================================
+
+
+proc reFreshAll_MGshelf_UIglobalString ()
+{
+	global string $MG_shelves_frameLs [];clear $MG_shelves_frameLs;
+	global string $MG_shelves_frameL_Lables [];clear $MG_shelves_frameL_Lables;	
+	global string $MG_shelves_shelfLs [];clear $MG_shelves_shelfLs;
+	global string $MG_shelves_ictbs [];clear $MG_shelves_ictbs;
+	global string $MG_shelves_unfolderICBs [];clear $MG_shelves_unfolderICBs;
+	global string $MG_shelves_unfoldeFL;
+	$MG_shelves_frameLs=`formLayout -q -ca MG_Shelf_content_FromL`;
+	for ($p=0;$p<size ($MG_shelves_frameLs);$p++)
+	{
+		$MG_shelves_frameL_Lables[size($MG_shelves_frameL_Lables)]=`frameLayout -q -l $MG_shelves_frameLs[$p]`;
+		string $p1 []=`frameLayout -q -ca $MG_shelves_frameLs[$p]`;
+		string $p2 []=`formLayout -q -ca $p1[0]`;
+		$MG_shelves_shelfLs=stringArrayCatenate ($p2,$MG_shelves_shelfLs);
+		string $ca []=`shelfLayout -q -ca  $p2[0]`;
+		$MG_shelves_ictbs=stringArrayCatenate ($ca,$MG_shelves_ictbs);
+		if(!`frameLayout -q -cl $MG_shelves_frameLs[$p]`)
+			{
+				$MG_shelves_unfoldeFL=$MG_shelves_frameLs[$p];
+				$MG_shelves_unfolderICBs=$ca;
+			}
+	}
+	//print $MG_shelves_frameLs;
+}
+
+proc convertNormalShelfToMGshelf ()
+{
+	global string $GmgtoolsPath;
+	$shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $shelfFiles [] =`getFileList -fs "shelf_*.mel" -fld $shelfPath`;
+	if(size($shelfFiles))
+	{
+		for ($each in $shelfFiles)
+		{
+			string $neweach;
+			if($each=="shelf_MGtoolsShelf.mel")
+			{
+				$neweach="shelf_OldShelf.mel";
+			}
+			else{$neweach=$each;}
+				string $file=($shelfPath+$each);
+				string $content=`mgReadFileString $file`;
+				if($each=="shelf_MGtoolsShelf.mel")
+				{
+					$content=`substring $content 31 (size($content))`;
+					$content=("global proc MGshelf_OldShelf"+$content);
+				}
+				else
+				{
+					$content=`substring $content 13 (size($content))`;
+					$content=("global proc MG"+$content);
+				}
+				string $newFile=($shelfPath+"MG"+$neweach);
+				$fileId=`fopen $newFile "w"`;
+	 			fwrite $fileId $content;
+	 			fclose $fileId;	
+				sysFile -delete  $file;
+		}
+	
+	}
+}
+proc string [] returnAllBtnsBaseOnFrameLayout (string $fl)
+{
+	string $p1 []=`frameLayout -q -ca $fl`;	
+	string $p2 []=`formLayout -q -ca $p1[0]`;
+	string $ca []=`shelfLayout -q -ca  $p2[0]`;
+	return $ca;
+}
+proc MGshelf_FrameLayoutReorderAutoAdjust (int $index)
+{
+	global string $MG_shelves_frameLs [];
+	global string $MG_shelves_unfoldeFL;
+	string $flToDealWith [];clear $flToDealWith;
+	$flToDealWith=$MG_shelves_frameLs;
+	$MG_shelves_unfoldeFL=$MG_shelves_frameLs [$index];	
+	for ($each in $flToDealWith)
+  {
+      formLayout -e -af $each "top" 0 MG_Shelf_content_FromL;  
+      formLayout -e -af $each "bottom" 0 MG_Shelf_content_FromL;    
+  }
+	for ($i=0;$i<size($flToDealWith);$i++ )
+	{
+		if($i==0)
+		{
+    		formLayout -e -af $flToDealWith[$i] "top" 0 MG_Shelf_content_FromL;
+			if(size($flToDealWith)>1)
+			{
+				if($index==$i)
+				{	
+				    formLayout -e -ac $flToDealWith[$i] "bottom" 0 $flToDealWith[($i+1)] MG_Shelf_content_FromL;					
+				}
+				else
+				{
+					formLayout -e -an $flToDealWith[$i] "bottom" MG_Shelf_content_FromL;
+				}
+			}
+			else
+			{
+			    formLayout -e -af $flToDealWith[$i] "bottom" 0 MG_Shelf_content_FromL;
+			}
+
+		}
+		else
+		{
+			if($index==$i)
+			{
+			    formLayout -e -ac $flToDealWith[$i] "top" 0 $flToDealWith[($i-1)] MG_Shelf_content_FromL;
+				if(`control -q -ex $flToDealWith[($i+1)]`)
+				{
+				    formLayout -e -ac $flToDealWith[$i] "bottom" 0 $flToDealWith[($i+1)] MG_Shelf_content_FromL;
+				}
+			}
+			else
+			{
+				if($index>$i)
+				{
+				    formLayout -e -ac $flToDealWith[$i] "top" 0 $flToDealWith[($i-1)] MG_Shelf_content_FromL;
+				    formLayout -e -an $flToDealWith[$i] "bottom"  MG_Shelf_content_FromL;
+				}
+				else
+				{
+				    formLayout -e -an $flToDealWith[$i] "top" MG_Shelf_content_FromL;
+					if(`control -q -ex $flToDealWith[($i+1)]`)
+					formLayout -e -ac $flToDealWith[$i] "bottom" 0 $flToDealWith[($i+1)] MG_Shelf_content_FromL;
+				}
+			}
+		}
+	}
+}
+//MGshelf_FrameLayoutReorderAutoAdjust 0
+
+global proc MGshelf_v2_minWidth (int $mode)
+{
+	//mode 0: min width;
+	//mode 1: default width
+	reFreshAll_MGshelf_UIglobalString;
+	global string $MG_shelves_shelfLs [];
+	int $width=34;string $st="iconOnly";
+	if($mode)
+	{
+		$width=120;
+		$st="iconAndTextHorizontal";
+	}
+	global string $MG_shelves_ictbs [];
+	
+	for ($eachSL in $MG_shelves_shelfLs)
+		{
+			shelfLayout -e -st $st  -cw $width $eachSL;		
+		}
+	for($eachITB in $MG_shelves_ictbs)
+		{
+			iconTextButton -e -w $width -st $st $eachITB;		
+		}
+	int $uiWidth=`window -q -w MG_Shelf`;
+	window -e -w ($uiWidth+1) MG_Shelf;
+	window -e -w $uiWidth MG_Shelf;
+}
+global proc MGshelf_v2_switchUI_mode ()
+{
+	//global int $MGshelf_v2_in_switchUIModeorNot;
+	global int $MGTools_2011_orNot;
+	int $mode;
+	if(`optionVar -ex "MGshelf_modeSwitchRecord" `)
+	{$mode=`optionVar -q "MGshelf_modeSwitchRecord"`;}
+	else {$mode=0;}
+	//int $mode=$MGshelf_v2_in_switchUIModeorNot;
+	//int $mode=`window -q -tlb MG_Shelf`;
+	reFreshAll_MGshelf_UIglobalString;
+	global string $MG_shelves_frameLs [];
+	global string $MG_shelves_shelfLs [];
+	global string $MG_shelves_ictbs [];
+	global int $MG_shelvs_last_button_width;
+	global int $MG_shelvs_UI_width;
+	string $unfoldFL;string $label;
+	global string $MGshelf_unfolderFLLabel;
+	//string $icbs [] ={"mgShelfV2_shrink_btn","mgShelfV2_expend_btn","mgShelfV2_installMel_btn","mgShelfV2_new_btn","mgShelfV2_edit_btn","mgShelfV2_del_btn"};
+	if(!$mode)
+	{
+		$MG_shelvs_UI_width=`window -q -w MG_Shelf`;
+		if(!$MGTools_2011_orNot)
+		{
+			$MG_shelvs_last_button_width=`iconTextButton -q -w $MG_shelves_ictbs[0]`;			
+			for ($eachSL in $MG_shelves_shelfLs)
+			{
+				shelfLayout -st "iconOnly" -e -cw 34 $eachSL;		
+			}
+			for($eachITB in $MG_shelves_ictbs)
+			{
+				iconTextButton -e -w 34 $eachITB;		
+			}
+		}
+		else
+		{
+			MGshelf_v2_minWidth 0;
+		}
+		optionVar -iv "MGshelf_modeSwitchRecord" 1;
+
+		
+	}
+	else
+	{		
+		if(!$MGTools_2011_orNot)
+		{
+			$label="MGshelf-v2";			
+			for ($eachSL in $MG_shelves_shelfLs)
+			{
+				shelfLayout -e 
+					-st "iconAndTextHorizontal"
+					-cw $MG_shelvs_last_button_width 
+					$eachSL;		
+			}
+			for($eachITB in $MG_shelves_ictbs)
+			{
+				iconTextButton -e -w $MG_shelvs_last_button_width $eachITB;		
+			}
+		}
+		else
+		{
+			MGshelf_v2_minWidth 1;
+		}
+		optionVar -iv "MGshelf_modeSwitchRecord" 0;
+	
+	}
+	//window -e -tlb (1-$mode) -title $label MG_Shelf;
+	if(!$MGTools_2011_orNot)
+	{
+		window -e -w ($MG_shelvs_UI_width+1) MG_Shelf;
+		window -e -w $MG_shelvs_UI_width MG_Shelf;
+	}
+	window -e  -title $label MG_Shelf;
+	optionVar -iv MG_shelf_v2_compactMode (1-$mode);
+}
+global proc MGshelfV2_UI_ExtentShrink_command (int $mode )
+{
+	//mode -1 :shrink.
+	//mode 0 :reset.
+	//mode 1 :extend.
+	reFreshAll_MGshelf_UIglobalString;
+	global string $MG_shelves_shelfLs [];
+	global string $MG_shelves_sbs [];
+	int $sl_width=`shelfLayout -q -cw $MG_shelves_shelfLs [0]`;
+	int $value=$mode*10;  
+	int $uiWdith=153;	
+	if($mode)
+	{
+		$sl_width+=$value;
+		$uiWdith=`window -q -w MG_Shelf`;
+		$uiWdith+=$value;
+	}
+	//print $uiWdith;
+		for($eachShelfL in $MG_shelves_shelfLs)
+		{
+			shelfLayout -e -cw $sl_width $eachShelfL;
+		}
+		for($everySb in $MG_shelves_sbs)
+		{
+			iconTextButton -e -w $sl_width $everySb;
+		}
+		window -e -w $uiWdith MG_Shelf;
+
+}
+//MGshelfV2_UI_ExtentShrink_command 1;
+
+global proc MGshelf_FrameLayoutCollapseChangeCmd (string $fl,int $mode)
+{
+//	$mode 0: refresh:the first framelayout will be autoAdjust
+//	$mode 1: collapse command;
+//  $mode 2: unfold command
+	global string $MG_shelves_frameLs [];
+	string $flToDealWith [];clear $flToDealWith;
+	$flToDealWith=$MG_shelves_frameLs;
+
+	if($mode==0)
+	{
+		int $collapsIndex=-1;
+		for ($k=0;$k<size($flToDealWith);$k++ )
+		{
+			if(!`frameLayout -q -cl $flToDealWith[$k]`)
+			{
+				$collapsIndex=$k;
+			}
+		}
+		if($collapsIndex!=-1)
+		{MGshelf_FrameLayoutReorderAutoAdjust $collapsIndex;}
+	}
+	else
+	{
+		if ($mode==1)
+		{
+			for ($k=0;$k<size($flToDealWith);$k++ )
+			{
+				if(endsWith ($fl,$flToDealWith[$k]))
+				{
+					
+					if($k!=(size($flToDealWith)-1))
+					{
+						frameLayout -e -cl 0 $flToDealWith[($k+1)];
+						MGshelf_FrameLayoutReorderAutoAdjust ($k+1);
+					}
+					else
+					{
+						frameLayout -e -cl 0 $flToDealWith[0];
+						MGshelf_FrameLayoutReorderAutoAdjust 0;
+					}
+					 
+				}
+				
+			}
+		}
+		else 
+		{
+			string $label=`frameLayout -q -l $fl`;
+			optionVar -sv "MGshelf_v2_unfoldFrameLayoutLabel" $label;
+			int $index;
+			for ($i=0;$i<size($flToDealWith);$i++)
+			{
+				if(endsWith ($fl,$flToDealWith[$i]))
+				{
+					$index=$i;
+				}
+				else
+				{
+					frameLayout -e -cl 1 $flToDealWith[$i];
+				}
+			}
+			//print ("index: "+$index);
+			MGshelf_FrameLayoutReorderAutoAdjust $index;
+		}
+	}
+}
+
+global proc MGshelf_saveALL ()
+{
+	global string $MG_shelves_frameLs [];clear $MG_shelves_frameLs;
+	global string $MG_shelves_shelfLs [];clear $MG_shelves_shelfLs;
+	global string $MG_shelves_ictbs [];clear $MG_shelves_ictbs;
+	global int $MGTools_2011_orNot;
+	string $parentC[]=`formLayout -q -ca MG_Shelf_content_FromL`;
+	$MG_shelves_frameLs=$parentC;
+	global int $testSupportPythonOrNot_ForMGshelf;
+	for ($p=0;$p<size ($parentC);$p++)
+		{
+			string $label=`frameLayout -q -l $parentC[$p]`;
+			string $p1 []=`frameLayout -q -ca $parentC[$p]`;
+			if(!`frameLayout -q -cl $parentC[$p]`)
+			{
+				optionVar -sv "MGshelf_v2_unfoldFrameLayoutLabel" $label;
+			}
+			string $p2 []=`formLayout -q -ca $p1[0]`;
+			$MG_shelves_shelfLs=stringArrayCatenate ($p2,$MG_shelves_shelfLs);
+			string $ca []=`shelfLayout -q -ca  $p2[0]`;
+			$MG_shelves_ictbs=stringArrayCatenate ($ca,$MG_shelves_ictbs);
+			string $tempShelfButtons []; clear $tempShelfButtons;
+			for ($each in $ca)
+			{
+				if($MGTools_2011_orNot)
+				{
+					if (!`control -q -vis $each`)	continue;
+				}
+				string $btnType = "iconTextButton ";
+				if(catchQuiet (`iconTextButton -q -vis  $each`))
+				{$btnType="shelfButton ";}
+				string  $stp;
+				if($testSupportPythonOrNot_ForMGshelf)
+				{
+					$stp=eval ($btnType+"-q -stp "+$each);				
+				}
+				string $label=eval ($btnType+"-q -l "+$each);
+				string $overLabel =eval ($btnType+"-q -imageOverlayLabel "+$each);
+				int $width=eval ($btnType+"-q -w "+$each);
+				int $height=eval ($btnType+"-q -h "+$each);
+				string $command=eval ($btnType+"-q -c "+$each);
+				string $annotation=eval ($btnType+"-q -annotation "+$each);
+				string $image=eval ($btnType+"-q -image "+$each);
+				string $highlightImage =eval ($btnType+"-q -highlightImage "+$each);	
+				if(!size($highlightImage))$highlightImage=$image;
+				string $newButton;
+				if($testSupportPythonOrNot_ForMGshelf)				
+				{
+					$newButton=`shelfButton -p mgShelfV2_TempSL
+						-l $label
+						-iol $overLabel
+						-stp $stp
+						-w $width 
+						-h $height
+						-c $command
+						-image $image
+						-highlightImage $highlightImage
+						-annotation $annotation
+						-st "iconAndTextHorizontal"`;
+				}	
+				else
+				{
+					$newButton=`shelfButton -p mgShelfV2_TempSL
+						-l $label
+						-iol $overLabel
+						-w $width 
+						-h $height
+						-c $command
+						-image $image
+						-highlightImage $highlightImage
+						-annotation $annotation
+						-st "iconAndTextHorizontal"`;
+				}					
+				$tempShelfButtons[size($tempShelfButtons)]=$newButton;				
+			}
+			global string $GmgtoolsPath;
+			string $shelfDir = ($GmgtoolsPath+"MG_Shelves/");
+			if(!`filetest -d $shelfDir`)
+			{
+				sysFile -md $shelfDir;
+			}			
+			$shelfPath=($shelfDir+"MGshelf_"+$label);
+			saveShelf mgShelfV2_TempSL  $shelfPath;
+			for ($eachTempSB in $tempShelfButtons)
+			{
+				deleteUI -control $eachTempSB;
+			}
+		}
+	reFreshMGtoolsPOPShelfMenu;	
+}
+
+global proc refreshMGshelf_v2_FLorder ()
+{
+	convertNormalShelfToMGshelf;
+	global string $GmgtoolsPath;
+	$shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $shelfFiles [] =`getFileList -fs "MGshelf_*.mel" -fld $shelfPath`;
+	string $MGshelf_FL_order [];
+	if(`optionVar -ex "MGshelf_v2_FLorder"`)
+	{
+		$MGshelf_FL_order=`optionVar -q "MGshelf_v2_FLorder" `;
+		string $diff [];string $valid [];clear $valid;
+		if(size($MGshelf_FL_order))
+		{
+			for ($eachOrder in $MGshelf_FL_order)
+			{
+				if(`filetest -f ($shelfPath+$eachOrder)`)
+				{
+					$valid[size($valid)]=$eachOrder;
+				}
+			}
+			$diff=stringArrayRemove ($valid,$shelfFiles) ;
+			$shelfFiles=stringArrayCatenate ($valid,$diff);
+		}
+		optionVar -ca "MGshelf_v2_FLorder";
+	}
+	for($eachS in $shelfFiles){optionVar -sva "MGshelf_v2_FLorder" $eachS ;}
+}
+//print `optionVar -q "MGshelf_v2_FLorder" `;
+global proc rememberMgshelf_category_vis_config (int $mode,string $label)
+{
+	//mode 0: exclusive mode.
+	//mode 1: add mode;
+	if(!$mode)
+	{
+		optionVar -ca "MGshelf_Category_vis_config";
+		optionVar -ca "MGshelf_Category_vis_configInFL";
+
+	}
+	optionVar -sva "MGshelf_Category_vis_config" $label ;
+}
+global  proc execMGshelf_category_vis_config ()
+{
+	//optionVar -ca "MGshelf_Category_vis_configInFL";
+	if(`optionVar -ex "MGshelf_Category_vis_config"`)
+	{
+		string $firstShowFL;
+		string $vis []=`optionVar -q "MGshelf_Category_vis_config"`;
+		global string $MG_shelves_frameLs [];	
+		global string $MG_shelves_frameL_Lables [];
+		string $flToHide [];
+		$flToHide=stringArrayRemove ($vis,$MG_shelves_frameL_Lables);
+		for ($each in $MG_shelves_frameLs)
+		{
+			frameLayout -e -vis 1 $each;
+			for ($eachH in $flToHide)
+			{
+				if(`frameLayout -q -l $each`==$eachH)
+				{
+					frameLayout -e -vis 0 $each;
+				}
+				else{optionVar -sva "MGshelf_Category_vis_configInFL" $each;}
+			}
+		}
+		string $flToShow [];
+		$flToShow=stringArrayRemove ($flToHide,$MG_shelves_frameL_Lables);
+		for ($eachfl in $MG_shelves_frameLs)
+		{
+			for ($eachH in $flToShow)
+			{
+				if(`frameLayout -q -l $eachfl`==$eachH)
+				{
+					$firstShowFL =$eachfl;break;
+				}
+			}
+		}		
+		MGshelf_FrameLayoutCollapseChangeCmd $firstShowFL 0;
+	}	
+	
+}
+global proc MGshelf_readALL ()
+{
+	int $cversion=`MGtools_getMayaVersionInt`;
+	refreshMGshelf_v2_FLorder;
+	global int $MGTools_2011_orNot;
+	global string $GmgtoolsPath;
+	$shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $shelfFiles [];clear $shelfFiles;
+	if(`optionVar -ex "MGshelf_v2_FLorder"`)
+	{
+		$shelfFiles=`optionVar -q "MGshelf_v2_FLorder"`;
+	}
+	string $lables[];
+	setParent MG_Shelf_content_FromL;
+	string $arrChildren []=`formLayout -q -ca MG_Shelf_content_FromL`;
+	for ($eachOld in $arrChildren){deleteUI -layout $eachOld;}
+	global string $MG_shelves_frameLs [];clear $MG_shelves_frameLs;
+	string $innerformLs [];
+	global string $MG_shelves_shelfLs [];clear $MG_shelves_shelfLs;
+	global string $MG_shelves_ictbs [];clear $MG_shelves_ictbs;
+	
+	string $unfolderFLLabel;
+	if(`optionVar -ex "MGshelf_v2_unfoldFrameLayoutLabel"`)
+	{
+		$unfolderFLLabel=`optionVar -q "MGshelf_v2_unfoldFrameLayoutLabel" `;
+		int $exist=0;
+		for ($eachFL in $MG_shelves_frameLs)
+		{
+			if(`frameLayout -q -l $eachFL`==$unfolderFLLabel)
+			{$exist=1;}
+		}
+		if(!$exist)
+		{
+			if(size($shelfFiles))
+			{$unfolderFLLabel=`substring $shelfFiles[0] 9 (size($shelfFiles[0])-4)`	;}
+		}
+	}
+	string $unfoldFL; int $i=0;int $index;
+	//print "shelfFiles:=====================\n";
+	//print $shelfFiles;
+	global int $maya2011Sp1OrNot;
+	for ($each in $shelfFiles)
+	{
+		//$lables[size($lables)]=`substring $each 7 (size($each)-4)`;
+		string $lable =`substring $each 9 (size($each)-4)`;
+		int $cl=1;
+		if($unfolderFLLabel==$lable){$cl=0;}
+		if(!`optionVar  -ex "MGshelf_v2_unfoldFrameLayoutLabel"`)
+		{
+			if($lable==`substring $shelfFiles[0] 9 (size($shelfFiles[0])-4)`)
+			{$cl=0;}
+		}
+		if(!$MGTools_2011_orNot)	
+		{$MG_shelves_frameLs[size($MG_shelves_frameLs)]=`frameLayout 
+										-mh 2 
+										-mw 0 
+										-cll 1 
+										-label $lable 
+										//-labelAlign "top"
+										-dgc MGshelf_dragCallback
+										-h 100										
+										-p MG_Shelf_content_FromL
+										-dpc MGshelf_drop_toLayout_Callback
+ 										-borderStyle "etchedOut"`;
+ 		}
+ 		else
+ 		{
+ 			$MG_shelves_frameLs[size($MG_shelves_frameLs)]=`frameLayout 
+										-mh 2 -mw 0 -cll 1 
+										-label $lable 										
+										//-labelAlign "top"
+										-dgc MGshelf_dragCallback
+										-p MG_Shelf_content_FromL
+										-dpc MGshelf_drop_toLayout_Callback
+ 										-borderStyle "etchedOut"`; 			
+ 		}	
+		if(!$cl){$unfoldFL=$MG_shelves_frameLs[(size($MG_shelves_frameLs)-1)];}
+			
+		frameLayout -e 
+			-cc ("MGshelf_FrameLayoutCollapseChangeCmd "+$MG_shelves_frameLs[(size($MG_shelves_frameLs)-1)]+" 1")
+			-ec ("MGshelf_FrameLayoutCollapseChangeCmd "+$MG_shelves_frameLs[(size($MG_shelves_frameLs)-1)]+" 2")
+			$MG_shelves_frameLs[(size($MG_shelves_frameLs)-1)];
+		$innerformLs[size($innerformLs)]=`formLayout -p $MG_shelves_frameLs[(size($MG_shelves_frameLs)-1)]`; 
+		if(!$MGTools_2011_orNot||$maya2011Sp1OrNot)	
+		{$MG_shelves_shelfLs[size($MG_shelves_shelfLs)]=`shelfLayout 
+									-p $innerformLs[(size($innerformLs)-1)]
+										-cellWidthHeight  120 34 -st "iconAndTextHorizontal" `;
+			}
+		else
+		{
+			$MG_shelves_shelfLs[size($MG_shelves_shelfLs)]=`shelfLayout 
+									-p $innerformLs[(size($innerformLs)-1)]
+									-cellWidthHeight  120 1000 
+									-w 120
+									-st "iconAndTextHorizontal" `;									
+		}		
+		formLayout -e 
+			 -af $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)] "top" -3
+			 -af $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)] "right" -3
+			 -af $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)] "left" -3
+			 -af $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)] "bottom" -3			 			 
+			$innerformLs[(size($innerformLs)-1)];
+		
+			setParent $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)];
+			$sourceShelfCommand =("source \""+$shelfPath+$each+"\";MGshelf_"+$lable);
+			if(catch (`eval $sourceShelfCommand`))
+			{
+				convertShelfBetweenDifferentMaya $cversion ($shelfPath+$each) ($shelfPath+$each);
+				eval $sourceShelfCommand;
+			}
+			
+		string $ca []=`shelfLayout -q -ca $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)]`;
+		global int $testSupportPythonOrNot_ForMGshelf;
+		for ($eachSB in $ca)
+		{
+				
+				string  $stp;
+				if($testSupportPythonOrNot_ForMGshelf)
+				{
+					$stp=`shelfButton -q -stp $eachSB`;				
+				}
+				string $label=`shelfButton -q -l $eachSB`;
+				$label=strip($label);
+				string $overLabel =`shelfButton -q -imageOverlayLabel $eachSB`;
+				$overLabel=strip($overLabel);
+				int $width=`shelfButton -q -w $eachSB`;
+				int $height=`shelfButton -q -h $eachSB`;
+				if($MGTools_2011_orNot)	$height=34;
+				string $command=`shelfButton -q -c $eachSB`;
+				string $annotation=`shelfButton -q -annotation $eachSB`;
+				$annotation=strip($annotation);
+				string $image=`shelfButton -q -image $eachSB`;
+				string $highlightImage =`shelfButton -q -highlightImage  $eachSB`;				
+				deleteUI -control $eachSB;
+				string $ictbNew;
+				if($testSupportPythonOrNot_ForMGshelf)
+				{	
+					$ictbNew =`iconTextButton -p $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)]
+						-l $label
+						-iol $overLabel
+						-w $width 
+						-align "left"
+						-h $height
+						-c $command
+						-stp $stp
+						-fn "plainLabelFont"
+						-image $image
+						-dpc MGshelf_drop_reorder_Callback
+						-dgc MGshelf_dragCallback
+						//-highlightImage $highlightImage
+						-annotation $annotation
+						-st "iconAndTextHorizontal"`;
+					if($MGTools_2011_orNot)
+					{
+						if(`filetest -f $highlightImage`)
+						{
+								iconTextButton -e -hi $highlightImage $ictbNew;
+						}
+					}		
+					else
+					{
+							iconTextButton -e -hi $highlightImage $ictbNew;
+					}		
+
+				}
+				else
+				{
+					$ictbNew =`iconTextButton -p $MG_shelves_shelfLs[(size($MG_shelves_shelfLs)-1)]
+						-l $label
+						-w $width 
+						-iol $overLabel
+						-h $height
+						-c $command
+						-fn "plainLabelFont"
+						-image $image
+						-dpc MGshelf_drop_reorder_Callback
+						-dgc MGshelf_dragCallback
+						-highlightImage $highlightImage
+						-annotation $annotation
+						-st "iconAndTextHorizontal"`;
+					if($MGTools_2011_orNot)
+					{
+						if(`filetest -f $highlightImage`)
+						{
+								iconTextButton -e -hi $highlightImage $ictbNew;
+						}
+					}		
+					else
+					{
+							iconTextButton -e -hi $highlightImage $ictbNew;
+					}					
+
+				}				
+				$MG_shelves_ictbs[size($MG_shelves_ictbs)]=$ictbNew;
+				popupMenu -mm 1;
+				menuItem  -rp "W"
+					-label `MG_DualLan "MGShelf.bar.edit.mi"`
+					-c ("global string $MGshelf_v2_editingCtl;$MGshelf_v2_editingCtl=\""+$ictbNew+"\";editShelfUI 0 0;")
+					-annotation `MG_DualLan "MGShelf.bar.edit.mi.anno"`; 
+				menuItem  -rp "N"
+					-label `MG_DualLan "MGShelf.bar.delete.mi"`
+					-c ("deleteUI -control \""+$ictbNew+"\"")
+					-annotation `MG_DualLan "MGShelf.bar.delete.mi.anno"`;	
+				menuItem  -rp "S"
+					-label `MG_DualLan "MGShelf.manager.clone"`
+					-c ("MGshelf_clone_button \""+$ictbNew+"\"")
+					-annotation `MG_DualLan "MGShelf.manager.clone.anno"`;					
+				menuItem  -rp "E"
+					-label `MG_DualLan "MGShelf.manager.rename"`
+					-c ("renameCurrentMGshelfButton \""+$ictbNew+"\"")
+					-annotation `MG_DualLan "MGShelf.manager.rename.anno"`;	
+				
+				menuItem  -rp "NE"
+					-label `MG_DualLan "MGShelf.manager.renameOveryLay"`
+					-c ("renameCurrentMGshelfButtonShelfOverLayLabel \""+$ictbNew+"\"")
+					-annotation `MG_DualLan "MGShelf.manager.renameOveryLay.anno"`;	
+				
+				menuItem  
+					-label `MG_DualLan "MGShelf.resetIcon"` 
+					-c ("MGshelf_resetIcon_toDefault "+$ictbNew+" iconTextButton")
+					-annotation `MG_DualLan "MGShelf.resetIcon.anno"`;
+		}
+		frameLayout -e -cl $cl	$MG_shelves_frameLs[(size($MG_shelves_frameLs)-1)];
+		if(!$cl)$index=$i;
+		else{$i++;}
+	}
+	//print $lables;
+	string $cmd= "formLayout -e ";
+
+	for ($i=0;$i<size($MG_shelves_frameLs);$i++ )
+	{
+		$cmd+="\n-af "+$MG_shelves_frameLs[$i]+" \"right\" 0 \n ";
+		$cmd+="-af "+$MG_shelves_frameLs[$i]+" \"left\" 0 \n ";
+		
+		if($i==0)
+		{
+			$cmd+="-af "+$MG_shelves_frameLs[$i]+" \"top\" -3 \n ";
+			if(size($MG_shelves_frameLs)>1)
+			{
+				$cmd+="-ac "+$MG_shelves_frameLs[$i]+" \"bottom\" 0 "+$MG_shelves_frameLs[($i+1)]+"\n ";	
+			}
+			else{$cmd+="-af "+$MG_shelves_frameLs[$i]+" \"bottom\" 0 \n ";	}
+
+		}
+		else
+		{
+			if(`control -ex $MG_shelves_frameLs[($i+1)]`)
+			{
+				$cmd+="-ac "+$MG_shelves_frameLs[$i]+" \"bottom\" 0 "+$MG_shelves_frameLs[($i+1)]+"\n ";
+			}	
+			else
+			{
+				$cmd+="-af "+$MG_shelves_frameLs[$i]+" \"bottom\" 0 \n ";
+			}
+		}
+		
+	}
+	$cmd+="MG_Shelf_content_FromL;";
+	eval $cmd;
+
+	//MGshelf_FrameLayoutCollapseChangeCmd  $unfoldFL 2;
+	
+	MGshelf_FrameLayoutReorderAutoAdjust $index;
+	reFreshAll_MGshelf_UIglobalString;
+	//refresh_MGshelf_vis_switch_menu;
+}
+global proc refresh_MGshelf_vis_switch_menu ()
+{
+	global string $MG_shelves_frameLs [];	
+	global string $MG_shelves_frameL_Lables [];
+	string $menuSet []={"MG_Shelf_topIcons_FromL_ppCtrlMenu","MG_Shelf_topIcons_FromL_ppShelfMenu"};
+	for ($eachMenu in $menuSet)
+	{
+		popupMenu -e -dai $eachMenu;
+		setParent -m $eachMenu;
+		for($i=0;$i<size($MG_shelves_frameL_Lables);$i++)
+		{
+			string $command;
+			if($eachMenu==$menuSet [0])
+				{
+					$command=("rememberMgshelf_category_vis_config 1 "+$MG_shelves_frameL_Lables[$i]+";execMGshelf_category_vis_config");
+				}
+			else {
+					$command=("rememberMgshelf_category_vis_config 0 "+$MG_shelves_frameL_Lables[$i]+";execMGshelf_category_vis_config");
+				}
+			switch ($i)
+			{
+				case 1:
+					menuItem  -rp "E" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+				case 2:
+					menuItem  -rp "W" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;	
+				case 3:
+					menuItem  -rp "S" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+				case 4:
+					menuItem  -rp "N" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+				case 5:
+					menuItem  -rp "SE" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+				case 6:
+					menuItem  -rp "SW" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+				case 5:
+					menuItem  -rp "NE" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+				case 6:
+					menuItem  -rp "NW" -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+				default:
+					menuItem   -l  $MG_shelves_frameL_Lables[$i]
+						-c $command;break;
+			}
+		}
+	}
+}
+global proc string[] MGshelf_dragCallback(string $dragControl, int $x, int $y, int $mods) 
+{
+	return {$dragControl,$x,$y,$mods};
+}
+global proc MGshelf_drop_del_Callback(string $dragControl, string $dropControl, string $msgs[], int $x, int $y, int $type) 
+{
+	global int $MGTools_2011_orNot;
+	if(!catch (`layout -q $dragControl`))
+	{
+		print "";
+		string $title=`MG_DualLan "MGShelf.manager.purge.war.title"`;
+		string $message=`MG_DualLan "MGShelf.manager.delCategory.war.mes"`;
+		string $cancel=`MG_DualLan "snapLoc.multiMarker.No.btn"`;
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		$test=`confirmDialog -title $title -message $message
+ 				-button $yes -button $cancel -defaultButton $yes
+ 				-cancelButton $cancel -dismissString $cancel`;
+		if($test==$yes)
+		{
+			MGshelf_saveALL;
+			string $lable=`frameLayout -q -l $dragControl`;
+			global string $GmgtoolsPath;
+			string $shelfPath=($GmgtoolsPath+"MG_Shelves/shelf_"+$lable+".mel");
+			sysFile -ren ($GmgtoolsPath+"MG_Shelves/shelf_"+$lable+".mel.deleted") $shelfPath  ;
+			MGshelf_readALL;
+			//deleteUI -lay $dragControl;
+			
+		}
+		return;
+	}
+	else{print `MG_DualLan "MGShelf.manager.delButton.rep"`;}
+	if($MGTools_2011_orNot)
+	{control -e -vis 0 $dragControl;}
+	else
+	{deleteUI -ctl $dragControl;}
+}
+proc MGshelf_installMelDoIt (string $dragControl,int $mode)
+{
+	//mode 0: layout;
+	//mode 1: control;
+	if($mode)
+	{
+		string $label=`iconTextButton -q -l $dragControl`;
+		string $overLabel =`iconTextButton -q -imageOverlayLabel $dragControl`;
+		int $width=`iconTextButton -q -w $dragControl`;
+		int $height=`iconTextButton -q -h $dragControl`;
+		string $command=`iconTextButton -q -c $dragControl`;
+		string $annotation=`iconTextButton -q -annotation $dragControl`;
+		string $image=`iconTextButton -q -image $dragControl`;
+		string $highlightImage =`iconTextButton -q -highlightImage  $dragControl`;
+		if(!size($highlightImage))$highlightImage=$image;
+		global string $gShelfTopLevel;//print $gShelfTopLevel;
+		if (`tabLayout -exists $gShelfTopLevel`)
+				{
+					shelfButton 
+					-p ($gShelfTopLevel + "|" + `tabLayout -q -st $gShelfTopLevel`)
+					-l $label
+					-iol $overLabel
+					-c $command
+					-image $image
+					-highlightImage $highlightImage
+					-annotation $annotation
+					;
+					saveAllShelves $gShelfTopLevel;
+				}
+				else
+				{error `MG_DualLan "MGshelfInstaller.war"`;}
+	}
+	else
+	{
+		string $label=`frameLayout -q -l $dragControl`;
+		
+		string $title=`MG_DualLan "selM.retarget.notice"`;
+		string $message=`MG_DualLan "MGShelf.manager.whichToInstall.mes"`;
+		string $cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		string $ctab =`MG_DualLan "MGShelf.manager.currentTab"`;	
+		string $stab =`MG_DualLan "MGShelf.manager.sTab"`;
+		
+		string $result = `confirmDialog  
+	 		-title $title
+	 		-message $message
+	 		-button $ctab -button ($stab+$label)
+			-button $cancel
+	 		-defaultButton ($stab+$label) -cancelButton $cancel
+	 		-dismissString $cancel`;
+	 
+	 	if ($result != $cancel) 
+		{
+			string $btns []=`returnAllBtnsBaseOnFrameLayout $dragControl`;		
+			global string $gShelfTopLevel;//print $gShelfTopLevel;
+			if (`tabLayout -exists $gShelfTopLevel`)
+				{
+					if($result == ($stab+$label))
+					{
+						if(!`shelfLayout -q -ex $label`)
+						{
+							addNewShelfTab $label;
+						}
+						else
+						{
+							tabLayout -e -selectTab $label $gShelfTopLevel;
+						}
+					}
+						string $currentTab =`tabLayout -q -st $gShelfTopLevel`;
+						string $currentShelfL=($gShelfTopLevel + "|" +$currentTab);
+						global int $testSupportPythonOrNot_ForMGshelf;
+						for ($each in $btns)
+						{				
+							string $label=`iconTextButton -q -l $each`;
+							string  $stp;
+								if($testSupportPythonOrNot_ForMGshelf)
+								{
+									$stp=`iconTextButton -q -stp $each`;				
+								}
+							int $width=`iconTextButton -q -w $each`;
+							string $overLabel=`iconTextButton -q -iol $each`;
+							int $height=`iconTextButton -q -h $each`;
+							string $command=`iconTextButton -q -c $each`;
+							string $annotation=`iconTextButton -q -annotation $each`;
+							string $image=`iconTextButton -q -image $each`;
+							string $highlightImage =`iconTextButton -q -highlightImage  $each`;	
+							if(!size($highlightImage))$highlightImage=$image;			
+							string $children []=`shelfLayout -q -ca $currentShelfL`;
+								for ($eachOldSB in $children)
+								{
+									string $eachOldLabel=`shelfButton -q -l $eachOldSB`;
+									if($label==$eachOldLabel) {deleteUI -ctl $eachOldSB;}
+			
+								}
+							string $newButton;
+							if($testSupportPythonOrNot_ForMGshelf)
+							{							
+								$newButton=`shelfButton -p $currentShelfL
+									-l $label
+									-c $command
+									-iol $overLabel
+									-stp $stp
+									-image $image
+									-highlightImage $highlightImage
+									-annotation $annotation`;				
+							}
+							else
+							{							
+								$newButton=`shelfButton -p $currentShelfL
+									-l $label
+									-c $command
+									-iol $overLabel
+									-image $image
+									-highlightImage $highlightImage
+									-annotation $annotation`;				
+							}
+
+						}
+				}
+				else
+				{error `MG_DualLan "MGshelfInstaller.war"`;}
+	 		
+	 	}	
+	}
+}
+global proc MGshelf_installShelf_buttonCommand (int $mode)
+{
+	//mode 0: current catelog
+	//mode 1: all catelog
+	//mode 2: prompt.
+	reFreshAll_MGshelf_UIglobalString;
+	global string $MG_shelves_frameLs [];
+	if($mode==2)
+	{
+		string $title=`MG_DualLan "selM.retarget.notice"`;
+		string $message=`MG_DualLan "MGShelf.manager.whatToInstall.mes"`;
+		string $cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		string $ctab =`MG_DualLan "MGShelf.manager.currentCate"`;	
+		string $atab =`MG_DualLan "MGShelf.manager.allCate"`;
+		
+		string $answer=
+			`confirmDialog -title $title -message $message
+ 			-button $ctab 	-button $atab -button $cancel -defaultButton $ctab
+ 			-cancelButton $cancel
+			-dismissString $cancel`;
+		if($answer==$cancel){return;}
+		else
+		{
+			if($answer==$ctab)
+			{
+				$mode=0;
+			}
+			else{$mode=1;}
+		}
+	
+	}
+	if(!$mode)
+	{
+		global string $MG_shelves_unfoldeFL;
+		MGshelf_installMelDoIt 	$MG_shelves_unfoldeFL 0;	
+	}
+	else
+	{
+		for($each in $MG_shelves_frameLs)
+		{
+			MGshelf_installMelDoIt 	$each 0;	
+		}
+	}
+}
+global proc MGshelf_drop_installShelf_Callback(string $dragControl, string $dropControl, string $msgs[], int $x, int $y, int $type) 
+{
+	
+	if(catch (`layout -q $dragControl`))
+	{
+		print "";
+		MGshelf_installMelDoIt 	$dragControl 1;
+				
+	}
+	else
+	{
+		MGshelf_installMelDoIt 	$dragControl 0;		
+	}
+
+}
+
+global proc MGshelf_drop_toLayout_Callback(string $dragControl, string $dropControl, string $msgs[], int $x, int $y, int $type) 
+{
+	global int $MGTools_2011_orNot;
+	if(catch (`layout -q $dragControl`))
+	{	
+		global string $gBuffStrArr [];
+		if($gBuffStrArr[3]!="2")
+			{
+				print `MG_DualLan "MGShelf.moveButtonToNewCate"`;
+			}
+		else{print `MG_DualLan "MGShelf.copyButtonToNewCate"`;}
+		string $label=`iconTextButton -q -l $dragControl`;
+		string $overLabel=`iconTextButton -q -iol $dragControl`;
+		int $width=`iconTextButton -q -w $dragControl`;
+		int $height=`iconTextButton -q -h $dragControl`;
+		string $command=`iconTextButton -q -c $dragControl`;
+		string $annotation=`iconTextButton -q -annotation $dragControl`;
+		string $image=`iconTextButton -q -image $dragControl`;
+		string $highlightImage =`iconTextButton -q -highlightImage  $dragControl`;
+		if(!size($highlightImage))$highlightImage=$image;
+			string $p1 []=`frameLayout -q -ca $dropControl`;	
+			string $p2 []=`formLayout -q -ca $p1[0]`;
+		$newCtl=`iconTextButton 
+					-p $p2[0]
+					-l $label
+					-w $width 
+					-iol $overLabel
+					-h $height
+					-c $command
+					-fn "plainLabelFont"
+					-image $image
+					-dpc MGshelf_drop_reorder_Callback
+					-dgc MGshelf_dragCallback
+					-highlightImage $highlightImage
+					-annotation $annotation
+					-st "iconAndTextHorizontal"`;
+		//print ("$type: "+$gBuffStrArr[3]+"\n");
+		if($gBuffStrArr[3]!="2")
+		{
+			if($MGTools_2011_orNot)
+				{control -e -vis 0 $dragControl;}
+			else{deleteUI -control $dragControl;}
+		}
+	}
+
+}
+global proc renameCurrentMGshelfButtonShelfOverLayLabel (string $dragControl)
+{
+		string $arrName=`iconTextButton -q -imageOverlayLabel $dragControl`;
+		string $text;
+		string $title=`MG_DualLan "MGShelf.renameButton"`;
+		string $message=`MG_DualLan "MGShelf.renameButton.enterName.mes"`;
+		string $cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $war=`MG_DualLan "MGShelf.renameButton.enterName.war"`;		
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;		
+ 		string $result = `promptDialog 
+	 		-title $title
+			-text $arrName
+	 		-message $message
+	 		-button $yes -button $cancel
+	 		-defaultButton $yes -cancelButton $cancel
+	 		-dismissString $cancel`;
+ 
+	 	if ($result == $yes)
+		{
+	 		$text = `promptDialog -query -text`;
+			$text=`MGvalidStringForWritingFile $text`;	
+			if($text==$arrName||!size($text)){warning $war;return;}
+			iconTextButton -e -imageOverlayLabel $text $dragControl;
+	 	}
+}
+global proc renameCurrentMGshelfButton (string $dragControl)
+{
+		string $arrName=`iconTextButton -q -l $dragControl`;
+		string $text;
+		
+ 		string $title=`MG_DualLan "MGShelf.renameButton"`;
+		string $message=`MG_DualLan "MGShelf.renameButton.enterName.mes"`;
+		string $cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $war=`MG_DualLan "MGShelf.renameButton.enterName.war"`;		
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		
+		string $result = `promptDialog 
+	 		-title $title
+			-text $arrName
+	 		-message $message
+	 		-button $yes -button $cancel
+	 		-defaultButton $yes -cancelButton $cancel
+	 		-dismissString $cancel`;
+ 
+	 	if ($result == $yes)
+		{
+	 		$text = `promptDialog -query -text`;
+			$text=`MGvalidStringForWritingFile $text`;	
+			if($text==$arrName||!size($text)){warning $war;return;}
+			iconTextButton -e -l $text $dragControl;
+	 	}
+}
+global proc MGshelf_drop_toEdit_Callback(string $dragControl, string $dropControl, string $msgs[], int $x, int $y, int $type) 
+{
+	
+	if(catch (`layout -q $dragControl`))
+	{	
+		print `MG_DualLan "MGShelf.readyForEditCbutton"`;
+		string $label=`iconTextButton -q -l $dragControl`;
+		string $overLabel=`iconTextButton -q -iol $dragControl`;
+
+		int $width=`iconTextButton -q -w $dragControl`;
+		int $height=`iconTextButton -q -h $dragControl`;
+		string $command=`iconTextButton -q -c $dragControl`;
+		string $annotation=`iconTextButton -q -annotation $dragControl`;
+		string $image=`iconTextButton -q -image $dragControl`;
+		string $highlightImage =`iconTextButton -q -highlightImage  $dragControl`;
+		if(!size($highlightImage))$highlightImage=$image;
+		global string $MGshelf_v2_editingCtl;
+		$MGshelf_v2_editingCtl=$dragControl;
+		editShelfUI 0 0;		
+	}
+	else
+	{
+		
+		string $arrName=`frameLayout -q -l $dragControl`;
+		string $text;
+		
+ 		string $title=`MG_DualLan "MGShelf.renameCate"`;
+		string $message=`MG_DualLan "MGShelf.renameButton.enterName.mes"`;
+		string $cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $war=`MG_DualLan "MGShelf.renameButton.enterName.war"`;	
+		string $war1=`MG_DualLan "MGShelf.renameCate.cant.war"`;	
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		
+		string $result = `promptDialog 
+	 		-title $title
+			-text $arrName
+	 		-message $message
+	 		-button $yes -button $cancel
+	 		-defaultButton $yes -cancelButton $cancel
+	 		-dismissString $cancel`;
+ 
+	 	if ($result == $yes)
+		{
+	 		$text = `promptDialog -query -text`;
+			$text=`MGvalidStringForWritingFile $text`;	
+			if($text==$arrName||!size($text)){warning $war;return;}
+			if(!`renameExistedShelfToTargetshelf $arrName $text 0`)
+			{warning $war1;return;}
+			frameLayout -e -l $text $dragControl;
+	 	}
+		reFreshAll_MGshelf_UIglobalString;
+
+	}
+
+}
+global proc MGshelf_drop_reorder_Callback(string $dragControl, string $dropControl, string $msgs[], int $x, int $y, int $type) 
+{
+	//print ("$dragControl: "+$dragControl+"\n");
+	//print ("$dropControl: "+$dropControl+"\n");
+	string $temp [],$temp1[];
+	tokenize $dragControl "|" $temp;	
+	tokenize $dropControl "|" $temp1;
+	string $stayParent=$temp1[(size($temp1)-2)];
+	string $moveParent=$temp[(size($temp)-2)];
+	//print ("$stayParent: "+$stayParent+"\n");
+	string $newCtl=$dragControl;
+	string $children []=`shelfLayout -q -ca $stayParent`;	
+	$children =`shelfLayout -q -ca $stayParent`;
+	//print ("$newCtl:"+$newCtl+"\n");
+	int $index=0;int $oldindex=0;int $targetindex=0;
+	for ($i=0;$i<size($children);$i++)
+	{
+		if(`endsWith $newCtl $children[$i]`)
+		{
+			$oldindex=($i+1);
+		}
+		if(`endsWith $dropControl $children[$i]`)
+		{
+			$targetindex=($i+1);
+		}		
+	}
+	$index=	$targetindex;
+	//print ("$oldindex: "+$oldindex+"\n"); 
+	//print ("$targetindex: "+$targetindex+"\n"); 	
+	if($index)	shelfLayout -e -pos $newCtl $index $stayParent;
+	if($oldindex<$targetindex)
+	{
+		//print "smaller";
+		for($k=$oldindex;$k<($targetindex-1);$k++)
+		{
+			shelfLayout -e -pos $children[$oldindex] $k $stayParent;
+		}
+
+	}
+	else{
+			if($oldindex>$targetindex)
+			{
+				//print "larger";
+				for($k=$targetindex;$k<($oldindex-1);$k++)
+				{
+					shelfLayout -e -pos $children[$targetindex] ($k+2) $stayParent;
+				}
+			}
+		}	
+	global string $gBuffStrArr [];
+	if($gBuffStrArr[3]=="2")
+	{
+		//iconTextButton -e -p $stayParent $dragControl;
+		 string $label=`iconTextButton -q -l $dragControl`;
+		 string $overLabel=`iconTextButton -q -iol $dragControl`;
+		int $width=`iconTextButton -q -w $dragControl`;
+		int $height=`iconTextButton -q -h $dragControl`;
+		string $command=`iconTextButton -q -c $dragControl`;
+		string $annotation=`iconTextButton -q -annotation $dragControl`;
+		string $image=`iconTextButton -q -image $dragControl`;
+		string $highlightImage =`iconTextButton -q -highlightImage  $dragControl`;
+		if(!size($highlightImage))$highlightImage=$image;
+		//
+		$newCtl=`iconTextButton 
+					-p $stayParent
+					-iol $overLabel
+					-l $label
+					-w $width 
+					-h $height
+					-c $command
+					-fn "plainLabelFont"
+					-image $image
+					-dpc MGshelf_drop_reorder_Callback
+					-dgc MGshelf_dragCallback
+					-highlightImage $highlightImage
+					-annotation $annotation
+					-st "iconAndTextHorizontal"`;
+	}
+	//MGshelf_orderColor $stayParent;
+	//	print ("\n"+$index);
+	//print $dragControl;
+}
+global proc MGshelf_clone_button (string $dragControl)
+{
+		string $label=`iconTextButton -q -l $dragControl`;
+		 string $overLabel=`iconTextButton -q -iol $dragControl`;
+		int $width=`iconTextButton -q -w $dragControl`;
+		int $height=`iconTextButton -q -h $dragControl`;
+		string $command=`iconTextButton -q -c $dragControl`;
+		string $annotation=`iconTextButton -q -annotation $dragControl`;
+		string $image=`iconTextButton -q -image $dragControl`;
+		string $highlightImage =`iconTextButton -q -highlightImage  $dragControl`;
+		if(!size($highlightImage))$highlightImage=$image;
+		string $st =`iconTextButton -q -st  $dragControl`;
+		global string $MG_shelves_unfoldeFL;
+		$ca=`frameLayout -q -ca $MG_shelves_unfoldeFL`;
+		$ca1=`formLayout -q -ca $ca[0]`;
+		
+		//print $MG_shelves_unfoldeFL;
+		$ictbNew=`iconTextButton 
+					-p $ca1[0]
+					-l $label
+					-iol $overLabel
+					-w $width 
+					-h $height
+					-c $command
+					-fn "plainLabelFont"
+					-image $image
+					-dpc MGshelf_drop_reorder_Callback
+					-dgc MGshelf_dragCallback
+					-highlightImage $highlightImage
+					-annotation $annotation
+					-st $st`;
+				popupMenu -mm 1;
+				menuItem  -rp "W"
+					-label `MG_DualLan "MGShelf.bar.edit.mi"`
+					-c ("global string $MGshelf_v2_editingCtl;$MGshelf_v2_editingCtl=\""+$ictbNew+"\";editShelfUI 0 0;")
+					-annotation `MG_DualLan "MGShelf.bar.edit.mi.anno"`; 
+				menuItem  -rp "N"
+					-label `MG_DualLan "MGShelf.bar.delete.mi"`
+					-c ("deleteUI -control \""+$ictbNew+"\"")
+					-annotation `MG_DualLan "MGShelf.bar.delete.mi.anno"`;	
+				menuItem  -rp "S"
+					-label `MG_DualLan "MGShelf.manager.clone"`
+					-c ("MGshelf_clone_button \""+$ictbNew+"\"")
+					-annotation `MG_DualLan "MGShelf.manager.clone.anno"`;					
+				menuItem  -rp "E"
+					-label `MG_DualLan "MGShelf.manager.rename"`
+					-c ("renameCurrentMGshelfButton \""+$ictbNew+"\"")
+					-annotation `MG_DualLan "MGShelf.manager.rename.anno"`;	
+}
+global proc MGshelf_drop_new_Callback(string $dragControl, string $dropControl, string $msgs[], int $x, int $y, int $type) 
+{
+	string $temp [];
+	tokenize $dragControl "|" $temp;
+	string $moveParent=$temp[(size($temp)-2)];
+	if(catch (`layout -q $dragControl`))
+	{
+		print `MG_DualLan "MGShelf.readyForCloneCbutton"`;
+		MGshelf_clone_button $dragControl;
+	}
+}
+
+global proc MGshelf_dropCallback(string $dragControl, string $dropControl, string $msgs[], int $x, int $y, int $type) 
+{
+	print $dragControl;
+}
+global proc minimizeMamizexMGshelf_v2 (int $mode)
+{
+	//mode 0: minimize;
+	//mode 1: maxmize;
+	global int $MGTools_2011_orNot;
+	string $iconBtns []={"mgShelfV2_installMel_btn","mgShelfV2_new_btn","mgShelfV2_edit_btn","mgShelfV2_del_btn","mgShelfV2_save_btn"};
+	string $UIName="MG_Shelf";
+	if(!$mode)
+	{
+		iconTextButton -e 
+			-w 33 -h 22
+			-image `shelfIcon MGShelfMinimizedIcon.bmp` 
+			-highlightImage  `shelfIcon MGShelfMinimizedIcon_h.bmp`
+			-annotation  `MG_DualLan "ServeProc.maximize.restore"`
+			-command "minimizeMamizexMGshelf_v2 1" mgShelfV2_minimize_btn;
+		formLayout
+			-e
+			 -ac MG_Shelf_content_FromL "top" 4 MG_Shelf_topIcons_FromL				 
+			MG_Shelf_FromL;	
+		for ($each in $iconBtns)
+		{
+			iconTextButton -e -vis 0 $each;
+		}
+		separator -e -vis 0 mgShelfV2_sep;
+		//write and read config====================================
+			int $FormerToolLayoutInfo [] = `window -q -wh  $UIName`;
+			int $FormerToolPosInfo []=`window -q  -topLeftCorner $UIName` ;
+			string $styleInfo= $FormerToolLayoutInfo [0];
+			string $styleInfo1= $FormerToolLayoutInfo [1];
+			string $styleInfo2= $FormerToolPosInfo [0];
+			string $styleInfo3= $FormerToolPosInfo [1];
+			string $styleInfo= ( $styleInfo+";"+$styleInfo1+";"+$styleInfo2+";"+$styleInfo3);
+			writeIntoConfig ($UIName+"style_max.tmp") $styleInfo;
+			int $leftCorner,$topCorner,$minWidth,$minHeight;
+			string $minInfos =`readFormConfig ($UIName+"style_min.tmp")`;
+			if(size($minInfos))
+			{
+				string $buffer[];
+			 	$numTokens = `tokenize $minInfos ";" $buffer`;
+				$topCorner =$buffer[0];
+				$leftCorner =$buffer[1];		
+				$minWidth =$buffer[2];
+				$minHeight =$buffer[3];
+			}
+			else
+			{
+				$topCorner=$FormerToolPosInfo[0];
+				$leftCorner=$FormerToolPosInfo[1];
+				if(!$MGTools_2011_orNot)
+				{$minWidth=41;	$minHeight=46;}
+				else{$minWidth=33;	$minHeight=23;}
+			}	
+			window -e -toolbox 1 -title "" MG_Shelf;
+			window -e  -wh $minWidth $minHeight -topLeftCorner  $topCorner $leftCorner $UIName;
+			string $ia []=`popupMenu -q -ia MGshelfPOPMenu`;
+			popupMenu -e -mm 0 MGshelfPOPMenu;
+			for ($eachia in $ia)
+			{
+				if(!`endsWith $eachia "MGshelfHelpMI"`)
+				deleteUI -mi $eachia;
+			}
+
+	}
+	else
+	{
+		int $minimizedToolSizeInfo [];$minimizedToolSizeInfo=`window -q  -wh $UIName` ;
+		iconTextButton -e 
+			-w 20 -h 20
+			-image `shelfIcon MGShelfIcon_small.bmp` 
+			-highlightImage  `shelfIcon MGShelfIcon_small_h.bmp`
+			-annotation  `MG_DualLan "MGShelf.bar.anno"`
+			-command "minimizeMamizexMGshelf_v2 0" mgShelfV2_minimize_btn;	
+		for ($each in $iconBtns)
+		{
+			iconTextButton -e -vis 1 $each;
+		}
+		separator -e -vis 1 mgShelfV2_sep;
+		formLayout
+			-e
+			 -ac MG_Shelf_content_FromL "top" 0 MG_Shelf_topIcons_FromL				 
+			MG_Shelf_FromL;			
+		//write and read config====================================
+		int $minimizedToolPosInfo [];
+		$minimizedToolPosInfo=`window -q  -topLeftCorner $UIName` ;
+		//	int $leftCorner,$topCorner;
+		string $minInfo1=$minimizedToolPosInfo [0];
+		string $minInfo2=$minimizedToolPosInfo [1];
+		string $minInfo3=$minimizedToolSizeInfo [0];
+		string $minInfo4=$minimizedToolSizeInfo [1];	
+		string $minInfo=($minInfo1+";"+$minInfo2+";"+$minInfo3+";"+$minInfo4);
+			//print $minInfo;
+		writeIntoConfig ($UIName+"style_min.tmp") $minInfo;
+		string $infos =`readFormConfig ($UIName+"style_max.tmp")`;
+		string $buffer[];
+	 	$numTokens = `tokenize $infos ";" $buffer`;
+		int $num0 =$buffer[0];
+		int $num1 =$buffer[1];
+		int $num2 =$buffer[2];
+		int $num3 =$buffer[3];	
+		window -e  -wh $num0  $num1  -topLeftCorner $num2 $num3  $UIName;
+			if(!`optionVar -q "MGshelf_modeSwitchRecord"`)
+			{
+				window -e -toolbox 1 -title "MGshelf-v2" MG_Shelf;
+			}
+			else
+			{	
+				global string $MGshelf_unfolderFLLabel;
+				window -e -title $MGshelf_unfolderFLLabel MG_Shelf;
+			}
+
+		popupMenu -e -mm 1 MGshelfPOPMenu;
+		setParent  -m MGshelfPOPMenu;
+		menuItem -rp "S" -p MGshelfPOPMenu
+			-l `MG_DualLan "MGShelf.shrinkButtonWidth.mi"`  
+			-c "MGshelfV2_UI_ExtentShrink_command -1"
+			-annotation `MG_DualLan "MGShelf.shrinkButtonWidth.anno"` ;
+		menuItem -rp "N" -p MGshelfPOPMenu
+			-l `MG_DualLan "MGShelf.extendButtonWidth.mi"`  
+			-c "MGshelfV2_UI_ExtentShrink_command 1"
+			-annotation `MG_DualLan "MGShelf.extendButtonWidth.anno"` ;			
+		menuItem -p MGshelfPOPMenu -rp "NW" -l `MG_DualLan "MGShelf.resetButtonWidth.mi"`  -c "MGshelf_v2_minWidth 1";
+		menuItem -p MGshelfPOPMenu -rp "SW" -l `MG_DualLan "MGShelf.minWidth.mi"` -c "MGshelf_v2_minWidth 0";
+		menuItem -p MGshelfPOPMenu -rp "E"  -l `MG_DualLan "MGShelf.miniMode.mi"`  -c "MGshelf_v2_switchUI_mode";
+
+				
+	}
+
+
+}
+global proc MGshelf_v2 ()
+{
+	global float $MGTools_BGColor_gray[];
+	global int $MGTools_2011_orNot;
+	if (`window -exists MG_Shelf`){deleteUI MG_Shelf;}	
+	window -toolbox 1 -title "MGshelf-v2" -in "MGshelf-v2"  -mxb 0  MG_Shelf;
+	formLayout -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] MG_Shelf_FromL;
+	formLayout -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] MG_Shelf_topIcons_FromL;
+	int $iconWh2011=20;
+	if($MGTools_2011_orNot)$iconWh2011=22;
+	iconTextButton 
+		-w $iconWh2011 -h $iconWh2011
+		-image `shelfIcon MGShelfIcon_small.bmp` 
+		-highlightImage  `shelfIcon MGShelfIcon_small_h.bmp`
+		-st "iconOnly"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-annotation `MG_DualLan "MGShelf.bar.anno"`  
+		-command "minimizeMamizexMGshelf_v2 0" mgShelfV2_minimize_btn;
+		popupMenu -mm 1 MGshelfPOPMenu;
+		if(!$MGTools_2011_orNot)
+		{
+			menuItem -rp "S"
+				-l `MG_DualLan "MGShelf.shrinkButtonWidth.mi"`  
+				-c "MGshelfV2_UI_ExtentShrink_command -1"
+				-annotation `MG_DualLan "MGShelf.shrinkButtonWidth.anno"` ;
+			menuItem -rp "N"
+				-l `MG_DualLan "MGShelf.extendButtonWidth.mi"`  
+				-c "MGshelfV2_UI_ExtentShrink_command 1"
+				-annotation `MG_DualLan "MGShelf.extendButtonWidth.anno"` ;			
+			menuItem -rp "NW" -l `MG_DualLan "MGShelf.resetButtonWidth.mi"`  -c "MGshelf_v2_minWidth 1";
+			menuItem -rp "SW" -l `MG_DualLan "MGShelf.minWidth.mi"` -c "MGshelf_v2_minWidth 0";
+		}
+		menuItem -rp "W"
+				-label `MG_DualLan "MGtools.mi.help"`  
+				-c "MGtoolsHelp \"mg_shelfbar.htm\""	
+				-annotation `MG_DualLan "MGtools.mi.help.anno"` MGshelfHelpMI;
+		menuItem -rp "E"  -l `MG_DualLan "MGShelf.miniMode.mi"`  -c "MGshelf_v2_switchUI_mode";
+	iconTextButton 
+		-w $iconWh2011 -h $iconWh2011 
+		-image `shelfIcon SS_toShelf.bmp` 
+		-highlightImage  `shelfIcon SS_toShelf_h.bmp`
+		-st "iconOnly"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-dpc MGshelf_drop_installShelf_Callback
+		-annotation `MG_DualLan "MGShelf.InstallShelf.anno"`  
+		-command "MGshelf_installShelf_buttonCommand 2" mgShelfV2_installMel_btn;
+	popupMenu ;
+	menuItem  -l `MG_DualLan "MGShelf.InstallcurrentCate"` -c "MGshelf_installShelf_buttonCommand 0";
+	menuItem  -l `MG_DualLan "MGShelf.InstallallCate"`  -c "MGshelf_installShelf_buttonCommand 1";	
+	
+	iconTextButton 
+		-w $iconWh2011 -h $iconWh2011 
+		-image `shelfIcon SS_newSet.bmp` 
+		-highlightImage  `shelfIcon SS_newSet_h.bmp`
+		-st "iconOnly"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-dpc MGshelf_drop_new_Callback 
+		-dgc MGshelf_dragCallback
+		-annotation `MG_DualLan "MGShelf.newIssue.anno"`  
+		-command "MGShelf_manager 2" mgShelfV2_new_btn;
+		
+	iconTextButton 
+		-w $iconWh2011 -h $iconWh2011 
+		-image `shelfIcon mgshelf_v2_editIcon.bmp` 
+		-highlightImage  `shelfIcon SS_editSet_h.bmp`
+		-st "iconOnly"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-dpc MGshelf_drop_toEdit_Callback 
+		-dgc MGshelf_dragCallback
+		-annotation `MG_DualLan "MGShelf.editIssue.anno"`  
+		-command "MGShelf_manager 0" mgShelfV2_edit_btn;	
+		
+
+	
+	iconTextButton //iconTextStaticLabel  
+		-w $iconWh2011 -h $iconWh2011 
+		-image `shelfIcon mgshelf_v2_trashIcon.bmp` 
+		-highlightImage  `shelfIcon SS_DelSet_h.bmp`
+		-st "iconOnly"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-dpc MGshelf_drop_del_Callback 
+		-annotation `MG_DualLan "MGShelf.delIssue.anno"`  
+		//-command "" 
+		mgShelfV2_del_btn;	
+		
+	iconTextButton  
+		-w $iconWh2011 -h $iconWh2011 
+		-image `shelfIcon mgshelf_v2_saveIcon.bmp` 
+		-highlightImage  `shelfIcon mgshelf_v2_saveIcon_h.bmp`
+		-st "iconOnly"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-annotation `MG_DualLan "MGShelf.saveIssue.anno"`  
+		-command "MGshelf_saveALL" 
+		mgShelfV2_save_btn;	
+
+	separator -st "in" mgShelfV2_sep;		
+
+	setParent MG_Shelf_FromL;
+	shelfLayout -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-vis 0 -m 0 mgShelfV2_TempSL;
+	formLayout -e
+		 -af mgShelfV2_minimize_btn "top" 0
+		 -af mgShelfV2_minimize_btn "left" 0  
+		 
+		 -af mgShelfV2_installMel_btn "top" 0
+		 -ac mgShelfV2_installMel_btn "right" 2 mgShelfV2_new_btn	
+		 
+		 -af mgShelfV2_new_btn "top" 0
+		 -ac mgShelfV2_new_btn "right" 2 mgShelfV2_edit_btn
+		 
+		 -af mgShelfV2_edit_btn "top" 0
+		 -ac mgShelfV2_edit_btn "right" 2 mgShelfV2_del_btn
+		 
+		 -af mgShelfV2_del_btn "top" 0
+		 -ac mgShelfV2_del_btn "right" 2 mgShelfV2_save_btn
+		 
+		 -af mgShelfV2_save_btn "top" 0
+		 -af mgShelfV2_save_btn "right" 2
+		 
+		 -ac mgShelfV2_sep "top" 0 mgShelfV2_save_btn
+		 -af mgShelfV2_sep "right" 0 
+		 -af mgShelfV2_sep "left" 0 
+		 
+		 MG_Shelf_topIcons_FromL;
+	
+	setParent MG_Shelf_FromL;
+	formLayout -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] MG_Shelf_content_FromL;
+	//	formLayout -q -ca formLayout52;
+	setParent MG_Shelf_FromL;
+	gridLayout 
+		-vis 0  
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 		-numberOfColumns 32 
+		-numberOfRows 32 
+		-aec 0
+		-columnsResizable  1 
+		-cellWidthHeight 34 34  
+		MG_Shelf_miniMode_GL;
+	formLayout
+		-e
+		 -af MG_Shelf_topIcons_FromL "top" 0		
+		 -af MG_Shelf_topIcons_FromL "left" 0
+		 -af MG_Shelf_topIcons_FromL "right" 0
+		
+		 -ac MG_Shelf_content_FromL "top" 0 MG_Shelf_topIcons_FromL		
+		 -af MG_Shelf_content_FromL "left" 0
+		 -af MG_Shelf_content_FromL "right" 0
+		 -af MG_Shelf_content_FromL "bottom" 0
+		 
+		 -ac MG_Shelf_miniMode_GL "top" 0 MG_Shelf_topIcons_FromL		
+		 -af MG_Shelf_miniMode_GL "left" 0
+		 -af MG_Shelf_miniMode_GL "right" 0
+		 -af MG_Shelf_miniMode_GL "bottom" 0		 
+		MG_Shelf_FromL;
+	
+	convertNormalShelfToMGshelf;
+	MGshelf_readALL;
+	string $infos =`readFormConfig ("MG_Shelfstyle_max.tmp")`;
+	if(size($infos))
+		{
+			string $buffer[];
+		 	$numTokens = `tokenize $infos ";" $buffer`;
+			int $num0 =$buffer[0];
+			int $num1 =$buffer[1];
+			int $num2 =$buffer[2];
+			int $num3 =$buffer[3];	
+			window -e  -wh $num0  $num1  -topLeftCorner $num2 $num3  MG_Shelf;
+		}	
+	//window -q -w MG_Shelf;
+	else{window -e -wh 150 350 MG_Shelf;	}
+	showWindow MG_Shelf;
+	if(`optionVar -q "MGshelf_modeSwitchRecord"`)
+		{MGshelf_v2_switchUI_mode;}
+	print `MG_DualLan "MGShelf.welcome"`;
+}
+//MGshelf_v2;
+
+// MGshelf new manager codes=======================================================================
+
+global proc refreshMGshelf_display_inManager ()
+{
+	global string $MGshelf_manager_initial_st;
+	string $tab []=`shelfTabLayout -q -tl MGshelf_existed_mainShelfTab`;
+	for ($eachTab in $tab )
+	{
+		shelfLayout -e -st $MGshelf_manager_initial_st $eachTab;
+	}
+	applyShelfManagerEditMenu 1;
+}
+global proc int renameExistedShelfToTargetshelf (string $oldLabel,string $newLabel,int $mode)
+{
+	//mode 0: rename
+	//mode 1: duplicate and rename
+	//if done: return 1,else 0
+	global string $GmgtoolsPath;
+	$shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $oldFile=("MGshelf_"+$oldLabel+".mel");
+	string $newFile=("MGshelf_"+$newLabel+".mel");	
+	string $oldfilePath=($shelfPath+$oldFile);
+	string $newfilePath=($shelfPath+$newFile);
+	if(`filetest -f ($shelfPath+$oldFile)`)
+	{
+		string $content=`mgReadFileString $oldfilePath`;
+		$readFileID=`fopen $oldfilePath "r"`;
+		string $line1 =`fgetline $readFileID`;
+		fclose $readFileID;
+		if(!$mode)
+		{
+			sysFile -delete  $oldfilePath;
+			if(`filetest -f $oldfilePath`)
+			{
+				return 0; 
+			}			
+		}		
+		int $line1Size=(size($line1)+1);
+		$content=`substring $content $line1Size (size($content))`;
+		$content=("global proc MGshelf_"+$newLabel+" () {\n"+$content);
+		//print $content;
+		$fileId=`fopen $newfilePath "w"`;
+		fwrite $fileId $content;
+		fclose $fileId;	
+	}
+	return 1;
+}
+//renameExistedShelfToTargetshelf "Modeling" "Texturing" 0;
+
+global proc opensaveMGshelf_inManagerExtMelFolder ()
+{
+	global string $GmgtoolsPath;
+	print $GmgtoolsPath;
+	system ("load "+$GmgtoolsPath+"MG_Shelves/externalMelFiles");
+}
+proc loadMGshelfIntoMGshelfExistCategoryArea ()
+{
+	textScrollList -e -ra existedMGshelfCategoryTSL;
+	refreshMGshelf_v2_FLorder;
+	global string $GmgtoolsPath;
+	string $shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $shelfFiles [];
+	clear $shelfFiles;
+	if(`optionVar -ex "MGshelf_v2_FLorder"`)
+	{
+		$shelfFiles=`optionVar -q "MGshelf_v2_FLorder" `;
+	}
+	if(size($shelfFiles))
+	{
+		for($eachFile in $shelfFiles)
+		{
+			string $label=`substring $eachFile 9 (size($eachFile)-4)`;
+			textScrollList -e -append $label existedMGshelfCategoryTSL;
+		}
+		textScrollList -e -sii 1 existedMGshelfCategoryTSL;
+	}
+}
+proc loadMGshelfIntoMGshelfExistContentArea (int $mode)
+{
+	//mode 0: load in invisible tabShelfLayout;
+	//mode 1: load in MGshelfManager.
+	global int $MGTools_2011_orNot;
+	string $stb;
+	if($mode){$stb="MGshelf_existed_mainShelfTab";}
+	else{$stb="MGshelfTempHideSTL";}
+	string $ca []=`shelfTabLayout -q -ca $stb`; 
+	if($mode)
+	{
+		for ($eachOld in $ca){deleteUI -layout $eachOld;}
+	}
+	refreshMGshelf_v2_FLorder;
+	global string $GmgtoolsPath;
+	string $shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	
+	string $shelfFiles [];
+	clear $shelfFiles;
+	if(`optionVar -ex "MGshelf_v2_FLorder"`){$shelfFiles=`optionVar -q "MGshelf_v2_FLorder" `;}
+	string $temp [];clear $temp;
+	global string $MGshelf_manager_initial_st;
+	//global int $maya2011Sp1OrNot;
+	if(size($shelfFiles))
+	{
+		for($eachFile in $shelfFiles)
+		{
+			string $label=`substring $eachFile 9 (size($eachFile)-4)`;
+			if(`filetest -f ($shelfPath+$eachFile)`)
+			{
+				string $sl;
+				//if(!$MGTools_2011_orNot||$maya2011Sp1OrNot)
+				//{
+					$sl=`shelfLayout -p $stb $label`;
+				//}
+				//else
+				//{
+				//	$sl=`shelfLayout -p $stb -ch 1000 $label`;
+				//}				
+				$sourceShelfCommand =("source \""+$shelfPath+$eachFile+"\";MGshelf_"+$label);
+				eval $sourceShelfCommand;
+				$temp=`shelfLayout -q -ca $sl`;
+					//print $temp;
+				if(size($temp))
+				{
+					if(!$MGTools_2011_orNot)shelfLayout -e -cw `shelfButton -q -w $temp[0]` $sl;
+					else{
+								shelfLayout 
+									-e 
+									-cw 120 
+									//-st "iconAndTextHorizontal" 
+									$sl;
+							}
+					$MGshelf_manager_initial_st=`shelfButton -q -st $temp[0]`;
+				}
+			}
+		}
+	}
+	if($mode){applyShelfManagerEditMenu 1;}
+
+}
+global proc MGshelf_manager_selectCategoryCommand (int $mode)
+{
+	//mode 0: select list item and select tab
+	//mode 1: select tab and select list item.
+	if(!$mode)
+	{
+		int $selItemIndex []=`textScrollList -q -sii existedMGshelfCategoryTSL`;
+		shelfTabLayout -e -sti $selItemIndex [0] MGshelf_existed_mainShelfTab;
+	}	
+	else
+	{
+		int $tabIndex=`shelfTabLayout -q -sti  MGshelf_existed_mainShelfTab`;		
+		textScrollList -e -sii $tabIndex existedMGshelfCategoryTSL;
+	}
+}
+//global proc MGshelf_manager_existFL_collapseCommand ()
+//{
+//	window -e -height ((`window -q -height MGshelf_editUI`)-271) MGshelf_editUI;
+
+//}
+global proc moveUpDnSelected_MGshelfCategory_Item (int $mode)
+{
+	//mode -1: up
+	//mode 1: dn
+	string $selItems []=`textScrollList -q -si existedMGshelfCategoryTSL`;
+	
+	if(!size($selItems)){warning `MG_DualLan "MGShelf.noSelItem.war"`;return;}
+	int $index[];
+	int $indexSize =`textScrollList -q -numberOfItems existedMGshelfCategoryTSL`;
+	$index =`textScrollList -q -selectIndexedItem existedMGshelfCategoryTSL`;
+	int $selectedIndex = $index[0];
+	if ($indexSize==0||$index[0]==0){return;}
+	string $menuNameAll[] = `textScrollList -q -allItems existedMGshelfCategoryTSL`;
+	if($mode==-1)
+	{
+		if($selectedIndex>1) 
+		{	
+			string $tempMenuName =$menuNameAll[$selectedIndex-1];
+			$menuNameAll[$selectedIndex-1]=$menuNameAll[$selectedIndex-2];
+			$menuNameAll[$selectedIndex-2]=$tempMenuName;
+				textScrollList -e -ra existedMGshelfCategoryTSL;	
+				for ($each in $menuNameAll)
+				{
+					textScrollList -e -append $each existedMGshelfCategoryTSL;
+				}
+
+
+			textScrollList -e -selectIndexedItem ($index[0]-1)existedMGshelfCategoryTSL;
+		}
+		shelfTabLayout -e -mt $selectedIndex ($selectedIndex-1) MGshelf_existed_mainShelfTab;
+
+	}
+	else
+	{
+		if($selectedIndex<$indexSize) 
+		{	
+			string $tempMenuName =$menuNameAll[$selectedIndex-1];
+			$menuNameAll[$selectedIndex-1]=$menuNameAll[$selectedIndex];
+			$menuNameAll[$selectedIndex]=$tempMenuName;
+				textScrollList -e -ra existedMGshelfCategoryTSL;		
+				for ($each in $menuNameAll)
+				{
+					textScrollList -e -append $each existedMGshelfCategoryTSL;
+				}
+
+			textScrollList -e -selectIndexedItem ($index[0]+1)existedMGshelfCategoryTSL;
+		}
+		shelfTabLayout -e -mt $selectedIndex ($selectedIndex+1) MGshelf_existed_mainShelfTab;
+
+	}
+}
+global proc string MGshelfManager_new_Category (int $mode,string $newCate)
+{
+	//mode 0: with promptDialog
+	//mode 1: without promptDialog
+	//return new category shelfLayout name.
+	if(!$mode)
+	{
+		string $text;
+ 		string $title=`MG_DualLan "MGShelf.newCate"`;
+		string $message=`MG_DualLan "MGShelf.renameButton.enterName.mes"`;
+		string $cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		
+		string $result = `promptDialog 
+ 		-title $title
+ 		-message $message
+ 		-button $yes -button $cancel
+ 		-defaultButton $yes -cancelButton $cancel
+ 		-dismissString $cancel`;
+ 
+	 	if ($result == $cancel) 
+		{
+			return "";
+		}
+	 	$text = `promptDialog -query -text`;
+		$text=`MGvalidStringForWritingFile $text`;
+
+		if(size($text)){$newCate=$text;}
+	}
+	
+		string $oldStuffs []=`textScrollList -q -ai existedMGshelfCategoryTSL`;
+		string $temp [];$temp [0]=$newCate;
+		if(size(stringArrayRemove ($temp,$oldStuffs))==size($oldStuffs))
+		{
+ 			textScrollList -e -append $newCate existedMGshelfCategoryTSL;
+		}
+		string $result=`shelfLayout -p MGshelf_existed_mainShelfTab $newCate`;
+		textScrollList -e -selectIndexedItem (size(`textScrollList -q -ai existedMGshelfCategoryTSL`)) existedMGshelfCategoryTSL;
+		MGshelf_manager_selectCategoryCommand 0;
+		return $result;
+}
+global proc duplicate_MGshelf_Catagory ()
+{
+	global string $GmgtoolsPath;
+	string $shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $selItems []=`textScrollList -q -si existedMGshelfCategoryTSL`;
+	if(!size($selItems)){warning `MG_DualLan "MGShelf.noSelItem.war"`;return;}
+	string $newLabel=$selItems[0];
+	while ($newLabel==$selItems[0])
+	{
+		$newLabel+="_copy";
+	}
+	string $sl=`MGshelfManager_new_Category 1 $newLabel`;
+	renameExistedShelfToTargetshelf $selItems[0] $newLabel 1;
+	string $eachFile=("MGshelf_"+$newLabel+".mel");
+		//$sl=`shelfLayout -p MGshelf_existed_mainShelfTab $newLabel`;
+		$sourceShelfCommand =("source \""+$shelfPath+$eachFile+"\";MGshelf_"+$newLabel);
+		eval $sourceShelfCommand;
+		$temp=`shelfLayout -q -ca $newLabel`;
+		
+		shelfLayout -e -cw `shelfButton -q -w $temp[0]` $sl;	
+}
+global proc del_MGshelf_CatagoryInManager ()
+{
+	global string $GmgtoolsPath;
+	string $shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $selItems []=`textScrollList -q -si existedMGshelfCategoryTSL`;
+	if(!size($selItems)){warning `MG_DualLan "MGShelf.noSelItem.war"`;return;}
+	string $filePath=($shelfPath+"MGshelf_"+$selItems [0]+".mel");
+	string $filePathDel=($shelfPath+"MGshelf_"+$selItems [0]+".mel.deleted");	
+	sysFile -rename $filePathDel $filePath;
+	if(`filetest -f $filePath`)
+	{
+		warning `MG_DualLan "MGShelf.renameCate.cant.war"`;
+		return;
+	}
+	int $selIndex []=`textScrollList -q -sii existedMGshelfCategoryTSL`;
+	textScrollList -e -ri $selItems [0] existedMGshelfCategoryTSL;
+	string $allChild []= `shelfTabLayout -q -ca MGshelf_existed_mainShelfTab`;
+	string $theLayout=$allChild[($selIndex[0]-1)];
+	deleteUI -lay $theLayout;
+	if(size(`textScrollList -q -ai existedMGshelfCategoryTSL`))
+	{textScrollList -e -sii 1 existedMGshelfCategoryTSL;}
+}
+global proc MGshelf_resetIcon_toDefault (string $ctrl,string $type)
+{
+	//if(!$testSupportPythonOrNot_ForMGshelf){return;}
+	global int $testSupportPythonOrNot_ForMGshelf;
+	if($type=="shelfButton")
+	{
+		string $stp=`shelfButton -q -stp $ctrl`;
+		if($stp=="mel")
+		{
+			shelfButton -e 
+				-image `shelfIcon general_melIcon.bmp` 
+				-highlightImage `shelfIcon general_melIcon_h.bmp`
+				$ctrl;			
+		}
+		else
+		{
+			shelfButton -e 
+				-image `shelfIcon general_pythonIcon.bmp` 
+				-highlightImage `shelfIcon general_pythonIcon_h.bmp`
+				$ctrl;		
+		}		
+	}
+	if($type=="iconTextButton")
+	{
+		string $stp=`iconTextButton -q -stp $ctrl`;
+		if($stp=="mel")
+		{
+			iconTextButton -e 
+				-image `shelfIcon general_melIcon.bmp` 
+				-highlightImage `shelfIcon general_melIcon_h.bmp`
+				$ctrl;			
+		}
+		else
+		{
+			iconTextButton -e 
+				-image `shelfIcon general_pythonIcon.bmp` 
+				-highlightImage `shelfIcon general_pythonIcon_h.bmp`
+				$ctrl;		
+		}		
+	}	
+
+}
+global proc MGshelf_manager_switchPythonMel ()
+{
+
+	string $label=`button -q -l MGshelfManager_pythonMel_button`;
+	if($label=="mel")
+		{
+			$label="python";
+			button -e -c "python (`scrollField -q -text MG_Shelf_commandSF`)" MGshelfManager_testCodeBtn;
+			checkBox -e -en 0 exMelFileCB;
+			if(`shelfButton  -q -image selectIconBtn`==`shelfIcon general_melIcon.bmp`)
+			{shelfButton  -e -image `shelfIcon general_pythonIcon.bmp` selectIconBtn;}
+			if(`shelfButton  -q -highlightImage selectIconBtn`==`shelfIcon general_melIcon_h.bmp`)
+			{shelfButton  -e -highlightImage `shelfIcon general_pythonIcon_h.bmp` selectIconBtn;}
+			
+			if(`shelfButton  -q -image selectIcon_hBtn`==`shelfIcon general_melIcon_h.bmp`)
+			{shelfButton  -e -image `shelfIcon general_pythonIcon_h.bmp` selectIcon_hBtn;}
+		}
+	else{
+			$label="mel";
+			button -e -c "eval (`scrollField -q -text MG_Shelf_commandSF`)" MGshelfManager_testCodeBtn;
+			checkBox -e -en 1 exMelFileCB;
+			if(`shelfButton  -q -image selectIconBtn`==`shelfIcon general_pythonIcon.bmp`)
+			{shelfButton  -e -image `shelfIcon general_melIcon.bmp` selectIconBtn;}
+			if(`shelfButton  -q -highlightImage selectIconBtn`==`shelfIcon general_pythonIcon_h.bmp`)
+			{shelfButton  -e -highlightImage `shelfIcon general_melIcon_h.bmp` selectIconBtn;}
+			
+			if(`shelfButton  -q -image selectIcon_hBtn`==`shelfIcon general_pythonIcon_h.bmp`)
+			{shelfButton  -e -image `shelfIcon general_melIcon_h.bmp` selectIcon_hBtn;}
+		}
+	button -e -w 50 -l $label MGshelfManager_pythonMel_button;
+	global string $currentEditMGshelf_sourceType;
+	$currentEditMGshelf_sourceType=$label;
+}
+global proc rename_MGshelf_Catagory ()
+{
+	global string $GmgtoolsPath;
+	string $shelfPath=($GmgtoolsPath+"MG_Shelves/");
+	string $selItems []=`textScrollList -q -si existedMGshelfCategoryTSL`;
+	int $selItemIndex []=`textScrollList -q -sii existedMGshelfCategoryTSL`;
+	string $ca []=`shelfTabLayout -q -ca MGshelf_existed_mainShelfTab`;
+	if(!size($selItems)){warning `MG_DualLan "MGShelf.noSelItem.war"`;return;}
+	int $selIndex []=`textScrollList -q -sii existedMGshelfCategoryTSL`;
+	string $text=$selItems[0];
+ 		string $title=`MG_DualLan "MGShelf.renameCate"`;
+		string $message=`MG_DualLan "MGShelf.renameButton.enterName.mes"`;
+		string $cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $war=`MG_DualLan "MGShelf.renameButton.enterName.war"`;	
+		string $war1=`MG_DualLan "MGShelf.renameCate.cant.war"`;	
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+	string $result = `promptDialog 
+		-title $title
+		-message $message
+		-text $text
+		-button $yes -button $cancel
+		-defaultButton $yes -cancelButton $cancel
+		-dismissString $cancel`;
+
+ 	if ($result == $yes) 
+	{
+ 		$text = `promptDialog -query -text`;
+		$text=`MGvalidStringForWritingFile $text`;
+	
+		if($text==$selItems [0]||!size($text)){warning $war;return;}
+		string $newLabel=$text;
+		if(!`renameExistedShelfToTargetshelf $selItems[0] $newLabel 0`)
+		{warning $war1;return;}
+		shelfTabLayout -e -tabLabel $ca [$selItemIndex[0]] $newLabel  MGshelf_existed_mainShelfTab;
+		textScrollList -e -ri $selItems [0] existedMGshelfCategoryTSL;
+		textScrollList -e -ap $selIndex [0] $newLabel existedMGshelfCategoryTSL;
+		textScrollList -e -si  $newLabel existedMGshelfCategoryTSL;
+	}
+}
+global proc MGShelf_manager (int $mode)
+{
+	//mode 0: existed shelves.
+	//mode 1: add/edit shelf
+	//mode 2: existed/add/edit shelf
+	global int $MGTools_2011_orNot;
+	if (`window -exists MGshelf_editUI`)
+		{deleteUI MGshelf_editUI;}
+	window  -title `MG_DualLan "MGShelf.bar.manager.mi"`-in `MG_DualLan "MGShelf.bar.manager.mi"`  -mxb 0 -wh  607 357  MGshelf_editUI;
+	formLayout MG_Shelf_editFM;
+	//columnLayout  -rowSpacing 0 -columnWidth 400 -adj 1 mainCol;
+	
+	frameLayout   -cll 1 
+			-label `MG_DualLan "MGShelf.manager.cShelf"` 
+			-borderStyle "etchedOut" 
+			-collapseCommand "window -e -height ((`window -q -height MGshelf_editUI`)-225) MGshelf_editUI"
+			-expandCommand "window -e -height ((`window -q -height MGshelf_editUI`)+225) MGshelf_editUI"
+			existedMGshelfFL;
+		
+		paneLayout -configuration "vertical2" existedMGshelfPaneL;
+		//paneLayout -q -paneSize existedMGshelfPaneL;
+		paneLayout -e -paneSize 1 20 100 existedMGshelfPaneL;
+		string $form1=`formLayout`;
+		string $catAnnoText=`MG_DualLan "MGShelf.manager.cate.title"`;
+		string $text=`text -l $catAnnoText -font "boldLabelFont"`;
+		textScrollList 
+			-sc "MGshelf_manager_selectCategoryCommand 0" existedMGshelfCategoryTSL;
+		string $upLabel=`MG_DualLan "MGShelf.manager.mUp"`;
+		string $dnLabel=`MG_DualLan "MGShelf.manager.mDn"`;	
+		string $newLabel=`MG_DualLan "MGShelf.manager.new"`;
+		string $renLabel=`MG_DualLan "MGShelf.manager.ren"`;	
+		string $dupLabel=`MG_DualLan "MGShelf.manager.dup"`;
+		string $delLabel=`MG_DualLan "MGShelf.manager.del"`;
+		
+		string $button1=`button -l $upLabel -c "moveUpDnSelected_MGshelfCategory_Item -1"`;
+		string $button2=`button -l $dnLabel -c "moveUpDnSelected_MGshelfCategory_Item 1"`;
+		string $button3=`button -l $newLabel -c "MGshelfManager_new_Category 0 \"\""`;
+		string $button4=`button -l $dupLabel -c "duplicate_MGshelf_Catagory"`;
+		string $button5=`button -l $renLabel -c "rename_MGshelf_Catagory"`;
+		string $button6=`button -l $delLabel -c "del_MGshelf_CatagoryInManager"`;
+		formLayout -e
+			-af $text "top" 0
+			-af $text "left" 0
+			-af $text "right" 0
+			
+			-ac  existedMGshelfCategoryTSL "top" 0 $text
+			-af existedMGshelfCategoryTSL "left" 0
+			-af existedMGshelfCategoryTSL "right" 0
+			-ac existedMGshelfCategoryTSL "bottom" 2 $button1
+			
+			-af $button1 "left" 0
+			-ap $button1 "right" 0 33
+			-ac $button1 "bottom" 2  $button4
+			
+			-ac $button2 "left" 2 $button1
+			-ap $button2 "right" 0 66
+			-ac $button2 "bottom" 2  $button4
+			
+			-ac $button3 "left" 2 $button2
+			-af $button3 "right" 0 
+			-ac $button3 "bottom" 2 $button4
+			
+			-af $button4 "left" 0
+			-ap $button4 "right" 0 33
+			-af $button4 "bottom" 2 
+			
+			-ac $button5 "left" 2 $button4
+			-ap $button5 "right" 0 66
+			-af $button5 "bottom" 2 
+			
+			-ac $button6 "left" 2 $button5
+			-af $button6 "right" 0 
+			-af $button6 "bottom" 2 
+			$form1;
+		setParent existedMGshelfPaneL;
+		string $form2=`formLayout`;
+		shelfTabLayout 
+				-sc "MGshelf_manager_selectCategoryCommand 1"
+		 		-image "smallTrash.xpm" 
+				-tabsVisible 1 -innerMarginHeight 0 -innerMarginWidth 0
+		 		-imageVisible 1 MGshelf_existed_mainShelfTab;
+			popupMenu ;
+			menuItem -l `MG_DualLan "MGShelf.manager.refreshMenu"` -c "applyShelfManagerEditMenu 1";
+		loadMGshelfIntoMGshelfExistCategoryArea;
+		loadMGshelfIntoMGshelfExistContentArea 1;
+		setParent $form2;
+		$l1=`MG_DualLan "MGShelf.manager.save"`;
+		$l2=`MG_DualLan "MGShelf.manager.help"`;	
+		$l3=`MG_DualLan "MGShelf.manager.close"`;
+		string $l4=`MG_DualLan "MGShelf.manager.refresh"`;
+		string $l5=`MG_DualLan "MGShelf.manager.cancelEdit"`;
+		
+		string $resetBtn=`button -label $l5  -c "MGShelf_manager 0"`;
+		string $refreshBtn=`button -label $l4  -c "refreshMGshelf_display_inManager"`;
+		string $saveBtn=`button -label $l1  -c "saveMGshelf_inManager"`;	
+		string $helpBtn=`button -label $l2 -c "MGtoolsHelp \"mg_shelf_manager.htm\""`;		
+		string $closeBtn=`button -label $l3 -c "deleteUI  MGshelf_editUI"`;
+		formLayout -e
+			-af MGshelf_existed_mainShelfTab "top" 0
+			-af MGshelf_existed_mainShelfTab "left" 0
+			-af MGshelf_existed_mainShelfTab "right" 0
+			-ac MGshelf_existed_mainShelfTab "bottom" 0  $saveBtn
+			
+			-af $refreshBtn "bottom" 0
+			-af $refreshBtn "left" 0
+			-ap $refreshBtn "right"  0 20
+			
+			-af $resetBtn "bottom" 0
+			-ac $resetBtn "left" 2 $refreshBtn
+			-ap $resetBtn "right"  0 40
+			
+			-af $saveBtn "bottom" 0
+			-ac $saveBtn "left" 2 $resetBtn
+			-ap $saveBtn "right"  0 60
+			
+			-af $helpBtn "bottom" 0
+			-ac $helpBtn "left" 2 $saveBtn
+			-ap $helpBtn "right"  0 80
+			
+			-af $closeBtn "bottom" 0
+			-ac $closeBtn "left" 2 $helpBtn
+			-af $closeBtn "right" 	0		
+			$form2;
+	
+	setParent MG_Shelf_editFM;
+	frameLayout   -cll 0 
+			-label `MG_DualLan "MGShelf.manager.addEditNewS"`
+			-borderStyle "etchedOut" 
+			MG_shelfNewFL;
+	if ($mode!=1)	
+	{
+		int $gap=271;
+		if($MGTools_2011_orNot)$gap=308;
+		frameLayout  -e -cll 1 
+			-collapseCommand ("window -e -height ((`window -q -height MGshelf_editUI`)-"+$gap+") MGshelf_editUI")
+			-expandCommand ("window -e -height ((`window -q -height MGshelf_editUI`)+"+$gap+") MGshelf_editUI")
+					MG_shelfNewFL;
+	}	
+	string $form3=`formLayout`;
+		string $newCl1=`columnLayout  -rowSpacing 1 -columnWidth 400 -adj 1 `;
+		rowLayout -nc 2 -cw2 50 300 -cl2 "center" "left";
+		global int $testSupportPythonOrNot_ForMGshelf;
+		button -w 50 -align "center" -en $testSupportPythonOrNot_ForMGshelf -l "mel" -c "MGshelf_manager_switchPythonMel" MGshelfManager_pythonMel_button;
+		text -label `MG_DualLan "MGShelf.manager.cmdTextF.anno"` -align "left" MGshelfManager_NewEdit_top_annoText;;
+		setParent..;	setParent..;
+		scrollField -ww 1 -height  120 MG_Shelf_commandSF;
+		popupMenu;
+			menuItem -l `MG_DualLan "MGShelf.manager.insertCodes.mi"`
+				  -c "quickInsertSourceCode" ;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGShelf.manager.insertPyCodes.mi"`
+					-en $testSupportPythonOrNot_ForMGshelf
+				  -c "quickInsertImportPythonCode" ;			
+		string $newCl2=`columnLayout  -rowSpacing 1 -columnWidth 400 -adj 1 `;
+		formLayout -e 
+			-af $newCl1 "top" 0
+			-af $newCl1 "left" 0
+			-af $newCl1 "right" 0
+			
+			-ac MG_Shelf_commandSF "top" 0 $newCl1
+			-af MG_Shelf_commandSF "left" 0
+			-af MG_Shelf_commandSF "right"  0 
+			-ac MG_Shelf_commandSF "bottom" 2  $newCl2
+			
+			-af $newCl2 "bottom" 0
+			-af $newCl2 "left" 2 
+			-af $newCl2 "right"  0 
+				
+			$form3;			
+		rowLayout -nc 4 -columnAlign4 "left" "left" "left"  "left"  -columnWidth4 102 95 230 150 ;
+		button -align "center" -l `MG_DualLan "MGShelf.manager.testCodes.btn"` -c "eval `scrollField -q -text MG_Shelf_commandSF`" MGshelfManager_testCodeBtn;
+		checkBox	-label `MG_DualLan "MGShelf.manager.saveAsMel.btn"`
+				-onc   "textFieldGrp  -e -enable 1 exMelFileTF"
+				-ofc  "textFieldGrp  -e -enable 0 exMelFileTF"
+				-w 120
+				exMelFileCB;
+	  	textFieldGrp  -columnWidth2 70 155
+	  			-label `MG_DualLan "MGShelf.manager.saveAsMel.fileName"`
+	  			-enable 0
+				exMelFileTF;
+		button -l `MG_DualLan "MGShelf.manager.saveAsMel.folder"`
+			-c "opensaveMGshelf_inManagerExtMelFolder"
+			melFolderBTN;
+		setParent..;
+		separator -st "in";
+		rowLayout -nc 2 -columnWidth2 319 100 ;
+		text -label `MG_DualLan "MGShelf.manager.pickIcon.anno"` -align "left";
+		string $deleteHicon =("shelfButton -e -image \"\" selectIcon_hBtn");
+		string $deleteHicon1 =("shelfButton -e -highlightImage  \"\" selectIconBtn");
+		checkBox  	-value 1 
+				-label `MG_DualLan "MGShelf.manager.HIcon.anno"`
+				-offCommand "shelfButton -e -image \"\" selectIcon_hBtn;shelfButton -e -highlightImage  \"\" selectIconBtn;window -e -wh 500 440 MGshelf_editUI;window -e -wh 500 443 MGshelf_editUI;"
+				-onCommand ("shelfButton -e -image  `shelfIcon general_melIcon_h.bmp` selectIcon_hBtn;shelfButton -e -highlightImage `shelfIcon general_melIcon_h.bmp` selectIconBtn;")
+				hightLightOnOffCB ;
+		setParent..;
+		rowLayout -nc 5 -columnWidth5  100 29 100 87  100 iconSamplyRL;
+		gridLayout -numberOfColumns 1 -numberOfRows 1  -cellWidthHeight 38 38;
+		shelfButton  -width 38 -height 38 
+			-image `shelfIcon general_melIcon.bmp` 
+			-highlightImage  `shelfIcon general_melIcon_h.bmp` 
+			-c "$path=`MGshelfIconPath`;shelfButton -e -image $path selectIconBtn;"
+			selectIconBtn;
+		setParent..;
+		columnLayout nullCL;
+		setParent..;
+		shelfTabLayout 
+	 		-image "smallTrash.xpm" 
+			-tabsVisible 0 -scrollable 0 -innerMarginHeight 0 -innerMarginWidth 0
+	 		-imageVisible 1 iconSampleShelfTab;
+		shelfLayout -width 83 -height 43 -style "iconOnly" iconSampleshelfSL;
+		setParent..;
+		setParent..;
+		columnLayout nullCL1;
+		setParent..;
+		gridLayout -numberOfColumns 1 -numberOfRows 1  -cellWidthHeight 38 38 hightLightIconGL;
+		shelfButton  -width 38 -height 38 
+			-image `shelfIcon general_melIcon_h.bmp` 
+			-c "$path=`MGshelfIcon_hPath`;shelfButton -e -highlightImage $path selectIconBtn;shelfButton -e -image $path selectIcon_hBtn"
+			selectIcon_hBtn;
+		setParent..;
+		setParent..;
+		rowLayout -nc 4  -columnAlign4 "center" "center" "center" "center" -columnWidth4  90 260 70 50 btnRL;
+		text -label `MG_DualLan "MGShelf.manager.menuName"` -align "left";
+		textField  -text "" -width 260 shMNTF;
+		text -label `MG_DualLan "MGShelf.manager.sLable"` -align "left";
+		textField  -text "" -width 75 -changeCommand "interactShelfLabel" shSNTF;
+		setParent..;
+		rowLayout -nc 3  -columnAlign3 "center" "center" "center" -columnWidth3 90 350 60 tfRL;
+		text -align "left" -label `MG_DualLan "MGShelf.manager.annotation"` annoTX;
+		textField  -text "" -width 346 annoTF;
+		button -l `MG_DualLan "MGShelf.manager.add"` -width 53 -c "addOrEdit_MGshelf_inManager 1" MGshelf_Manager_addEditBTN;
+	int $height =300;
+	if(!$mode||$mode==2)
+	{
+		formLayout -e 
+			-af existedMGshelfFL "top" 2
+			-af existedMGshelfFL "left" 2
+			-af existedMGshelfFL "right" 2
+			-ac  existedMGshelfFL "bottom" 3 MG_shelfNewFL
+			
+			-af MG_shelfNewFL "bottom" 0
+			-af MG_shelfNewFL "left" 2
+			-af MG_shelfNewFL "right" 2	
+			MG_Shelf_editFM;
+		if(!$mode)
+		{
+			frameLayout -e -cl 1 MG_shelfNewFL;
+		}
+		else{$height=540;}
+	}
+	else
+	{
+			formLayout -e 
+				-af MG_shelfNewFL "top" 3	
+				-af MG_shelfNewFL "bottom" 0
+				-af MG_shelfNewFL "left" 2
+				-af MG_shelfNewFL "right" 2	
+				MG_Shelf_editFM;
+			frameLayout -e -vis 0 existedMGshelfFL;
+			frameLayout -e -bv 0 -cll 0 MG_shelfNewFL;
+			$height=335;	
+	}
+		//window -q -wh  MGshelf_editUI;	
+		showWindow MGshelf_editUI;
+		window -e -wh 530 $height MGshelf_editUI;
+		print `MG_DualLan "MGShelf.manager.welcome"`;
+}
+//MGShelf_manager 0;
+
+global proc string MGshelfIcon_hPath ()
+	{string $arrPath=`shelfButton -q -image selectIcon_hBtn`;
+			global string $GmgtoolsPath;
+	string $path =`fileDialog  -directoryMask ($GmgtoolsPath+"icon/*.bmp") `;
+	if (size($path)==0)
+		{$path=$arrPath;}
+	checkBox -e -value  1 hightLightOnOffCB;
+	return $path;
+}
+
+global proc string MGshelfIconPath ()
+	{
+		string $arrPath=`shelfButton -q -image selectIconBtn`;
+			global string $GmgtoolsPath;
+
+		string $path =`fileDialog  -directoryMask ($GmgtoolsPath+"icon/*.bmp")`;
+	if (size($path)==0)
+		{$path=$arrPath;}
+	return $path;
+	}
+
+global proc addOrEdit_MGshelf_inManager(int $mode)
+{
+	//mode 0: edit in MGshelfUI
+	//mode 1: edit in MGshelf manager.
+	global int $testSupportPythonOrNot_ForMGshelf;
+	global string $currentEditMGshelf_sourceType;
+	global string $MGshelf_v2_editingCtl;
+	string $arrShelfCommand= `scrollField -q -text  MG_Shelf_commandSF`;
+	string $shelfCommand;
+	string $arrmenuLabel=`textField -q -text  shMNTF`;
+	string $menuLabel=`encodeString $arrmenuLabel`;
+
+	if(`size ($arrShelfCommand)`==0 || `size ($menuLabel)`==0)
+		{
+			confirmDialog -title `MG_DualLan "footStepSnap.warnSelect.title"`
+				-message `MG_DualLan "MGShelf.addShelf.war"`
+				-button `MG_DualLan "footStepSnap.warnSelect.ok"`;
+			return; 
+		}
+	  if (`checkBox -q -value exMelFileCB`)
+		{	string $saveMelFileName=`textFieldGrp -q -text exMelFileTF`;
+			//$saveMelFileName=`encodeString $saveMelFileName`;
+			global string $GmgtoolsPath;
+			string $path =($GmgtoolsPath+"MG_Shelves/externalMelFiles/");
+			string $melFileNameForOpen = ( $path + $saveMelFileName);
+			string $theMelFile = ($melFileNameForOpen+".mel");
+			if(`size ($saveMelFileName)`==0)
+				{
+					confirmDialog -title `MG_DualLan "footStepSnap.warnSelect.title"`
+						-message `MG_DualLan "MGShelf.addFileMelShelf.war"`
+						-button `MG_DualLan "footStepSnap.warnSelect.ok"`;
+					return;
+				}
+			if (`filetest -f $theMelFile`)
+				{
+					$title=`MG_DualLan "MGShelf.shelfExisted.war.title"`;
+					$message=`MG_DualLan "MGShelf.shelfExisted.war.message"`;
+					$overlay=`MG_DualLan "MGShelf.shelfExisted.war.overlay"`;
+					$cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+					
+					string $result =`confirmDialog -title $title
+ 						-message $message
+ 						-button $overlay -button $cancel
+ 						-defaultButton $overlay -cancelButton $cancel
+ 						-dismissString $cancel`;
+					if ($result==$cancel){return;}			
+				}
+			
+			$melContent=$arrShelfCommand;
+ 			$fileId1=`fopen $theMelFile "w"`;
+ 			fwrite $fileId1 $melContent;
+ 			fclose $fileId1;	
+			global string $GmgtoolsPath;			
+		 	$shelfCommand=(" source \""+$GmgtoolsPath+"MG_Shelves/externalMelFiles/"+$saveMelFileName+".mel\";");
+			//$shelfCommand=`encodeString $shelfCommand`;
+		}	
+		else{
+				//$shelfCommand=`encodeString $arrShelfCommand`;
+				$shelfCommand=$arrShelfCommand;
+			}
+
+	string $iconPath=`shelfButton -q -image selectIconBtn`;
+	string $iconHightlightPath=`shelfButton -q -highlightImage selectIconBtn`;
+	if(!size($iconHightlightPath))$iconHightlightPath=$iconPath;
+	string $arriconLabel=`textField -q -text  shSNTF`;
+	string $iconLabel=`encodeString $arriconLabel `;
+	string $shelfButtonName=$iconLabel+"_ShelfBTN";
+	string $arrannotation=`textField -q -text  annoTF`;
+	string $annotation=$arrannotation;
+
+	if(`shelfLayout -q -numberOfChildren iconSampleshelfSL`>0)
+	{
+		string $sampleIcons [];
+		$sampleIcons=`shelfLayout -q -childArray iconSampleshelfSL`;
+		$iconPath=`shelfButton -q -image $sampleIcons[0]`;
+	}
+	int $sii=`shelfTabLayout -q -selectTabIndex MGshelf_existed_mainShelfTab`;	
+	string $ca []=`shelfTabLayout -q -ca MGshelf_existed_mainShelfTab`;
+	string $sl=$ca [($sii-1)];
+	string $oldS []=`shelfLayout -q -ca $sl`;
+	int $width;
+	int $height=32;string $st;
+	if(size($oldS))
+	{
+		$width=`shelfButton -q -w $oldS [0]`;
+		//$height=`shelfButton -q -h $oldS [0]`;
+		$st=`shelfButton -q -st $oldS [0]`;
+	}
+	else{
+			$width=32;
+			$height=32;
+			$st="iconAndTextHorizontal";		
+		}
+	
+	if($mode)
+	{
+		button -e -l `MG_DualLan "MGShelf.manager.add"` -width 53  MGshelf_Manager_addEditBTN;
+		if(`shelfButton -ex  $MGshelf_v2_editingCtl`)
+		{
+			shelfButton -e
+				-st $st
+				-w $width 
+				-h $height
+				-label $menuLabel
+				-imageOverlayLabel $iconLabel
+				-image $iconPath
+				-highlightImage  $iconHightlightPath
+				-annotation  $annotation
+				-c $shelfCommand $MGshelf_v2_editingCtl;						
+		}
+		else
+		{
+			setParent  $sl;
+			string $newButton;
+			if($testSupportPythonOrNot_ForMGshelf)
+			{			
+				$newButton=`shelfButton 
+				-p $sl
+				-st $st
+				-stp $currentEditMGshelf_sourceType
+				-w $width -h $height
+				-label $menuLabel
+				-imageOverlayLabel $iconLabel
+				-image $iconPath
+				-highlightImage  $iconHightlightPath
+				-annotation  $annotation
+				-c $shelfCommand`;
+			}
+			else
+			{			
+				$newButton=`shelfButton 
+				-p $sl
+				-st $st
+				-w $width -h $height
+				-label $menuLabel
+				-imageOverlayLabel $iconLabel
+				-image $iconPath
+				-highlightImage  $iconHightlightPath
+				-annotation  $annotation
+				-c $shelfCommand`;
+			}
+		}
+	}
+	else
+	{
+		if(`iconTextButton -ex  $MGshelf_v2_editingCtl`)
+		{
+			iconTextButton -e
+				-st $st
+				-w $width -h $height
+				-label $menuLabel
+				-imageOverlayLabel $iconLabel
+				-image $iconPath
+				-highlightImage  $iconHightlightPath
+				-annotation  $annotation
+				-c $shelfCommand $MGshelf_v2_editingCtl;				
+		}
+		else
+		{
+			global string $MG_shelves_unfoldeFL;
+			string $newButton;
+				if($testSupportPythonOrNot_ForMGshelf)
+				{			
+					$newButton=`iconTextButton 
+					-p $MG_shelves_unfoldeFL
+					-st $st
+					-stp $currentEditMGshelf_sourceType
+					-w $width -h $height
+					-label $menuLabel
+					-imageOverlayLabel $iconLabel
+					-image $iconPath
+					-highlightImage  $iconHightlightPath
+					-annotation  $annotation
+					-c $shelfCommand`;
+				}
+				else
+				{			
+					$newButton=`iconTextButton 
+					-p $MG_shelves_unfoldeFL
+					-st $st
+					-w $width -h $height
+					-label $menuLabel
+					-imageOverlayLabel $iconLabel
+					-image $iconPath
+					-highlightImage  $iconHightlightPath
+					-annotation  $annotation
+					-c $shelfCommand`;
+				}				
+		}
+	}
+	cleanMGshelf;	
+	//applyShelfManagerEditMenu 1;	
+	
+}
+
+global proc cleanMGshelf ()
+{
+	scrollField -e -text "" MG_Shelf_commandSF;
+	shelfButton -e -image `shelfIcon general_melIcon.bmp` 
+			-highlightImage  `shelfIcon general_melIcon_h.bmp`
+			selectIconBtn;
+	if (`checkBox -q -value hightLightOnOffCB `)
+	{shelfButton -e -image `shelfIcon general_melIcon_h.bmp` 
+			selectIcon_hBtn;}
+	textField -e -text "" shMNTF;
+	textField -e -text "" shSNTF;
+	textField -e -text "" annoTF;
+	if(`shelfLayout -q -numberOfChildren iconSampleshelfSL`>0)
+	{	string $sampleIcons [];
+		$sampleIcons=`shelfLayout -q -childArray iconSampleshelfSL`;	
+		for ($each in $sampleIcons){ deleteUI $each;}
+	}
+	if (`checkBox -q -value exMelFileCB`)
+		{	checkBox -e -value 0 exMelFileCB; 
+			textFieldGrp -e -text ""  -enable 0 exMelFileTF;
+		}
+
+}
+
+
+global proc saveMGshelf_inManager ()
+{
+	//save shelves to shelf file.
+	
+	global string $GmgtoolsPath;
+	string $shelfDir = ($GmgtoolsPath+"MG_Shelves/");
+	if(!`filetest -d $shelfDir`)
+	{
+		sysFile -md $shelfDir;
+	}
+	string $category []=`textScrollList -q -ai existedMGshelfCategoryTSL`;
+	if(`optionVar -ex "MGshelf_v2_FLorder"`)
+	{
+		optionVar -ca "MGshelf_v2_FLorder";
+	}
+	string $tab []=`shelfTabLayout -q -tl MGshelf_existed_mainShelfTab`;
+	string $ca []=`shelfTabLayout -q -ca MGshelf_existed_mainShelfTab`;	
+	global string $MGshelf_manager_initial_st;
+	string $totalMenuCodes;
+	applyShelfManagerEditMenu 0;
+
+	for ($eachTab in $ca)
+	{
+		//print $eachTab;
+		catch (`shelfLayout -e -cw 120 -st $MGshelf_manager_initial_st $eachTab`);
+		string $shelfItems [];clear $shelfItems;
+		//if(`shelfLayout -q -ex $eachTab`)
+		//{
+			$shelfItems=`shelfLayout -q -ca $eachTab`;
+		//}
+		if(size($shelfItems))
+		{			
+			for ($each in  $shelfItems)
+			{	
+				catch (`shelfButton -e -st $MGshelf_manager_initial_st $each`);
+			}
+		}		
+		saveShelf $eachTab ($shelfDir + "MGshelf_"+$eachTab);
+	}
+	for($eachS in $category){optionVar -sva "MGshelf_v2_FLorder" ("MGshelf_"+$eachS+".mel") ;}
+	//print $totalMenuCodes;
+		updateMGshelfEdit;	
+		applyShelfManagerEditMenu 1;
+		print `MG_DualLan "MGShelf.manager.saved.rep"`;
+		//string $arrShelfCommand= `scrollField -q -text  MG_Shelf_commandSF`;
+}
+
+
+global proc interactShelfLabel()
+{	string $arriconLabel=`textField -q -text  shSNTF`;
+	string $iconLabel=`encodeString $arriconLabel `;
+	shelfButton -e -imageOverlayLabel $iconLabel selectIconBtn;
+	if(`shelfLayout -q -numberOfChildren iconSampleshelfSL`>0)
+	{string $sampleIcons [];
+	$sampleIcons=`shelfLayout -q -childArray iconSampleshelfSL`;	
+	shelfButton -e -imageOverlayLabel $iconLabel $sampleIcons[0];
+
+	}
+}
+
+global proc int shelfExistorNot (string $shelfFileName)
+{	global string $GmgtoolsPath;
+	string $path =($GmgtoolsPath+"MG_Shelves/");
+	string $pathAndFile = ($path + $shelfFileName);
+ 	if (`filetest -f $pathAndFile`)
+	{return 1;}
+	else {return 0;}
+}
+global proc deleteShelfButtonFromMGShelfManager (int $index)
+{
+	string $allChildren []=`shelfLayout -q -ca MGshelfSL`;	
+	if(size($allChildren))
+	{
+		deleteUI -control $allChildren[$index];
+	}
+}
+global proc applyShelfManagerEditMenu(int $mode)
+{
+	//mode 0: clear popupMenu
+	//mode 1: make popupMenu
+	global int $MGTools_2011_orNot;
+	string $tab[]=`shelfTabLayout -q -ca MGshelf_existed_mainShelfTab`;	
+	for ($each in $tab)
+	{
+		string $shelfItem [] =`shelfLayout -q -childArray $each`;
+		for ($i=0;$i<size($shelfItem);$i++)
+		{
+			if($MGTools_2011_orNot)shelfButton -e -h 34  -st "iconAndTextHorizontal" -align "left" $shelfItem[$i];
+			string $pmArray []= `shelfButton -q -popupMenuArray  $shelfItem[$i]`;
+			if(size($pmArray))
+			{
+				for ($eachMenu in $pmArray)
+				{deleteUI -menu $eachMenu;}
+			}
+			if(!$mode)continue;
+			popupMenu -p $shelfItem[$i]; 
+			
+			menuItem  
+				-label `MG_DualLan "MGShelf.bar.edit.mi"`
+				-c ("editShelfUI "+$i+" 1")
+				-annotation `MG_DualLan "MGShelf.bar.edit.mi.anno"`; 
+			menuItem  
+				-label `MG_DualLan "MGShelf.bar.delete.mi"` 
+				-c ("deleteShelfButtonFromMGShelfManager "+($i))
+				-annotation `MG_DualLan "MGShelf.bar.delete.mi.anno"`;
+			menuItem -d 1;
+			
+			menuItem  
+				-label `MG_DualLan "MGShelf.resetIcon"` 
+				-c ("MGshelf_resetIcon_toDefault "+$shelfItem[$i]+" shelfButton")
+				-annotation `MG_DualLan "MGShelf.resetIcon.anno"`;
+			
+		}
+	}
+}
+
+global proc editShelfUI(int $shelfIndex,int $mode)
+{
+	//mode 0: edit from MGshelfUI
+	//mode 1: edit from MGshelf Manager.
+	string $shelfItem;
+	global string $MGshelf_v2_editingCtl;
+	if($mode)
+	{
+		string $tab=`shelfTabLayout -q -selectTab MGshelf_existed_mainShelfTab`;	
+		string $allChildren []=`shelfLayout -q -ca $tab`;
+		$shelfItem=$allChildren[$shelfIndex];
+		$MGshelf_v2_editingCtl=$shelfItem;
+		button -e -width 53  -l `MG_DualLan "MGShelf.manager.edit"` MGshelf_Manager_addEditBTN;
+	}
+	else{
+			$shelfItem=$MGshelf_v2_editingCtl;
+			if (!`window -exists MGshelf_editUI`)
+			{
+				MGShelf_manager 1;				
+			}
+			else
+			{
+				formLayout -e 
+					-af MG_shelfNewFL "top" 3	
+					-af MG_shelfNewFL "bottom" 0
+					-af MG_shelfNewFL "left" 2
+					-af MG_shelfNewFL "right" 2	
+					MG_Shelf_editFM;
+				frameLayout -e -vis 0 existedMGshelfFL;
+				frameLayout -e 
+						-bv 0 
+						-cll 0 
+						-cc ""
+						-ec ""
+						MG_shelfNewFL;
+			}
+		button -e -l `MG_DualLan "MGShelf.manager.edit"` 
+				-width 53
+			 -c "addOrEdit_MGshelf_inManager 0" 
+			 MGshelf_Manager_addEditBTN;
+			
+		}
+	string $arrShelfCommand= `scrollField -q -text  MG_Shelf_commandSF`;
+	if (`size ($arrShelfCommand)`!=0)
+	{
+		$title=`MG_DualLan "MGShelf.manager.purge.war.title"`;
+		$mes=`MG_DualLan "MGShelf.manager.purge.war.mes"`;
+		$go=`MG_DualLan "MGShelf.manager.purge.war.go"`;
+		$cancel=`MG_DualLan "MGShelf.shelfExisted.war.cancel"`;
+		string $result =`confirmDialog -title $title
+ 						-message $mes
+ 						-button $go -button $cancel
+ 						-defaultButton $go -cancelButton $cancel
+ 						-dismissString $cancel`;
+					if ($result==$cancel){return;}
+	}
+	cleanMGshelf;
+	global string $currentEditMGshelf_sourceType;$currentEditMGshelf_sourceType="mel";
+	global int $testSupportPythonOrNot_ForMGshelf;
+	if($testSupportPythonOrNot_ForMGshelf)
+				{
+					$currentEditMGshelf_sourceType=`iconTextButton -q -stp $shelfItem`;				
+				}
+	string $itemCommand,$popmenuName,$imageOverlayLabel,$imagePath,$hightLightImagePath,$annotation;
+	if($mode)
+	{
+				
+		 $itemCommand = `shelfButton -q -c $shelfItem`;
+		 $popmenuName = `shelfButton -q -label $shelfItem`;
+		 $date = `system ("date/t")`;
+		$date=`substring $date 1 10`;
+		if(size($popmenuName)>=30){	$popmenuName=("unNamed_"+$date); }
+		 $imageOverlayLabel = `shelfButton -q -imageOverlayLabel $shelfItem`;
+		 $imagePath = `shelfButton -q -image $shelfItem`;
+		 $hightLightImagePath = `shelfButton -q -highlightImage $shelfItem`;
+		 $annotation =`shelfButton -q -annotation $shelfItem`;
+	}
+	else
+	{
+		 $itemCommand = `iconTextButton -q -c $shelfItem`;
+		 $popmenuName = `iconTextButton -q -label $shelfItem`;
+		 $date = `system ("date/t")`;
+		$date=`substring $date 1 10`;
+		if(size($popmenuName)>=30){	$popmenuName=("unNamed_"+$date); }
+		 $imageOverlayLabel = `iconTextButton -q -imageOverlayLabel $shelfItem`;
+		 $imagePath = `iconTextButton -q -image $shelfItem`;
+		 $hightLightImagePath = `iconTextButton -q -highlightImage $shelfItem`;		 
+		 $annotation =`iconTextButton -q -annotation $shelfItem`;
+	}
+	if(!size($hightLightImagePath))$hightLightImagePath=$imagePath;
+	scrollField -e  -text $itemCommand MG_Shelf_commandSF;
+	shelfButton -e -image $imagePath -highlightImage $hightLightImagePath -imageOverlayLabel $imageOverlayLabel selectIconBtn;
+	shelfButton -e -image $hightLightImagePath  selectIcon_hBtn;
+	textField  -e -text $popmenuName shMNTF;	
+	textField  -e -text $popmenuName shMNTF;	
+	textField  -e -text $imageOverlayLabel  shSNTF;
+	textField  -e -text $annotation  annoTF;
+	if($currentEditMGshelf_sourceType=="python")
+	{
+		button -e -c "python (`scrollField -q -text MG_Shelf_commandSF`)" MGshelfManager_testCodeBtn;
+		checkBox -e -en 0 exMelFileCB;
+		button -e -w 50 -l "python" MGshelfManager_pythonMel_button;
+	}
+	else
+	{
+		button -e -c "eval (`scrollField -q -text MG_Shelf_commandSF`)" MGshelfManager_testCodeBtn;
+		checkBox -e -en 1 exMelFileCB;
+		button -e -w 50 -l "mel" MGshelfManager_pythonMel_button;		
+	}
+	button -e -en 0 MGshelfManager_pythonMel_button;
+	//string $deleteUIcommand=("deleteUI -control "+$shelfItem);
+	//eval $deleteUIcommand;
+	if($mode)
+	{
+		if(`frameLayout -q -cl MG_shelfNewFL`)
+		{
+			window -e -height ((`window -q -height MGshelf_editUI`)+271) MGshelf_editUI;
+			frameLayout   -e -cl 0	MG_shelfNewFL;
+		}
+	}
+}
+
+
+global proc updateMGshelfEdit()
+{
+	if (`window -exists MG_Shelf`)
+	{
+		int $wh []=`window -q -wh MG_Shelf`;
+		int $pos []=`window -q -topLeftCorner  MG_Shelf`;		
+		MGshelf_v2;
+		window -e -wh $wh[0] $wh[1] 
+			-topLeftCorner $pos[0] $pos[1]
+			MG_Shelf;
+		
+		//rememberStyle  mgShelfBarUI;
+	}
+	if (`window -exists mgToolUI`)
+	{
+		reFreshMGtoolsPOPShelfMenu;
+	}	
+
+}
+global proc quickInsertSourceCode()
+{ 
+	string $l=`button -q -l MGshelfManager_pythonMel_button`;
+	if($l=="python")
+	{
+		string $title=`MG_DualLan "MGShelf.manager.purge.war.title"`;
+		string $message=`MG_DualLan "MGShelf.manager.insertCodes.war"`;
+		string $cancel=`MG_DualLan "snapLoc.multiMarker.No.btn"`;
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		$test=`confirmDialog -title $title -message $message
+ 				-button $yes -button $cancel -defaultButton $yes
+ 				-cancelButton $cancel -dismissString $cancel`;
+		if($test==$yes)
+		{
+			MGshelf_manager_switchPythonMel;			
+		}
+		else {return;}
+	}	
+	
+	string $workPath="C:/test_3rd_tv/maya/2019/scripts/";
+	string $path =`fileDialog - directoryMask ($workPath+"*.mel")`;
+	if(`size($path)`!=0)
+		{string $sourceCode="source \""+$path+"\";";
+	scrollField -e -insertText $sourceCode MG_Shelf_commandSF;}
+}
+global proc quickInsertImportPythonCode()
+{ 
+	string $l=`button -q -l MGshelfManager_pythonMel_button`;
+	if(!`button -q -en MGshelfManager_pythonMel_button`)
+		{
+			warning `MG_DualLan "MGShelf.manager.insertPyCodes.No.war"`;
+			return;
+		}
+	if($l=="mel")
+	{
+		string $title=`MG_DualLan "MGShelf.manager.purge.war.title"`;
+		string $message=`MG_DualLan "MGShelf.manager.insertPyCodes.war"`;
+		string $cancel=`MG_DualLan "snapLoc.multiMarker.No.btn"`;
+		string $yes=`MG_DualLan "snapLoc.POsnap.war.ok"`;
+		$test=`confirmDialog -title $title -message $message
+ 				-button $yes -button $cancel -defaultButton $yes
+ 				-cancelButton $cancel -dismissString $cancel`;
+		if($test==$yes)
+		{
+			MGshelf_manager_switchPythonMel;			
+		}
+		else {return;}
+	}	
+	string $workPath="C:/test_3rd_tv/maya/2019/scripts/";
+	string $path =`fileDialog -directoryMask ($workPath+"*.py")`;
+	if(`size($path)`!=0)
+		{
+			string $temp [];
+			tokenize $path "/" $temp;
+			int $size=(size($path)-size($temp[(size($temp)-1)])-1);
+			string $rawPath=`substring $path 1 $size`;
+			string $pyMod=`substring $temp[(size($temp)-1)] 1 (size($temp[(size($temp)-1)])-3)`;
+			
+			string $sourceCode=("import sys\nif (sys.path.count (\""+$rawPath+"\")==0):\n\tsys.path.append(\""+$rawPath+"\")\nimport "+$pyMod+"\t#Put the python proc invoke codes below.");
+			//print $sourceCode;
+			scrollField -e -insertText $sourceCode MG_Shelf_commandSF;
+		}
+}
+global proc reFreshMGtoolsPOPShelfMenu ()
+{
+	global int $MGTools_2011_orNot;
+	global int $testSupportPythonOrNot_ForMGshelf;
+	if (!`window -exists mgToolUI`)
+	{
+		return;
+	}
+	convertNormalShelfToMGshelf;
+	$window=`window`;
+	shelfTabLayout MGshelfTempHideSTL;
+	loadMGshelfIntoMGshelfExistContentArea 0;
+	popupMenu -e -dai MGshelfPopUpMenuForMGtools;
+	string $tab []=`shelfTabLayout -q -tl MGshelfTempHideSTL`;
+	string $ca []=`shelfTabLayout -q -ca MGshelfTempHideSTL`;	
+	global int $testSupportPythonOrNot_ForMGshelf;
+	string $unnamed=`MG_DualLan "MGShelf.unnamed.mi"`;
+	//string $date = `system ("date/t")`;
+	//$date=`substring $date 1 10`;
+	for ($eachTab in $ca )
+	{
+		if($MGTools_2011_orNot)
+		{
+			if(!size($eachTab))	continue;
+		}
+		//write popmenu file.================================================
+		string $shelfItem [] =`shelfLayout -q -childArray $eachTab`;
+		if(!size($shelfItem)){continue;}
+		string $UIcommand;
+		string $allMenuCodes="";
+		setParent -m  MGshelfPopUpMenuForMGtools;
+		menuItem -sm 1 -l $eachTab;
+		for ($each in  $shelfItem)
+		{	
+			if(!size($each)){continue;}
+			string $menuName =`shelfButton -q -label $each`;
+			$menuName=strip($menuName);
+			string $annotation =`shelfButton -q -annotation $each`;
+			$annotation=strip($annotation);
+			if(!size($annotation))$annotation=$menuName;
+			if( size($menuName)>=30)
+			{
+				$menuName= $unnamed;
+				if($testSupportPythonOrNot_ForMGshelf)
+				{
+					string $cmdtype =`shelfButton -q -stp $each`;
+					$menuName+=(" ["+$cmdtype+"]");
+				}
+			}//("unNamed_"+$date);}
+									
+			string $itemCommand = `shelfButton -q -c $each`;
+			string $st;
+			if($testSupportPythonOrNot_ForMGshelf)
+			{
+				$st=`shelfButton -q -stp $each`;
+			}
+			if($st!="python")
+			{
+				menuItem -l $menuName
+				-c $itemCommand
+				-annotation $annotation; 
+			}
+		}
+	}
+		setParent -m  MGshelfPopUpMenuForMGtools;
+		menuItem  -divider true;		
+		menuItem 
+			-label `MG_DualLan "MGShelf.mgtools.updateMenu.mi"`
+			-c "reFreshMGtoolsPOPShelfMenu"
+			-annotation `MG_DualLan "MGShelf.mgtools.updateMenu.ann"`; 	
+		menuItem  -divider true;		
+		menuItem 
+			-label `MG_DualLan "MGtools.MGshelf.mi.config"`
+			-c "MGShelf_manager 0"
+			-annotation `MG_DualLan "MGtools.MGshelf.mi.config.anno"`; 
+		menuItem 
+			-label `MG_DualLan "shelfConvertor.mi"`
+			-c `shelfCommand "shelfConverter_WrittenByMiguel.mel" "MG_ConvertShelfTool"`
+			-annotation `MG_DualLan "shelfConvertor.anno"`; 	
+		menuItem 
+			-label `MG_DualLan "MGShelf.openShelfFolder.mi"`
+			-c "global string $GmgtoolsPath;string $shelfPath=(\"\\\"\"+$GmgtoolsPath+\"MG_Shelves/\\\"\");system (\"load \"+$shelfPath)"
+			-annotation `MG_DualLan "MGShelf.openShelfFolder.mi.anno"`; 		
+		menuItem -divider 1;
+		menuItem 
+			-label `MG_DualLan "MGtools.mi.help"` 
+			-c "MGtoolsHelp \"mg_shelf.htm\""
+			-annotation `MG_DualLan "MGtools.mi.help.anno"`; 
+		deleteUI $window;
+		print `MG_DualLan "MGShelf.mgtools.updateMenu.rep"`;
+}

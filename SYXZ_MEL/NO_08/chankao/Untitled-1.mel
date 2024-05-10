@@ -1,0 +1,14 @@
+//Click to load/Close MGtools.
+//@MGtoolIcon.bmp@MGtoolIcon_h.bmp@MGtoolIcon_h.bmp
+if (`window -exists mgToolUI`)
+{
+	deleteUI mgToolUI;
+}
+else
+{
+	string $mayaScriptsPath = "C:/test_3rd_tv/maya/2019/scripts/";
+	global string $GmgtoolsPath;
+	$GmgtoolsPath=($mayaScriptsPath+"MGtools/");
+	eval ("source \""+$GmgtoolsPath+"MGTools_WrittenByMiguel.mel\"");
+	MGtools;
+}

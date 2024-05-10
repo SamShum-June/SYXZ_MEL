@@ -1,0 +1,2132 @@
+//==============================================================//
+//                   MGtools - MGchannelBox 
+//==============================================================//
+//Author: Miguel (Wenfeng Gao) 
+//website: http://mgland.com
+//Feedback: http://mgland.com/works/mel.asp
+//E-mail: mgtools2@gmail.com 
+//CopyRight Miguel @ mgland animation studio.
+
+
+//==============source codes if necessary=========================
+	if(!`exists "shelfCommand"`)
+	{
+		string $mayaScriptsPath ="C:/test_3rd_tv/maya/2019/scripts/";
+		global string $GmgtoolsPath;
+		$GmgtoolsPath=($mayaScriptsPath+"MGtools/");
+		eval ("source \""+$GmgtoolsPath+"serveProc_WrittenByMiguel.mel\"");
+	}
+	if(!`exists "selSetUI"`)
+	{
+		eval `shelfCommand  "selectionTool_WrittenByMiguel.mel" ""`;
+	}
+
+global proc string [] reverseArray(string $originalArray[])
+{
+    string $newArray[] = $originalArray;
+    int $newArrayLength = size($newArray);
+    int $halfLength = $newArrayLength/2;
+    int $i;
+    for ($i = 0; $i <$halfLength; $i++)
+    {
+        string $tmpLayer = $newArray[$i];
+        int $j = $newArrayLength - $i -1;
+        $newArray[$i] = $newArray[$j];
+        $newArray[$j] = $tmpLayer;
+    }
+    return $newArray;
+}
+//======================update selection set menu codes ==============================
+
+global proc string [] returnMGLayerMenuItemList (string $type)
+{	string $layerArray[];
+	if ("Display" == $type) 
+	{
+        $layerArray = `ls -type displayLayer`;
+
+	} 
+	else if ("Render" == $type) 
+	{
+        $layerArray = `listConnections renderLayerManager.renderLayerId`;
+
+	}
+	
+
+	string $removeArray[];
+	    if ($type == "Display") {
+	    //	Remove the default layers. Default layers have an id of 0.
+	    //
+	    $index = 0;
+	    for ($layer in $layerArray) {
+		    if (0 == `getAttr ($layer + ".identification")`) {
+			    $removeArray[$index++] = $layer;
+		    }
+	    }
+	    $layerArray = AWRemoveStringsFromStringArray($removeArray, $layerArray);
+    }
+
+	//	Now sort the remaining layers according to their display order.
+	//
+	$layerArray = sortLayers($layerArray);
+
+    // Reverse the order of the layerArray, so that we can list the
+    // layers from the bottom to the top in the render layer editor
+    // just like in photoshop.
+    //
+    $layerArray = reverseArray($layerArray);
+	return $layerArray;
+}
+global proc MGlayerToggleVis (string $layer)
+{
+	int $vis=`getAttr ($layer+".visibility")`;
+	setAttr ($layer+".visibility") (1-$vis);
+	MGlayerCreateMGDisplayLayerMenus;
+}
+global proc MGlayerToggleTemplate (string $layer)
+{
+	int $tem=`getAttr ($layer+".displayType")`;
+	if($tem==1)
+	{
+		setAttr ($layer+".displayType") 0;
+	}
+	else{setAttr ($layer+".displayType") 1;}
+	MGlayerCreateMGDisplayLayerMenus;
+}
+
+global proc MGlayerToggleReference (string $layer)
+{
+	int $ref=`getAttr ($layer+".displayType")`;
+	if($ref==2)
+	{
+		setAttr ($layer+".displayType") 0;
+	}
+	else{setAttr ($layer+".displayType") 2;}
+	MGlayerCreateMGDisplayLayerMenus;
+}
+global proc MGlayerAllDisplayType (int $mode)
+{
+	string $displayLayers []=`returnMGLayerMenuItemList "Display"`;	
+	for ($each in $displayLayers)
+	{
+		setAttr ($each+".displayType") $mode;
+	}
+	MGlayerCreateMGDisplayLayerMenus;
+}
+global proc string MGlayerCreateDisplayLayer (int $mode)
+{
+	string $layer;
+	if(!$mode)
+	{
+		$layer=`createDisplayLayer -e`;
+//		editDisplayLayerMembers $layer `ls -selection`;
+	}
+	else
+		{
+			string $text="_layer";
+			string $sel []=`ls -sl`;
+			if(size($sel))
+			{
+				string $buffer[];
+				$numTokens = `tokenize $sel[0] ":"  $buffer`;
+				$text=($buffer[0]+"_layer");
+			}
+			string $title=`MG_DualLan "MGcBox.cLayer.title"`;
+			string $mes=`MG_DualLan "displayTool.prompt.message"`;
+			string $cempty=`MG_DualLan "MGcBox.cLayer.cEmpty"`;
+			string $csel=`MG_DualLan "MGcBox.cLayer.cSel"`;
+			string $cancel=`MG_DualLan "miniToolB.repNS.cancel"`;
+			
+ 			string $result = `promptDialog 
+ 				-title $title
+				-text $text
+ 				-message $mes
+ 				-button $cempty -button $csel -button $cancel
+ 				-defaultButton $cempty -cancelButton $cancel
+ 				-dismissString $cancel`;
+ 
+ 		if ($result == $cempty||$result == $csel) 
+			{
+ 				$text = `promptDialog -query -text`;
+				if($result == $csel)
+				{
+					$layer=`createDisplayLayer -name $text -number 1`;
+				}	
+				else{$layer=`createDisplayLayer -name $text -number 1 -empty`;}
+ 			}
+		}
+	return $layer;
+}
+global proc MGlayerFloatOrEmbedOption ()
+{
+
+	if (`window -exists MGchannelBoxLayerEditorOptionUI`)
+	{
+		deleteUI MGchannelBoxLayerEditorOptionUI;
+	}
+		window -title `MG_DualLan "MGcBox.Layer.option.title"` -in `MG_DualLan "MGcBox.Layer.option.title"` -s 0 MGchannelBoxLayerEditorOptionUI;
+		columnLayout -columnOffset "left" 2 -rowSpacing 4 -adj 1;
+		radioButtonGrp -numberOfRadioButtons 2
+ 			-label `MG_DualLan "MGcBox.Layer.option.annoText"`
+			-labelArray2 `MG_DualLan "MGcBox.Layer.option.option1"` `MG_DualLan "MGcBox.Layer.option.option2"` 
+			-on1 ("saveMGEditorPreset \"layerEditor\" 0")
+			-on2 ("saveMGEditorPreset \"layerEditor\" 2")
+			-sl (`getMGEditorPreset "layerEditor"`? 2:1);
+		separator -st "in" ;
+		rowLayout -nc 2 -cw2 235 100 -cl2 "center" "center";
+		text -l "";
+		button -l `MG_DualLan "miniToolB.HUD.close"` -w 95 -c "deleteUI MGchannelBoxLayerEditorOptionUI";
+		showWindow MGchannelBoxLayerEditorOptionUI;
+		//window -q -wh MGchannelBoxLayerEditorOptionUI;
+		window -e -wh  350 83 MGchannelBoxLayerEditorOptionUI;	
+}
+global proc MGlayerCreateMGDisplayLayerMenus ()
+{
+	global int $MGTools_2011_orNot;
+	if(!`formLayout -q -ex MGChannelBoxForm`){return;}
+	string $parent="myChannel";
+	string $popUPmenu;
+		if(`menu -exists MGchannelBoxDisplayLayerMenu`){deleteUI -menu MGchannelBoxDisplayLayerMenu;}
+		popupMenu -allowOptionBoxes 1 -p $parent -ctrlModifier 1 -mm 1 MGchannelBoxDisplayLayerMenu;
+
+//==============================displayLayers=============================
+	setParent -menu MGchannelBoxDisplayLayerMenu;
+	string $displayLayers []=`returnMGLayerMenuItemList "Display"`;	
+			for ($eachDisplay in $displayLayers)
+			{
+				int $vis=`getAttr ($eachDisplay+".visibility")`;
+				menuItem -cb $vis -l $eachDisplay -c ("MGlayerToggleVis "+$eachDisplay) -p "MGchannelBoxDisplayLayerMenu";
+				menuItem -optionBox 1  -p "MGchannelBoxDisplayLayerMenu" -c ("createLayerEditorQuickEditWindow { \""+$eachDisplay+"\" }");
+			}
+			menuItem -d 1 ;			
+			menuItem -l `MG_DualLan "animLib.libUI.refresh"` -c "MGlayerCreateMGDisplayLayerMenus";
+
+			menuItem -rp "W"  -p "MGchannelBoxDisplayLayerMenu"
+				-l `MG_DualLan "MGtools.channelBox.mi.hideshowLayer"`
+				 -c "int $i;setLayerTo all\".visibility\" $i;$i=1-$i;MGlayerCreateMGDisplayLayerMenus"
+				-annotation `MG_DualLan "MGtools.channelBox.mi.hideshowLayer"`; 
+
+			menuItem -rp "E"  -p "MGchannelBoxDisplayLayerMenu"
+				-label `MG_DualLan "MGtools.channelBox.mi.putInNewLayer"`
+				-c "createLayerAndHide"
+				-annotation `MG_DualLan "MGtools.channelBox.mi.putInNewLayer"`;
+			if($MGTools_2011_orNot)	
+			{
+				menuItem -rp "N" -l `MG_DualLan "MGtools.channelBox.mi.LE"` 
+							-c "ToggleChannelsLayers";
+			}
+			else
+			{						
+				menuItem -rp "N" -l `MG_DualLan "MGtools.channelBox.mi.LE"`  
+					-p "MGchannelBoxDisplayLayerMenu"
+					-c "MGLayerEditorSwitch 1";
+				menuItem -ob 1 -p "MGchannelBoxDisplayLayerMenu"
+					-c "MGlayerFloatOrEmbedOption";	
+			}
+			
+			menuItem -rp "SW" -l "Template" -sm 1 -p "MGchannelBoxDisplayLayerMenu"
+				-c "" -aob 1;
+					menuItem -rp "SW"  -l `MG_DualLan "MGcBox.Layer.mi.allT"` -c "MGlayerAllDisplayType 1";
+					menuItem -rp "NW"  -l `MG_DualLan "MGcBox.Layer.mi.allN"` -c "MGlayerAllDisplayType 0";	
+					menuItem -en 0 -l  `MG_DualLan "MGcBox.Layer.mi.setT"` ;
+				for ($eachDisplay1 in $displayLayers)
+				{
+					int $vis=0, $tem=`getAttr ($eachDisplay1+".displayType")`;
+						if($tem==1)
+						{
+							$vis=1;
+						}
+					menuItem -cb $vis -l $eachDisplay1 -c ("MGlayerToggleTemplate "+$eachDisplay1);
+					menuItem -optionBox 1 -c ("createLayerEditorQuickEditWindow { \""+$eachDisplay1+"\" }");
+				}	
+				
+			menuItem -rp "SE" -l "Reference"  -sm 1 -p "MGchannelBoxDisplayLayerMenu"
+				-c "" -aob 1;	
+					menuItem -rp "SE"  -l `MG_DualLan "MGcBox.Layer.mi.allR"` -c "MGlayerAllDisplayType 2";
+					menuItem -rp "NE"  -l `MG_DualLan "MGcBox.Layer.mi.allN"` -c "MGlayerAllDisplayType 0";	
+					menuItem -en 0 -l `MG_DualLan "MGcBox.Layer.mi.setR"`;
+					//menuItem -d 1;
+				for ($eachDisplay2 in $displayLayers)
+				{
+					int $vis=0, $ref=`getAttr ($eachDisplay2+".displayType")`;
+						if($ref==2)
+						{
+							$vis=1;
+						}
+					menuItem -cb $vis -l $eachDisplay2 -c ("MGlayerToggleReference "+$eachDisplay2);
+					menuItem -optionBox 1 -c ("createLayerEditorQuickEditWindow { \""+$eachDisplay2+"\" }");
+				}
+				
+			menuItem -rp "NE" -l `MG_DualLan "MGcBox.Layer.mi.cAdd"` -sm 1 -p "MGchannelBoxDisplayLayerMenu"
+				-aob 1;	
+				menuItem -rp "SE"  -l `MG_DualLan "MGcBox.Layer.mi.cL"`  -c "MGlayerCreateDisplayLayer 0" ;
+				menuItem -rp "NE"  -l `MG_DualLan "MGcBox.Layer.mi.cLDot"` -c "MGlayerCreateDisplayLayer 1" ;	
+				menuItem -en 0 -l `MG_DualLan "MGcBox.Layer.mi.addSelTo"`;
+				for ($eachDisplay0 in $displayLayers)
+					{
+						menuItem -l $eachDisplay0 -c ("editDisplayLayerMembers -noRecurse "+$eachDisplay0+" `ls -selection`;");
+						//menuItem -optionBox 1 ;
+					}
+				menuItem -d 1;
+				menuItem -l `MG_DualLan "MGcBox.Layer.mi.removeSel"` -c ("editDisplayLayerMembers defaultLayer `ls -selection`;");
+					
+			menuItem -rp "NW" -l `MG_DualLan "MGcBox.Layer.mi.del"`  -sm 1 -p "MGchannelBoxDisplayLayerMenu"
+				-aob 1;	
+					menuItem -rp "NW"   -l `MG_DualLan "MGcBox.Layer.mi.delNU"` -c "layerEditorSelectUnused;layerEditorDeleteLayer \"\";";
+					menuItem -rp "NE" -l `MG_DualLan "MGcBox.Layer.mi.delA"`  -c ("delete `returnMGLayerMenuItemList \"Display\"`");
+					menuItem -en 0 -l `MG_DualLan "MGcBox.Layer.mi.delL"`;
+					//menuItem -d 1;
+				for ($eachDisplay3 in $displayLayers)
+				{
+					menuItem -l $eachDisplay3 -c ("layerEditorDeleteLayer "+$eachDisplay3);
+					//menuItem -optionBox 1 ;
+				}
+
+}
+
+global proc MGlayerCreateMGRenderLayerMenus ()
+{
+	if(!`formLayout -q -ex MGChannelBoxForm`){return;}
+	if(!`exists layerEditorLayerButtonSelect`)
+		source "layerEditor.mel";
+	string $parent="myChannel";
+	string $popUPmenu;
+		if(`menu -exists MGchannelBoxRenderLayerMenu`){deleteUI -menu MGchannelBoxRenderLayerMenu;}
+		popupMenu -allowOptionBoxes 1 -p $parent -altModifier 1 MGchannelBoxRenderLayerMenu;		
+
+	setParent -menu MGchannelBoxRenderLayerMenu;
+
+//==============================renderLayers=============================
+	string $renderLayers []=`returnMGLayerMenuItemList "Render"`;	
+			menuItem -en 0 -l `MG_DualLan "MGcBox.RLayer.mi"` -p "MGchannelBoxRenderLayerMenu"	;
+			//menuItem -d 1 -p "MGchannelBoxRenderLayerMenu"	;
+			menuItem -d 1 ;	
+			int $masterVis=0;
+			if(`editRenderLayerGlobals -q -currentRenderLayer`=="masterLayer")
+			{$masterVis=1;}
+			string $collection1 = `radioMenuItemCollection`;
+			menuItem -l "masterLayer" -p "MGchannelBoxRenderLayerMenu"
+				-radioButton $masterVis
+				-collection $collection1
+				-c "if(`objExists defaultRenderLayer`){editRenderLayerGlobals -currentRenderLayer  defaultRenderLayer;layerEditorLayerButtonSelect 0 defaultRenderLayer;}";
+			//menuItem -d 1 -p "MGchannelBoxRenderLayerMenu"	;
+			//menuItem -d 1 ;			
+			for ($eachRender in $renderLayers)
+				{	
+					string $current=`editRenderLayerGlobals -q -currentRenderLayer`;
+					int $vis=0;
+					if($current==$eachRender)
+					{$vis=1;}
+					if($eachRender!="defaultRenderLayer")
+						{
+							menuItem -l $eachRender 
+								-radioButton $vis				
+								-collection $collection1
+								-c ("editRenderLayerGlobals -currentRenderLayer "+$eachRender+";layerEditorLayerButtonSelect 0 "+$eachRender);
+							menuItem -ob 1
+								-c ("createLayerEditorQuickEditWindow { \""+$eachRender+"\" };");							
+						}
+					//menuItem -optionBox 1 ;
+				}
+			menuItem -d 1 ;			
+			menuItem -l `MG_DualLan "animLib.libUI.refresh"` -c "MGlayerCreateMGRenderLayerMenus";			
+}
+global proc int getMGEditorPreset (string $editor)
+{
+	if($editor=="other"){$editor="hyperGraphPanel1";}
+	string $varName=("MGChannelBox_"+$editor+"_preset");
+	int $result;
+	if(`optionVar -ex $varName`)
+		{$result=`optionVar -q $varName`;}
+	else{$result=1;}
+	return $result;
+}
+
+global proc saveMGEditorPreset (string $editor,int $value)
+{
+	if($editor=="other")
+	{
+		string $editorSets []={"hyperGraphPanel1","hyperShadePanel1","dopeSheetPanel1","clipEditorPanel1","polyTexturePlacementPanel1","renderView"};
+		for ($each in $editorSets)
+		{
+			string $varName=("MGChannelBox_"+$each+"_preset");
+			optionVar -iv $varName $value;			
+		}
+	}
+	else
+	{
+		string $varName=("MGChannelBox_"+$editor+"_preset");
+		optionVar -iv $varName $value;
+	}
+}
+
+
+global proc MGChannelBoxIconButtonOff (string $Button)
+{
+	string $iconButtons []={"layerEditorRB","outLinerRB","referenceEdtiorRB","graphEditorRB","hyperGraphRB","otherRB"};
+	for ($eachIB in $iconButtons)
+	{	
+		if($eachIB!=$Button)
+		{iconTextCheckBox -e -v 0 $eachIB;}
+	}
+}
+//scriptedPanel -e -ni MG_ChannelBoxSP;
+//scriptedPanel -e -ni MG_ChannelBoxMultiSP;
+//==================================================mainCodes===================
+global proc freezeMGchannelBoxToggle ()
+{
+	int $s=`window -q -s myMGChannelBox`;
+	window -e -s (1-$s) -titleBar (1-$s) myMGChannelBox;
+}
+global proc MGChannelBox ()
+{
+	global int $MGTools_2011_orNot;
+	global float $MGTools_BGColor_gray[];
+	if (`window -exists myMGChannelBox`)
+	{deleteUI myMGChannelBox;}
+	int $config=`optionVar -q "MGchannelBoxOption"`;
+	if($config)
+	{
+		if (`window -exists mgToolUI`)
+			{minimize mgToolUI MGtoolsMainGridLayout minMaxBtn;}
+	}
+	window 
+		-title `MG_DualLan "MGcBox.title"`
+		-in `MG_DualLan "MGcBox.title"`
+	-mxb 0 
+	//-wh 192 370  
+	-te 136 
+	-le 3 
+	myMGChannelBox;
+	global int $MGTools_2011_orNot;
+	if(!$MGTools_2011_orNot)
+	{formLayout 		
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+ 		MGCHannelBoxTotalMFL;
+ 	}
+ 	else
+	{
+		formLayout 		
+		-ebg 0
+ 		MGCHannelBoxTotalMFL;
+ 	}
+	paneLayout 	-configuration  "single" MGCBpan;
+	
+	if(!$MGTools_2011_orNot)
+	{	
+		paneLayout 		
+		-e
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-activeFrameThickness 1 
+		MGCBpan;
+	}
+	//scriptedPanel -e -unParent MG_ChannelBoxSP;
+	//scriptedPanel -e -p MGCBpan MG_ChannelBoxSP;
+	if(!$MGTools_2011_orNot)
+	{formLayout 		
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+ 		MGChannelBoxForm;
+ 	}
+ 	else
+	{
+		formLayout 		
+		-ebg 0
+ 		MGChannelBoxForm;
+ 	}
+	 string $menuBarLayout = `menuBarLayout MGChannelBoxInnerMenuBar`;
+ 		menu -label `MG_DualLan "MGcBox.menu.key"`; 
+			menuItem -l `MG_DualLan "MGcBox.mi.resetC"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetChannel 1"` resetCItem;		
+			menuItem -l `MG_DualLan "MGcBox.mi.resetT"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetT"` resetTItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetR"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetR"` resetRItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetS"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetS"` resetSItem;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGcBox.mi.KeySel"` -c "MGchannelBoxCommand -key" keyItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.KeyA"` -c "MGchannelBoxCommand -keyall" keyAllItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.BreakdownS"` -c "MGchannelBoxCommand -breakdown" breakdownItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.BreakdownA"` -c "MGchannelBoxCommand -breakdownall" breakdownAllItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.MuteS"` -c "MGchannelBoxCommand -mute" muteItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.MuteA"` -c "MGchannelBoxCommand -muteall" muteAllItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.uMuteS"` -c "MGchannelBoxCommand -unmute" unmuteItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.uMuteA"` -c "MGchannelBoxCommand -unmuteall" unmuteAllItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.delSel"` -c "MGchannelBoxCommand -delete" deleteItem;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGcBox.mi.cutSel"` -c "MGchannelBoxCommand -cut" cutItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.copySel"` -c "MGchannelBoxCommand -copy" copyItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.pasteSel"` -c "MGchannelBoxCommand -paste" pasteItem;
+			menuItem -d 1;
+			menuItem 
+				-label `MG_DualLan "keyScanner.UITitle"`
+				-c `shelfCommand  "keyframeProbe_WrittenByMiguel.mel" "keyframeProbe"` 
+				-annotation `MG_DualLan "keyScanner.anno"`;	
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGcBox.mi.bakeSel"` -c "bakeSelectedAttrFromMGChannelBox" backItem;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "AddCtl.prompt.title"`  -c `shelfCommand  "AddCtrl_WrittenByMiguel.mel" "MG_insertCtrlHierarchy"` -ann `MG_DualLan "AddCtl.anno"`;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "attrSwitch.mi"`  -c `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "AttrSwitch_withOut_popping"` -annotation `MG_DualLan "attrSwitch.anno"`;
+ 			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "smoothSwitch.title"` 
+				-c `shelfCommand  "smoothSwitch_WrittenByMiguel.mel" "MG_smoothSwitch_Option"`
+				-annotation `MG_DualLan "smoothSwitch.anno"` ; 	
+ 			menuItem -divider 1;
+			menuItem -label `MG_DualLan "relocator.mi"`
+				-c  `shelfCommand  "ReLocator_WrittenByMiguel.mel" "MG_ReLocator"`
+				-annotation `MG_DualLan "relocator.anno"`;
+		menu -label `MG_DualLan "MGcBox.menu.attr"`; 
+			menuItem -l `MG_DualLan "MGcBox.mi.bConnect"`  -c "MGchannelBoxCommand -break" breakItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.aAttr"`  -c "AddAttribute;" addAttributeItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.eAttr"`  -c "RenameAttribute;" editAttributeItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.dAttr"`  -command "MGchannelBoxCommand -deleteAttributes" deleteAttrItem;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGcBox.mi.LHsel"`  -c "MGchannelBoxCommand -lockUnkeyable" lockUnkeyableItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Lsel"`  -c "MGchannelBoxCommand -lock" lockItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.uLsel"`  -c "MGchannelBoxCommand -unlock" unlockItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Hsel"` -c "MGchannelBoxCommand -unkeyable" unkeyableItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.mNonKey"`  -c "MGchannelBoxCommand -unkeyableDisplayed" unkeyableDisplayedItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.mKey"`  -c "MGchannelBoxCommand -keyable" keyableItem;		
+
+ 		menu -label `MG_DualLan "MGcBox.menu.editor"`; 
+			menuItem -l `MG_DualLan "MGcBox.mi.connectE"` -c "ConnectionEditor;" connectionEditorItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.consE"`  	-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_constraintLister"`	-annotation "Select constrainted object and click me to list it's constraint."; 
+			menuItem -l `MG_DualLan "MGcBox.mi.ouL"`  -c OutlinerWindow;
+			menuItem -l `MG_DualLan "MGcBox.mi.LE"` -c "if(`optionVar -q leInMainWindow`){	optionVar -iv leInMainWindow false;}DisplayLayerEditorWindow;";
+			menuItem -divider true;
+			menuItem -l `MG_DualLan "MGcBox.mi.SDK"`  -c "MGchannelBoxCommand -driven" drivenItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.CC"`  -c "ChannelControlEditor;" channelControlItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.AE"`  -c "RenameAttribute;" AttributeEditItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Exp"`  -c "MGchannelBoxCommand -expression" exprItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Ref"`  -c "ReferenceEditor";
+			menuItem -l `MG_DualLan "MGcBox.mi.SE"`  -c "showWindow $gCommandWindow ";
+			menuItem -l `MG_DualLan "MGcBox.mi.HG"`  -c HypergraphWindow;
+ 		menu -label `MG_DualLan "displayTool.menu.title"`; 
+			menuItem -l `MG_DualLan "MGcBox.option.title"` -c "MGchannelBoxOptionBox";		
+			menuItem -l `MG_DualLan "MGcBox.mi.Freeze"` -c "freezeMGchannelBoxToggle" -annotation "Click to toggle MGchannelBox freeze or not.";
+			menuItem -l `MG_DualLan "MGcBox.mi.GEPlaug"` -c `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "installGEPlugIN"`;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGcBox.mi.sProject"` -c "SetProject";
+			menuItem -l `MG_DualLan "MGcBox.mi.nProject"` -c "NewProject";
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGtools.mi.help"`  -c "MGtoolsHelp \"mg_channelbox.htm\"";
+
+	setParent MGChannelBoxForm;
+	if(!$MGTools_2011_orNot)
+	{	
+		gridLayout 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-nr 1 -columnsResizable  1 -cellWidthHeight 20 22  -autoGrow 0  
+		CBGL1;
+ 	}
+ 	else
+	{
+		gridLayout 
+		-ebg 0
+		-nr 1 -columnsResizable  1 -cellWidthHeight 20 22  -autoGrow 0  
+		CBGL1;
+ 	}
+
+	//============================snap MenuItems codes================================
+	popupMenu -shiftModifier 1 -allowOptionBoxes 1 -mm 1;
+	menuItem -rp "NE"
+				-label `MG_DualLan "MGtools.snap.mi.pointSnapF"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 2"`
+				-annotation `MG_DualLan "MGtools.snap.mi.pointSnapF"`;  
+			menuItem -rp "N"
+				-label `MG_DualLan "MGtools.snap.mi.Marker"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "makeMultiplySnapLoc 0"`
+				-annotation `MG_DualLan "MGtools.snap.mi.Marker.anno"` ; 
+			//menuItem -d 1;
+ 			menuItem -rp "W"
+				-label `MG_DualLan "MGtools.snap"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 1"`
+				-annotation `MG_DualLan "MGtools.snap.anno"`;  
+ 
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.poSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 4"`
+				-annotation `MG_DualLan "MGtools.snap.mi.poSnapB"`;  
+ 			menuItem -rp "SE"
+				-label `MG_DualLan "MGtools.snap.mi.rSnapF"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 1"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rSnapF"`;  
+ 			menuItem -rp "SW"
+				-label `MG_DualLan "MGtools.snap.mi.rSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 4"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rSnapB"`;  			
+
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.pointSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 5"`
+				-annotation  `MG_DualLan "MGtools.snap.mi.pointSnapB"`;  
+			menuItem 
+				-label  `MG_DualLan "MGtools.snap.mi.orientSnapF"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 3"`
+				-annotation `MG_DualLan "MGtools.snap.mi.orientSnapF"` ; 
+				menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.orientSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "snapFoot 6"`
+				-annotation `MG_DualLan "MGtools.snap.mi.orientSnapB"`; 
+			menuItem -d 1;
+			menuItem -rp "NW"
+				-label `MG_DualLan "MGtools.snap.mi.POsnap"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "POSnap 1"`
+				-annotation `MG_DualLan "MGtools.snap.mi.POsnap.anno"` ;
+			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.PointSnap"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "POSnap 2"`
+				-annotation `MG_DualLan "MGtools.snap.mi.PointSnap"`; 
+			menuItem 
+				-label  `MG_DualLan "MGtools.snap.mi.OrientSnap"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "POSnap 3"`
+				-annotation  `MG_DualLan "MGtools.snap.mi.OrientSnap"`;
+			menuItem -d 1;
+ 			menuItem 
+				-label  `MG_DualLan "MGtools.snap.mi.rpointSnapF"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 2"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rpointSnapF"`;  			
+ 			menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.rpointSnapB"`
+				-command `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "relativeSnap 5"`
+				-annotation `MG_DualLan "MGtools.snap.mi.rpointSnapB"`;  			
+			menuItem -d 1;
+			menuItem -rp "E"
+				-label `MG_DualLan "MGtools.snap.mi.clearSLoc"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "deleteAllSnaploc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.clearSLoc"`;
+			menuItem -rp "S"
+				-label `MG_DualLan "MGtools.snap.mi.markerM"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "listSnapLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.markerM"`;  
+		//	menuItem -divider 1;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.backUPAnim"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "backUpAnimationLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.backUPAnim.anno"`;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.snap.mi.RestoreAnim"`
+				-c `shelfCommand  "snapLoc_WrittenByMiguel.mel" "restoreAnimationFromLoc"`
+				-annotation `MG_DualLan "MGtools.snap.mi.RestoreAnim.anno"`;
+			menuItem -divider 1;			
+			
+			menuItem 
+				-label `MG_DualLan "MGtools.mi.help"`
+				-c "MGtoolsHelp \"posnap.htm\""
+				-annotation `MG_DualLan "MGtools.mi.help.anno"`;
+	
+	setParent -m ..;
+	popupMenu -altModifier 1 -allowOptionBoxes 1 -mm 1;
+			menuItem -rp "S" -l `MG_DualLan "MGcBox.mi.bConnect"`  -c "MGchannelBoxCommand -break" breakItem;
+			menuItem -rp "E" -l `MG_DualLan "MGcBox.mi.aAttr"`  -c "AddAttribute;" addAttributeItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.eAttr"`  -c "RenameAttribute;" editAttributeItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.dAttr"`  -command "MGchannelBoxCommand -deleteAttributes" deleteAttrItem;
+			
+			menuItem -rp "W" -l `MG_DualLan "MGcBox.mi.CC"` -c "ChannelControlEditor;" channelControlItem;
+			menuItem -d 1;
+			menuItem -rp "N" -l `MG_DualLan "MGcBox.mi.LHsel"`  -c "MGchannelBoxCommand -lockUnkeyable" lockUnkeyableItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Lsel"`  -c "MGchannelBoxCommand -lock" lockItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.uLsel"`  -c "MGchannelBoxCommand -unlock" unlockItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Hsel"` -c "MGchannelBoxCommand -unkeyable" unkeyableItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.mNonKey"`  -c "MGchannelBoxCommand -unkeyableDisplayed" unkeyableDisplayedItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.mKey"`  -c "MGchannelBoxCommand -keyable" keyableItem;		
+	setParent -m ..;	
+	popupMenu -ctrlModifier 1 -allowOptionBoxes 1 -mm 1;
+	
+			
+			menuItem -rp "E" -l `MG_DualLan "MGcBox.mi.connectE"` -c "ConnectionEditor;" connectionEditorItem;
+			menuItem  -l `MG_DualLan "MGcBox.mi.consE"`  	-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_constraintLister"`	-annotation "Select constrainted object and click me to list it's constraint."; 
+			menuItem -rp "S" -l `MG_DualLan "MGcBox.mi.ouL"`  -c OutlinerWindow;
+			menuItem -l `MG_DualLan "MGcBox.mi.LE"` -c "if(`optionVar -q leInMainWindow`){	optionVar -iv leInMainWindow false;}DisplayLayerEditorWindow;";
+			menuItem -divider true;
+			menuItem -rp "NW" -l `MG_DualLan "MGcBox.mi.SDK"`  -c "MGchannelBoxCommand -driven" drivenItem;
+			menuItem -rp "W" -l `MG_DualLan "MGcBox.mi.CC"`  -c "ChannelControlEditor;" channelControlItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.AE"`  -c "RenameAttribute;" AttributeEditItem;
+			menuItem  -rp "SW" -l `MG_DualLan "MGcBox.mi.Exp"`  -c "MGchannelBoxCommand -expression" exprItem;
+			menuItem -rp "SE" -l `MG_DualLan "MGcBox.mi.Ref"`  -c "ReferenceEditor";
+			menuItem -rp "NE" -l `MG_DualLan "MGcBox.mi.SE"`  -c "showWindow $gCommandWindow ";
+			menuItem -rp "N" -l `MG_DualLan "MGcBox.mi.HG"`  -c HypergraphWindow;
+	
+	setParent -m ..;
+	
+	shelfButton 
+		-image `shelfIcon CB_key.bmp` 
+		-marginWidth 1 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-highlightImage  `shelfIcon CB_key.bmp`
+		-annotation `MG_DualLan "MGcBox.mi.KeySel"`  
+		-command "MGchannelBoxCommand -key"  keySelBtn;
+		popupMenu;
+		menuItem -l `MG_DualLan "MGcBox.mi.KeyA"` -c "MGchannelBoxCommand -keyall" keyAllItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.BreakdownS"` -c "MGchannelBoxCommand -breakdown" breakdownItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.BreakdownA"` -c "MGchannelBoxCommand -breakdownall" breakdownAllItem;	
+			menuItem -l `MG_DualLan "MGcBox.mi.mNonKey"`  -c "MGchannelBoxCommand -unkeyableDisplayed" unkeyableDisplayedItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.mKey"`  -c "MGchannelBoxCommand -keyable" keyableItem;
+		shelfButton 
+		-image `shelfIcon CB_deleteKey.bmp` 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-marginWidth 0 
+		-highlightImage  `shelfIcon CB_deleteKey.bmp`
+		-annotation `MG_DualLan "MGcBox.mi.delSel"`  
+		-command "MGchannelBoxCommand -delete" DeleteSelBtn;	
+		
+		shelfButton 
+		-image `shelfIcon CB_resetChannelSelect_Icon.bmp` 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-marginWidth 0 
+		-highlightImage  `shelfIcon CB_resetChannelSelect_Icon.bmp`
+		-annotation `MG_DualLan "MGcBox.mi.resetC"` 
+		-c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetChannel 1"`;
+		popupMenu;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetS"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetS"`;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetA"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetT;resetR;resetS;resetUserAttrs"`;
+		
+		shelfButton 
+		-image `shelfIcon CB_resetT.bmp` 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-marginWidth 0 
+		-highlightImage  `shelfIcon CB_resetT.bmp`
+		-annotation `MG_DualLan "MGcBox.mi.resetT"` 
+		-c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetT"`;
+		popupMenu;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetS"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetS"`;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetA"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetT;resetR;resetS"`;
+		shelfButton 
+		-image `shelfIcon CB_resetR.bmp` 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-marginWidth 0 
+		-highlightImage  `shelfIcon CB_resetR.bmp`
+		-annotation `MG_DualLan "MGcBox.mi.resetR"`
+		-c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetR"`;
+		popupMenu;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetS"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetS"`;
+			menuItem -l `MG_DualLan "MGcBox.mi.resetA"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetT;resetR;resetS"`;
+
+		shelfButton 
+		-image `shelfIcon CB_mute.bmp` 
+		-marginWidth 0 
+		-highlightImage  `shelfIcon CB_mute.bmp`
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-annotation `MG_DualLan "MGcBox.mi.MuteS"` 
+		-command "MGchannelBoxCommand -mute" muteKeyBtn;
+		popupMenu;
+			menuItem -l `MG_DualLan "MGcBox.mi.uMuteS"` -c "MGchannelBoxCommand -unmute" ;
+			menuItem -l `MG_DualLan "MGcBox.mi.MuteA"` -c "MGchannelBoxCommand -muteall" ;
+			menuItem -l `MG_DualLan "MGcBox.mi.uMuteA"` -c "MGchannelBoxCommand -unmuteall" ;
+		
+		iconTextButton -style "iconOnly"
+		-marginWidth 0 
+ 		-image1 `shelfIcon CB_GE.bmp` -label "GEislate"
+		-command `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "getFromCBSelectedAttr 2 1"` 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		//-offCommand `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "showAllAttr"`
+		-annotation `MG_DualLan "MGcBox.ChannelFilter.anno"`
+		GEIslateCB;
+			popupMenu ;
+			menuItem -l  `MG_DualLan "MGtools.channelBox.mi.toggleGEPlug"` 
+				-c `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "installGEPlugIN"`
+				-annotation `MG_DualLan "MGtools.channelBox.mi.toggleGEPlug.anno"`;
+		
+		iconTextCheckBox -style "iconOnly"
+ 		-image1 `shelfIcon CB_TS.bmp` -label "TSislate"
+ 		-si `shelfIcon CB_TS_selected.bmp`
+		-onCommand "timeControl -e -sk myChannel $gPlayBackSlider;" 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-offCommand "timeControl -e -sk \"active\" $gPlayBackSlider;"
+		-annotation `MG_DualLan "MGcBox.TSFilter.anno"`
+		TSIslateCB;	
+				
+	setParent MGChannelBoxForm;
+		if(!$MGTools_2011_orNot)
+	{	
+			paneLayout 
+				-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]  
+				-configuration  "single" MGCBLayerpan;	
+		 	channelBox 
+		 		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2]   
+		 		myChannel;
+ 	}
+ 	else
+	{
+			paneLayout 
+				-ebg 0
+				-configuration  "single" MGCBLayerpan;	
+		 	channelBox 
+		 		-ebg 0
+		 		myChannel;
+ 	}
+
+		popupMenu -mm 1;
+		setParent -menu ..;  
+		menuItem -rp "E" -l `MG_DualLan "MGcBox.mi.KeySel"` -c "MGchannelBoxCommand -key" keyItem;
+		menuItem -rp "S" -l `MG_DualLan "MGcBox.mi.resetC"` -c `shelfCommand  "ResetTransformation_WrittenByMiguel.mel" "resetChannel 1"` resetCItem;		
+		menuItem  -rp "N" -l `MG_DualLan "MGcBox.mi.animLib"` -c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_ExportImportAnimation 3"` ;
+		menuItem  -rp "NW" -l `MG_DualLan "MGcBox.mi.cValue"` -c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_copyValueBetweenMayas 1"`;
+		menuItem  -rp "NE" -l `MG_DualLan "MGcBox.mi.pValue"` -c `shelfCommand  "AnimationTool_WrittenByMiguel.mel" "MG_PasteValueBetweenMayas 1"`;		
+		menuItem -rp "SW" -l `MG_DualLan "MGcBox.mi.bConnect"`  -c "MGchannelBoxCommand -break" ;
+		//menuItem -l "Key All" -c "MGchannelBoxCommand -keyall" keyAllItem;
+		menuItem -rp "W" -l `MG_DualLan "MGcBox.mi.delSel"` -c "MGchannelBoxCommand -delete" deleteItem;
+		menuItem 
+				-label `MG_DualLan "keyScanner.UITitle"`
+				-c `shelfCommand  "keyframeProbe_WrittenByMiguel.mel" "keyframeProbe"` 
+				-annotation `MG_DualLan "keyScanner.anno"`;	
+		menuItem -divider true;
+		menuItem -l `MG_DualLan "MGcBox.mi.BreakdownS"` -c "MGchannelBoxCommand -breakdown" breakdownItem;
+		menuItem -l `MG_DualLan "MGcBox.mi.BreakdownA"` -c "MGchannelBoxCommand -breakdownall" breakdownAllItem;
+		menuItem -divider true;
+		menuItem -l `MG_DualLan "MGcBox.mi.MuteS"` -c "MGchannelBoxCommand -mute" muteItem;
+		menuItem -l `MG_DualLan "MGcBox.mi.MuteA"` -c "MGchannelBoxCommand -muteall" muteAllItem;
+		menuItem -l `MG_DualLan "MGcBox.mi.uMuteS"` -c "MGchannelBoxCommand -unmute" unmuteItem;
+		menuItem -l `MG_DualLan "MGcBox.mi.uMuteA"` -c "MGchannelBoxCommand -unmuteall" unmuteAllItem;
+		menuItem -divider true;
+		menuItem -l `MG_DualLan "MGcBox.mi.cutSel"` -c "MGchannelBoxCommand -cut" cutItem;
+		menuItem -l `MG_DualLan "MGcBox.mi.copySel"` -c "MGchannelBoxCommand -copy" copyItem;
+		menuItem -l `MG_DualLan "MGcBox.mi.pasteSel"` -c "MGchannelBoxCommand -paste" pasteItem;
+		menuItem -d true;
+		menuItem -l `MG_DualLan "MGcBox.mi.bakeSel"` -c "bakeSelectedAttrFromMGChannelBox" backItem;
+		menuItem -d 1;
+		menuItem -l `MG_DualLan "AddCtl.prompt.title"`  -c `shelfCommand  "AddCtrl_WrittenByMiguel.mel" "MG_insertCtrlHierarchy"`;
+		menuItem -d 1;
+		menuItem -l `MG_DualLan "attrSwitch.mi"`  -c `shelfCommand  "FootStepSnap_WrittenByMiguel.mel" "AttrSwitch_withOut_popping"` -annotation `MG_DualLan "attrSwitch.anno"`;
+		menuItem -divider 1;
+		menuItem 
+				-label `MG_DualLan "smoothSwitch.title"` 
+				-c `shelfCommand  "smoothSwitch_WrittenByMiguel.mel" "MG_smoothSwitch_Option"`
+				-annotation `MG_DualLan "smoothSwitch.anno"` ; 	
+ 		menuItem -divider 1;
+		menuItem -label `MG_DualLan "relocator.mi"`
+				-c  `shelfCommand  "ReLocator_WrittenByMiguel.mel" "MG_ReLocator"`
+				-annotation `MG_DualLan "relocator.anno"`;
+		menuItem -d true;		
+		menuItem -l `MG_DualLan "MGcBox.menu.attr"` -subMenu  1;
+			menuItem -l `MG_DualLan "MGcBox.mi.bConnect"`  -c "MGchannelBoxCommand -break" breakItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.LHsel"`  -c "MGchannelBoxCommand -lockUnkeyable" lockUnkeyableItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Lsel"`  -c "MGchannelBoxCommand -lock" lockItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.uLsel"`  -c "MGchannelBoxCommand -unlock" unlockItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Hsel"` -c "MGchannelBoxCommand -unkeyable" unkeyableItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.mNonKey"`  -c "MGchannelBoxCommand -unkeyableDisplayed" unkeyableDisplayedItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.mKey"`  -c "MGchannelBoxCommand -keyable" keyableItem;	
+		menuItem -d true;	
+			menuItem -l `MG_DualLan "MGcBox.mi.aAttr"`  -c "AddAttribute;" addAttributeItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.eAttr"`  -c "RenameAttribute;" editAttributeItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.dAttr"`  -command "MGchannelBoxCommand -deleteAttributes" deleteAttrItem;
+		setParent -m ..;
+		menuItem -divider true;
+		menuItem -l `MG_DualLan "MGcBox.menu.editor"` -subMenu  1;
+			menuItem -l `MG_DualLan "MGcBox.mi.LE"` -c "if(`optionVar -q leInMainWindow`){	optionVar -iv leInMainWindow false;}DisplayLayerEditorWindow;";
+			menuItem -l `MG_DualLan "MGcBox.mi.connectE"` -c "ConnectionEditor;" connectionEditorItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.Ref"`  -c "ReferenceEditor";
+			menuItem -l `MG_DualLan "MGcBox.mi.consE"`  	-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_constraintLister"`	-annotation "Select constrainted object and click me to list it's constraint."; 
+			menuItem -l `MG_DualLan "MGcBox.mi.ouL"`  -c OutlinerWindow;
+			menuItem -l `MG_DualLan "MGcBox.mi.SDK"`  -c "MGchannelBoxCommand -driven" drivenItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.CC"`  -c "ChannelControlEditor;" channelControlItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.AE"`  -c "RenameAttribute;" AttributeEditItem;
+			menuItem -l `MG_DualLan "MGcBox.mi.SE"`  -c "showWindow $gCommandWindow ";
+			menuItem -l `MG_DualLan "MGcBox.mi.HG"`  -c HypergraphWindow;
+			menuItem -l `MG_DualLan "MGcBox.mi.Exp"`  -c "MGchannelBoxCommand -expression" exprItem;
+		setParent -m ..;
+		menuItem -divider true;
+		menuItem -l  `MG_DualLan "displayTool.menu.title"` -subMenu  1;
+			menuItem -l `MG_DualLan "MGcBox.option.title"` -c "MGchannelBoxOptionBox";		
+			menuItem -l `MG_DualLan "MGcBox.mi.Freeze"` -c "freezeMGchannelBoxToggle" -annotation "Click to toggle MGchannelBox freeze or not.";
+			menuItem -l `MG_DualLan "MGcBox.mi.GEPlaug"` -c `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "installGEPlugIN"`;
+			menuItem -d 1;
+			menuItem -l `MG_DualLan "MGtools.mi.help"`  -c "MGtoolsHelp \"mg_channelbox.htm\"";
+
+		setParent -m ..;		
+		menuItem -divider true;
+		menuItem -l `MG_DualLan "MGcBox.menu.Project"` -subMenu  1;
+			menuItem -l `MG_DualLan "MGcBox.mi.sProject"` -c "SetProject";
+			menuItem -l `MG_DualLan "MGcBox.mi.nProject"` -c "NewProject";
+		setParent -m ..;			
+		menuItem -divider true;
+		menuItem -l "Reference" -subMenu  1;
+			menuItem 
+				-label `MG_DualLan "miniToolB.dupRef.label"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "MGduplicateReference"`
+				-annotation `MG_DualLan "miniToolB.dupRef.anno"`;
+			menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.exRef"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "exportRefPath"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.exRef.anno"`;
+		 	menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.imRef"`
+				-c `shelfCommand  "miniToolBox_WrittenByMiguel.mel" "importRefPath"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.imRef.anno"`;
+			menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.remRef"`
+				-c `shelfCommand  "nameSpaceCorrector_writtenByMiguel.mel" "correctNameSpace 0"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.remRef.anno"`;			
+			menuItem -divider 1;	
+			menuItem 
+				-label `MG_DualLan "MGtools.miniToolBox.mi.repNS"`
+				-c `shelfCommand  "nameSpaceCorrector_writtenByMiguel.mel" "correctNameSpace 1"` 
+				-annotation `MG_DualLan "MGtools.miniToolBox.mi.repNS"`;	
+	setParent -m ..;	
+	setParent -m ..;
+	//=============constraint menuItems codes=========================================================
+	popupMenu -shiftModifier 0 -ctrlModifier  1 -altModifier 1 -allowOptionBoxes 1 -mm 1;
+	
+	menuItem -rp "SW" -l `MG_DualLan "ConsTool.selMaster"` 
+			-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "returnListedNodeMaster 0"`	 
+			-annotation  `MG_DualLan "ConsTool.selMaster.anno"` ;
+	
+	menuItem -rp "SE" -l `MG_DualLan "ConsTool.selSlave"` 
+			-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "returnListedNodeMaster 2"`	 
+			-annotation  `MG_DualLan "ConsTool.selSlave.anno"` ;
+	
+	menuItem -rp "S" -l `MG_DualLan "MGtools.constraint.mi.conLister"` 	
+			-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_constraintLister"`	
+			-annotation `MG_DualLan "MGtools.constraint.mi.conLister"`; 
+		menuItem -rp "N" -l `MG_DualLan "MGtools.constraint"`	
+			-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_constraintTool"`	
+			-annotation `MG_DualLan "MGtools.constraint.anno"`; 
+		menuItem -rp "E"
+				-label `MG_DualLan "MGtools.constraint.mi.pconParent"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 2"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.pconParent.anno"` ;	
+		menuItem -rp "W"
+				-l `MG_DualLan "MGtools.constraint.mi.pcons"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 1"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.pcons"`;	
+		//menuItem -d 1;
+		menuItem -l `MG_DualLan "AddCtl.prompt.title"`  -c `shelfCommand  "AddCtrl_WrittenByMiguel.mel" "MG_insertCtrlHierarchy"` -ann `MG_DualLan "AddCtl.anno"`;
+		menuItem -d 1;
+		menuItem 
+				-label `MG_DualLan "ConsTool.vc.mi"`   
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "vertexConstrainter"`
+				-annotation `MG_DualLan "ConsTool.vc.mi.anno"`;
+		menuItem -d 1;
+		menuItem 
+				-label `MG_DualLan "ConsTool.setRelativeOffset.mi"`   
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "setConstraintRelativePosition"`
+				-annotation `MG_DualLan "ConsTool.setRelativeOffset.anno"`;		
+			menuItem 
+				-label `MG_DualLan "ConsTool.makeRelativeOffsetCtl.mi"`   
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "MG_makeConstraintedObjCtl"`
+				-annotation `MG_DualLan "ConsTool.makeRelativeOffsetCtl.anno"`;	
+		menuItem -d 1;		
+		menuItem 
+				-label `MG_DualLan "MGtools.constraint.mi.findJoint"` 
+				-c  `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "findJointViaVertex"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.findJoint.anno"` ;
+		//menuItem -d 1;
+		menuItem -rp "NE"
+				-l `MG_DualLan "MGtools.constraint.mi.clear"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "clearConstraintMenuCommand"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.clear"` ;
+		menuItem -d 1;
+		menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.anim"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "animConstraint 0"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.anim.anno"` ;	
+		menuItem -d 1;
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.point"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 3"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.point"`;
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "ConsTool.pointConsP.mi"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 4"`
+				-annotation `MG_DualLan "ConsTool.pointConsP.mi.anno"` ;			
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.orient"`
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 5"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.orient"`;
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "ConsTool.orientConsP.mi"` 
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 6"`
+				-annotation `MG_DualLan "ConsTool.orientConsP.mi.anno"` ;
+			
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "MGtools.constraint.mi.aim"`
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 7"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.aim"`;	
+		 	menuItem //-rp "NE"
+				-label `MG_DualLan "ConsTool.aimConsP.mi"`
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "constraintWithSkip 8"`
+				-annotation `MG_DualLan "ConsTool.aimConsP.mi.anno"`;				
+			menuItem -divider 1;
+			menuItem 
+				-label `MG_DualLan "MGtools.constraint.mi.consAxis"`
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "ModifyConstraintAxisOptions"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.consAxis"`;
+ 			menuItem 
+				-label `MG_DualLan "MGtools.constraint.mi.weightName"`
+				-command `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "CorrectConsWeightNameMenuItemCommand"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.weightName"`;
+			
+			menuItem -divider 1;
+			menuItem -l `MG_DualLan "MGtools.constraint.mi.export"`
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "exportConstraintOffsetForLister 0"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.export.anno"`;		
+			menuItem 
+					-label `MG_DualLan "MGtools.constraint.mi.import"`
+					-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "importConstraintOffsetUI"`
+					-annotation `MG_DualLan "MGtools.constraint.mi.import.anno"`;		
+			menuItem -l `MG_DualLan "MGtools.constraint.mi.clearOffset"`
+				-c `shelfCommand  "ConstrainTools_WrittenByMiguel.mel" "clearConstraintOffsetFileForLister 0"`
+				-annotation `MG_DualLan "MGtools.constraint.mi.clearOffset.anno"`;	
+	setParent -m ..;		
+	//=============Selection Tools menuItems codes=========================================================
+	popupMenu -shiftModifier 1 -allowOptionBoxes 1 -mm 1 MG_channelBox_selSetFunctionPM;
+	updateMGchanelBoxSelSetMenu;
+
+	setParent MGChannelBoxForm;	
+	frameLayout -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] -vis 0 -l `MG_DualLan "MGcBox.menu.editor"` -cll 1 -bs "etchedOut" MGchannelBoxBtmBtnFrame;
+	gridLayout -bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] -nr 1 -columnsResizable  1 -cellWidthHeight 20 20  -autoGrow 0  CBGL2;
+	iconTextRadioCollection mgpanelLeftCollection;		
+	shelfButton -st "iconOnly"
+		-image1 `shelfIcon CB_noPanel.bmp` 
+		//-label "noPanel"
+		-marginWidth 0 
+		//-sl 
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-command "toggleMGchannelBoxSingleMultiple" 
+		-annotation `MG_DualLan "MGcBox.noPanel.anno"`
+		noPanelRB;
+	/*	
+	shelfButton 
+		-image1 `shelfIcon CB_leftRight.bmp` 
+		-marginWidth 0
+		-c "swapPanel"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-annotation `MG_DualLan "MGcBox.Panel.lr.anno"`
+		switchRB;
+	*/
+	iconTextButton -st "iconOnly"
+ 		-image `shelfIcon CB_selectionSet.bmp` //-label "selSet"
+		-marginWidth 0
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-command `shelfCommand  "selectionTool_WrittenByMiguel.mel" "selSetUI"`
+		//-offCommand ""
+		-annotation `MG_DualLan "MGcBox.Panel.selSet.anno"`
+		selSetRB;
+	
+	string $radioMILeftRightCollection =`radioMenuItemCollection`;
+	iconTextRadioButton -st "iconOnly"
+ 		-image1 `shelfIcon CB_outliner.bmp` -label "outliner"
+		-marginWidth 0
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-onCommand "switchToMultiPanels outlinerPanel1;" 
+		-offCommand ""
+		-annotation `MG_DualLan "MGcBox.Panel.outliner.anno"`
+		outLinerRB;	
+		string $radioMIOutlinerCollection =`radioMenuItemCollection`;
+		popupMenu ;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.Embed"`
+				-c ("saveMGEditorPreset \"outlinerPanel1\" 1")
+				-collection $radioMIOutlinerCollection
+				-radioButton ( `getMGEditorPreset "outlinerPanel1"`? 1 : 0)
+				-annotation `MG_DualLan "MGcBox.Panel.Embed.anno"`;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.PopUp"`
+				-c ("saveMGEditorPreset \"outlinerPanel1\" 0")
+				-collection $radioMIOutlinerCollection
+				-radioButton ( `getMGEditorPreset "outlinerPanel1"`? 0 : 1)
+				-annotation `MG_DualLan "MGcBox.Panel.PopUp.anno"`;
+		
+	iconTextRadioButton -st "iconOnly"
+ 		-image1 `shelfIcon CB_referenceEdtior.bmp` -label "referED"
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-marginWidth 0
+		-onCommand "switchToMultiPanels referenceEditorPanel1;" 
+		-offCommand ""
+		-annotation `MG_DualLan "MGcBox.Panel.ref.anno"`
+		referenceEdtiorRB;	
+		string $radioMIReferenceCollection =`radioMenuItemCollection`;
+		popupMenu ;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.Embed"`
+				-c ("saveMGEditorPreset \"referenceEditorPanel1\" 1")
+				-collection $radioMIReferenceCollection
+				-radioButton ( `getMGEditorPreset "referenceEditorPanel1"`? 1 : 0)
+				-annotation `MG_DualLan "MGcBox.Panel.Embed.anno"`;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.PopUp"`
+				-c ("saveMGEditorPreset \"referenceEditorPanel1\" 0")
+				-collection $radioMIReferenceCollection
+				-radioButton ( `getMGEditorPreset "referenceEditorPanel1"`? 0 : 1)
+				-annotation `MG_DualLan "MGcBox.Panel.PopUp.anno"`;
+		
+	iconTextRadioButton -st "iconOnly"
+ 		-image1 `shelfIcon CB_graphEditor.bmp` -label "graphEditor"
+		-marginWidth 0
+		-onCommand "switchToMultiPanels graphEditor1;" 
+		-offCommand ""
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-annotation `MG_DualLan "MGcBox.Panel.ge.anno"`
+		graphEditorRB;	
+		string $radioMIgraphEditorCollection =`radioMenuItemCollection`;
+		popupMenu ;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.Embed"`
+				-c ("saveMGEditorPreset \"graphEditor1\" 1")
+				-collection $radioMIgraphEditorCollection
+				-radioButton ( `getMGEditorPreset "graphEditor1"`? 1 : 0)
+				-annotation `MG_DualLan "MGcBox.Panel.Embed.anno"`;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.PopUp"`
+				-c ("saveMGEditorPreset \"graphEditor1\" 0")
+				-collection $radioMIgraphEditorCollection
+				-radioButton ( `getMGEditorPreset "graphEditor1"`? 0 : 1)
+				-annotation `MG_DualLan "MGcBox.Panel.PopUp.anno"`;
+		
+	iconTextRadioButton -st "iconOnly"
+ 		-image1 `shelfIcon CB_dopeSheet.bmp` -label "dopeSheet"
+		-marginWidth 0
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-onCommand "switchToMultiPanels dopeSheetPanel1;" 
+		-offCommand ""
+		-annotation `MG_DualLan "MGcBox.Panel.ds.anno"`
+		dopeSheetRB;	
+		string $radioMIdopeSheetCollection =`radioMenuItemCollection`;
+		popupMenu ;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.Embed"`
+				-c ("saveMGEditorPreset \"dopeSheetPanel1\" 1")
+				-collection $radioMIdopeSheetCollection
+				-radioButton ( `getMGEditorPreset "dopeSheetPanel1"`? 1 : 0)
+				-annotation `MG_DualLan "MGcBox.Panel.Embed.anno"`;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.PopUp"`
+				-c ("saveMGEditorPreset \"dopeSheetPanel1\" 0")
+				-collection $radioMIdopeSheetCollection
+				-radioButton ( `getMGEditorPreset "dopeSheetPanel1"`? 0 : 1)
+				-annotation `MG_DualLan "MGcBox.Panel.PopUp.anno"`;
+		
+	iconTextRadioButton -st "iconOnly"
+ 		-image1 `shelfIcon CB_OtherPanel.bmp` //-label "hyperGraph"
+		-marginWidth 0
+		-bgc $MGTools_BGColor_gray[0] $MGTools_BGColor_gray[1] $MGTools_BGColor_gray[2] 
+		-annotation `MG_DualLan "MGcBox.Panel.other.anno"`
+		-offCommand ""
+		otherPanelRB;
+		popupMenu -button 1 otherWindowPopupMenu;
+			menuItem -l `MG_DualLan "MGcBox.Panel.cam"` -subMenu  1;
+			if(`paneLayout -q -exists MGCBpan`)
+			{
+				$cpanel=`paneLayout -q -p2 MGCBpan`;
+				$pcams=`listCameras -p`;
+				for ($eachCam in $pcams )
+				{
+					menuItem -l $eachCam -c ("switchToMultiPanels referenceEditorPanel1; lookThroughModelPanel "+$eachCam+" referenceEditorPanel1");
+					//print ("switchTo2Panels MG_outLinerSP; lookThroughModelPanel "+$eachCam+" "+$cpanel);
+				}
+				$ocams=`listCameras -o`;
+				for ($eachCam1 in $ocams )
+				{
+					menuItem -l $eachCam1 -c ("switchToMultiPanels referenceEditorPanel1; lookThroughModelPanel "+$eachCam1+" referenceEditorPanel1");
+					//print ("switchTo2Panels MG_outLinerSP; lookThroughModelPanel "+$eachCam+" "+$cpanel);
+				}
+			}			
+			setParent -menu ..;
+			menuItem -l `MG_DualLan "MGcBox.Panel.hg"` -c "switchToMultiPanels hyperGraphPanel1;showDGLevel hyperGraphPanel1HyperGraphEd;";
+			menuItem -l `MG_DualLan "MGcBox.Panel.hs"` -c "switchToMultiPanels hyperShadePanel1;";
+			menuItem -l `MG_DualLan "MGcBox.Panel.tx"` -c "switchToMultiPanels clipEditorPanel1;";
+			menuItem -l `MG_DualLan "MGcBox.Panel.uv"` -c "switchToMultiPanels polyTexturePlacementPanel1;";
+			menuItem -l "BlendShape" -c "switchToMultiPanels blendShapePanel1;";
+			menuItem -l `MG_DualLan "MGcBox.Panel.rv"` -c "switchToMultiPanels renderView;";
+		string $radioMIotherCollection =`radioMenuItemCollection`;
+		popupMenu ;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.Embed"`
+				-c ("saveMGEditorPreset \"other\" 1")
+				-collection $radioMIotherCollection
+				-radioButton ( `getMGEditorPreset "other"`? 1 : 0)
+				-annotation `MG_DualLan "MGcBox.Panel.Embed.anno"`;
+		menuItem 
+				-label `MG_DualLan "MGcBox.Panel.PopUp"`
+				-c ("saveMGEditorPreset \"other\" 0")
+				-collection $radioMIotherCollection
+				-radioButton ( `getMGEditorPreset "other"`? 0 : 1)
+				-annotation `MG_DualLan "MGcBox.Panel.PopUp.anno"`;				
+	formLayout -e 
+		
+ 		-af $menuBarLayout "top" -2 
+ 		-af $menuBarLayout "left" -2
+ 		-af $menuBarLayout "right" -2
+		
+		-ac CBGL1 "top" 0  $menuBarLayout		
+ 		-af CBGL1 "left" -2 
+ 		-af CBGL1 "right" -2
+		
+		-ac MGCBLayerpan "top" 0  CBGL1		
+ 		-af MGCBLayerpan "left" -2 
+ 		-af MGCBLayerpan "right" -2		
+ 		-ac MGCBLayerpan "bottom" 0  MGchannelBoxBtmBtnFrame
+		
+ 		-af MGchannelBoxBtmBtnFrame "left" 0 
+ 		-af MGchannelBoxBtmBtnFrame "right" 0
+ 		-af MGchannelBoxBtmBtnFrame "bottom" 0 
+		MGChannelBoxForm;
+	MGlayerCreateMGDisplayLayerMenus;
+	MGlayerCreateMGRenderLayerMenus;
+	if(`optionVar -ex "MGchannelBoxInnerMenuBarVis"`)
+	{
+		if(!`optionVar -q "MGchannelBoxInnerMenuBarVis"`)
+		{MG_channelBox_MenuBarVisToggle;}
+	}	
+	formLayout  -e 
+		-af MGCBpan top 0
+		-af MGCBpan left 0
+		-af MGCBpan right 0
+		-af MGCBpan bottom 0
+		MGCHannelBoxTotalMFL;
+	
+	frameLayout -e -vis 1 MGchannelBoxBtmBtnFrame;
+
+	//panel -e -mbv 0 MG_ChannelBoxSP;
+//	panel -e -mbv 0 MG_ChannelBoxMultiSP;	
+	showWindow myMGChannelBox ;
+	//paneLayout -e -activeFrameThickness 0 MGCHannelBoxTotalMPL;
+	//window -q    -wh  myMGChannelBox;
+	window -e    -width 168  myMGChannelBox;
+	if($config)
+	{
+		window -e	-restoreCommand "if (`window -exists mgToolUI`){minimize mgToolUI MGtoolsMainGridLayout minMaxBtn;}" myMGChannelBox;
+	}
+	//fillEmptyPanes;
+//	keepDefaultLayerUpdated;
+
+	global int $MGchannelBox_BuildDisplayLayerMenu;
+	global int $MGchannelBox_BuildRenderLayerMenu;	
+	if(!$MGchannelBox_BuildDisplayLayerMenu)
+	{
+		$MGchannelBox_BuildLayerMenu = `scriptJob  -e "displayLayerChange" "MGlayerCreateMGDisplayLayerMenus"`;
+	}
+	if(!$MGchannelBox_BuildRenderLayerMenu)
+	{
+		$MGchannelBox_BuildRenderLayerMenu = `scriptJob  -e "renderLayerManagerChange" "MGlayerCreateMGRenderLayerMenus"`;
+	}	
+}
+global proc minimizeMGtoolsWhileMGchannelBoxRunningDoIt ()
+{
+	int $mini=`checkBox -q  -v miniMizeMGToolsWhileMGchannelBoxCB`;	
+	if (`window -exists myMGChannelBox`)
+	{
+		if($mini)
+		{
+			if(`window -exists mgToolUI`)
+			{minimize mgToolUI MGtoolsMainGridLayout minMaxBtn;}
+		}
+		else
+		{
+			if(`window -exists mgToolUI`)
+			{maximize mgToolUI MGtoolsMainGridLayout minMaxBtn;}		
+		}
+	}
+}
+global proc MGchannelBoxOptionBox ()
+{
+	if (`window -exists MGchannelBoxOptionUI`)
+	{deleteUI MGchannelBoxOptionUI;}
+	window -title `MG_DualLan "MGcBox.option.title"` -in `MG_DualLan "MGcBox.option.title"`  -s 0 MGchannelBoxOptionUI;
+	columnLayout -columnOffset "left" 2 -rowSpacing 4 -adj 1;
+	int $config=`optionVar -q "MGchannelBoxOption"`;
+	int $vis;
+	if(!`optionVar -ex "MGchannelBoxInnerMenuBarVis"`)
+	{$vis=1;}
+	else{$vis=`optionVar -q "MGchannelBoxInnerMenuBarVis"`;}
+//	int $MenuBarConfig=`optionVar -q "MGchannelBoxOption"`;	
+	checkBox -v $config -l `MG_DualLan "MGcBox.option.miniMGTools"` -al "left" 
+		-cc "minimizeMGtoolsWhileMGchannelBoxRunningDoIt;SaveMGchannelBoxOption;"
+		miniMizeMGToolsWhileMGchannelBoxCB;
+	checkBox -v $vis -l `MG_DualLan "MGcBox.option.showMB"` -al "left" 
+		-changeCommand "MG_channelBox_MenuBarVisToggle"
+		menuBarToggleMGchannelBoxCB;
+	separator  -st "in" ;
+	rowLayout -nc 2 -cw2 200 100 -cl2 "center" "center";
+	text -l "";
+	//button -l "Save" -w 95 -c "SaveMGchannelBoxOption;deleteUI MGchannelBoxOptionUI";
+	button -l `MG_DualLan "miniToolB.HUD.close"` -w 95 -c "deleteUI MGchannelBoxOptionUI";
+	showWindow MGchannelBoxOptionUI;
+	//window -q -wh MGchannelBoxOptionUI;
+	window -e -wh  308 106 MGchannelBoxOptionUI;
+}
+
+global proc SaveMGchannelBoxOption ()
+{
+	int $config=`checkBox -q -v miniMizeMGToolsWhileMGchannelBoxCB`;
+	optionVar -iv "MGchannelBoxOption" $config;
+}
+
+global proc bakeSelectedAttrFromMGChannelBox ()
+{
+	string $object[] = `channelBox -q -mainObjectList  myChannel`;
+	string $attribute[] =`channelBox -q -selectedMainAttributes myChannel`;
+	if(!size($attribute))
+	{
+		warning `MG_DualLan "MGcBox.selAttr.war"`;
+		return;
+	}
+	global string $gPlayBackSlider;
+	string $selectrange = `timeControl -q -range   $gPlayBackSlider`;
+	float $selectRangeArray[] = `timeControl -q -rangeArray   $gPlayBackSlider`;		
+		if(( $selectRangeArray[1]- $selectRangeArray[0])==1)
+		{$selectrange= (`playbackOptions -q -min`+":"+`playbackOptions -q -max`);}
+	int $text;
+		string $title=`MG_DualLan "MGcBox.bakeAttr.war"`;
+		string $mes=`MG_DualLan "MGcBox.bakeAttr.mes"`;
+		string $bk=`MG_DualLan "MGcBox.bakeAttr.btn"`;
+		string $cancel=`MG_DualLan "miniToolB.repNS.cancel"`;	
+ 	string $result = `promptDialog 
+ 		-title $title
+ 		-message $mes
+		-text 1
+ 		-button $bk -button $cancel
+ 		-defaultButton $bk -cancelButton $cancel
+ 		-dismissString $cancel`;
+ 
+ 	if ($result == $bk) 
+	{
+ 		$text = `promptDialog -query -text`;
+		
+		string $command=("bakeResults -simulation true -t \""+$selectrange+"\" -sampleBy "+$text+ " -disableImplicitControl true -preserveOutsideKeys true -sparseAnimCurveBake false ");
+		for ($each in $attribute)
+		{$command=$command+" -at \""+$each+"\" ";}
+		$command=($command+$object[0]);
+		//print $command;
+		eval $command;
+	}
+ 	
+}
+
+global proc MG_channelBox_MenuBarVisToggle()
+{	
+	int $vis=`menuBarLayout -q -vis MGChannelBoxInnerMenuBar`;
+	menuBarLayout -e -vis (1-$vis)  MGChannelBoxInnerMenuBar;
+	if((1-$vis)==0)
+	{
+			formLayout -e 	-af CBGL1 "top" 0 	MGChannelBoxForm;
+	}
+	else{	formLayout -e 
+				-af MGChannelBoxInnerMenuBar "top" -3
+				-ac CBGL1 "top" 0  MGChannelBoxInnerMenuBar	MGChannelBoxForm;
+	}
+	optionVar -iv "MGchannelBoxInnerMenuBarVis" (1-$vis);
+}
+
+				
+global proc setPencentWidthForMG_ChannelBox()
+{	
+
+	string $modeConfig=`paneLayout -q -configuration MGCBpan`;
+	
+	if($modeConfig=="single")
+		{
+			window -e -w  168 myMGChannelBox;
+			$topleft=`window -q -topLeftCorner  myMGChannelBox`;
+			if($topleft[0]<0){window -e -topEdge  0 myMGChannelBox;}
+			if($topleft[1]<0){window -e -leftEdge  0 myMGChannelBox;}
+		}
+	else
+		{
+			//string $panel1Name1=`paneLayout -q -p1 MGCBpan`;
+			string $panel1Name2=`paneLayout -q -p2 MGCBpan`;
+			//string $panelNameSet = {"MG_ChannelBoxSP","MG_SelectionSetBoxSP","outlinerPanel1","referenceEditorPanel1","graphEditor1",};
+			//int $panelWidthSet = {168,193,193,420,800,};	
+			if($panel1Name2=="MG_SelectionSetBoxSP"||$panel1Name2=="outlinerPanel1")
+			{	
+				if(`window -exists myMGChannelBox`) window -e -w  366  myMGChannelBox;					
+				paneLayout -e -paneSize 1 48 100  MGCBpan;
+				//paneLayout -e -paneSize 2 52 100  MGCBpan;	
+			}
+			else
+			{
+				if($panel1Name2=="referenceEditorPanel1"||$panel1Name2=="blendShapePanel1")
+				{
+					if(`window -exists myMGChannelBox`)window -e -w  593  myMGChannelBox;					
+					paneLayout -e -paneSize 1 29 100  MGCBpan;
+				//paneLayout -e -paneSize 2 70 100  MGCBpan;	
+				}
+				else
+				{//	print "MGMG";
+
+							if(`window -exists myMGChannelBox`)window -e -w  973  myMGChannelBox;					
+							paneLayout -e -paneSize 1 18 100  MGCBpan;
+
+				}
+			}
+	}
+	
+}	
+
+global proc switchToMultiPanels (string $panel)
+{
+	string $modeConfig=`paneLayout -q -configuration MGCBpan`;
+	if($modeConfig=="single")
+	{
+		if(`getMGEditorPreset $panel`)
+			{paneLayout -e -configuration "vertical2" MGCBpan;}
+			setTargetMGPanel 2 $panel;
+		setPencentWidthForMG_ChannelBox;
+		//if(!`getMGEditorPreset "leftRight"`){swapPanel;}
+	}
+
+	else if($modeConfig=="vertical2")
+	{
+		//string $panel1Name1=`paneLayout -q -p1 MGCBpan`;
+		//string $panel1Name2=`paneLayout -q -p2 MGCBpan`;
+		setTargetMGPanel 2 $panel;
+		setPencentWidthForMG_ChannelBox;	
+		//if(!`getMGEditorPreset "leftRight"`){swapPanel;}
+	}	
+}
+
+global proc setTargetMGPanel(int $panelIndex,string $newPanel)
+{
+	
+	if(`getMGEditorPreset $newPanel`)
+	{
+		string $panelIndexName="-p2";
+		//if($panelIndex==1){$panelIndexName="-p1";}
+		//if($panelIndex==2){$panelIndexName="-p2";}
+		//if($panelIndex==3){$panelIndexName="-p3";}
+		if(`panel -ex MG_outLiner`)
+			{
+							outlinerPanel -e -l "MG_outLiner" -p MGCBpan MG_outLiner;
+							paneLayout -e -sp MG_outLiner $panelIndex MGCBpan;
+	
+							$cpanel=`paneLayout -q $panelIndexName MGCBpan`;
+
+							if($newPanel!="outlinerPanel1")
+							{
+								if($newPanel=="blendShapePanel1")
+								{
+									blendShapePanel -e -rp $cpanel "blendShapePanel1";
+								}
+								else{
+										if(`gmatch $newPanel "modelPanel*"`)
+										{
+											string $camera =`optionVar -q "MGchannelBoxFormerModelPanelCamera"`;
+											string $tempPanel=$newPanel;
+											$newPanel="referenceEditorPanel1";
+											scriptedPanel -e -rp  $cpanel $newPanel;											
+											lookThroughModelPanel $camera "referenceEditorPanel1";
+											$newPanel=$tempPanel;
+										}
+									
+										else{scriptedPanel -e -rp  $cpanel $newPanel;}
+									
+									}
+							}
+							else{	
+									
+									outlinerPanel -e -rp  $cpanel "outlinerPanel1";
+								}
+							//release panel.
+							global string $gMainPane;
+							if($cpanel!="MG_outLiner"&&$cpanel!="outlinerPanel1"&&!`gmatch $cpanel "modelPanel*"`)
+							{
+								scriptedPanel -e -unParent $cpanel;
+								scriptedPanel -e -p $gMainPane $cpanel;
+							}
+							
+	
+			}
+			else
+				{
+					string $panelOri = `outlinerPanel -l "MG_outLiner" -p MGCBpan MG_outLiner`;
+				 	string $outliner = `outlinerPanel -query -outlinerEditor $panelOri`;
+				 	outlinerEditor -edit
+				 	    -mainListConnection "worldList" 
+				 	    -selectionConnection "modelList" 
+				 	    -showShapes false
+				 	    -showAttributes false
+				 	    -showConnected false
+				 	    -showAnimCurvesOnly false
+				 	    -autoExpand false
+				 	    -showDagOnly true
+				 	    -ignoreDagHierarchy false
+				 	    -expandConnections false
+				 	    -showCompounds true
+				 	    -showNumericAttrsOnly false
+				 	    -highlightActive true
+				 	    -autoSelectNewObjects false
+				 	    -doNotSelectNewObjects false
+				 	    -transmitFilters false
+				 		-showSetMembers true
+				 		-setFilter defaultSetFilter
+				 	    $outliner;	
+					$cpanel=`paneLayout -q $panelIndexName MGCBpan`;
+					if($newPanel!="outlinerPanel1")
+							{	scriptedPanel -e -rp  $cpanel $newPanel;	}
+					else{	outlinerPanel -e -rp  $cpanel "outlinerPanel1";}
+												//release panel.
+							global string $gMainPane;
+							if($cpanel!="MG_outLiner"&&$cpanel!="outlinerPanel1")
+							{scriptedPanel -e -unParent $cpanel;
+							scriptedPanel -e -p $gMainPane $cpanel;}
+				}
+	}
+	else
+	{
+		switch ($newPanel) {
+		    case "MG_SelectionSetBoxSP":
+		        //eval `shelfCommand  "selectionTool_WrittenByMiguel.mel" "selSetUI"`;
+				selSetUI;
+		        break;
+		    case "outlinerPanel1":
+		        OutlinerWindow;
+		        break;
+		    case "referenceEditorPanel1":
+		        ReferenceEditor;
+		        break;
+		    case "graphEditor1":
+		        GraphEditor;
+		        break;
+		    case "hyperGraphPanel1":
+		        HypergraphWindow;
+		        break;	
+		    case "hyperShadePanel1":
+		        HypershadeWindow;
+		        break;
+		    case "dopeSheetPanel1":
+		        DopeSheetEditor;
+		        break;
+		    case "clipEditorPanel1":
+		        CharacterAnimationEditor;
+		        break;				
+		    case "polyTexturePlacementPanel1":
+		        TextureViewWindow;
+		        break;	
+		    case "blendShapePanel1":
+		        BlendShapeEditor;
+		        break;					
+		    case "renderView":
+		        RenderViewWindow;
+		        break;			
+		}	
+	}
+	if(`gmatch $newPanel "graphEditor*"`)
+	{
+		eval `shelfCommand  "GE_PlugIn_writtenByMiguel.mel" "installGEPlugIN"`;		
+	}
+	if($newPanel=="MG_SelectionSetBoxSP")
+	{
+		panel -e -mbv 0 MG_SelectionSetBoxSP;	
+		//paneLayout -q $panelIndexName MGCBpan
+	}	
+}
+global proc toggleMGchannelBoxSingleMultiple ()
+{
+	if(!`paneLayout -q -ex MGCBpan`){return;}
+		int $exist=`optionVar  -ex "MGchannelBoxFormerPanel"`;
+	string $formalPanel=`optionVar -q "MGchannelBoxFormerPanel"`;
+	if($formalPanel=="MG_outLiner"){$formalPanel="outlinerPanel1";}
+	if (size($formalPanel)==0||$exist==0)
+		{
+			switchToSingle;return;
+			//$formalPanel="MG_SelectionSetBoxSP";
+		}
+	string $config=`paneLayout -q -configuration  MGCBpan`;		
+	if($config=="single")
+			{	
+				switchToMultiPanels $formalPanel;
+				if(`optionVar -exists  "MGchannelBoxMultiplyPanSize"`)
+				{
+					string $pencent=`optionVar -q "MGchannelBoxMultiplyPanSize"`;
+					int $width=`optionVar -q "MGchannelBoxMultiplyWindowWidth"`;
+					string $pencentString [];
+					tokenizeList $pencent $pencentString;
+					eval ("paneLayout -e -paneSize 1 "+$pencentString [0]+" "+$pencentString [1]+" MGCBpan");
+					if(`window -exists myMGChannelBox`)
+								{window -e -w $width myMGChannelBox;}
+					//eval ("paneLayout -e -paneSize 1 "+$pencentString [2]+" "+$pencentString [3]+" MGCBpan");
+				}
+			}
+	else {
+			int $percentage[]=`paneLayout -q -paneSize MGCBpan `;
+		
+			int $width;
+			if(`window -exists myMGChannelBox`)
+				{
+					$width= `window -q -w myMGChannelBox`;
+					optionVar -iv "MGchannelBoxMultiplyWindowWidth" $width;
+				}
+			optionVar -sv "MGchannelBoxMultiplyPanSize" ($percentage[0]+" "+$percentage[1]+" "+$percentage[2]+" "+$percentage[3]);
+			switchToSingle;
+		}
+
+}
+
+//panel -q -p 	graphEditor1
+global proc switchToSingle()
+{
+		//string $panel1Name1=`paneLayout -q -p1 MGCBpan`;
+		string $panel1Name2=`paneLayout -q -p2 MGCBpan`;
+		string $config=`paneLayout -q -configuration  MGCBpan`;
+		string $formalPanel;
+		if($config=="single")
+			{
+				return;
+				//setPencentWidthForMG_ChannelBox;
+			}			
+		if($config=="vertical2")
+			{
+				//release panel.
+				//string $panel1Name1=`paneLayout -q -p1 MGCBpan`;
+				//string $panel1Name2=`paneLayout -q -p2 MGCBpan`;
+			//	if(`gmatch $panel1Name1 "modelPanel*"`)
+			//	{optionVar -sv "MGchannelboxFormerPanelCamera" ``}
+			//	string $releasePanel=$panel1Name1;
+			//	if($panel1Name1=="MG_ChannelBoxSP")
+			//	{
+				string	$releasePanel=$panel1Name2;
+					$formalPanel=$panel1Name2;
+				//}		
+				//else{$formalPanel=$panel1Name1;}
+				if(`gmatch $releasePanel "modelPanel*"`)
+				{	
+					string $cam=`modelPanel -q -camera $formalPanel`;
+					optionVar -sv "MGchannelBoxFormerModelPanelCamera" $cam;
+				}
+				
+				global string $gMainPane;
+				
+				if($releasePanel!="MG_outLiner"&&$releasePanel!="outlinerPanel1"&&$releasePanel!=""&&!`gmatch $releasePanel "modelPanel*"`)
+				{
+					scriptedPanel -e -unParent $releasePanel;
+					scriptedPanel -e -p $gMainPane $releasePanel;
+				}
+				paneLayout -e -configuration "single" MGCBpan;
+				if(`window -exists myMGChannelBox`)
+				{window -e -w  168 myMGChannelBox;}
+				//setTargetMGPanel 1 MG_ChannelBoxSP;
+				//setPencentWidthForMG_ChannelBox;
+				optionVar -sv "MGchannelBoxFormerPanel" $formalPanel;
+	
+			}
+	}
+/*
+global proc swapPanel ()
+{
+	if(`paneLayout -q -configuration MGCBpan`=="vertical2")
+	{
+	string $panel1=`paneLayout -q -p1 MGCBpan`;
+	string $panel2=`paneLayout -q -p2 MGCBpan`;
+	paneLayout -e -setPane $panel1 2 MGCBpan;
+	//paneLayout -e -setPane $panel2 1 MGCBpan;
+	int $percentage[]=`paneLayout -q -paneSize MGCBpan `;
+	paneLayout -e -paneSize 1 $percentage[2] $percentage[3]  MGCBpan;
+ 	paneLayout -e -paneSize 2 $percentage[0] $percentage[1]  MGCBpan;	
+	}
+	saveLeftRightStatusAfterSwitch;
+}
+
+global proc saveLeftRightStatusAfterSwitch ()
+{
+	if(`paneLayout -q -configuration MGCBpan`=="vertical2")
+	{
+		
+		string $panel1=`paneLayout -q -p1 MGCBpan`;
+	//	string $panel2=`paneLayout -q -p2 MGCBpan`;	
+		if	($panel1=="MG_ChannelBoxSP")
+		{
+			saveMGEditorPreset "leftRight" 1;
+		}
+		else {saveMGEditorPreset "leftRight" 0;}
+
+	}
+}
+*/
+global proc MGchannelBoxCommand( string $operation )
+{
+	switch( $operation ) {
+		case "-key":
+			channelBox -e -exe "setKeyframe \"#P.#A\";" true myChannel;
+			break;
+		case "-keyall":
+			channelBox -e -exe "setKeyframe \"#P.#A\";" false myChannel;
+			break;
+		case "-breakdown":
+			channelBox -e -exe "setKeyframe -breakdown true \"#P.#A\";" true myChannel;
+			break;
+		case "-breakdownall":
+			channelBox -e -exe "setKeyframe -breakdown true \"#P.#A\";" false myChannel;
+			break;			
+		case "-mute":
+			channelBox -e -exe "mute \"#P.#A\";" true myChannel;
+			break;
+		case "-muteall":
+			channelBox -e -exe "mute \"#P.#A\";" false myChannel;
+			break;
+		case "-unmute":
+			channelBox -e -exe "mute -disable -force \"#P.#A\";" true myChannel;
+			break;
+		case "-unmuteall":
+			channelBox -e -exe "mute -disable -force \"#P.#A\";" false myChannel;
+			break;
+	
+		case "-lock":
+			channelBox -e -exe "setAttr -lock true \"#P.#A\";" true myChannel;
+			break;
+		case "-unlock":
+			channelBox -e -exe "setAttr -lock false \"#P.#A\";" true myChannel;
+			break;
+		case "-unkeyable":
+			channelBox -e -exe "setAttr -keyable false -channelBox false \"#P.#A\";" true myChannel;
+			break;
+		case "-unkeyableDisplayed":
+			channelBox -e -exe "setAttr -keyable false -channelBox true \"#P.#A\";" true myChannel;
+			break;
+		case "-keyable":
+			channelBox -e -exe "setAttr -keyable true \"#P.#A\";" true myChannel;
+			break;
+		case "-lockUnkeyable":
+			channelBox -e -exe "setAttr -lock true -keyable false \"#P.#A\";" true myChannel;
+			break;
+		case "-expression":
+			{
+				string $objList[] = `channelBox -q -mainObjectList myChannel`;
+				string $attrList[] = `channelBox -q -selectedMainAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					expressionEditor "EE" $objList[0] $attrList[0];
+
+				} else {
+					$objList = `channelBox -q -shapeObjectList myChannel`;
+					$attrList = `channelBox -q -selectedShapeAttributes myChannel`;
+
+					if ( size($objList) > 0 && size($attrList) > 0 ){
+						expressionEditor "EE" $objList[0] $attrList[0];
+
+					} else {
+						$objList = `channelBox -q -historyObjectList myChannel`;
+						$attrList = `channelBox -q -selectedHistoryAttributes myChannel`;
+
+						if ( size($objList) > 0 && size($attrList) > 0 ){
+							expressionEditor "EE" $objList[0] $attrList[0];
+							
+						} else {
+						    $objList = `channelBox -q -outputObjectList myChannel`;
+						    $attrList = `channelBox -q -selectedOutputAttributes myChannel`;
+
+						    if ( size($objList) > 0 && size($attrList) > 0 ){
+							    expressionEditor "EE" $objList[0] $attrList[0];
+						    }
+						}		
+					}
+				}
+			}
+			break;
+		case "-driven":
+			{
+				string $objList[] = `channelBox -q -mainObjectList myChannel`;
+				string $attrList[] = `channelBox -q -selectedMainAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					setDrivenKeyWindow "" $attrList;
+
+				} else {
+					$objList = `channelBox -q -shapeObjectList myChannel`;
+					$attrList = `channelBox -q -selectedShapeAttributes myChannel`;
+
+					if ( size($objList) > 0 && size($attrList) > 0 ){
+						setDrivenKeyWindow $objList[0] $attrList;
+
+					} else {
+						$objList = `channelBox -q -historyObjectList myChannel`;
+						$attrList = `channelBox -q -selectedHistoryAttributes myChannel`;
+
+						if ( size($objList) > 0 && size($attrList) > 0 ){
+							setDrivenKeyWindow $objList[0] $attrList;
+						} else {
+							$objList = `channelBox -q -outputObjectList myChannel`;
+							$attrList = `channelBox -q -selectedOutputAttributes myChannel`;
+
+							if ( size($objList) > 0 && size($attrList) > 0 ){
+								setDrivenKeyWindow $objList[0] $attrList;
+							}
+						}
+					}
+				}
+			}
+			break;
+		case "-cut":
+			{
+				string $objList[] = `channelBox -q -mainObjectList myChannel`;
+				string $attrList[] = `channelBox -q -selectedMainAttributes myChannel`;
+
+				string $cmd = "";
+				int $okay = 0;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -shapeObjectList myChannel`;
+				$attrList = `channelBox -q -selectedShapeAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -historyObjectList myChannel`;
+				$attrList = `channelBox -q -selectedHistoryAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -outputObjectList myChannel`;
+				$attrList = `channelBox -q -selectedOutputAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				if ( $okay == 1 ){
+					evalEcho( $cmd );
+				}
+			}
+			break;
+		case "-copy":
+			{
+				string $objList[] = `channelBox -q -mainObjectList myChannel`;
+				string $attrList[] = `channelBox -q -selectedMainAttributes myChannel`;
+
+				string $cmd = "";
+				int $okay = 0;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "copyKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -shapeObjectList myChannel`;
+				$attrList = `channelBox -q -selectedShapeAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "copyKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -historyObjectList myChannel`;
+				$attrList = `channelBox -q -selectedHistoryAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "copyKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -outputObjectList myChannel`;
+				$attrList = `channelBox -q -selectedOutputAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "copyKey -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				if ( $okay == 1 ){
+					evalEcho( $cmd );
+				}
+			}
+			break;
+		case "-paste":
+			{
+				string $objList[] = `channelBox -q -mainObjectList myChannel`;
+				string $attrList[] = `channelBox -q -selectedMainAttributes myChannel`;
+
+				string $cmd = "";
+				int $okay = false;
+				float $currentTime = `currentTime -query`;
+				string $pasteKey = ("pasteKey -connect true -time " + $currentTime);
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + $pasteKey;
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = true;
+				}
+
+				$objList = `channelBox -q -shapeObjectList myChannel`;
+				$attrList = `channelBox -q -selectedShapeAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + $pasteKey;
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = true;
+				}
+
+				$objList = `channelBox -q -historyObjectList myChannel`;
+				$attrList = `channelBox -q -selectedHistoryAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + $pasteKey;
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = true;
+				}
+
+				$objList = `channelBox -q -outputObjectList myChannel`;
+				$attrList = `channelBox -q -selectedOutputAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + $pasteKey;
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = true;
+				}
+
+				if ( $okay ){
+					evalEcho( $cmd );
+				}
+			}
+			break;
+		case "-delete":
+			{
+				string $objList[] = `channelBox -q -mainObjectList myChannel`;
+				string $attrList[] = `channelBox -q -selectedMainAttributes myChannel`;
+
+				string $cmd = "";
+				int $okay = 0;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -cl -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -shapeObjectList myChannel`;
+				$attrList = `channelBox -q -selectedShapeAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -cl -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -historyObjectList myChannel`;
+				$attrList = `channelBox -q -selectedHistoryAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -cl -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				$objList = `channelBox -q -outputObjectList myChannel`;
+				$attrList = `channelBox -q -selectedOutputAttributes myChannel`;
+
+				if ( size($objList) > 0 && size($attrList) > 0 ){
+					$cmd = $cmd + "cutKey -cl -t \":\" -f \":\"";
+					for( $channel in $attrList )
+						$cmd = $cmd + " -at \"" + $channel+"\"";
+					for ( $object in $objList )
+						$cmd = $cmd + " " + $object;
+					$cmd = $cmd + ";\n";
+					$okay = 1;
+				}
+
+				if ( $okay == 1 ){
+					evalEcho( $cmd );
+				}
+			}
+			break;
+		case "-deleteAttributes":
+			channelBox -e -exe "catch (`deleteAttr -attribute \"#A\" \"#P\"`);" true myChannel;
+			break;
+		case "-precision":
+			{
+				int $oldPrecision = `optionVar -query channelsPrecision`;
+				int $newPrecision = precisionPrompt ("", $oldPrecision, 15);
+				if ($newPrecision > 0) {
+					
+					// Change the width of the fields depending on the
+					// precision.
+					//
+					int $oldWidth = `channelBox -q -fieldWidth myChannel`;
+					int $newWidth;
+					if ($newPrecision <= 3) {
+						$newWidth = 65;
+					} else if ($newPrecision <= 6) {
+						$newWidth = 95;
+					} else if ($newPrecision <= 9) {
+						$newWidth = 115;
+					} else if ($newPrecision <= 12) {
+						$newWidth = 130;
+					} else {
+						$newWidth = 155;						
+					}
+					channelBox -e -pre $newPrecision 
+						-fieldWidth $newWidth 
+						myChannel;
+					optionVar -iv channelsPrecision $newPrecision;
+					optionVar -iv channelsFieldWidth $newWidth;
+					
+					nudgeChannelsLayersWidth($newWidth-$oldWidth);
+				}
+			}
+			break;
+		case "-break":
+			channelBox -e -exe "MGCBdeleteConnection \"#P.#A\";" true myChannel;
+			break;
+		case "-reset":
+			global int $gChannelsLayersWidth;
+			optionVar -iv channelsLongName 1;   // 1=nice
+			optionVar -iv channelsPrecision 3;
+			optionVar -iv channelsFieldWidth 65;
+			$gChannelsLayersWidth = 180;
+			channelBox -e -ln true -nn true
+				-precision 3 -fieldWidth 65 myChannel;
+			setChannelsLayersWidth ($gChannelsLayersWidth);
+			checkSpeedButton "medium" true;
+			channelBox -e -hyperbolic false myChannel;
+			channelBox -e -showNamespace true myChannel;
+			channelBox -e -useManips "standard" myChannel;
+			initChannelBoxButtons;
+			break;
+	}
+}
+
+global proc int test2009OrLaterOrNot ()
+{
+	string $version =`about -date`;
+		$version=`substring $version  1 6`;
+		int $versionNum=$version;
+		if($versionNum>200807){return 1;}
+		else{return 0;}
+}
+
+global proc MGLayerEditorSwitch(int $mode)
+{
+//	if(`getMGEditorPreset "layerEditor"`==1)
+//	{	
+//		
+//	}
+	if(`getMGEditorPreset "layerEditor"`==2)
+	{
+			int $state=`isUIComponentVisible "Channel Box / Layer Editor"`;
+			if($mode)
+				{
+					if(`optionVar -q leInMainWindow`)
+							{	optionVar -iv leInMainWindow false;}
+						if(!$state){toggleUIComponentVisibility "Channel Box / Layer Editor";}
+				}
+			else
+				{
+					if($state){toggleUIComponentVisibility "Channel Box / Layer Editor";}
+				}
+
+	}
+	if (`getMGEditorPreset "layerEditor"`==0)
+	{
+
+		if($mode)
+			{
+			//	if(!`window -ex LEWindow`) 
+			//		{
+						if(`optionVar -q leInMainWindow`)
+						{	optionVar -iv leInMainWindow false;}
+						DisplayLayerEditorWindow;
+						print "";
+			//		}
+			}
+		else{if(`window -ex LEWindow`) {deleteUI LEWindow;}}
+	}
+
+}
+
+global proc MGCBdeleteConnection( string $destName )
+//
+// If the specified name is the destination of a connection,
+// then delete that connection.
+//
+{
+	if ( `connectionInfo -isDestination $destName` ){
+		string $destination = `connectionInfo -getExactDestination $destName`;
+
+		// When deleting a src connection from a character, you must remove
+		// the item from the character set or the character will no longer
+		// work consistently: bug 127212
+		//
+		string $srcConn[] = `listConnections -s 1 -d 0 -type character $destination`;
+		if (size($srcConn)) {
+			string $warnMsg = ("Removed \'"+$destination+"\' from character \'"+$srcConn[0]+"\'.");
+			warning($warnMsg);
+			character -e -rm $srcConn[0] $destination;
+		}
+		
+		// delete -icn doesn't work if destination attr is readOnly 
+		// so use disconnectAttr in this case
+		//
+		string $sArr[1] = `ls -ro $destination`;
+		if (size($sArr)) {
+			string $src = `connectionInfo -sourceFromDestination $destination`;
+			disconnectAttr $src $destination;
+		} else {
+			delete -icn $destination;
+		}
+	}
+}
+
+print "\n";
