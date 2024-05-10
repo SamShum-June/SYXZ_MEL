@@ -1,0 +1,391 @@
+
+
+
+///////////// CAM Prs SET ///////////////////////////////////////////////////////////////////
+    //////镜头预设条件
+        ////镜头分辨率
+            /// 1K ///
+                global proc SET_1K_CAM(){
+                    setAttr "defaultResolution.width" 1024;
+                    setAttr "defaultResolution.height" 1024;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// 2K ///
+                global proc SET_2K_CAM(){
+                    setAttr "defaultResolution.width" 2048;
+                    setAttr "defaultResolution.height" 2048;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// 3K ///
+                global proc SET_3K_CAM(){
+                    setAttr "defaultResolution.width" 3072;
+                    setAttr "defaultResolution.height" 3072;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// 4K ///
+                global proc SET_4K_CAM(){
+                    setAttr "defaultResolution.width" 4096;
+                    setAttr "defaultResolution.height" 4096;
+                    setAttr "defaultResolution.deviceAspectRatio" 1;
+                    setAttr "defaultResolution.pixelAspect" 1;
+                }
+            /// HD720 ///
+                global proc SET_HD720_CAM(){
+                    setAttr "defaultResolution.width" 1280;
+                    setAttr "defaultResolution.height" 720;
+                    setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// HD1080 ///
+                global proc SET_HD1080_CAM(){
+                    setAttr "defaultResolution.width" 1920;
+                    setAttr "defaultResolution.height" 1080;
+                    setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 4096_2305 ///
+                global proc SET_4096_2305_CAM(){
+                    setAttr "defaultResolution.width" 4096;
+                    setAttr "defaultResolution.height" 2305;
+                    setAttr "defaultResolution.deviceAspectRatio" 1.777;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 720*1280 ///
+                global proc SET_720_1280_CAM(){
+                    setAttr "defaultResolution.width" 720;
+                    setAttr "defaultResolution.height" 1280;
+                    setAttr "defaultResolution.deviceAspectRatio" 0.562;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 1080*1920 ///
+                global proc SET_1080_1920_CAM(){
+                    setAttr "defaultResolution.width" 1080;
+                    setAttr "defaultResolution.height" 1920;
+                    setAttr "defaultResolution.deviceAspectRatio" 0.562;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+            /// 2305*4096 ///
+                global proc SET_2305_4096_CAM(){
+                    setAttr "defaultResolution.width" 2305;
+                    setAttr "defaultResolution.height" 4096;
+                    setAttr "defaultResolution.deviceAspectRatio" 0.563;
+                    setAttr "defaultResolution.pixelAspect" 1.000;
+                }
+
+        ///渲染参数预设///
+            global proc SET_RenderSet(){
+                global int $Export_sth ;
+                setAttr "defaultRenderGlobals.currentRenderer" -type "string" "redshift";
+                setAttr "defaultRenderGlobals.imageFilePrefix" -type "string" "<Scene>/<RenderLayer>/<Scene>_<RenderLayer>";
+                setAttr "defaultRenderGlobals.animation" 1;
+                setAttr "redshiftOptions.exrForceMultilayer" 1;
+                setAttr "redshiftOptions.exrMultipart" 1;
+                setAttr "defaultResolution.aspectLock" 0;
+                setAttr "defaultRenderGlobals.enableDefaultLight" 0;
+                string $Cam[] =`ls -ca`;
+                setAttr ($Cam[0]+".renderable") 1;
+                setAttr ($Cam[0]+".backgroundColor") -type double3 0 0 0 ;
+                setAttr "perspShape.farClipPlane" 10000000;
+                setAttr "perspShape.renderable" 0;
+                setAttr "redshiftOptions.unifiedMinSamples" 64;
+                setAttr "redshiftOptions.unifiedMaxSamples" 64;
+                setAttr "redshiftOptions.unifiedAdaptiveErrorThreshold" 0.1;
+                setAttr "redshiftOptions.unifiedRandomizePattern" 0;
+                setAttr "defaultRenderGlobals.startFrame" `playbackOptions -q -min `;
+                setAttr "defaultRenderGlobals.endFrame" `playbackOptions -q -max `;
+                setAttr "redshiftOptions.progressiveRenderingNumPasses" 512;
+                setAttr "redshiftOptions.enableDebugCapture" 0;
+                setAttr "redshiftOptions.fileGammaMode" 4;
+                setAttr "redshiftOptions.imageFormat" $Export_sth;
+                string $RS_Volume[] = `ls -type RedshiftVolumeScattering`;
+                if( `objExists $RS_Volume[0]` ){
+                setAttr ($RS_Volume[0]+".enable") 0;}
+                string $RS_Photographic[] = `ls -type RedshiftPhotographicExposure`;
+                if( `objExists $RS_Photographic[0]` ){
+                setAttr ($RS_Photographic[0]+".enable") 0;}
+                string $RS_PhysicalSky[] = `ls -type RedshiftPhysicalSky`;
+                if( `objExists $RS_PhysicalSky[0]` ){
+                setAttr ($RS_PhysicalSky[0]+".on") 0;}
+                setAttr "redshiftOptions.maxNumGPUMBForIrradiancePointCloudHierarchy" 512;
+                setAttr "redshiftOptions.maxNumGPUMBForForICPHierarchy" 512;
+                setAttr "redshiftOptions.primaryGIEngine" 4;
+                setAttr "redshiftOptions.secondaryGIEngine" 0;
+                setAttr "redshiftOptions.samplingGammaMode" 2;
+            }
+
+    //////镜头设置合并
+        //1K set//
+            global proc Render_Cam_1K(){
+                SET_RenderSet();
+                SET_1K_CAM();          
+                print("设置镜头大小为 1K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 1K"+"\n");
+            }    
+
+        //2K set//
+            global proc Render_Cam_2K(){
+                SET_RenderSet();
+                SET_2K_CAM();          
+                print("设置镜头大小为 2K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 2K"+"\n");
+            } 
+
+        //3K set//
+            global proc Render_Cam_3K(){
+                SET_RenderSet();
+                SET_3K_CAM();          
+                print("设置镜头大小为 3K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 3K"+"\n");
+            } 
+
+        //4K set//
+            global proc Render_Cam_4K(){
+                SET_RenderSet();
+                SET_4K_CAM();          
+                print("设置镜头大小为 4K"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 4K"+"\n");
+            } 
+
+        //HD720 set//
+            global proc Render_Cam_HD720(){
+                SET_RenderSet();
+                SET_HD720_CAM();          
+                print("设置镜头大小为 HD720"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 HD720"+"\n");
+            } 
+
+        //HD1080 set//
+            global proc Render_Cam_HD1080(){
+                SET_RenderSet();
+                SET_HD1080_CAM();          
+                print("设置镜头大小为 HD1080"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 HD1080"+"\n");
+            } 
+
+        //4096_2305 set//
+            global proc Render_Cam_4096_2305(){
+                SET_RenderSet();
+                SET_4096_2305_CAM();          
+                print("设置镜头大小为 4096_2305"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 4096_2305"+"\n");
+            } 
+
+        //720_1280 set//
+            global proc Render_Cam_720_1280(){
+                SET_RenderSet();
+                SET_720_1280_CAM();          
+                print("设置镜头大小为 720_1280"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 720_1280"+"\n");
+            } 
+
+        //1080_1920 set//
+            global proc Render_Cam_1080_1920(){
+                SET_RenderSet();
+                SET_1080_1920_CAM();          
+                print("设置镜头大小为 1080_1920"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 1080_1920"+"\n");
+            } 
+
+        //2305_4096 set//
+            global proc Render_Cam_2305_4096(){
+                SET_RenderSet();
+                SET_2305_4096_CAM();          
+                print("设置镜头大小为 2305_4096"+"\n");
+                headsUpMessage -time 5 ("设置镜头大小为 2305_4096"+"\n");
+            } 
+
+        ////////prs SET EXR 自定义分辨率 /////////
+            ///最终调用////
+                global proc Custom_CAM_imagesize(){
+                    SET_RenderSet();
+                    SET_Custom_CAM();
+                }
+
+            /// 自定义镜头分辨率///
+                global proc SET_Custom_CAM(){
+                    int $widthcs =`textField -q -text cs_width`;
+                    int $Hightcs =`textField -q -text cs_Hight`;
+                    setAttr "defaultResolution.width" $widthcs ;
+                    setAttr "defaultResolution.height" $Hightcs ;
+                }
+
+
+    ////2017横屏
+        ///Aovs+ISO+HD720   
+            global proc Aovs_iso2017_HD720(){
+                Render_Cam_HD720();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+HD1080
+            global proc Aovs_iso2017_HD1080(){
+                Render_Cam_HD1080();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+4K
+            global proc Aovs_iso2017_4K(){
+                Render_Cam_4096_2305();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+
+    ////2019横屏
+        ///Aovs+ISO+HD720
+            global proc Aovs_iso2019_HD720(){
+                Render_Cam_HD720();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+HD1080
+            global proc Aovs_iso2019_HD1080(){
+                Render_Cam_HD1080();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs+ISO+4K
+            global proc Aovs_iso2019_4K(){
+                Render_Cam_4096_2305();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+
+    ////2017竖屏
+        ///Aovs_iso+720*1280
+            global proc Aovs_iso2017_720_1280(){
+                Render_Cam_720_1280();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+        ///Aovs_iso+1080*1920
+            global proc Aovs_iso2017_1080_1920(){
+                Render_Cam_1080_1920();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+        ///Aovs_iso+SP4K
+            global proc Aovs_iso2017_SP4K(){
+                Render_Cam_2305_4096();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+
+    ////2019竖屏
+        ///Aovs_iso+720*1280
+            global proc Aovs_iso2019_720_1280(){
+                Render_Cam_720_1280();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+                
+            }
+        ///Aovs_iso+1080*1920
+            global proc Aovs_iso2019_1080_1920(){
+                Render_Cam_1080_1920();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+        ///Aovs_iso+SP4K
+            global proc Aovs_iso2019_SP4K(){
+                Render_Cam_2305_4096();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+                
+            }
+
+
+    ////////AOVs+iso 2017 2019 +自定义分辨率 /////////
+        ///最终调用////
+            global proc A0vs2017_CS_imagesize(){
+                custom_camset_CS_17();
+                SET_RenderSet();
+                ISO_maya2017();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+            global proc A0vs2019_CS_imagesize(){
+                custom_camset_CS_19();
+                SET_RenderSet();
+                ISO_maya2019();
+                RS_Full_Aovs();
+                creat_SHAlig();
+                CreatCHAlig();
+            }
+
+        
+        /// 自定义镜头分辨率///
+
+            global proc custom_camset_CS_17(){
+                int $widthcs_CS_17 =`textField -q -text Width_CS_17`;
+                int $Hightcs_CS_17 =`textField -q -text Hight_CS_17`;
+                setAttr "defaultResolution.width" $widthcs_CS_17;
+                setAttr "defaultResolution.height" $Hightcs_CS_17;
+            }
+
+            global proc custom_camset_CS_19(){
+                int $widthcs_CS_19 =`textField -q -text Width_CS_19`;
+                int $Hightcs_CS_19 =`textField -q -text Hight_CS_19`;
+                setAttr "defaultResolution.width" $widthcs_CS_19;
+                setAttr "defaultResolution.height" $Hightcs_CS_19;
+            }
+
+////////// Do POSE 正方形4K 
+    //2_Do_pose_2_to_do_sth_2017_4K
+        global proc Do_pose_2_to_do_sth_2017_4K(){
+            smoothNode_auto_pro();
+            Render_Cam_4K();
+            RS_Pose_Aovs();
+            Cs_Obj_IDAovs();
+            //persp_Set();
+            CreatCHAlig();
+            ISO_maya2017();
+            print("一键起飞 2017方形4K");
+            headsUpMessage -time 5 ("一键起飞 2017方形4K");
+        }
+
+    //2_Do_pose_2_to_do_sth_2019_4K
+        global proc Do_pose_2_to_do_sth_2019_4K(){
+            smoothNode_auto_pro();
+            Render_Cam_4K();
+            RS_Pose_Aovs();
+            Cs_Obj_IDAovs();
+            //persp_Set();
+            CreatCHAlig();
+            ISO_maya2019();
+            print("一键起飞 2019方形4K");
+            headsUpMessage -time 5 ("一键起飞 2019方形4K");
+        }
+
+
+

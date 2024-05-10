@@ -1,0 +1,83 @@
+    ////////////导入mb文件
+        global proc import_STH(){ 
+            string $import_now =`textField -q -text data_line`;
+            file -import  $import_now ;
+        }
+
+    ////////Smooth////////////////////////////
+        global proc smooth(){
+            if(!`objExists "smooth"`){
+                rename `redshiftCreateMeshParametersNode`"smooth";
+                setAttr "smooth.minTessellationLength" 6;
+                setAttr "smooth.maxTessellationSubdivs" 8;
+                headsUpMessage -time 5 ("Set smooth"+"\n");
+            }
+
+        }
+    //////renderlayer切层错误修复/////
+        global proc renderlayer_redo(){
+            fixRenderLayerOutAdjustmentErrors;
+        }
+
+
+
+    /////////// Creat ISO //////////////////////////////////////
+        //Creat 2017 RedshiftPhotographicExposure
+            global proc ISO_maya2017(){
+                file -import -type "mayaBinary""//192.168.23.65/ab$/Light_Library/_SYXZ/ISO_maya2017.mb";
+                /*
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                fillSelectedTabForCurrentRenderer;
+                fillSelectedTabForCurrentRenderer;
+                shadingNode -asUtility RedshiftPhotographicExposure -n "ISO_maya2017";
+                
+                redshiftChangeGlobalShader ISO_maya2017 "exposure";
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                fillSelectedTabForCurrentRenderer;
+                fillSelectedTabForCurrentRenderer;
+                redshiftChangeGlobalShader ISO_maya2017 "exposure";
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                fillSelectedTabForCurrentRenderer;
+                fillSelectedTabForCurrentRenderer;
+                redshiftChangeGlobalShader ISO_maya2017 "exposure";
+                // Result: 0 //
+                setAttr "ISO_maya2017.enable" 0;
+                autoUpdateAttrEd;
+                */
+                print ("Creat_ISO_maya2017"+"\n");
+                headsUpMessage -time 5 ("Creat ISO_maya2017"+"\n");
+            }
+        //Creat 2019 postEffects
+            global proc ISO_maya2019(){
+                setAttr defaultRenderGlobals.currentRenderer -type "string" "redshift";
+                shadingNode -asUtility RedshiftPostEffects;
+                rename rsPostEffects1 "ISO_maya2019" ;
+                redshiftChangeGlobalShader ISO_maya2019 "postEffects";
+                
+                print ("Creat_ISO_maya2019"+"\n");
+                headsUpMessage -time 5 ("Creat ISO_maya2019"+"\n");
+            }
+
+        ////////// sel obj
+            global proc sel_obj(){
+                selectMode -object; 
+                selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 1 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 0 -camera 0 -texture 0 -ikEndEffector 0 -locator 0 -dimension 0;
+            }
+        ////////// sel obj lig
+            global proc sel_obj_lig(){
+                selectMode -object; 
+                selectType -handle 0 -ikHandle 0 -joint 0 -nurbsCurve 0 -cos 0 -stroke 0 -nurbsSurface 1 -polymesh 1 -subdiv 1 -plane 1 -lattice 0 -cluster 0 -sculpt 0 -nonlinear 0 -particleShape 0 -emitter 0 -field 0 -spring 0 -rigidBody 0 -fluid 0 -hairSystem 0 -follicle 0 -nCloth 0 -nRigid 0 -dynamicConstraint 0 -rigidConstraint 0 -collisionModel 0 -light 1 -camera 0 -texture 1 -ikEndEffector 0 -locator 0 -dimension 0;
+            }
+
+////////调整persp 参数 
+    global proc persp_Set(){
+        setAttr "persp.translateX" -3955.891;
+        setAttr "persp.translateY" 3585.805;
+        setAttr "persp.translateZ" -8993.259;
+        setAttr "persp.rotateX" -19.538;
+        setAttr "persp.rotateY" 563;
+        setAttr "persp.rotateZ" 0;
+    }
+
+
+

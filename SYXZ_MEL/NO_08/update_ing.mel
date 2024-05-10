@@ -1,0 +1,38 @@
+
+global int $Export_sth=1;
+global proc SYXZ_Master()
+{
+    if(`window -exists SYXZ_Master`){deleteUI -window SYXZ_Master;}
+    if(`window -exists syxzwindow`){deleteUI -window syxzwindow;}
+    if(`window -exists import_STH_window`){deleteUI -window import_STH_window;}
+    if(`window -exists Optimize_and_Creat_ID_Aovs_SET_window`){deleteUI -window Optimize_and_Creat_ID_Aovs_SET_window;}
+    if(`window -exists DO_CAM_window`){deleteUI -window DO_CAM_window;}
+    if(`window -exists DO_POSE_window`){deleteUI -window DO_POSE_window;}
+
+
+    window -t "Select Output img" -s 0 -mxb 0 -mnb 0 -bgc 0.377 0.386 0.361 SYXZ_Master;
+    columnLayout ColumnLayout;
+    rowColumnLayout -adjustableColumn true -ca ;
+    frameLayout -labelVisible false -marginWidth 5 -marginHeight 5;
+    columnLayout;
+    frameLayout  -l "Select Output img EXR or PNG" -cll 0 -mh 5 -w 360 -h 80 -bgc 0.5 0 1;
+            rowColumnLayout -numberOfColumns 3 -columnWidth 1 180 -columnWidth 2 180 ;
+            radioCollection;
+            radioButton -l "     Output_EXR(Def)" -h 50 -bgc 0 0.551 1 -cc "global int $Export_sth= 1";  
+            radioButton -l "     Output_PNG" -h 50 -bgc 1 0.5 0.6 -cc "global int $Export_sth= 2";  
+            setParent ..; 
+            setParent ..;
+            text -w 10 -h 10 -l " ";             
+            button -l "Close Win & Open SYXZ" -command ("delete_UI_SYXZ_Master_SYXZWINDOW") -w 360 -h 30 -bgc 0.087 0.872 0.548;
+
+    window -e  -w 360 -h 80 SYXZ_Master;
+    showWindow SYXZ_Master;
+}
+SYXZ_Master;
+
+///删除SYXZ_Master 再打开 SYXZ Window//
+global proc delete_UI_SYXZ_Master_SYXZWINDOW()
+{
+    deleteUI -window SYXZ_Master;
+    SYXZ;
+} 
