@@ -12,7 +12,7 @@
                 setAttr "smooth.maxTessellationSubdivs" 8;
                 headsUpMessage -time 5 ("Set smooth"+"\n");
             }
-
+            
         }
     //////renderlayer切层错误修复/////
         global proc renderlayer_redo(){

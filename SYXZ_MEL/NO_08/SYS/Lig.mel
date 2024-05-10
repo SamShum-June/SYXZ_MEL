@@ -13,59 +13,60 @@
         }
 
         //cha_lig_zhu
+        //Todo
             global proc cha_lig_zhu(){
-                ls;
-                if(`objExists cha_lig_zhu`){
-                    
-        }
 
-            // select cha_lig_zhu;
-            // Delete cha_lig_zhu;
-            // cha_lig_zhu();
-            // parent cha_lig_zhu cha_lig_G ;
-            // reorder -relative -5 cha_lig_zhu ;
-
-            // headsUpMessage -time 5 ("Creat 主 光"+"\n");        
-    }
-                redshiftCreateLight "RedshiftPhysicalLight";
-                rename "rsPhysicalLight1" "cha_lig_zhu";
-                setAttr "cha_lig_zhuShape.on" 1;
-                setAttr "cha_lig_zhuShape.lightType" 3;
-                setAttr "cha_lig_zhuShape.colorMode" 0;
-                setAttr "cha_lig_zhuShape.color" -type double3 0.8 0.87 1 ;
-                setAttr "cha_lig_zhuShape.unitsType" 0;
-                setAttr "cha_lig_zhuShape.intensity" 1.2;
-                setAttr "cha_lig_zhuShape.affectsDiffuse" 1;
-                setAttr "cha_lig_zhuShape.affectsSpecular" 1;
-                setAttr "cha_lig_zhuShape.diffuseRayContributionScale" 1;
-                setAttr "cha_lig_zhuShape.glossyRayContributionScale" 0.2;
-                setAttr "cha_lig_zhuShape.areaBidirectional" 1;
-                setAttr "cha_lig_zhuShape.shadow" 1;
-                setAttr "cha_lig_zhuShape.shadowTransparency" 0.3;
-                setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_shadowSamplesScale" 3;
-                setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_numShadowSamples" 256;
-                setAttr "cha_lig_zhuShape.emitCausticPhotons" 1;
-                setAttr "cha_lig_zhuShape.emitGiPhotons" 1;
-                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
-                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
-                setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
-                setAttr "cha_lig_zhu.translateX" 0;
-                setAttr "cha_lig_zhu.translateY" 0;
-                setAttr "cha_lig_zhu.translateZ" 0;
-                setAttr "cha_lig_zhu.rotateX" -33.94;
-                setAttr "cha_lig_zhu.rotateY" -16.565;
-                setAttr "cha_lig_zhu.rotateZ" 3.764;
-                setAttr "cha_lig_zhu.scaleX" 124.084;
-                setAttr "cha_lig_zhu.scaleY" 124.084;
-                setAttr "cha_lig_zhu.scaleZ" 124.084;
-                setAttr "cha_lig_zhu.visibility" 1;
-                setAttr -lock true "cha_lig_zhu.sx";
-                setAttr -lock true "cha_lig_zhu.sy";
-                setAttr -lock true "cha_lig_zhu.sz";
+                string $CR_Cha_lig[]= `ls -type "RedshiftPhysicalLight"`;
+                if($CR_Cha_lig != "cha_lig_zhu"){
+                    redshiftCreateLight "RedshiftPhysicalLight";
+                    rename "rsPhysicalLight1" "cha_lig_zhu";
+                    setAttr "cha_lig_zhuShape.on" 1;
+                    setAttr "cha_lig_zhuShape.lightType" 3;
+                    setAttr "cha_lig_zhuShape.colorMode" 0;
+                    setAttr "cha_lig_zhuShape.color" -type double3 0.8 0.87 1 ;
+                    setAttr "cha_lig_zhuShape.unitsType" 0;
+                    setAttr "cha_lig_zhuShape.intensity" 1.2;
+                    setAttr "cha_lig_zhuShape.affectsDiffuse" 1;
+                    setAttr "cha_lig_zhuShape.affectsSpecular" 1;
+                    setAttr "cha_lig_zhuShape.diffuseRayContributionScale" 1;
+                    setAttr "cha_lig_zhuShape.glossyRayContributionScale" 0.2;
+                    setAttr "cha_lig_zhuShape.areaBidirectional" 1;
+                    setAttr "cha_lig_zhuShape.shadow" 1;
+                    setAttr "cha_lig_zhuShape.shadowTransparency" 0.3;
+                    setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_shadowSamplesScale" 3;
+                    setAttr "cha_lig_zhuShape.SAMPLINGOVERRIDES_numShadowSamples" 256;
+                    setAttr "cha_lig_zhuShape.emitCausticPhotons" 1;
+                    setAttr "cha_lig_zhuShape.emitGiPhotons" 1;
+                    setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Position" 0;
+                    setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_FloatValue" 0;
+                    setAttr "cha_lig_zhuShape.collisionOffsetVelocityMultiplier[0].collisionOffsetVelocityMultiplier_Interp" 0;
+                    setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Position" 0;
+                    setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_FloatValue" 0;
+                    setAttr "cha_lig_zhuShape.collisionDepthVelocityMultiplier[0].collisionDepthVelocityMultiplier_Interp" 0;
+                    setAttr "cha_lig_zhu.translateX" 0;
+                    setAttr "cha_lig_zhu.translateY" 0;
+                    setAttr "cha_lig_zhu.translateZ" 0;
+                    setAttr "cha_lig_zhu.rotateX" -33.94;
+                    setAttr "cha_lig_zhu.rotateY" -16.565;
+                    setAttr "cha_lig_zhu.rotateZ" 3.764;
+                    setAttr "cha_lig_zhu.scaleX" 124.084;
+                    setAttr "cha_lig_zhu.scaleY" 124.084;
+                    setAttr "cha_lig_zhu.scaleZ" 124.084;
+                    setAttr "cha_lig_zhu.visibility" 1;
+                    setAttr -lock true "cha_lig_zhu.sx";
+                    setAttr -lock true "cha_lig_zhu.sy";
+                    setAttr -lock true "cha_lig_zhu.sz";
+                }
+                else if($CR_Cha_lig == "cha_lig_zhu"){
+                    select cha_lig_zhu;
+                    Delete cha_lig_zhu;
+                    cha_lig_zhu();
+                    parent cha_lig_zhu cha_lig_G ;
+                    reorder -relative -5 cha_lig_zhu ;
+                }
+                headsUpMessage -time 5 ("Creat cha_lig_zhu "+"\n");        
             }
+
 
         //cha_lig_nuan
             global proc cha_lig_nuan(){

@@ -11,5 +11,5 @@ else
 	global string $syxztoolsPath;
 	$syxztoolsPath=($myScriptsPath+"000/");
 	eval ("source \""+$syxztoolsPath+"temp.mel\"");
-	DO_CAM_window;
+	SYXZ_Master;
 }
