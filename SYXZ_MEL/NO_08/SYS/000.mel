@@ -7,9 +7,12 @@ if(`window -exists SYXZ_Master`)
 
 else
 {
-	string $myScriptsPath = "//samshum-syxz/ab$/Light_Library/Maya/maya/plug-ins/";
+	//string $myScriptsPath = "//samshum-syxz/ab$/Light_Library/Maya/maya/plug-ins/";
+	string $myScriptsPath = "https://github.com/SamShum-June/SYXZ_MEL/tree/main/SYXZ_MEL/NO_08/";
 	global string $syxztoolsPath;
-	$syxztoolsPath=($myScriptsPath+"000/");
-	eval ("source \""+$syxztoolsPath+"temp.mel\"");
-	SYXZ_Master;
+	$syxztoolsPath=($myScriptsPath+"SYS/");
+	eval ("source \""+$syxztoolsPath+"Memu.mel\"");
+	SYXZ_Master_window;
 }
+
+
