@@ -8,14 +8,10 @@ if(`window -exists SYXZ_Master`)
 else
 {
 	
-	string $myScriptsPath = "https://raw.githubusercontent.com/SamShum-June/SYXZ_MEL/main/SYXZ_MEL/NO_08/";
+	string $myScriptsPath = "//samshum-syxz/ab$/Light_Library/Maya/maya/plug-ins/";
 	global string $syxztoolsPath;
 	$syxztoolsPath=($myScriptsPath+"SYS/");
 	eval ("source \""+$syxztoolsPath+"Menu.mel\"");
 	SYXZ_Index;
 }
 
-
-
-
-// string $myScriptsPath = "//samshum-syxz/ab$/Light_Library/Maya/maya/plug-ins/";
